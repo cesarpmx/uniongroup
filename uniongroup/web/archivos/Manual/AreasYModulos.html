@@ -1,0 +1,689 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link rel="SHORTCUT ICON" href="newLogoLogin.png"><title>Áreas y Módulos</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ab3e0b7-7127-80a4-a941-d733ab68bc07" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">5️⃣</span></div><h1 class="page-title">Áreas y Módulos</h1><p class="page-description"></p></header><div class="page-body"><p id="1ab3e0b7-7127-80a4-92b1-c2d61f8e727b" class="">El sistema CIA Clientes cuenta con tres áreas principales (Inventarios, Envíos y Facturación). Cada una de estas áreas cuenta con sus módulos individuales en los cuales se pueden consultar valores de diferentes categorías. </p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">5.1 Inventarios</summary><div class="indented"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>5.1.1 Módulo - Ocupación de almacén</strong></summary><div class="indented"><p id="1ab3e0b7-7127-8048-b051-fcc3cf0c1e4f" class="">En este módulo se pueden encontrar el número de ubicaciones existentes por cada semana. </p><h3 id="1ab3e0b7-7127-8091-9be9-cfb29158c4d2" class="">Parametros de Consulta</h3><ul id="1ab3e0b7-7127-80a3-adec-ef7fe29b7e08" class="bulleted-list"><li style="list-style-type:disc"><strong>Empresa: </strong>empresa dueña el producto.</li></ul><ul id="1ab3e0b7-7127-803e-8483-f2c104581f6c" class="bulleted-list"><li style="list-style-type:disc"><strong>Almacén:</strong> almacén del que se quiere consultar el número de ubicaciones. </li></ul><ul id="1ab3e0b7-7127-80e4-b5c0-c812bf8404cf" class="bulleted-list"><li style="list-style-type:disc"><strong>Linea: </strong>linea del producto.</li></ul><ul id="1ab3e0b7-7127-80aa-863f-f952cd861ef2" class="bulleted-list"><li style="list-style-type:disc"><strong>Categoría: </strong>categoría del producto.</li></ul><ul id="1ab3e0b7-7127-80a7-afba-fff2b1b72deb" class="bulleted-list"><li style="list-style-type:disc"><strong>Clasificación Producto: </strong>clasificación en la que el producto se encuentra en el almacén.</li></ul><figure id="1b23e0b7-7127-801d-8644-da8a4a0e788d" class="image"><a href="Screenshot_2025-03-10_at_12.19.35_p.m..png"><img style="width:653.953125px" src="Screenshot_2025-03-10_at_12.19.35_p.m..png"/></a><figcaption>Parámetros de consulta, módulo 5.1.1 <em>Ocupación de almacén.</em></figcaption></figure><h3 id="1b23e0b7-7127-809c-92d2-ff510421f5b9" class="">Datos de Consulta</h3><p id="1b23e0b7-7127-8050-82ba-d3351ccf1e0a" class="">La gráfica muestra en dos ejes, cuantas ubicaciones hubo en cierta semana.</p><figure id="1ad3e0b7-7127-80fb-a825-e04eabb08002" class="image"><a href="c552d797-1681-4c25-bc75-b92584260f25.png"><img style="width:710px" src="c552d797-1681-4c25-bc75-b92584260f25.png"/></a><figcaption>Gráfica de datos, módulo 5.1.1 <em>Ocupación de almacén.</em></figcaption></figure></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>5.1.2 Módulo - Costo de Inventario</strong></summary><div class="indented"><p id="1ab3e0b7-7127-8074-90c0-d8d0ad78c47a" class="">En este módulo se pueden encontrar las unidades que hay en inventario y el valor total del mismo. </p><h3 id="1ab3e0b7-7127-80c8-a272-ef6dd5710533" class="">Parámetros de Consulta</h3><ul id="1ab3e0b7-7127-80e6-8554-e78a51cb40c0" class="bulleted-list"><li style="list-style-type:disc"><strong>Empresa: </strong>empresa dueña el producto.</li></ul><ul id="1ab3e0b7-7127-8089-b61f-f50bbc5995c3" class="bulleted-list"><li style="list-style-type:disc"><strong>Almacén:</strong> almacén del que se quiere consultar el número de unidades y valor del inventario.  </li></ul><ul id="1ab3e0b7-7127-805a-9ea0-e7bf953ae402" class="bulleted-list"><li style="list-style-type:disc"><strong>Linea: </strong>linea del producto.</li></ul><ul id="1ab3e0b7-7127-802f-aa46-cded08a28ff0" class="bulleted-list"><li style="list-style-type:disc"><strong>Familia: </strong>familia del producto.</li></ul><ul id="1ab3e0b7-7127-80c5-a8e4-e0e3d69a2885" class="bulleted-list"><li style="list-style-type:disc"><strong>Clasificación Producto: </strong>clasificación en la que el producto se encuentra en el almacén.</li></ul><figure id="1b23e0b7-7127-802e-bffe-dc50c1024f4f" class="image"><a href="Screenshot_2025-03-10_at_12.21.39_p.m..png"><img style="width:653.9921875px" src="Screenshot_2025-03-10_at_12.21.39_p.m..png"/></a><figcaption>Parámetros de consulta, módulo 5.1.2 <em>Costo de Inventario. </em></figcaption></figure><h3 id="1b23e0b7-7127-80ab-874b-e9915f40c51b" class="">Datos de Consulta</h3><p id="1b23e0b7-7127-804a-8b41-c83668886493" class="">La gráfica muestra la cantidad de unidades o valor del inventario en cierta semana.</p><figure id="1ad3e0b7-7127-80f4-b10b-fa5a2d4fe84b" class="image"><a href="7ab8be95-b347-437c-8361-13f58ab1ff94.png"><img style="width:710px" src="7ab8be95-b347-437c-8361-13f58ab1ff94.png"/></a><figcaption>Gráfica de datos, módulo 5.1.2 <em>Costo de Inventario.</em></figcaption></figure><p id="1b23e0b7-7127-8080-9f02-dd1b271c1f82" class="">Los datos consultados pueden ser visualizados a detalle en forma de tabla al hacer click en el botón <em>Mostrar Valores</em> desde el <a href="Menus.html">menú toolbar.</a> Además, haciendo click en la parte superior en <em>Unidades </em>o <em>Valor Inventario</em>, se puede seleccionar cuales datos se están visualizando. </p><figure id="1b23e0b7-7127-8096-a271-ca48b15d3c71" class="image"><a href="Screenshot_2025-03-10_at_12.14.57_p.m..png"><img style="width:653.9921875px" src="Screenshot_2025-03-10_at_12.14.57_p.m..png"/></a><figcaption>Tabla detalle de costo inventario, módulo 5.1.2 <em>Costo de Inventario. </em></figcaption></figure><p id="1b23e0b7-7127-808e-ac93-d8a53802cf16" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>5.1.3 Módulo - Existencias por producto</strong></summary><div class="indented"><p id="1ab3e0b7-7127-80af-8dc2-f11b75c73696" class="">En este módulo se puede encontrar una tabla detallada de las existencias, así como visualizar los movimientos de cada producto y acceder a la funcionalidad de <em><a href="4_3_Movimientos.html">Movimientos (realizar un pedido).</a></em></p><h3 id="1b23e0b7-7127-80e7-a830-f46153df01fc" class=""><strong>Parametros de consulta</strong></h3><ul id="1b23e0b7-7127-80a8-a513-c3f8b95710c0" class="bulleted-list"><li style="list-style-type:disc"><strong>Almacén:</strong> almacén del que se quiere consultar el número de existencias.</li></ul><ul id="1b23e0b7-7127-8080-8de7-ebdbda3d8336" class="bulleted-list"><li style="list-style-type:disc"><strong>Empresa: </strong>empresa dueña el producto.</li></ul><ul id="1b23e0b7-7127-80b0-9b65-ffd7d92f41ce" class="bulleted-list"><li style="list-style-type:disc"><strong>Clave de Producto: </strong>Código con el que se identifica el producto. </li></ul><ul id="1b23e0b7-7127-8046-a75c-cbd6efe85c38" class="bulleted-list"><li style="list-style-type:disc"><strong>Linea: </strong>linea del producto.</li></ul><ul id="1b23e0b7-7127-8020-99da-e3cbcc4785c8" class="bulleted-list"><li style="list-style-type:disc"><strong>Familia: </strong>familia del producto.</li></ul><ul id="1b23e0b7-7127-801f-a850-e905038b0d66" class="bulleted-list"><li style="list-style-type:disc"><strong>Clasificación Producto: </strong>clasificación en la que el producto se encuentra en el almacén.</li></ul><div id="1ab3e0b7-7127-80ad-860b-cdf8a926877e" style="width:100%" class="column"></div><figure id="1b23e0b7-7127-803f-86a1-c4d4272d6e61" class="image"><a href="Screenshot_2025-03-10_at_11.53.17_a.m..png"><img style="width:625.9609375px" src="Screenshot_2025-03-10_at_11.53.17_a.m..png"/></a><figcaption>Parámetros de consulta, módulo 5.1.3 <em>Existencias por producto.</em></figcaption></figure><h3 id="1ab3e0b7-7127-80af-a8e1-d5ca271fcf3f" class="">Datos de Consulta</h3><div id="1ab3e0b7-7127-8001-b7b5-cb236f7c6773" style="width:100%" class="column"><p id="1ab3e0b7-7127-804a-a942-d000850a2a42" class="">La tabla muestra los siguientes detalles. </p><ul id="1ab3e0b7-7127-8089-8eaf-c2c13b9dacc0" class="bulleted-list"><li style="list-style-type:disc"><strong>#:</strong> número de ubicación del producto en la lista mostrada.</li></ul><ul id="1ab3e0b7-7127-80a3-8970-dfa4feafe2dc" class="bulleted-list"><li style="list-style-type:disc"><strong>Código Producto:</strong></li></ul><ul id="1ab3e0b7-7127-8057-8e94-e22702312f61" class="bulleted-list"><li style="list-style-type:disc"><strong>Código de Material: </strong>clave con la que se identifica el producto. <strong> </strong></li></ul><ul id="1ab3e0b7-7127-80e5-97a8-dbee9ee8cd25" class="bulleted-list"><li style="list-style-type:disc"><strong>Descripción del Material: </strong>descripción breve del producto. </li></ul><ul id="1ab3e0b7-7127-8069-bb21-d05719dfbac5" class="bulleted-list"><li style="list-style-type:disc"><strong>Linea: </strong>linea del producto.</li></ul><ul id="1ab3e0b7-7127-803a-abcb-c2ac4c7f7a7b" class="bulleted-list"><li style="list-style-type:disc"><strong>Familia: </strong>familia del producto.</li></ul><ul id="1ab3e0b7-7127-806b-95d1-daefb8606832" class="bulleted-list"><li style="list-style-type:disc"><strong>Clasificación: </strong>clasificación en la que el producto se encuentra en el almacén. </li></ul><ul id="1ab3e0b7-7127-8049-86eb-efac360017a2" class="bulleted-list"><li style="list-style-type:disc"><strong>Almacén: </strong>almacén del que se quiere consultar el número de existencias o realizar/visualizar un movimiento.</li></ul><ul id="1ab3e0b7-7127-8096-9e50-cc99f67ef4c7" class="bulleted-list"><li style="list-style-type:disc"><strong>Unidad: </strong>tipo de unidad del producto. </li></ul><ul id="1ab3e0b7-7127-8093-be47-eca6c5e81c82" class="bulleted-list"><li style="list-style-type:disc"><strong>Inner: </strong>cantidad interna de la unidad. </li></ul><ul id="1ab3e0b7-7127-8071-a432-fa076aa5725a" class="bulleted-list"><li style="list-style-type:disc"><strong>Disponible: </strong>cuantas unidades hay disponibles por almacén. </li></ul></div><figure id="1b23e0b7-7127-805c-b119-f90d1de2245d" class="image"><a href="Screenshot_2025-03-10_at_11.55.58_a.m..png"><img style="width:2860px" src="Screenshot_2025-03-10_at_11.55.58_a.m..png"/></a><figcaption>Tabla de datos de consulta, módulo 5.1.3 <em>Existencias por producto.</em></figcaption></figure><div id="1ab3e0b7-7127-80df-8f75-f70d9453ecce" style="width:100%" class="column"><p id="1b23e0b7-7127-80c5-bc89-ed91e2998138" class="">Para realizar una consulta por lote,<em> </em>accedemos al menú <em><a href="Menus.html">Consulta existencia por lote</a></em><em> </em>haciendo doble click en el valor de la columna <em>Disponible</em> de cada producto que noas haya arrojado la consulta.</p><div id="1b23e0b7-7127-80d5-88b3-c6dc939a3e2d" class="column-list"><div id="1b23e0b7-7127-80d9-91f1-ffafe394fa30" style="width:68.75%" class="column"><figure id="1b23e0b7-7127-802d-a394-d9b86f1a0881" class="image" style="text-align:center"><a href="Screenshot_2025-03-10_at_12.02.31_p.m..png"><img style="width:194px" src="Screenshot_2025-03-10_at_12.02.31_p.m..png"/></a><figcaption>Columna <em>Disponible</em>.</figcaption></figure></div><div id="1b23e0b7-7127-8058-ae22-f8f30f5b9884" style="width:93.75%" class="column"><figure id="1b23e0b7-7127-809f-8c34-caeb63652018" class="image"><a href="Screenshot_2025-03-10_at_11.44.24_a.m..png"><img style="width:288px" src="Screenshot_2025-03-10_at_11.44.24_a.m..png"/></a><figcaption>Menú <em>Consulta Existencia por Lote. </em></figcaption></figure><p id="1b33e0b7-7127-80a5-895d-db6bb9964bd1" class="">
+</p></div></div><p id="1ab3e0b7-7127-80a8-b55f-f2b8a08327a6" class="">Se pueden realizar las siguientes acciones en las últimas 3 columnas de la tabla:</p><ul id="1ab3e0b7-7127-800a-935e-c5111c5d1680" class="bulleted-list"><li style="list-style-type:disc"><strong>Ver Movimientos:</strong> Botón para visualizar los movimientos realizados.</li></ul><ul id="1ab3e0b7-7127-800e-9bf6-c1473c59baaa" class="bulleted-list"><li style="list-style-type:disc"><strong>Ver Imagen: </strong>Botón para visualizar una imagen del producto.</li></ul><ul id="1ab3e0b7-7127-80f4-9d7c-d8f51271da29" class="bulleted-list"><li style="list-style-type:disc"><strong>Mover:</strong> Botón para realizar un <a href="4_3_Movimientos.html">movimiento del producto.</a></li></ul><p id="1ab3e0b7-7127-80b3-9816-e806c58b3475" class="">*Cada una de las columnas de la tabla puede ser seleccionada para ordenarse de forma ascendente o descendente.</p></div><figure id="1b23e0b7-7127-8007-84a1-d496551618a6" class="image"><a href="Screenshot_2025-03-10_at_11.57.11_a.m..png"><img style="width:653.984375px" src="Screenshot_2025-03-10_at_11.57.11_a.m..png"/></a><figcaption>Sección de acciones de la tabla de datos, módulo 5.1.3 <em>Existencias por producto. </em></figcaption></figure></div></details></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">5.2 Envíos</summary><div class="indented"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>5.2.1 Módulo - Estatus de envíos</strong></summary><div class="indented"><p id="1ab3e0b7-7127-80fe-800f-edec9664758c" class="">En este módulo se puede consultar una tabla detallada del estatus y todos los detalles de un envío.</p><h3 id="1b23e0b7-7127-80ef-9d31-c61a4b39e1b7" class="">Parámetros de Consulta</h3><ul id="1b23e0b7-7127-80e9-924f-cac15b62a88b" class="bulleted-list"><li style="list-style-type:disc"><strong>Empresa: </strong>empresa dueña del producto.</li></ul><ul id="1b23e0b7-7127-80dc-9b7e-fd049ce52a8b" class="bulleted-list"><li style="list-style-type:disc"><strong>Almacén:</strong> almacén en el que se encuentra el producto.</li></ul><ul id="1b23e0b7-7127-80f0-bbd2-d5522dd63e7e" class="bulleted-list"><li style="list-style-type:disc"><strong>Referencia:</strong> referencia con la que se realizó el envío.</li></ul><ul id="1b23e0b7-7127-80f2-84ea-c726d93530a8" class="bulleted-list"><li style="list-style-type:disc"><strong>Fecha:</strong> fecha de ingreso del producto.</li></ul><ul id="1b23e0b7-7127-805c-85e5-d1d2b6d95e47" class="bulleted-list"><li style="list-style-type:disc"><strong>Días atrás:</strong></li></ul><ul id="1b23e0b7-7127-8006-8f64-cffdd87f986e" class="bulleted-list"><li style="list-style-type:disc"><strong>Estatus:</strong> estatus en el que se encuentra el envío.</li></ul><figure id="1b23e0b7-7127-8027-a093-d3e8b0a14e06" class="image"><a href="Screenshot_2025-03-10_at_12.33.41_p.m..png"><img style="width:653.9453125px" src="Screenshot_2025-03-10_at_12.33.41_p.m..png"/></a><figcaption>Parámetros de consulta, módulo 5.2.1 <em>Estatus de envíos.</em></figcaption></figure><h3 id="1b23e0b7-7127-80ac-990c-e27b9bfe3ad6" class="">Datos de Consulta</h3><ul id="1b23e0b7-7127-8006-a015-e66d00bc3095" class="bulleted-list"><li style="list-style-type:disc"><strong>#: </strong>número de ubicación del producto en la lista de la tabla.</li></ul><ul id="1b23e0b7-7127-8014-9a3f-d305e8ef53c9" class="bulleted-list"><li style="list-style-type:disc"><strong>Comentarios: </strong>comentarios sobre el envío.</li></ul><ul id="1b23e0b7-7127-808c-b4e6-ddd27d14aab5" class="bulleted-list"><li style="list-style-type:disc"><strong>Motivo de Rechazo: </strong>en caso de requerirse, el motivo por el que se rechazó el envío.</li></ul><ul id="1b23e0b7-7127-80cd-9665-e5de0858c285" class="bulleted-list"><li style="list-style-type:disc"><strong>Tiempo Entrega: </strong>estatus del tiempo de entrega.</li></ul><ul id="1b23e0b7-7127-809c-a9f7-fb2d52ca7031" class="bulleted-list"><li style="list-style-type:disc"><strong>Fecha Entrega: </strong>fecha en la que se entregó el producto. </li></ul><ul id="1b23e0b7-7127-805c-935a-fcb50578d9ab" class="bulleted-list"><li style="list-style-type:disc"><strong>Fecha Embarque: </strong>fecha en la que se embarcó.</li></ul><ul id="1b23e0b7-7127-8035-b039-f4fed4469001" class="bulleted-list"><li style="list-style-type:disc"><strong>Objetivo: </strong>fecha en la que se pretende concluir el envío. </li></ul><ul id="1b23e0b7-7127-80c0-88c8-ca98d9f57bd8" class="bulleted-list"><li style="list-style-type:disc"><strong>Fecha Ingreso: </strong>fecha en la que se ingresó en producto.</li></ul><ul id="1b23e0b7-7127-803a-99a6-e816646b608e" class="bulleted-list"><li style="list-style-type:disc"><strong>Fecha Factura: </strong>fecha en la que se emitió la factura.</li></ul><ul id="1b23e0b7-7127-8034-83f0-e0655f29db62" class="bulleted-list"><li style="list-style-type:disc"><strong>Cajas: </strong>cantidad de cajas que lleva el envío.</li></ul><ul id="1b23e0b7-7127-805a-bb03-f89f6abe6f9d" class="bulleted-list"><li style="list-style-type:disc"><strong>Destino: </strong>lugar al que se dirige. </li></ul><ul id="1b23e0b7-7127-8019-a575-f7890fe9e790" class="bulleted-list"><li style="list-style-type:disc"><strong>Destinatario: </strong>nombre del destinatario.</li></ul><ul id="1b23e0b7-7127-809f-bcf2-d806f9063594" class="bulleted-list"><li style="list-style-type:disc"><strong>Referencia: </strong>referencia con la que se realizó el envío.</li></ul><ul id="1b23e0b7-7127-807f-8237-d9a10b066b7d" class="bulleted-list"><li style="list-style-type:disc"><strong>Remisión: </strong>número de remisión.</li></ul><ul id="1b23e0b7-7127-806b-9c65-e3fbaf828cb6" class="bulleted-list"><li style="list-style-type:disc"><strong>Estatus: </strong>estatus del envío.</li></ul><ul id="1b23e0b7-7127-8060-ae94-f26a3f044ee3" class="bulleted-list"><li style="list-style-type:disc"><strong>Ver Evidencia: </strong>imagen evidencia de como se hizo el envío.</li></ul><ul id="1b23e0b7-7127-8021-a275-f653154ee4e2" class="bulleted-list"><li style="list-style-type:disc"><strong>Clave: </strong>clave con la que se identifica el producto.</li></ul><figure id="1ad3e0b7-7127-80c9-beb0-c8c8734cb1d4" class="image"><a href="Screenshot_2025-03-05_at_9.20.54_a.m..png"><img style="width:2854px" src="Screenshot_2025-03-05_at_9.20.54_a.m..png"/></a><figcaption>Tabla de datos de consulta, módulo 5.2.1 <em>Estatus de envíos. </em></figcaption></figure><p id="1b53e0b7-7127-8019-9e18-e946b7509e65" class="">
+</p><p id="1b23e0b7-7127-8017-a75c-e9eabd070f40" class="">Al dar doble click sobre cualquiera de los productos de la tabla, el sistema permite visualizar la pestaña de <em>Datos del Envío</em> en el que se pueden visualizar los datos de ingreso, embarque, entrega al cliente y datos generales del envío, así como los datos de devolución de ser necesarios. </p><figure id="1b53e0b7-7127-80ef-be7a-f0685190fb5f" class="image"><a href="image_(7).png"><img style="width:653.984375px" src="image_(7).png"/></a><figcaption>Pestaña de <em>Datos del envío</em>, módulo 5.2.1 <em>Estatus de envíos. </em></figcaption></figure><p id="1b53e0b7-7127-8056-a0ab-c1884e5859a2" class="">
+</p><p id="1b53e0b7-7127-808f-ab1e-c361ada097d4" class="">Al presionar el botón <em>Ver Productos</em>, de la pestaña <em>Datos del envío</em>, se puede acceder a una lista detallada de los productos que se enviaron en ese movimiento. </p><figure id="1b53e0b7-7127-80f7-a8f0-c59adb9f2840" class="image"><a href="Screenshot_2025-03-13_at_10.49.08_a.m..png"><img style="width:653.9921875px" src="Screenshot_2025-03-13_at_10.49.08_a.m..png"/></a><figcaption>Lista de productos dentro de la pestaña <em>Datos del envío</em>. Módulo 5.2.1 <em>Estatus de envíos. </em></figcaption></figure></div></details></div></details><div id="1ab3e0b7-7127-80e6-a08d-dacf96f0f401" style="width:100%" class="column"></div><div id="1ab3e0b7-7127-80d5-952d-d7149f9171f0" style="width:100%" class="column"></div><p id="1ab3e0b7-7127-8088-92fd-c046151f5522" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

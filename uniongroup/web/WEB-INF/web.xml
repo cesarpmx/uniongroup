@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>dwr-invoker</servlet-name>
+        <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>CtrlLogin</servlet-name>
+        <servlet-class>com.control.usuario.CtrlLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CtrlCerrarSesion</servlet-name>
+        <servlet-class>com.control.usuario.CtrlCerrarSesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CtrlComboLoader</servlet-name>
+        <servlet-class>com.util.CtrlComboLoader</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CtrlRestablecerContrasena</servlet-name>
+        <servlet-class>com.control.usuario.CtrlRestablecerContrasena</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlUsuario</servlet-name>
+        <servlet-class>com.control.usuario.CtrlUsuario</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlOcupacionAlmacen</servlet-name>
+        <servlet-class>com.control.inventario.CtrlOcupacionAlmacen</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlCostoInventario</servlet-name>
+        <servlet-class>com.control.inventario.CtrlCostoInventario</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlExistenciaProducto</servlet-name>
+        <servlet-class>com.control.inventario.CtrlExistenciaProducto</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>CtrlEstatusEnvio</servlet-name>
+        <servlet-class>com.control.envio.CtrlEstatusEnvio</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>CtrlKPIEntrega</servlet-name>
+        <servlet-class>com.control.envio.CtrlKPIEntrega</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlCostosEspeciales</servlet-name>
+        <servlet-class>com.control.envio.CtrlCostosEspeciales</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlFacturacion</servlet-name>
+        <servlet-class>com.control.envio.CtrlFacturacion</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CtrlConfiguracionUsuario</servlet-name>
+        <servlet-class>com.control.configuracion.CtrlConfiguracionUsuario</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>dwr-invoker</servlet-name>
+        <url-pattern>/dwr/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CtrlLogin</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CtrlCerrarSesion</servlet-name>
+        <url-pattern>/CerrarSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CtrlComboLoader</servlet-name>
+        <url-pattern>/ComboLoader</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>CtrlUsuario</servlet-name>
+        <url-pattern>/Usuario</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CtrlOcupacionAlmacen</servlet-name>
+        <url-pattern>/OcupacionAlmacen</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CtrlCostoInventario</servlet-name>
+        <url-pattern>/CostoInventario</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>CtrlExistenciaProducto</servlet-name>
+        <url-pattern>/ExistenciaProducto</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>CtrlEstatusEnvio</servlet-name>
+        <url-pattern>/EstatusEnvio</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CtrlKPIEntrega</servlet-name>
+        <url-pattern>/KPIEntrega</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CtrlCostosEspeciales</servlet-name>
+        <url-pattern>/CostosEspeciales</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CtrlFacturacion</servlet-name>
+        <url-pattern>/FacturacionEnvio</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>CtrlConfiguracionUsuario</servlet-name>
+        <url-pattern>/ConfigUsuario</url-pattern>
+    </servlet-mapping>
+   
+    
+    <session-config>
+        <session-timeout>240</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>jsp_general/login.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

@@ -1,0 +1,688 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link rel="SHORTCUT ICON" href="newLogoLogin.png"><title>Mensajes</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ab3e0b7-7127-8087-a779-ec9b410d2db2" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">7️⃣</span></div><h1 class="page-title">Mensajes</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">8.1 Error</summary><div class="indented"><p id="1ab3e0b7-7127-80f6-a66d-ee6d248052ed" class="">Este tipo de mensajes indican una validación incorrecta en el sistema.</p><p id="1ab3e0b7-7127-8069-99a2-c4f328286abc" class="">Dentro de esta categoría mensajes existe:</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.1.1 La cantidad a mover no puede ser mayor que la cantidad disponible.</summary><div class="indented"><figure id="1b33e0b7-7127-80bf-ae99-c4a32f944cbd" class="image"><a href="Screenshot_2025-03-10_at_9.55.43_p.m..png"><img style="width:653.984375px" src="Screenshot_2025-03-10_at_9.55.43_p.m..png"/></a></figure><p id="1b33e0b7-7127-8027-bee0-e75d28a27d87" class="">El sistema arroja este mensaje cuando se intenta agregar a la lista de movimiento de producto, un número mayor al de los productos disponibles. </p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.1.2 Error de validación</summary><div class="indented"><figure id="1b33e0b7-7127-8028-ad6d-eaabdd472f5d" class="image"><a href="4ae13763-aff0-4c87-8f6f-e02b3c6540db.png"><img style="width:710px" src="4ae13763-aff0-4c87-8f6f-e02b3c6540db.png"/></a></figure><p id="1b33e0b7-7127-80ec-82db-ecbcab45b3e0" class="">Esta serie de mensajes aparecen cuando existe de uno a seis errores de validación al cargar un archivo excel en el módulo de facturación.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.1.3 Errores de validación</summary><div class="indented"><figure id="1b33e0b7-7127-80a2-8574-fd0d37f9622a" class="image"><a href="image_(6).png"><img style="width:615px" src="image_(6).png"/></a></figure><p id="1b33e0b7-7127-8071-9b69-f994b1df75bd" class="">Este mensaje aparece cuando existe más de seis errores de validación al cargar un archivo excel en el módulo de facturación. Para acceder a esta lista se debe seleccionar si en el mensaje <em>Hay más de 6 errores de validación. ¿Desea ver todos los errores?</em></p></div></details></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">8.2 Advertencia</summary><div class="indented"><p id="1ab3e0b7-7127-80ee-bc52-ef9bbefa5617" class="">Este tipo de mensajes indican una validación incorrecta por parte de los datos ingresados por el usuario.</p><p id="1ab3e0b7-7127-8001-b980-cc2a081d8f92" class="">Dentro de esta categoría mensajes existe:</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.2.1 Nombre de usuario o clave no coinciden </summary><div class="indented"><figure id="1ab3e0b7-7127-8073-b950-c05dc33eb1ab" class="image"><a href="e09fb22a-e1d3-4fb9-b85f-849d1477c38e.png"><img style="width:695.7037037037037px" src="e09fb22a-e1d3-4fb9-b85f-849d1477c38e.png"/></a></figure><p id="1ad3e0b7-7127-801e-9852-e2ed9fe37076" class="">Este mensaje advierte al usuario que ha ingresado incorrectamente el nombre de usuario y/o la clave.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.2.2 Debe seleccionar los datos requeridos</summary></details></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">8.3 Éxito</summary><div class="indented"><p id="1ab3e0b7-7127-80bc-a9f3-daad4414075f" class="">Este tipo de mensajes indican que se realizo una función de manera exitosa. </p><p id="1ab3e0b7-7127-80f9-a391-ecb409aad8d6" class="">Dentro de esta categoría mensajes existe:</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.3.1 Se insertó el pedido.</summary><div class="indented"><figure id="1b33e0b7-7127-80dd-a314-fda86de3a73b" class="image"><a href="6366fb5c-03c5-4348-a1b7-bb89e02694f7.png"><img style="width:710px" src="6366fb5c-03c5-4348-a1b7-bb89e02694f7.png"/></a></figure><p id="1b33e0b7-7127-807a-950a-f64b09b3dae7" class="">Este mensaje indica la confirmación del levantamiento de un pedido y el número del mismo, aparte de las direcciones de correo electrónico a las que se enviará la confirmación. </p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.3.2 Se cargó el archivo correctamente. </summary><div class="indented"><p id="1b33e0b7-7127-8018-a4b2-c09ec62cc86b" class="">Módulo de facturación, carga de archivo .xlsx.</p></div></details></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">8.4 Información</summary><div class="indented"><p id="1ab3e0b7-7127-80d2-b057-fba63f0f3492" class="">Este tipo de mensajes informan al usuario datos importantes de las funcionalidades del sistema.</p><p id="1ab3e0b7-7127-80c4-900c-d7cc3c134bdd" class="">Dentro de esta categoría mensajes existe:</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.4.1 Procesando su solicitud, por favor espere…</summary><div class="indented"><figure id="1ab3e0b7-7127-80b5-8714-c22c49521f25" class="image"><a href="018a4aa4-cf78-49f8-9bc0-70d75b0776dc.png"><img style="width:710px" src="018a4aa4-cf78-49f8-9bc0-70d75b0776dc.png"/></a></figure><p id="1ad3e0b7-7127-80fd-85b0-d5b0151cee93" class="">Este mensaje indica que la solicitud está siendo procesada por el sistema. Al terminar el tiempo de espera desaparecerá automáticamente. </p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.4.2 La consulta no devolvió ningún valor.</summary><div class="indented"><figure id="1ad3e0b7-7127-8029-a453-f85908d530ba" class="image"><a href="7f4f3c09-97b5-4a9f-bb91-a6890004aff6.png"><img style="width:640px" src="7f4f3c09-97b5-4a9f-bb91-a6890004aff6.png"/></a></figure><p id="1ad3e0b7-7127-804c-b8e0-d6cfdaecfe07" class="">Este mensaje indica que, con los parámetros de consulta seleccionados, no existe ningún valor. Se deberá cerrar el mensaje haciendo click en el botón <em>Aceptar </em>y seleccionar otros parámetros de consulta. </p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.4.3 Debe primero realizar una búsqueda para exportar el Excel.</summary><div class="indented"><figure id="1ad3e0b7-7127-8052-946f-ee4fb135086a" class="image"><a href="6a0fa28a-df23-4668-b40f-cb29e9f56977.png"><img style="width:710px" src="6a0fa28a-df23-4668-b40f-cb29e9f56977.png"/></a></figure><p id="1ad3e0b7-7127-8022-bb39-c6748e3b7bce" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.4.4 Debe seleccionar los datos requeridos.</summary><div class="indented"><figure id="1ad3e0b7-7127-802b-9c75-fb03c5dcf6de" class="image"><a href="Screenshot_2025-03-05_at_8.35.03_a.m..png"><img style="width:584px" src="Screenshot_2025-03-05_at_8.35.03_a.m..png"/></a></figure><p id="1ad3e0b7-7127-805e-a4ca-dba4064536e6" class="">Este mensaje indica que aún hay datos incompletos en el menú de parámetros de consulta. Se deberán seleccionar todos los datos requeridos para realizar una consulta.  </p></div></details></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">8.5 Decisión</summary><div class="indented"><p id="1ab3e0b7-7127-8009-a3b4-f3d8ba0ec0a9" class="">Este tipo de mensajes preguntan al usuario si desea realizar la acción seleccionada. </p><p id="1ab3e0b7-7127-80a1-a4ca-ee644305d9e4" class="">Dentro de esta categoría mensajes existe:</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.5.1 ¿Desea cerrar la sesión?</summary><div class="indented"><figure id="1ad3e0b7-7127-8091-bde4-e459b25123b9" class="image"><a href="Screenshot_2025-03-05_at_8.29.04_a.m..png"><img style="width:526px" src="Screenshot_2025-03-05_at_8.29.04_a.m..png"/></a></figure><p id="1ad3e0b7-7127-8078-93f3-f09db1567780" class="">Este mensaje pregunta al usuario si desea cerrar la sesión. Para cerrar la sesión se deberá hacer click en el botón <em>Sí.</em></p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.5.2 ¿Desea exportar la página actual o todos los registros existentes?</summary><div class="indented"><figure id="1ad3e0b7-7127-80ab-98b9-dca5a7001405" class="image"><a href="1e2ccf28-033a-4e04-a5fa-f0dc52003194.png"><img style="width:710px" src="1e2ccf28-033a-4e04-a5fa-f0dc52003194.png"/></a></figure><p id="1ad3e0b7-7127-8003-a1aa-e0390add3394" class="">Este mensaje hace la pregunta al usuario si quiere exportar los 100 datos mostrados en la página actual o el total de datos resultantes de la consulta. </p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.5.3 ¿Estás seguro que deseas mover los productos seleccionados?</summary><div class="indented"><figure id="1b33e0b7-7127-80c1-97c0-fca64a2f83ad" class="image"><a href="e1668d0c-f9fd-4927-b81e-1ee016d6e0db.png"><img style="width:710px" src="e1668d0c-f9fd-4927-b81e-1ee016d6e0db.png"/></a></figure><p id="1b33e0b7-7127-80d1-b113-f89dee4806e0" class="">Este mensaje pregunta al usuario si desea mover los productos previamente seleccionados en la funcionalidad de <em><a href="4_3_Movimientos.html">Movimientos (realizar un pedido)</a></em><em>.</em></p><p id="1b33e0b7-7127-8044-9b3f-c6308439db45" class="">
+</p><p id="1b33e0b7-7127-803a-aee7-d98e95eafd1b" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">8.5.4 Hay más de 6 errores de validación. ¿Desea ver todos los errores?</summary><div class="indented"><figure id="1b33e0b7-7127-80ba-8800-f90c3b557f31" class="image"><a href="image_(3).png"><img style="width:470px" src="image_(3).png"/></a></figure><p id="1b33e0b7-7127-805a-805d-fbb9f49b0e3f" class="">Cuando se realiza la carga de un archivo .xlsx y existen más de 6 errores de validación en el formato del archivo a cargar, se muestra este mensaje que pregunta al usuario si desea ver todos los errores de validación. </p></div></details></div></details><p id="1ab3e0b7-7127-8053-bf8e-c9cb32f94b52" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
