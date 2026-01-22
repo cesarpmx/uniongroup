@@ -6,7 +6,7 @@ package com.control.global;
 
 import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
-import com.entity.global.CentralConsignatario;
+import com.entity.global.CentralProductos;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.util.ReadProps;
@@ -23,9 +23,10 @@ import java.io.PrintWriter;
  *
  * @author ray_w
  */
-@WebServlet(name = "CtrlConsignatarios", urlPatterns = {"/Consignatarios"})
-public class CtrlConsignatarios extends HttpServlet {
 
+@WebServlet(name = "CtrlProductos", urlPatterns = {"/Productos"})
+public class CtrlProductos extends HttpServlet {
+    
     RequestGetApi requetGet = new RequestGetApi();
     ReadProps props = new ReadProps();
 
@@ -42,11 +43,13 @@ public class CtrlConsignatarios extends HttpServlet {
         try {
             switch (bnd) {
                 case "1":
-                    out.print(ObtenerConsignatarios(request, response));
+                    out.print(ObtenerProductos(request, response));
                     break;
-                case "2":
-                    out.print(NuevoConsignatario(request, response));
+                    
+                    case "2":
+                    out.print(ModificarProducto(request, response));
                     break;
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,51 +57,55 @@ public class CtrlConsignatarios extends HttpServlet {
             out.close();
         }
     }
+    
+    
+    
+    public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
-    public String ObtenerConsignatarios(HttpServletRequest request, HttpServletResponse response) {
-    try {
-        // 1. Obtener parámetros de paginación de ExtJS
-        // ExtJS envía 'page' (1, 2, 3...) y 'limit' (registros por página)
-        String page = Utilities.obtenParametro(request, "page");
-        String limit = Utilities.obtenParametro(request, "limit");
-        
-        if (page == null) page = "1";
-        if (limit == null) limit = "100";
+            String serviceConsignatarios = props.getValueProp("HostGlobal")
+                    + props.getValueProp("ServiceItemsGlobal");
 
-        // 2. Construir la URL dinámica con los parámetros de la página
-        // Asumiendo que ServiceAdressGlobal termina en .../AddressGLOBAL/
-        String serviceConsignatarios = props.getValueProp("HostGlobal")
-                + props.getValueProp("ServiceAdressGlobal") 
-                + "PageNum/" + page + "/Records/" + limit;
+            String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
 
-        String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
-        respuestaItems = normalizeJson(respuestaItems);
+            respuestaItems = normalizeJson(respuestaItems);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // 3. Mapear el objeto completo
-        CentralConsignatario CItems = mapper.readValue(respuestaItems, CentralConsignatario.class);
+            CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
 
-        // 4. RETORNAR EL OBJETO COMPLETO, NO SOLO DATA
-        // Esto devolverá {"Meta": {...}, "Data": [...]}
-        return mapper.writeValueAsString(CItems);
+            // ?? IMPORTANTE: Ver si Data tiene elementos
+            System.out.println("? CItems.Data es null? " + (CItems.Data == null));
+            if (CItems.Data != null) {
+                System.out.println("? Total items en Data: " + CItems.Data.size());
+            }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
+            String jsonResult = mapper.writeValueAsString(CItems.Data);
+
+            System.out.println(jsonResult);
+
+            return jsonResult;
+
+        } catch (Exception e) {
+            System.out.println("? ERROR en ObtenerItems:");
+            e.printStackTrace();
+            return "[]";
+        }
     }
-}
     
     
-    public String NuevoConsignatario(HttpServletRequest request, HttpServletResponse response) {
+    public String ModificarProducto(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "";
-        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+        String jsonProducts = Utilities.obtenParametro(request, "valores");
         RequestPostApi requetPost = new RequestPostApi();
         try {
-            String service = props.getValueProp("Host") + props.getValueProp("ServiceAddAdressGlobal");
-            JSONVal = requetPost.getPostNuevo(service, jsonLineaNegocio, request);
-
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceProductosGlobal");
+            JSONVal = requetPost.getPost(service, jsonProducts, request);
+            
+            System.out.println(JSONVal);
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";
@@ -145,5 +152,5 @@ public class CtrlConsignatarios extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }
