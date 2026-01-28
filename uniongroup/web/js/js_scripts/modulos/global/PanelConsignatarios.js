@@ -187,7 +187,7 @@ Ext.define('ConsignatariosUtils', {
             url: contexto + '/Consignatarios',
             method: 'POST',
             params: {
-                busqBnd: 3,
+                busqBnd: 399,
                 confirmData: Ext.encode({ConfirmData: lista})
             }
         });

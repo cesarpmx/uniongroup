@@ -2,18 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.entity;
-
-import java.util.ArrayList;
+package com.entity.global;
 
 /**
  *
  * @author azielocampo
  */
-public class LineasOrdenResponseWrapper {
-      public ArrayList<PurchaseOrderLine> items;
-    public boolean hasMore;
-    public int limit;
-    public int offset;
-    public int count;
+
+public class ArrOrdenesVentaLine {
+     public int LineNum;
+    public String ItemCode;
+    public String BarCode;
+    public int Quantity; 
+    public int DOVOVID; 
 }
