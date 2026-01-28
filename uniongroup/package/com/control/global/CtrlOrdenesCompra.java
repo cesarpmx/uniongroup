@@ -6,12 +6,11 @@ package com.control.global;
 
 import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
-import com.entity.CentralOrdenesCompra;
-import com.entity.LineasOrdenResponseWrapper;
-import com.entity.OrdenesCompraResponse;
-import com.entity.PurchaseOrder;
-import com.entity.global.CentralConsignatario;
+import com.entity.global.CentralOrdenCompra;
+import com.entity.global.CentralOrdenCompraGlobal;
+import com.entity.global.LineasOrdenCompraResponseWrapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.util.ReadProps;
 import com.util.Utilities;
@@ -20,10 +19,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,18 +51,18 @@ public class CtrlOrdenesCompra extends HttpServlet {
         try {
             switch (bnd) {
                 case "1":
-                    out.print(ObtenerOrdenesCompra(request, response));
+                    out.print(ObtenerOrdenesCompraGlobal(request, response));
                     break;
-                case "2": // ? Nueva bandera para obtener líneas de una orden específica
+                case "2":
                     out.print(ObtenerLineasOrden(request, response));
                     break;
-                case "3": // ? Nueva bandera para obtener líneas de una orden específica
+                case "3":
                     out.print(NuevoOrdenCompra(request, response));
                     break;
-                case "4": // ? Nueva bandera para obtener líneas de una orden específica
-                    out.print(ObtenerPOLocal(request, response));
+                case "4":
+                    out.print(ObtenerOrdenesCompra(request, response));
                     break;
-                 case "5": // ? Nueva bandera para obtener líneas de una orden específica
+                case "5":
                     out.print(ObtenerPODetLocal(request, response));
                     break;
             }
@@ -73,7 +73,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
         }
     }
 
-    public String ObtenerOrdenesCompra(HttpServletRequest request, HttpServletResponse response) {
+    public String ObtenerOrdenesCompraGlobal(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -82,40 +82,32 @@ public class CtrlOrdenesCompra extends HttpServlet {
                     + props.getValueProp("ServicePurchaseOrderGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
-
             respuestaItems = normalizeJson(respuestaItems);
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            // ? Mapear el array completo de órdenes
-            CentralOrdenesCompra[] ordenes = mapper.readValue(respuestaItems, CentralOrdenesCompra[].class);
+            // ? Usar OrdenCompraExterna[] para el API externo
+            CentralOrdenCompraGlobal[] ordenes = mapper.readValue(respuestaItems, CentralOrdenCompraGlobal[].class);
 
-            // ? Crear un array con la info combinada de PurchaseOrder + ControlValues
+            // Aplanar la estructura
             List<Map<String, Object>> resultado = new ArrayList<>();
-
-            for (CentralOrdenesCompra orden : ordenes) {
+            for (CentralOrdenCompraGlobal orden : ordenes) {
                 Map<String, Object> item = new HashMap<>();
-
-                // Datos de PurchaseOrder
                 item.put("DocEntry", orden.PurchaseOrder.DocEntry);
                 item.put("DocNum", orden.PurchaseOrder.DocNum);
                 item.put("NumAtCard", orden.PurchaseOrder.NumAtCard);
                 item.put("DocDate", orden.PurchaseOrder.DocDate);
                 item.put("CardCode", orden.PurchaseOrder.CardCode);
                 item.put("Memo", orden.PurchaseOrder.Memo);
-
-                // Datos de ControlValues
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
                 item.put("TotalLines", orden.ControlValues.TotalLines);
-
                 resultado.add(item);
             }
 
             return mapper.writeValueAsString(resultado);
-
         } catch (Exception e) {
-            System.out.println("? ERROR en ObtenerOrdenesCompra:");
+            System.out.println("? ERROR en ObtenerOrdenesCompraGlobal:");
             e.printStackTrace();
             return "[]";
         }
@@ -141,9 +133,9 @@ public class CtrlOrdenesCompra extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            CentralOrdenesCompra[] ordenes = mapper.readValue(respuestaItems, CentralOrdenesCompra[].class);
+            CentralOrdenCompraGlobal[] ordenes = mapper.readValue(respuestaItems, CentralOrdenCompraGlobal[].class);
 
-            for (CentralOrdenesCompra orden : ordenes) {
+            for (CentralOrdenCompraGlobal orden : ordenes) {
                 if (orden.PurchaseOrder.DocEntry.equals(docEntry)) {
                     String jsonResult = mapper.writeValueAsString(orden.Lines);
                     System.out.println("? Se encontraron " + orden.Lines.size() + " líneas para DocEntry: " + docEntry);
@@ -166,8 +158,92 @@ public class CtrlOrdenesCompra extends HttpServlet {
         String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
         RequestPostApi requetPost = new RequestPostApi();
         try {
+            // 1. POST a nuestro backend (ORDS)
             String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
             JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
+
+            // 2. Parsear respuesta
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            Map<String, Object> respuesta = mapper.readValue(JSONVal, Map.class);
+
+            if (respuesta.get("success") != null && (Boolean) respuesta.get("success")) {
+                List<Map<String, Object>> results = (List<Map<String, Object>>) respuesta.get("results");
+
+                // 3. Construir ConfirmData REAL solo con los exitosos
+                List<Map<String, Object>> confirmDataArray = new ArrayList<>();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                String fechaActual = sdf.format(new Date());
+
+                for (Map<String, Object> item : results) {
+                    if ("inserted".equals(item.get("status"))) {
+                        Map<String, Object> confirmItem = new HashMap<>();
+                        confirmItem.put("DocEntry", item.get("DocEntry"));
+                        confirmItem.put("ObjectCode", item.get("DocNum"));
+                        confirmItem.put("RecordDate", fechaActual);
+                        confirmDataArray.add(confirmItem);
+                    }
+                }
+
+                // Solo enviar al cliente si hay órdenes exitosas
+                if (!confirmDataArray.isEmpty()) {
+                    Map<String, Object> confirmDataJSON = new HashMap<>();
+                    confirmDataJSON.put("ConfirmData", confirmDataArray);
+
+                    String confirmDataString = mapper.writeValueAsString(confirmDataJSON);
+
+                    System.out.println("========================================");
+                    System.out.println("? ConfirmData REAL para el cliente:");
+                    System.out.println(confirmDataString);
+                    System.out.println("========================================");
+
+                    // 4. POST al cliente GLOBAL
+                    try {
+                        String serviceCliente = props.getValueProp("HostGlobalInsert")
+                                + props.getValueProp("ServicePurchaseOrderPostGlobal");
+
+                        System.out.println("? Enviando POST a: " + serviceCliente);
+
+                        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
+
+                        System.out.println("========================================");
+                        System.out.println("? Respuesta del cliente:");
+                        System.out.println(respuestaCliente);
+                        System.out.println("========================================");
+
+                        // 5. Parsear la respuesta del cliente (viene como JSON escapado)
+                        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+
+                        List<Map<String, Object>> clienteResponse = mapper.readValue(
+                                jsonLimpio,
+                                new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {
+                        }
+                        );
+
+                        // Imprimir detalles
+                        for (Map<String, Object> item : clienteResponse) {
+                            System.out.println("  ? Folio: " + item.get("Folio"));
+                            System.out.println("  ? DocEntry: " + item.get("DocEntry"));
+                            System.out.println("  ? ObjType: " + item.get("ObjType"));
+                            System.out.println("  ? SystemDate: " + item.get("SystemDate"));
+                        }
+
+                        // 6. Agregar respuesta del cliente al JSON de retorno
+                        respuesta.put("clienteResponse", clienteResponse);
+                        JSONVal = mapper.writeValueAsString(respuesta);
+
+                    } catch (Exception ex) {
+                        System.out.println("? Error al enviar al cliente:");
+                        ex.printStackTrace();
+                        // Agregar error al response
+                        respuesta.put("clienteError", ex.getMessage());
+                        JSONVal = mapper.writeValueAsString(respuesta);
+                    }
+                } else {
+                    System.out.println("?? No hay órdenes exitosas para confirmar al cliente");
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,48 +252,135 @@ public class CtrlOrdenesCompra extends HttpServlet {
         return JSONVal;
     }
 
-    public String ObtenerPOLocal(HttpServletRequest request, HttpServletResponse response) {
-        String JSONVal;
-        String rutaServicio = Utilities.obtenParametro(request, "servicio");
+//    public String NuevoOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
+//        String JSONVal = "";
+//        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+//        RequestPostApi requetPost = new RequestPostApi();
+//        try {
+//            // 1. POST a nuestro backend (ORDS)
+//            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
+//            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
+//
+//            // 2. Parsear respuesta para construir ConfirmData
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//
+//            Map<String, Object> respuesta = mapper.readValue(JSONVal, Map.class);
+//
+//            if (respuesta.get("success") != null && (Boolean) respuesta.get("success")) {
+//                List<Map<String, Object>> results = (List<Map<String, Object>>) respuesta.get("results");
+//
+//                // 3. Construir ConfirmData solo con los exitosos
+//                List<Map<String, Object>> confirmDataArray = new ArrayList<>();
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                String fechaActual = sdf.format(new Date());
+//
+//                for (Map<String, Object> item : results) {
+//                    if ("inserted".equals(item.get("status"))) {
+//                        Map<String, Object> confirmItem = new HashMap<>();
+//                        confirmItem.put("DocEntry", item.get("DocEntry"));
+//                        confirmItem.put("ObjectCode", item.get("DocNum"));
+//                        confirmItem.put("RecordDate", fechaActual);
+//                        confirmDataArray.add(confirmItem);
+//                    }
+//                }
+//
+//                // 4. Crear el objeto final
+//                Map<String, Object> confirmDataJSON = new HashMap<>();
+//                confirmDataJSON.put("ConfirmData", confirmDataArray);
+//
+//                String confirmDataString = mapper.writeValueAsString(confirmDataJSON);
+//
+//                // 5. Imprimir en consola
+//                System.out.println("========================================");
+//                System.out.println("? ConfirmData para el cliente:");
+//                System.out.println(confirmDataString);
+//                System.out.println("========================================");
+//
+//                // 6. MÁS ADELANTE: Aquí iría el POST real al cliente
+//                /*
+//            String serviceCliente = props.getValueProp("HostCliente") + props.getValueProp("ServiceConfirm");
+//            String respuestaCliente = requetPost.getPost(serviceCliente, confirmDataString, request);
+//            System.out.println("? Respuesta del cliente: " + respuestaCliente);
+//                 */
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JSONVal = "";
+//        }
+//        return JSONVal;
+//    }
+//    public String NuevoOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
+//        String JSONVal = "";
+//        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+//        RequestPostApi requetPost = new RequestPostApi();
+//        try {
+//            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
+//            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JSONVal = "";
+//        }
+//        return JSONVal;
+//    }
+    public String ObtenerOrdenesCompra(HttpServletRequest request, HttpServletResponse response) {
+        String idEstatusCompras;
+        idEstatusCompras = Utilities.obtenParametro(request, "idEstatusCompras");
+
         try {
-            String service = props.getValueProp("Host") + props.getValueProp(rutaServicio);
-            String respuesta = requetGet.getGet(service);
+
+            idEstatusCompras = Utilities.obtenParametro(request, "idEstatusCompras");
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String serviceConsignatarios = props.getValueProp("Host")
+                    + props.getValueProp("ServiceOrdenCompra") + "?estatus=" + idEstatusCompras;
+
+            String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
+            respuestaItems = normalizeJson(respuestaItems);
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true); // ? AGREGAR ESTO
 
-            OrdenesCompraResponse wrapper = mapper.readValue(respuesta, OrdenesCompraResponse.class);
-
-            JSONVal = mapper.writeValueAsString(wrapper.items);
-
+            CentralOrdenCompra CItems = mapper.readValue(respuestaItems, CentralOrdenCompra.class);
+            String jsonResult = mapper.writeValueAsString(CItems.items);
+            System.out.println(jsonResult);
+            return jsonResult;
         } catch (Exception e) {
+            System.out.println("? ERROR en ObtenerOrdenesCompra:");
             e.printStackTrace();
-            JSONVal = "[]";
+            return "[]";
         }
-        return JSONVal;
     }
 
     public String ObtenerPODetLocal(HttpServletRequest request, HttpServletResponse response) {
-        String JSONVal;
-        String rutaServicio = Utilities.obtenParametro(request, "servicio");
-        String docEntry = Utilities.obtenParametro(request, "docEntry"); // ? AGREGAR ESTO
-
         try {
-            String service = props.getValueProp("Host") + props.getValueProp(rutaServicio) + docEntry;
-            String respuesta = requetGet.getGet(service);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            String docEntry = Utilities.obtenParametro(request, "docEntry");
+            String service = props.getValueProp("Host")
+                    + props.getValueProp("ServiceOrdenCompraDet")
+                    + docEntry;
+
+            String respuesta = requetGet.getGetGlobal(service);
+            respuesta = normalizeJson(respuesta);
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
-            LineasOrdenResponseWrapper wrapper = mapper.readValue(respuesta, LineasOrdenResponseWrapper.class);
+            // ? Reutilizar la clase wrapper de ORDS
+            LineasOrdenCompraResponseWrapper wrapper = mapper.readValue(respuesta, LineasOrdenCompraResponseWrapper.class);
 
-            JSONVal = mapper.writeValueAsString(wrapper.items);
-
+            return mapper.writeValueAsString(wrapper);
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "[]";
+            return "[]";
         }
-        return JSONVal;
     }
 
     private String normalizeJson(String json) {
