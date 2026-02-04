@@ -8,12 +8,9 @@ package com.entity.global;
  *
  * @author azielocampo
  */
-
-public class ArrOrdenesCompraLine {
-    public int LineNum;
+public class ArrTransferenciaSalidaLine {
+     public int LineNum;
     public String ItemCode;
-    public String BarCode;
-    public int Quantity; 
-    public int DOCOCID; 
-    public int totalrecs;
+    public String Barcode;
+    public double Quantity;
 }

@@ -4,16 +4,18 @@
  */
 package com.entity.global;
 
+import java.util.List;
+
 /**
  *
  * @author azielocampo
  */
+public class CentralTransferenciaEntrada {
 
-public class ArrOrdenesCompraLine {
-    public int LineNum;
-    public String ItemCode;
-    public String BarCode;
-    public int Quantity; 
-    public int DOCOCID; 
-    public int totalrecs;
+    public List<TransferenciaEntrada> items;
+    public int total;
+    public int count;
+    public int offset;
+    public int limit;
+    public boolean hasMore;
 }

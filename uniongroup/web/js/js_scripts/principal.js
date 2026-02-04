@@ -158,7 +158,8 @@ Ext.onReady(function () {
         504: 'Modulos.global.PanelOrdenesVenta',
         505: 'Modulos.global.PanelTransferenciasEntrada',
         506: 'Modulos.global.PanelTransferenciasSalida',
-        506: 'Modulos.global.PanelRetornos'
+        507: 'Modulos.global.PanelRetornos',
+        508: 'Modulos.global.PanelEcommerce'
     };
 
     var treePanel = Ext.getCmp('tree-panel');
