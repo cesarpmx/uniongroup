@@ -4,16 +4,15 @@
  */
 package com.entity.global;
 
+import com.entity.ControlValues;
+import java.util.List;
+
 /**
  *
  * @author azielocampo
  */
-
-public class ArrOrdenesCompraLine {
-    public int LineNum;
-    public String ItemCode;
-    public String BarCode;
-    public int Quantity; 
-    public int DOCOCID; 
-    public int totalrecs;
+public class CentralTransferenciaEntradaGlobal {
+    public InboundTransferRequest InboundTransferRequest;
+    public ControlValues ControlValues;
+    public List<ArrTransferenciaEntradaLine> Lines;
 }

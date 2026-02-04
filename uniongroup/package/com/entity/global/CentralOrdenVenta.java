@@ -10,9 +10,12 @@ import java.util.ArrayList;
  *
  * @author azielocampo
  */
-
 public class CentralOrdenVenta {
+
     public ArrayList<ArrDataOrdenVenta> items;
-    public boolean hasMore;
+    public int total;
+    public int count;
+    public int offset;
     public int limit;
+    public boolean hasMore;
 }
