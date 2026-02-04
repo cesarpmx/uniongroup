@@ -3,6 +3,8 @@ Ext.define('ConsignatariosUtils', {
 
     BtnBusqConsignatarios: function () {
         const param = {busqBnd: 1};
+        
+        ConsignatariosUtils.BuscarConsignatarios(param);
         var storeConsignatarios = Ext.StoreManager.lookup('storeDirecciones');
         storeConsignatarios.getProxy().setExtraParams(param);
         storeConsignatarios.loadPage(1);
@@ -83,7 +85,7 @@ Ext.define('ConsignatariosUtils', {
         progressWin.show();
 
         function enviarSiguienteLote() {
-            var fin = Math.min(index + loteSize, totalRecords),
+            var fin = Math.min(index + loteSize, 50),
                     loteActual = allRecords.slice(index, fin),
                     datosLote = [];
 
@@ -183,12 +185,58 @@ Ext.define('ConsignatariosUtils', {
     },
 
     confirmarAVectorDelta: function (lista) {
+
+        // 1?? Mostrar progress bar
+        var progressMsg = Ext.Msg.show({
+            title: 'Confirmando consignatarios',
+            message: 'Enviando confirmación a VectorDelta...',
+            progress: true,
+            closable: false,
+            buttons: false
+        });
+
+        // Animación simple (indeterminada)
+        progressMsg.wait('Procesando...');
+
         Ext.Ajax.request({
             url: contexto + '/Consignatarios',
             method: 'POST',
             params: {
-                busqBnd: 399,
+                busqBnd: 3,
                 confirmData: Ext.encode({ConfirmData: lista})
+            },
+
+            success: function (response) {
+                var resp;
+
+                try {
+                    resp = Ext.decode(response.responseText);
+                } catch (e) {
+                    progressMsg.close();
+                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
+                    return;
+                }
+
+                progressMsg.close();
+
+                if (resp.success && Ext.isArray(resp.confirmedItems)) {
+                    var totalConfirmados = resp.confirmedItems.length;
+
+                    Ext.Msg.alert(
+                            'Confirmación exitosa',
+                            'Se confirmaron <b>' + totalConfirmados + '</b> consignatario(s) correctamente.'
+                            );
+                } else {
+                    Ext.Msg.alert(
+                            'Aviso',
+                            resp.message || 'La confirmación se procesó sin detalle.'
+                            );
+                }
+            },
+
+            failure: function () {
+                progressMsg.close();
+                Ext.Msg.alert('Error', 'No fue posible confirmar los consignatarios');
             }
         });
     },
@@ -206,7 +254,17 @@ Ext.define('ConsignatariosUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             title: 'Resultados de Sincronización Total',
-            width: 950, height: 600, modal: true, layout: 'fit',
+            width: 950,
+            height: 600,
+            modal: true,
+            layout: 'fit',
+
+            listeners: {
+                destroy: function () {
+                    ConsignatariosUtils.BtnBusqConsignatarios();
+                }
+            },
+
             items: [{
                     xtype: 'tabpanel',
                     items: [
@@ -214,7 +272,8 @@ Ext.define('ConsignatariosUtils', {
                             title: 'Éxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             items: [{
-                                    xtype: 'grid', store: storeConfirm,
+                                    xtype: 'grid',
+                                    store: storeConfirm,
                                     columns: [
                                         {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
                                         {text: 'AddressCode', dataIndex: 'ItemCode', width: 150},
@@ -227,20 +286,31 @@ Ext.define('ConsignatariosUtils', {
                             title: 'Errores (' + noConfirmData.length + ')',
                             layout: 'fit',
                             items: [{
-                                    xtype: 'grid', store: storeNoConfirm,
+                                    xtype: 'grid',
+                                    store: storeNoConfirm,
                                     columns: [
                                         {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
-                                        {text: 'Error', dataIndex: 'mensaje', flex: 1,
-                                            renderer: v => `<span style="color:red;">${v}</span>`}
+                                        {
+                                            text: 'Error',
+                                            dataIndex: 'mensaje',
+                                            flex: 1,
+                                            renderer: v => `<span style="color:red;">${v}</span>`
+                                        }
                                     ]
                                 }]
                         }
                     ]
                 }],
-            buttons: [{text: 'Cerrar', handler: function () {
+
+            buttons: [{
+                    text: 'Cerrar',
+                    handler: function () {
                         win.close();
-                    }}]
+                    }
+                }]
         });
+
+       
         win.show();
     }
 });
@@ -366,7 +436,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                                 align: "center"
                             },
                             {
-                                text: "C?digo",
+                                text: "Codigo",
                                 dataIndex: "AddressCode",
                                 width: 150,
                                 align: "center"
@@ -374,35 +444,35 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                             {
                                 text: "Cliente",
                                 dataIndex: "CardName",
-                                width: 200,
+                                width: 160,
                                 flex: 1
                             },
                             {
-                                text: "Direcci?n",
+                                text: "Direccion",
                                 dataIndex: "Address",
-                                width: 250,
+                                width: 160,
                                 flex: 1
                             },
                             {
                                 text: "Calle",
                                 dataIndex: "Street",
-                                width: 200
+                                width: 160
                             },
                             {
                                 text: "No.",
                                 dataIndex: "StreetNo",
-                                width: 80,
+                                width: 100,
                                 align: "center"
                             },
                             {
                                 text: "Colonia",
                                 dataIndex: "Block",
-                                width: 150
+                                width: 160
                             },
                             {
                                 text: "CP",
                                 dataIndex: "ZipCode",
-                                width: 80,
+                                width: 100,
                                 align: "center"
                             },
                             {
@@ -417,7 +487,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                                 align: "center"
                             },
                             {
-                                text: "Pa?s",
+                                text: "Pais",
                                 dataIndex: "Country",
                                 width: 80,
                                 align: "center"
@@ -436,10 +506,10 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                             e.record.commit();
                         },
                         rowdblclick: function (editor, e, eOpts) {
-                            
+
                         },
                         rowclick: function (grid, record) {
-                           
+
                         }
                     },
                 }
