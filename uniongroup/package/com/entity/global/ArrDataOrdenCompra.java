@@ -19,4 +19,5 @@ public class ArrDataOrdenCompra {
     public String Memo;
     public String OCEstatusId;
     public String OCFechaInsercion;
+    public int totalrecs;
 }

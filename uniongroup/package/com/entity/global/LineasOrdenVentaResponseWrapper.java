@@ -12,6 +12,9 @@ import java.util.ArrayList;
  */
 public class LineasOrdenVentaResponseWrapper {
     public ArrayList<ArrOrdenesVentaLine> items;
-    public boolean hasMore;
+     public int total;
+    public int count;
+    public int offset;
     public int limit;
+    public boolean hasMore;
 }
