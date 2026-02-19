@@ -26,7 +26,8 @@ Ext.define('ProductosUtils', {
     enviarProductos: function () {
         var grid = Ext.getCmp('gridProductos'),
             mainStore = grid.getStore(),
-            totalRegistros = mainStore.getTotalCount();
+            //totalRegistros = mainStore.getTotalCount();
+            totalRegistros = 100;
 
         if (totalRegistros === 0) {
             Ext.Msg.alert('Sin datos', 'No hay productos para enviar');
@@ -45,14 +46,14 @@ Ext.define('ProductosUtils', {
                             type: 'ajax',
                             url: mainStore.getProxy().url,
                             extraParams: mainStore.getProxy().getExtraParams(),
-                            reader: { type: 'json', rootProperty: '' }
+                             reader: {type: 'json', rootProperty: 'Data'}
                         }
                     });
 
                     grid.setLoading('Descargando universo de productos...');
 
                     tempStore.load({
-                        params: { page: 1, limit: 100 },
+                        params: { page: 1, limit: totalRegistros },
                         callback: function (records, op, success) {
                             grid.setLoading(false);
                             if (success) {
@@ -242,7 +243,7 @@ Ext.define('ProductosUtils', {
 
                     Ext.Msg.alert(
                             'Confirmación exitosa',
-                            'Se confirmaron <b>' + totalConfirmados + '</b> consignatario(s) correctamente.'
+                            'Se confirmaron <b>' + totalConfirmados + '</b> productos(s) correctamente.'
                             );
                 } else {
                     Ext.Msg.alert(
@@ -254,7 +255,7 @@ Ext.define('ProductosUtils', {
             
              failure: function () {
                 progressMsg.close();
-                Ext.Msg.alert('Error', 'No fue posible confirmar los consignatarios');
+                Ext.Msg.alert('Error', 'No fue posible confirmar los productos');
             }
 
         });
@@ -285,6 +286,11 @@ Ext.define('ProductosUtils', {
             height: 600,
             modal: true,
             layout: 'fit',
+            listeners: {
+                destroy: function () {
+                    ProductosUtils.BtnBusqProductos();
+                }
+            },
             items: [{
                 xtype: 'tabpanel',
                 items: [
@@ -405,7 +411,7 @@ Ext.define('Modulos.global.PanelProductos', {
                     tbar: [
                         {
                             xtype: "button",
-                            text: "Datos",
+                            text: "Actualizar",
                             iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                ProductosUtils.BtnBusqProductos();
@@ -414,12 +420,26 @@ Ext.define('Modulos.global.PanelProductos', {
                         },
                         {
                             xtype: "button",
-                            text: "Enviar",
+                            text: "Cargar",
                             iconCls: "icn-factura",
                             handler: function () {
 
                                 ProductosUtils.enviarProductos();
 
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Regresar',
+                            iconCls: 'icn-back',
+                            arrowAlign: 'center',
+                            handler: function () {
+                                regresarInicio();
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Regresar');
+                                }
                             }
                         }
                     ],
@@ -592,6 +612,13 @@ Ext.define('Modulos.global.PanelProductos', {
                     listeners: {
                         edit: function (editor, e) {
                             e.record.commit();
+                        },
+                        afterrender: function (grid) {
+                         
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                              ProductosUtils.BtnBusqProductos();
+                            }
                         }
                     },
                 }

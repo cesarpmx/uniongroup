@@ -3,7 +3,7 @@ Ext.define('ConsignatariosUtils', {
 
     BtnBusqConsignatarios: function () {
         const param = {busqBnd: 1};
-        
+
         ConsignatariosUtils.BuscarConsignatarios(param);
         var storeConsignatarios = Ext.StoreManager.lookup('storeDirecciones');
         storeConsignatarios.getProxy().setExtraParams(param);
@@ -20,7 +20,8 @@ Ext.define('ConsignatariosUtils', {
     enviarDirecciones: function () {
         var grid = Ext.getCmp('gridDirecciones'),
                 mainStore = grid.getStore(),
-                totalRegistros = mainStore.getTotalCount();
+                //totalRegistros = mainStore.getTotalCount();
+                totalRegistros = 50;
 
         if (totalRegistros === 0) {
             Ext.MessageBox.alert('Sin datos', 'No hay registros para enviar');
@@ -85,7 +86,7 @@ Ext.define('ConsignatariosUtils', {
         progressWin.show();
 
         function enviarSiguienteLote() {
-            var fin = Math.min(index + loteSize, 50),
+            var fin = Math.min(index + loteSize, totalRecords),
                     loteActual = allRecords.slice(index, fin),
                     datosLote = [];
 
@@ -310,7 +311,7 @@ Ext.define('ConsignatariosUtils', {
                 }]
         });
 
-       
+
         win.show();
     }
 });
@@ -387,7 +388,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             arrowAlign: 'center',
                             iconCls: 'icn-busquedaDos',
                             handler: function (btn) {
@@ -401,7 +402,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                         },
                         {
                             xtype: "button",
-                            text: "Enviar",
+                            text: "Cargar",
                             iconCls: "icn-factura",
                             handler: function () {
                                 ConsignatariosUtils.enviarDirecciones();
@@ -510,6 +511,13 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                         },
                         rowclick: function (grid, record) {
 
+                        },
+                        afterrender: function (grid) {
+
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                ConsignatariosUtils.BtnBusqConsignatarios();
+                            }
                         }
                     },
                 }

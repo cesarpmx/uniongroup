@@ -53,5 +53,7 @@ public class ArrEcommerce {
 
     public String estatusecom;
     public String direccion;
+    public int preid;
+    public String preestatus;
     
 }

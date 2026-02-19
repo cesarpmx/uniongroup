@@ -85,7 +85,8 @@ Ext.define('Modulos.global.FormPanelEcommerceDet', {
                     'processingtime',
                     'user',
                     'requestedquantity',
-                    'ean'
+                    'ean',
+                    'coms'
                 ]
             });
         }
@@ -152,6 +153,7 @@ Ext.define('Modulos.global.FormPanelEcommerceDet', {
                 { text: 'user', dataIndex: 'user', flex: 1 },
                 { text: 'requestedquantity', dataIndex: 'requestedquantity', flex: 1 },
                 { text: 'ean', dataIndex: 'ean', flex: 1 },
+                { text: 'ean', dataIndex: 'coms', flex: 1 },
 
                 /* ===== OCULTOS (SIN VALOR EN EJEMPLO) ===== */
                 { text: 'deliverynote', dataIndex: 'deliverynote', hidden: true },
