@@ -68,41 +68,41 @@ public class CtrlProductos extends HttpServlet {
     
     
     
-    public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+      public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
+    try {
+        // 1. Obtener parámetros de paginación de ExtJS
+        // ExtJS envía 'page' (1, 2, 3...) y 'limit' (registros por página)
+        String page = Utilities.obtenParametro(request, "page");
+        String limit = Utilities.obtenParametro(request, "limit");
+        
+        if (page == null) page = "1";
+        if (limit == null) limit = "5";
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
-                    + props.getValueProp("ServiceItemsGlobal");
+        // 2. Construir la URL dinámica con los parámetros de la página
+        // Asumiendo que ServiceAdressGlobal termina en .../AddressGLOBAL/
+        String serviceConsignatarios = props.getValueProp("HostGlobal")
+                + props.getValueProp("ServiceItemsGlobal") 
+                + "PageNum/" + page + "/Records/" + limit;
 
-            String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
+        String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
+        respuestaItems = normalizeJson(respuestaItems);
 
-            respuestaItems = normalizeJson(respuestaItems);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 3. Mapear el objeto completo
+        CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
 
-            CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
+        // 4. RETORNAR EL OBJETO COMPLETO, NO SOLO DATA
+        // Esto devolverá {"Meta": {...}, "Data": [...]}
+        return mapper.writeValueAsString(CItems);
 
-            // ?? IMPORTANTE: Ver si Data tiene elementos
-            System.out.println("? CItems.Data es null? " + (CItems.Data == null));
-            if (CItems.Data != null) {
-                System.out.println("? Total items en Data: " + CItems.Data.size());
-            }
-
-            String jsonResult = mapper.writeValueAsString(CItems.Data);
-
-            System.out.println(jsonResult);
-
-            return jsonResult;
-
-        } catch (Exception e) {
-            System.out.println("? ERROR en ObtenerItems:");
-            e.printStackTrace();
-            return "[]";
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
     }
+}
+    
     
     
     public String ModificarProducto(HttpServletRequest request, HttpServletResponse response) {

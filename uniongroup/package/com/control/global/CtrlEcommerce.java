@@ -5,6 +5,7 @@
 package com.control.global;
 
 import com.dao.RequestGetApi;
+import com.dao.RequestPostApi;
 import com.entity.global.ArrEcommerce;
 import com.entity.global.CentralEcommerce;
 import com.entity.global.CentralEcommerceDet;
@@ -55,6 +56,13 @@ public class CtrlEcommerce extends HttpServlet {
                 case "3":
                     out.print(GenerarSTDRUEAP(request, response));
                     break;
+                    
+                    case "4":
+                    out.print(eliminarPedido(request, response));
+                    break;
+                    case "5":
+                    out.print(generarLE(request, response));
+                    break;
 
             }
         } catch (Exception e) {
@@ -68,9 +76,15 @@ public class CtrlEcommerce extends HttpServlet {
         String JSONVal, idEmpresa;
         HttpSession session = request.getSession(true);
         String estatus = Utilities.obtenParametro(request, "estatus");
+        
+        String limit = Utilities.obtenParametro(request, "limit");
+            String offset = Utilities.obtenParametro(request, "offset");
+            
+            String dias = Utilities.obtenParametro(request, "dias");
+            String fecha = Utilities.obtenParametro(request, "fecha");
         try {
             // idEmpresa = Utilities.obtenParametro(request, "idEmpresa");
-            String service = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce")+ "?estatus="+ estatus;
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce")+ "?estatus="+ estatus + "&dias=" +dias + "&fecha=" + fecha + "&offset=" + offset + "&limit=" + limit;;
             String repuesta = requetGet.getGet(service);
             CentralEcommerce tipoIngreso = new ObjectMapper().readValue(repuesta, CentralEcommerce.class);
             JSONVal = new ObjectMapper().writeValueAsString(tipoIngreso.items);
@@ -140,6 +154,38 @@ public class CtrlEcommerce extends HttpServlet {
         return "{\"ok\":false, \"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
     }
 }
+    
+    
+    public String eliminarPedido(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+        String rutaServicio = Utilities.obtenParametro(request, "servicio");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce");
+            JSONVal = requetPost.setPut(service, jsonLineaNegocio, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String generarLE(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceLE");
+            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
 
 
 

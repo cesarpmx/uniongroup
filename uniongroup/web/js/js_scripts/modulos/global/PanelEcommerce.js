@@ -1,12 +1,19 @@
 Ext.define('EcommerceUtils', {
     singleton: true,
+    dias: localStorage.getItem('diasAtras'),
 
     BtnBusqEcommerce: function () {
-        
-        var idEstatusEcom= Ext.getCmp('idCmbEstatusEcom').getValue();
+
+        var idEstatusEcom = Ext.getCmp('idCmbEstatusEcom').getValue();
+
+        const fecha = Ext.Date.format(Ext.getCmp('idFechaEcom').getValue(), 'd-m-Y');
+        const diasAtras = Ext.getCmp('idDiasAtrasEcom').getValue();
+
         const param = {
             busqBnd: 1,
-            estatus:idEstatusEcom
+            estatus: idEstatusEcom,
+            dias: diasAtras,
+            fecha: fecha
         };
 
         EcommerceUtils.BuscarEcommerce(param);
@@ -21,6 +28,44 @@ Ext.define('EcommerceUtils', {
         const store = grid.getStore();
         store.removeAll(true);
         store.reload({params: param});
+    },
+
+    BtnLimpBuscProductos: function () {
+
+        var form = Ext.getCmp('idMenu508').getForm();
+        form.reset();
+        Ext.getCmp('idFechaEcom').setValue(new Date());
+        Ext.getCmp('idDiasAtrasEcom').setValue("7");
+        var storeEcommerce = Ext.StoreManager.lookup('storeEcommerce');
+        storeEcommerce.loadData([], false);
+    },
+
+    cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
+        const idEstatus = Ext.getCmp('idCmbEstatusEcom').getValue();
+        const fecha = Ext.Date.format(Ext.getCmp('idFechaEcom').getValue(), 'd/m/Y');
+        const diasAtras = Ext.getCmp('idDiasAtrasEcom').getValue();
+
+
+        const grid = Ext.getCmp(storeName);
+        const store = grid.getStore();
+        store.removeAll(true);
+        var storeEcommerce = Ext.StoreManager.lookup('storeEcommerce');
+
+        const param = {
+            busqBnd: 1,
+            offset: 0,
+            limit: 99999999
+        };
+
+        store.reload({
+            params: param,
+            callback: function (records, operation, success) {
+                if (success) {
+                    generarExcel(storeName, archivoName, parametros);
+                    storeEcommerce.loadPage(1);
+                }
+            }
+        });
     },
 
     detalleEcommerce: function (clave) {
@@ -58,6 +103,87 @@ Ext.define('EcommerceUtils', {
         });
     },
 
+    EliminarPedido: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/Ecommerce',
+            timeout: 60000,
+            params: {
+                busqBnd: 4,
+                valores: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Ecommerce',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            EcommerceUtils.BtnBusqEcommerce();
+                        }
+                    }
+                });
+            },
+            failure: function () {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo eliminar el registro...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    ConfirmarPedido: function (jsonData) {
+        var data = Ext.decode(jsonData);
+
+        Ext.Ajax.request({
+            url: contexto + '/Ecommerce',
+            method: 'POST',
+            params: {
+                busqBnd: 5,
+                valores: jsonData
+            },
+            success: function (resp) {
+                try {
+                    var obj = Ext.decode(resp.responseText);
+
+                    if (obj.success === "true" || obj.success === true) {
+                        Ext.Msg.alert(
+                                'OK',
+                                'Pedido confirmado. Se creó la lista de empaque con ID: ' + obj.preid
+                                );
+                        EcommerceUtils.BtnBusqEcommerce();
+                    } else {
+                        Ext.Msg.alert('Error', obj.message || 'Ocurrió un error al generar la lista de empaque');
+                    }
+                } catch (e) {
+                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
+                }
+            },
+            failure: function () {
+                Ext.Msg.alert('Error', 'No se pudo confirmar el pedido');
+            }
+        });
+    },
+    GenerarArchivoConfirmacion: function (ecomid) {
+        Ext.Ajax.request({
+            url: contexto + '/Ecommerce',
+            method: 'POST',
+            params: {
+                busqBnd: 3,
+                ecomid: ecomid
+            },
+            success: function (resp) {
+                Ext.Msg.alert('OK', 'Archivo STDRUEAP generado correctamente');
+            },
+            failure: function () {
+                Ext.Msg.alert('Error', 'No se pudo generar el STDRUEAP');
+            }
+        });
+    }
+
 });
 
 
@@ -92,7 +218,11 @@ Ext.define('Modulos.global.PanelEcommerce', {
                 'customer',
                 'neutralcustomer',
                 'ordernumber',
-                'deliverydate',
+                {
+                    name: 'deliverydate',
+                    type: 'date',
+                    convert: formatearFechaCorta
+                },
 
                 'shippername1',
                 'shippername2',
@@ -124,14 +254,25 @@ Ext.define('Modulos.global.PanelEcommerce', {
                 'goodsvalue',
 
                 'processingstatus',
-                'processingdate',
-                'processingtime',
+                'preid',
+                {
+                    name: 'processingdate',
+                    type: 'date',
+                    convert: formatearFechaCorta
+                },
+                {
+                    name: 'processingtime',
+                    type: 'date',
+                    convert: formatearHora
+                },
+
                 'userprogram',
                 'estatusecom',
-
-                'direccion'
+                'direccion',
+                'preestatus'
             ]
         });
+
 
         /* =======================
          STORE
@@ -154,12 +295,13 @@ Ext.define('Modulos.global.PanelEcommerce', {
                 }
             }
         });
-        
-         var storeEstatusEcom = Ext.create('Ext.data.Store', {
+
+        var storeEstatusEcom = Ext.create('Ext.data.Store', {
             fields: ['codigo', 'descripcion'],
             data: [
-                {codigo: 'A', descripcion: 'Activo'},
-                {codigo: 'S', descripcion: 'Surtido'},
+                {codigo: 'P', descripcion: 'Pendiente'},
+//                {codigo: 'A', descripcion: 'En proceso'},
+//                {codigo: 'S', descripcion: 'Surtido'},
                 {codigo: 'C', descripcion: 'Confirmado'},
                 {codigo: 'X', descripcion: 'Cancelado'}
             ]
@@ -167,10 +309,9 @@ Ext.define('Modulos.global.PanelEcommerce', {
 
         Ext.apply(me, {
             items: [
-                
+
                 {
                     xtype: 'fieldset',
-//                    title: 'Parametros de Consulta',
                     collapsible: true,
                     padding: '15 15 15 15',
                     margin: '10 0 20 0',
@@ -178,7 +319,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                     items: [
                         {
                             xtype: 'form',
-                            id: 'idMenu58-form',
+                            id: 'idMenu508-form',
                             layout: {
                                 type: 'hbox',
                                 align: 'stretch'
@@ -190,6 +331,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                 padding: '10 10 10 10'
                             },
                             items: [
+                                // ===== Columna izquierda: Combo =====
                                 {
                                     items: [
                                         {
@@ -197,7 +339,6 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                             id: "idCmbEstatusEcom",
                                             name: "cmbEstatusEcom",
                                             fieldLabel: 'Estatus',
-                                            flex: 1,
                                             width: 300,
                                             store: storeEstatusEcom,
                                             valueField: 'codigo',
@@ -205,7 +346,35 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
-                                            editable: false
+                                            listeners: {
+                                                scope: this,
+                                                select: function () {
+                                                    EcommerceUtils.BtnBusqEcommerce();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'datefield',
+                                            id: 'idFechaEcom',
+                                            name: 'fechaBase',
+                                            fieldLabel: 'Fecha',
+                                            format: 'd-m-Y', // puedes cambiar el formato si quieres
+                                            width: 300,
+                                            value: new Date(),
+                                            allowBlank: false
+                                        },
+                                        {
+                                            xtype: 'numberfield',
+                                            id: 'idDiasAtrasEcom',
+                                            name: 'diasAtras',
+                                            fieldLabel: 'Dias atras',
+                                            value: 7,
+                                            maxValue: EcommerceUtils.dias,
+                                            minValue: 0,
+                                            allowDecimals: false,
+                                            allowBlank: false,
+                                            width: 300,
+
                                         }
                                     ]
                                 }
@@ -213,9 +382,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                         }
                     ]
                 },
-                
-                
-                
+
                 {
                     xtype: 'grid',
                     id: 'gridEcommerce',
@@ -233,6 +400,81 @@ Ext.define('Modulos.global.PanelEcommerce', {
                             handler: function () {
                                 EcommerceUtils.BtnBusqEcommerce();
                             }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Exportar',
+                            iconCls: 'icn-excel',
+                            //width: 120,
+                            handler: function () {
+
+
+
+
+
+                                var storeName = "gridEcommerce";
+                                var archivoName = "Ecommerce";
+                                var fechaActual = new Date();
+                                var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
+                                var titulo = "Ecommerce";
+                                var parametros = {
+                                    'titulo': titulo,
+                                    'Estatus': Ext.getCmp('idCmbEstatusEcom').getRawValue(),
+                                    'Fecha': Ext.getCmp('idFechaEcom').getValue(),
+                                    'Dias Atras': Ext.getCmp('idDiasAtrasEcom').getValue(),
+                                    'Fecha Solicitud': fechaFormateada
+
+                                };
+                                Ext.Msg.show({
+                                    title: 'Generar Excel',
+                                    message: '¿Desea exportar la pagina actual o todos los registros existentes?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    buttonText: {
+                                        yes: 'Pagina actual',
+                                        no: 'Todos los registros'
+                                    },
+                                    icon: Ext.MessageBox.QUESTION,
+                                    fn: function (btn) {
+                                        if (btn === 'yes') {
+                                            // Cï¿½digo a ejecutar si se presiona el botï¿½n "Pï¿½gina actual"
+                                            generarExcel(storeName, archivoName, parametros);
+                                        } else if (btn === 'no') {
+                                            EcommerceUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
+                                        } else {
+                                            console.log('Se cerrï¿½ la ventana sin hacer clic en ningï¿½n botï¿½n');
+                                        }
+                                    }
+                                });
+
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Exportar');
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Limpiar',
+                            arrowAlign: 'center',
+                            iconCls: 'icn-limpiarBusqueda',
+                            handler: function () {
+                                EcommerceUtils.BtnLimpBuscProductos();
+                            },
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Regresar',
+                            iconCls: 'icn-back',
+                            arrowAlign: 'center',
+                            handler: function () {
+                                regresarInicio();
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Regresar');
+                                }
+                            }
                         }
                     ],
 
@@ -243,6 +485,43 @@ Ext.define('Modulos.global.PanelEcommerce', {
                         },
                         items: [
                             {xtype: 'rownumberer', text: '#', flex: 0.5},
+                            {text: 'ID', dataIndex: 'ecomid', flex: 1},
+                            {
+                                text: 'Estatus',
+                                dataIndex: 'estatusecom',
+                                flex: 1,
+                                renderer: function (value) {
+                                    var estatusMap = {
+                                        'P': 'Pendiente',
+                                        'A': 'Activo',
+                                        'S': 'Surtido',
+                                        'C': 'Confirmado',
+                                        'X': 'Cancelado',
+                                        null: 'Estatus no valido'
+                                    };
+
+                                    var nombre = estatusMap[value] || value;
+
+                                    var color = '#000';
+                                    switch (value) {
+                                        case 'A':
+                                            color = '#4CAF50'; // Verde
+                                            break;
+                                        case 'S':
+                                            color = '#2196F3'; // Azul
+                                            break;
+                                        case 'C':
+                                            color = '#009688'; // Teal / Azul verdoso
+                                            break;
+                                        case 'X':
+                                            color = '#F44336'; // Rojo
+                                            break;
+                                    }
+
+                                    return '<b style="color: ' + color + ';">' + nombre + '</b>';
+                                }
+
+                            },
 
                             /* ====== VISIBLES ====== */
                             {text: 'Holding', dataIndex: 'holding', flex: 1},
@@ -259,12 +538,22 @@ Ext.define('Modulos.global.PanelEcommerce', {
                             {text: 'ZIP receptor', dataIndex: 'receiverzip', flex: 1},
                             {text: 'Ciudad receptor', dataIndex: 'receivertown', flex: 1},
 
-                            {text: 'Fecha proceso', dataIndex: 'processingdate', flex: 1},
+                            {text: 'Fecha proceso', dataIndex: 'processingdate', flex: 1, },
                             {text: 'Hora proceso', dataIndex: 'processingtime', flex: 1},
                             {text: 'Programa', dataIndex: 'userprogram', flex: 1},
-                            {text: 'Estatus', dataIndex: 'estatusecom', flex: 1},
 
-                            {text: 'Dirección', dataIndex: 'direccion', flex: 2},
+                            {
+                                text: 'Direccion',
+                                dataIndex: 'direccion',
+                                flex: 2,
+                                renderer: function (value) {
+                                    if (!value)
+                                        return '';
+                                    return '<a href="' + value + '" target="_blank">' + value + '</a>';
+                                }
+                            },
+                            {text: 'Estatus surtido', dataIndex: 'preestatus', flex: 1},
+                            {text: 'PREID', dataIndex: 'preid', flex: 1},
 
                             /* ====== OCULTOS ====== */
                             {text: 'Shipper 2', dataIndex: 'shippername2', hidden: true},
@@ -292,35 +581,156 @@ Ext.define('Modulos.global.PanelEcommerce', {
                             {text: 'Estatus proceso', dataIndex: 'processingstatus', hidden: true},
                             {
                                 xtype: 'actioncolumn',
-                                text: "STDRUEAP",
+                                text: "Generar LE",
                                 align: 'center',
                                 width: 100,
                                 items: [
                                     {
-                                        iconCls: 'icn-detalles',
-                                        tooltip: 'Generar STDRUEAP',
+                                        tooltip: 'Acción Pedido',
+                                        getClass: function (v, meta, record) {
+                                            var estatus = record.get("estatusecom");
+
+                                            if (estatus === 'P') {
+                                                return "icn-habilita"; // Activo o Confirmado -> habilitado
+                                            } else {
+                                                return "icn-habilita-disable"; // Surtido o Cancelado
+                                            }
+                                        },
                                         handler: function (grid, rowIndex, colIndex) {
                                             const rec = grid.getStore().getAt(rowIndex);
                                             const ecomid = rec.get('ecomid');
+                                            const estatus = rec.get('estatusecom');
 
-                                            Ext.Ajax.request({
-                                                url: contexto + '/Ecommerce',
-                                                method: 'POST',
-                                                params: {
-                                                    busqBnd: 3,
-                                                    ecomid: ecomid
-                                                },
-                                                success: function (resp) {
-                                                    Ext.Msg.alert('OK', 'Archivo STDRUEAP generado correctamente');
-                                                },
-                                                failure: function () {
-                                                    Ext.Msg.alert('Error', 'No se pudo generar el STDRUEAP');
+                                            // Si está Surtido o Cancelado, no hace nada
+                                            if (estatus === 'S' || estatus === 'X') {
+                                                return;
+                                            }
+
+                                            // Activo -> Confirmar pedido
+                                            if (estatus === 'P') {
+                                                Ext.MessageBox.show({
+                                                    title: 'Ecommerce',
+                                                    msg: '¿Estas seguro que deseas confirmar el pedido ' + ecomid + ' ?',
+                                                    buttons: Ext.MessageBox.OKCANCEL,
+                                                    icon: Ext.MessageBox.QUESTION,
+                                                    fn: function (btn) {
+                                                        if (btn === 'ok') {
+                                                            EcommerceUtils.ConfirmarPedido(Ext.JSON.encode({
+                                                                ecomid: ecomid
+                                                            }));
+                                                        }
+                                                    }
+                                                });
+                                                return;
+                                            }
+
+                                            // Confirmado -> Generar archivo de confirmación
+//                                            if (estatus === 'C') {
+//                                                Ext.MessageBox.show({
+//                                                    title: 'Ecommerce',
+//                                                    msg: '¿Deseas generar el archivo de confirmación para el pedido ' + ecomid + ' ?',
+//                                                    buttons: Ext.MessageBox.OKCANCEL,
+//                                                    icon: Ext.MessageBox.QUESTION,
+//                                                    fn: function (btn) {
+//                                                        if (btn === 'ok') {
+//                                                            EcommerceUtils.GenerarArchivoConfirmacion(ecomid);
+//                                                        }
+//                                                    }
+//                                                });
+//                                                return;
+//                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                xtype: 'actioncolumn',
+                                text: "Confirmar Pedido",
+                                align: 'center',
+                                width: 100,
+                                items: [
+                                    {
+                                        tooltip: 'Acción Pedido',
+                                        getClass: function (v, meta, record) {
+                                            var estatus = record.get("preestatus");
+                                            
+                                            return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado" ? "icn-habilita": "icn-habilita-disable";
+                                        },
+                                        handler: function (grid, rowIndex, colIndex) {
+                                            const rec = grid.getStore().getAt(rowIndex);
+                                            const ecomid = rec.get('ecomid');
+                                            const estatus = rec.get('preestatus');
+
+
+                                            Ext.MessageBox.show({
+                                                title: 'Ecommerce',
+                                                msg: '¿Deseas generar el archivo de confirmación para el pedido ' + ecomid + ' ?',
+                                                buttons: Ext.MessageBox.OKCANCEL,
+                                                icon: Ext.MessageBox.QUESTION,
+                                                fn: function (btn) {
+                                                    if (btn === 'ok') {
+                                                        EcommerceUtils.GenerarArchivoConfirmacion(ecomid);
+                                                    }
+                                                }
+                                            });
+
+
+                                        }
+                                    }
+                                ]
+                            }
+                            ,
+                            {
+                                xtype: "actioncolumn",
+                                text: "Cancelar",
+                                width: 90,
+                                menuDisabled: true,
+                                sortable: false,
+                                align: "center",
+                                items: [
+                                    {
+                                        getClass: function (v, meta, record) {
+                                            var estatus = record.get("estatusecom");
+
+                                            // Solo Activo puede cancelar
+                                            if (estatus === "A") {
+                                                return "icn-cancela"; // habilitado
+                                            } else {
+                                                return "icn-cancela-disable"; // deshabilitado
+                                            }
+                                        },
+                                        handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                            var estatus = record.get("estatusecom");
+
+                                            // Si no es Activo, no hace nada
+                                            if (estatus !== "C") {
+                                                return;
+                                            }
+
+                                            Ext.MessageBox.show({
+                                                title: 'Ecommerce',
+                                                msg: '¿Estas seguro que deseas eliminar el pedido ' + record.data.ecomid + ' ?',
+                                                buttons: Ext.MessageBox.OKCANCEL,
+                                                icon: Ext.MessageBox.QUESTION,
+                                                fn: function (btn) {
+                                                    if (btn === 'ok') {
+                                                        var rowData = record.data.ecomid;
+                                                        var dteestatus = record.data.estatusecom;
+
+                                                        var nuevoObjeto = {
+                                                            ecomid: rowData,
+                                                            estatusecom: dteestatus
+                                                        };
+
+                                                        EcommerceUtils.EliminarPedido(Ext.JSON.encode(nuevoObjeto));
+                                                    }
                                                 }
                                             });
                                         }
                                     }
                                 ]
                             }
+
 
                         ]
                     },
@@ -342,10 +752,53 @@ Ext.define('Modulos.global.PanelEcommerce', {
                         edit: function (editor, e) {
                             e.record.commit();
 
+                        },
+                        afterrender: function (grid) {
+
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                EcommerceUtils.BtnBusqEcommerce();
+                            }
                         }
                     }
                 }]
         });
+
+        function formatearFechaCorta(value) {
+            if (value) {
+                let date = new Date(value);
+                return Ext.Date.format(date, 'd/m/Y');
+            } else {
+                return value;
+            }
+        }
+
+        function formatearHora(value) {
+            if (!value)
+                return value;
+
+            // value = "100923" o 100923
+            value = value.toString().padStart(6, '0');
+
+            var h = value.substring(0, 2);
+            var m = value.substring(2, 4);
+            var s = value.substring(4, 6);
+
+            return h + ':' + m + ':' + s;
+        }
+
+
+
+        function formatearFechaLarga(value) {
+            if (value) {
+                let date = new Date(value);
+                return Ext.Date.format(date, 'd/m/Y H:i:s');
+            } else {
+                return value;
+            }
+        }
+
+
 
         me.callParent(arguments);
     }
