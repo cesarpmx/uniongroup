@@ -20,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -68,6 +69,9 @@ public class CtrlOrdenesCompra extends HttpServlet {
                     break;
                 case "6":  // ? NUEVO CASO
                     out.print(EnviarReceiptConfirm(request, response));
+                    break;
+                case "7":  // ? NUEVO CASO
+                    out.print(EliminarOrdenCompra(request, response));
                     break;
             }
         } catch (Exception e) {
@@ -197,26 +201,11 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
                     String confirmDataString = mapper.writeValueAsString(confirmDataJSON);
 
-                    System.out.println("========================================");
-                    System.out.println("? ConfirmData REAL para el cliente:");
-                    System.out.println(confirmDataString);
-                    System.out.println("========================================");
-
-                    // 4. POST al cliente GLOBAL
                     try {
                         String serviceCliente = props.getValueProp("HostGlobalInsert")
                                 + props.getValueProp("ServicePurchaseOrderPostGlobal");
 
-                        System.out.println("? Enviando POST a: " + serviceCliente);
-
                         String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
-
-                        System.out.println("========================================");
-                        System.out.println("? Respuesta del cliente:");
-                        System.out.println(respuestaCliente);
-                        System.out.println("========================================");
-
-                        // 5. Parsear la respuesta del cliente (viene como JSON escapado)
                         String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
 
                         List<Map<String, Object>> clienteResponse = mapper.readValue(
@@ -224,14 +213,6 @@ public class CtrlOrdenesCompra extends HttpServlet {
                                 new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {
                         }
                         );
-
-                        // Imprimir detalles
-                        for (Map<String, Object> item : clienteResponse) {
-                            System.out.println("  ? Folio: " + item.get("Folio"));
-                            System.out.println("  ? DocEntry: " + item.get("DocEntry"));
-                            System.out.println("  ? ObjType: " + item.get("ObjType"));
-                            System.out.println("  ? SystemDate: " + item.get("SystemDate"));
-                        }
 
                         // 6. Agregar respuesta del cliente al JSON de retorno
                         respuesta.put("clienteResponse", clienteResponse);
@@ -251,124 +232,44 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
+                JSONVal = "{\"success\":false, \"message\":\"Error en servlet: " + e.getMessage().replace("\"", "") + "\"}";
             JSONVal = "";
         }
         return JSONVal;
     }
-
-//    public String NuevoOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
-//        String JSONVal = "";
-//        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
-//        RequestPostApi requetPost = new RequestPostApi();
-//        try {
-//            // 1. POST a nuestro backend (ORDS)
-//            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
-//            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
-//
-//            // 2. Parsear respuesta para construir ConfirmData
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//
-//            Map<String, Object> respuesta = mapper.readValue(JSONVal, Map.class);
-//
-//            if (respuesta.get("success") != null && (Boolean) respuesta.get("success")) {
-//                List<Map<String, Object>> results = (List<Map<String, Object>>) respuesta.get("results");
-//
-//                // 3. Construir ConfirmData solo con los exitosos
-//                List<Map<String, Object>> confirmDataArray = new ArrayList<>();
-//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//                String fechaActual = sdf.format(new Date());
-//
-//                for (Map<String, Object> item : results) {
-//                    if ("inserted".equals(item.get("status"))) {
-//                        Map<String, Object> confirmItem = new HashMap<>();
-//                        confirmItem.put("DocEntry", item.get("DocEntry"));
-//                        confirmItem.put("ObjectCode", item.get("DocNum"));
-//                        confirmItem.put("RecordDate", fechaActual);
-//                        confirmDataArray.add(confirmItem);
-//                    }
-//                }
-//
-//                // 4. Crear el objeto final
-//                Map<String, Object> confirmDataJSON = new HashMap<>();
-//                confirmDataJSON.put("ConfirmData", confirmDataArray);
-//
-//                String confirmDataString = mapper.writeValueAsString(confirmDataJSON);
-//
-//                // 5. Imprimir en consola
-//                System.out.println("========================================");
-//                System.out.println("? ConfirmData para el cliente:");
-//                System.out.println(confirmDataString);
-//                System.out.println("========================================");
-//
-//                // 6. MÁS ADELANTE: Aquí iría el POST real al cliente
-//                /*
-//            String serviceCliente = props.getValueProp("HostCliente") + props.getValueProp("ServiceConfirm");
-//            String respuestaCliente = requetPost.getPost(serviceCliente, confirmDataString, request);
-//            System.out.println("? Respuesta del cliente: " + respuestaCliente);
-//                 */
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JSONVal = "";
-//        }
-//        return JSONVal;
-//    }
-//    public String NuevoOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
-//        String JSONVal = "";
-//        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
-//        RequestPostApi requetPost = new RequestPostApi();
-//        try {
-//            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
-//            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JSONVal = "";
-//        }
-//        return JSONVal;
-//    }
+    
     public String ObtenerOrdenesCompra(HttpServletRequest request, HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        String JSONVal;
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             String idEstatusCompras = Utilities.obtenParametro(request, "idEstatusCompras");
-            String limit = Utilities.obtenParametro(request, "limit");
+            String idCmbFechaCompras = Utilities.obtenParametro(request, "idCmbFechaCompras");
+            String idCmbDiasCompras = Utilities.obtenParametro(request, "idCmbDiasCompras");
+             
+           String limit = Utilities.obtenParametro(request, "limit");
             String offset = Utilities.obtenParametro(request, "offset");
 
-            if (limit == null || limit.isEmpty()) {
-                limit = "25";
-            }
-            if (offset == null || offset.isEmpty()) {
-                offset = "0";
-            }
-
-            // ? CONSTRUIR URL CORRECTAMENTE
-            String serviceConsignatarios = props.getValueProp("Host")
-                    + props.getValueProp("ServiceOrdenCompra")
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra")
                     + "?estatus=" + idEstatusCompras
+                    + "&fechafin=" + idCmbFechaCompras
+                    + "&diasatras=" + idCmbDiasCompras
                     + "&offset=" + offset
                     + "&limit=" + limit;
 
-            String respuestaItems = requetGet.getGetPaginacion(serviceConsignatarios, request);
+            String respuesta = requetGet.getGetPaginacion(service, request);
 
             ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);      // ? Ignora campos desconocidos (links, etc)
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);        // ? Ignora mayúsculas/minúsculas
 
-            // ? DESERIALIZAR TODO EL WRAPPER (como en tu ejemplo)
-            CentralOrdenCompra CItems = mapper.readValue(respuestaItems, CentralOrdenCompra.class);
-
-            // ? DEVOLVER TODO EL OBJETO (no solo items)
-            return mapper.writeValueAsString(CItems);
+            CentralOrdenCompra centralOrdenCompra = mapper.readValue(respuesta, CentralOrdenCompra.class);
+            JSONVal = mapper.writeValueAsString(centralOrdenCompra);
 
         } catch (Exception e) {
-            System.out.println("? ERROR en ObtenerOrdenesCompra:");
             e.printStackTrace();
-            return "{\"items\":[],\"total\":0,\"count\":0}";
+            JSONVal = "{\"error\": \"Ocurrió un error al procesar la solicitud.\"}";
         }
+        return JSONVal;
     }
 
     public String ObtenerPODetLocal(HttpServletRequest request, HttpServletResponse response) {
@@ -503,73 +404,23 @@ public class CtrlOrdenesCompra extends HttpServlet {
         return JSONVal;
     }
 
-//    public String EnviarReceiptConfirm(HttpServletRequest request, HttpServletResponse response) {
-//        String JSONVal = "";
-//        String jsonReceipt = Utilities.obtenParametro(request, "valores");
-//        RequestPostApi requetPost = new RequestPostApi();
-//
-//        try {
-//            response.setContentType("application/json");
-//            response.setCharacterEncoding("UTF-8");
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//
-//            // 1. Parsear el JSON recibido
-//            Map<String, Object> receiptData = mapper.readValue(jsonReceipt, Map.class);
-//
-//            System.out.println("========================================");
-//            System.out.println("? ReceiptConfirm recibido:");
-//            System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(receiptData));
-//            System.out.println("========================================");
-//
-//            // 2. Enviar al API del cliente GLOBAL
-//            String serviceCliente = props.getValueProp("HostGlobalInsert")
-//                    + props.getValueProp("ServiceReceiptConfirmGlobal");
-//
-//            System.out.println("? Enviando ReceiptConfirm a: " + serviceCliente);
-//
-//            String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
-//
-//            System.out.println("========================================");
-//            System.out.println("? Respuesta del cliente:");
-//            System.out.println(respuestaCliente);
-//            System.out.println("========================================");
-//
-//            // 3. ? DOBLE DESERIALIZACIÓN (igual que en NuevoOrdenCompra)
-//            String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
-//            Map<String, Object> clienteResponse = mapper.readValue(jsonLimpio, Map.class);
-//
-//            System.out.println("? Respuesta parseada:");
-//            System.out.println("  ? DocNum: " + clienteResponse.get("DocNum"));
-//            System.out.println("  ? TransactionNumber: " + clienteResponse.get("TransactionNumber"));
-//            System.out.println("  ? SystemDate: " + clienteResponse.get("SystemDate"));
-//
-//            // 4. Construir respuesta
-//            Map<String, Object> resultado = new HashMap<>();
-//            resultado.put("success", true);
-//            resultado.put("message", "Confirmación de recepción enviada exitosamente");
-//            resultado.put("clienteResponse", clienteResponse);
-//
-//            JSONVal = mapper.writeValueAsString(resultado);
-//
-//        } catch (Exception e) {
-//            System.out.println("? Error en EnviarReceiptConfirm:");
-//            e.printStackTrace();
-//
-//            try {
-//                ObjectMapper mapper = new ObjectMapper();
-//                Map<String, Object> error = new HashMap<>();
-//                error.put("success", false);
-//                error.put("message", "Error al procesar ReceiptConfirm: " + e.getMessage());
-//                JSONVal = mapper.writeValueAsString(error);
-//            } catch (Exception ex) {
-//                JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";
-//            }
-//        }
-//
-//        return JSONVal;
-//    }
+    public String EliminarOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "centralCompra");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
+            JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
     private String normalizeJson(String json) {
         json = json.trim();
 

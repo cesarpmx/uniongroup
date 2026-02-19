@@ -21,4 +21,6 @@ public class ArrDataOrdenVenta {
     public String Memo;
     public String OVEstatusId;
     public String OVFechaInsercion;
+    public int preid;
+    public String preestatus;
 }

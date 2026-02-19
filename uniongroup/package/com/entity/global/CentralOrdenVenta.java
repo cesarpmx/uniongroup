@@ -4,6 +4,7 @@
  */
 package com.entity.global;
 
+import com.entity.Link;
 import java.util.ArrayList;
 
 /**
@@ -18,4 +19,5 @@ public class CentralOrdenVenta {
     public int offset;
     public int limit;
     public boolean hasMore;
+    public ArrayList<Link> links;
 }

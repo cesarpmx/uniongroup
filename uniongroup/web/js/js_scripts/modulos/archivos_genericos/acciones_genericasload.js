@@ -483,15 +483,15 @@ function generarExcel2(idGrid) {
 function generarExcel(idGrid, archivoName, parametros) {
     if (store && store.getCount() > 0) {
         var grid = Ext.getCmp(idGrid); // Obtener referencia a la cuadrícula por ID
-        var confidencialidad = "El presente documento y toda la información contenida en él son de carácter estrictamente confidencial y propiedad exclusiva de Argo Logistica. Su uso está limitado únicamente a los fines específicos para los cuales ha sido proporcionado. " +
-                "Queda expresamente prohibida la reproducción, distribución, divulgación o cualquier otro uso no autorizado de la información contenida en este documento, total o parcialmente, sin el consentimiento previo y por escrito de Argo Logistica. Cualquier uso indebido de este documento podrá derivar en las acciones legales correspondientes conforme a la normativa vigente.";
+        var confidencialidad = "El presente documento y toda la información contenida en él son de carácter estrictamente confidencial. Su uso está limitado únicamente a los fines específicos para los cuales ha sido proporcionado. " +
+                "Queda expresamente prohibida la reproducción, distribución, divulgación o cualquier otro uso no autorizado de la información contenida en este documento, total o parcialmente, sin el consentimiento previo y por escrito.";
 
         if (grid) { // Verificar si la referencia existe
             var workbook = new ExcelJS.Workbook();
             var worksheet = workbook.addWorksheet(archivoName);
 
             // Cargar la imagen desde la URL
-            var imgPath = contexto + '/img/newLogoLogin.png'; // Ruta de la imagen
+            var imgPath = contexto + '/img/newLogoLogin22222.png'; // Ruta de la imagen
 
             // Crear una función para cargar la imagen
             fetch(imgPath)
@@ -915,9 +915,27 @@ function llenarFormulario(formPanel, parametros) {
     });
 }
 
+function formatearFechaCorta(value) {
+    if (value) {
+        let date = new Date(value);
+        return Ext.Date.format(date, 'd/m/Y');
+    } else {
+        return value;
+    }
+}
+
+function formatearFechaLarga(value) {
+    if (value) {
+        let date = new Date(value);
+        return Ext.Date.format(date, 'd/m/Y H:i:s');
+    } else {
+        return value;
+    }
+}
 
 function addTooltip(button, text) {
-    if (!button || !text) return;
+    if (!button || !text)
+        return;
 
     var tip = Ext.create('Ext.tip.ToolTip', {
         target: button.getEl(),

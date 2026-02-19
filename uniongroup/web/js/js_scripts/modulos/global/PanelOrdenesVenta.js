@@ -5,18 +5,27 @@
 
 Ext.define('OrdenesVentaUtils', {
     singleton: true,
+    dias: localStorage.getItem('diasAtras'),
 
     BtnBusqOrdenVenta: function () {
 
         var idEstatusVenta = Ext.getCmp('idCmbEstatusVenta').getValue();
+        var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
+        var idCmbDiasVenta = Ext.getCmp('idCmbDiasVenta').getValue();
 
         var param;
         param = {
             busqBnd: 1,
             servicio: 'ServiceOrdenVenta',
             idEstatusVenta: idEstatusVenta,
+            idCmbFechaVenta: idCmbFechaVenta,
+            idCmbDiasVenta: idCmbDiasVenta,
         };
         OrdenesVentaUtils.BuscarOrdenVenta(param);
+
+        var storeOrdenesVentas = Ext.StoreManager.lookup('storeOrdenesVenta');
+        storeOrdenesVentas.getProxy().setExtraParams(param);
+        storeOrdenesVentas.loadPage(1);
     },
 
     BuscarOrdenVenta: function (prm) {
@@ -43,7 +52,8 @@ Ext.define('OrdenesVentaUtils', {
                     {name: "LineNum", type: 'int'},
                     "ItemCode",
                     "BarCode",
-                    {name: "Quantity", type: 'int'}
+                    {name: "Quantity", type: 'int'},
+                    "coms"
                 ]
             });
         }
@@ -169,6 +179,13 @@ Ext.define('OrdenesVentaUtils', {
                             renderer: function (value) {
                                 return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000') + '</b>';
                             }
+                        },
+                        {
+                            text: "Comentarios",
+                            dataIndex: "coms",
+                            width: 200,
+                            align: "right",
+                            filter: {type: 'string'},
                         }
                     ],
                     bbar: {// ? AGREGAR ESTO
@@ -1085,6 +1102,105 @@ Ext.define('OrdenesVentaUtils', {
         winConfirm.show();
     },
 
+    EliminarOrdenVeta: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesVenta',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                centralVenta: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Orden Venta',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqCentralVentas();
+                            Ext.getCmp('OVID').focus();
+                        }
+                    }
+                });
+                OrdenesVentaUtils.BtnBusqOrdenVenta();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
+        var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
+        var idCmbDiasVenta = Ext.getCmp("idCmbDiasVenta").getValue();
+        var idCmbEstatusVenta = Ext.getCmp("idCmbEstatusVenta").getValue();
+
+        var grd = Ext.getCmp(storeName);
+        var store = grd.getStore();
+        store.removeAll(true);
+
+        var storeOrdenesVenta = Ext.StoreManager.lookup('storeOrdenesVenta');
+
+        var param = {
+            idCmbFechaVenta: idCmbFechaVenta,
+            idCmbDiasVenta: idCmbDiasVenta,
+            idCmbEstatusVenta: idCmbEstatusVenta,
+            busqBnd: 1,
+            servicio: 'ServiceOrdenVenta',
+            offset: 0,
+            limit: 99999999
+        };
+
+        store.reload({
+            params: param,
+            callback: function (records, operation, success) {
+                if (success) {
+                    generarExcel(storeName, archivoName, parametros);
+                    storeOrdenesVenta.loadPage(1);
+                }
+            }
+        });
+    },
+
+    GenerarListaEmpaque: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesVenta',
+            timeout: 60000,
+            params: {
+                busqBnd: 8,
+                ordenListaEmpaque: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Orden venta',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            OrdenesVentaUtils.BtnBusqOrdenVenta();
+                            Ext.getCmp('OVID').focus();
+                        }
+                    }
+                });
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    }
+
 });
 
 // Panel principal
@@ -1112,34 +1228,36 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                 "DocEntry",
                 "DocNum",
                 "NumAtCard",
-                "DocDate",
+                {
+                    name: 'DocDate',
+                    type: 'date',
+                    convert: formatearFechaCorta
+                },
                 "CardCode",
                 "AddressCode",
                 "Status",
                 "Memo",
                 "OVEstatusId",
-                "OVFechaInsercion"
+                "OVFechaInsercion",
+                "preid"
             ]
         });
 
         me.storeOrdenesVenta = Ext.create('Ext.data.Store', {
+            id: "storeOrdenesVenta",
             model: 'modelOrdenesVenta',
-            autoLoad: false,
-            pageSize: 25,
+            leadingBufferZone: 100,
+            pageSize: 100,
+            autoLoad: true,
             proxy: {
-                type: "ajax",
-                url: contexto + "/OrdenesVenta",
-                pageParam: false, // ? AGREGAR
-                startParam: "offset", // ? AGREGAR
-                limitParam: "limit", // ? AGREGAR
-                extraParams: {
-                    busqBnd: 1,
-                    servicio: 'ServiceOrdenVenta'
-                },
+                type: 'ajax',
+                url: contexto + '/OrdenesVenta',
+                startParam: "offset",
+                leadingBufferZone: 100, // Cantidad de registros adicionales para cargar por adelantado
                 reader: {
-                    type: "json",
-                    rootProperty: "items", // ? CAMBIAR de "" a "items"
-                    totalProperty: "total"  // ? AGREGAR
+                    type: 'json',
+                    rootProperty: 'items',
+                    totalProperty: 'total'
                 }
             }
         });
@@ -1191,8 +1309,55 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
-                                            editable: false
-                                        }
+                                            editable: false,
+                                            listeners: {
+                                                select: function () {
+                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "datefield",
+                                            fieldLabel: "Fecha",
+                                            id: "idCmbFechaVenta",
+                                            name: "idCntComFecha",
+                                            maxLength: 50,
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            listeners: {
+                                                afterrender: function (datefield) {
+                                                    datefield.setValue(new Date()); // Establecer la fecha actual
+                                                },
+                                                blur: function () {
+                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "numberfield",
+                                            fieldLabel: "Dias Atras",
+                                            id: "idCmbDiasVenta",
+                                            name: "idCntComDias",
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            value: 7,
+                                            maxValue: parseInt(OrdenesVentaUtils.dias, 10),
+                                            minValue: 0,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: function (field, newValue) {
+                                                    var maxValue = field.maxValue;
+                                                    if (newValue > maxValue) {
+                                                        field.setValue(maxValue);
+                                                    }
+                                                },
+                                                blur: function () {
+                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                }
+                                            }
+                                        },
                                     ]
                                 }
                             ]
@@ -1210,9 +1375,9 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             arrowAlign: 'center',
-                            iconCls: "icn-factura",
+                            iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                 OrdenesVentaUtils.BtnBusqOrdenVenta();
                             },
@@ -1224,7 +1389,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                         },
                         {
                             xtype: 'button',
-                            text: 'Ver Nuevas',
+                            text: 'Cargar',
                             arrowAlign: 'center',
                             iconCls: "icn-factura",
                             handler: function (btn) {
@@ -1233,6 +1398,56 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             listeners: {
                                 afterrender: function (btn) {
                                     addTooltip(btn, 'Ver Órdenes de Venta Nuevas');
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Exportar',
+                            iconCls: 'icn-excel',
+                            // width: 120,
+                            handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
+                                var idCmbDiasVenta = Ext.getCmp("idCmbDiasVenta").getValue();
+                                var idCmbEstatusVenta = Ext.getCmp("idCmbEstatusVenta").getValue();
+
+                                var storeName = "gridOrdenesVenta";
+                                var archivoName = "Central Venta";
+                                var fechaActual = new Date();
+                                var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
+                                var titulo = "Central Venta";
+
+                                var parametros = {
+                                    'titulo': titulo,
+                                    'Estatus': idCmbEstatusVenta,
+                                    'Fecha': idCmbFechaVenta,
+                                    'Dias Atras': idCmbDiasVenta,
+                                    'Fecha Solicitud': fechaFormateada
+                                };
+                                Ext.Msg.show({
+                                    title: 'Generar Excel',
+                                    message: '¿Desea exportar la página actual o todos los registros existentes?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    buttonText: {
+                                        yes: 'Página actual',
+                                        no: 'Todos los registros'
+                                    },
+                                    icon: Ext.MessageBox.QUESTION,
+                                    fn: function (btn) {
+                                        if (btn === 'yes') {
+                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            generarExcel(storeName, archivoName, parametros);
+                                        } else if (btn === 'no') {
+                                            OrdenesVentaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
+                                        } else {
+                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
+                                        }
+                                    }
+                                });
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Exportar');
                                 }
                             }
                         },
@@ -1273,7 +1488,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             filter: {type: 'string'},
                             renderer: function (value) {
                                 var estatusMap = {
-                                    'A': 'Abierto',
+                                    'A': 'Activo',
                                     'C': 'Cerrado',
                                     'X': 'Cancelado'
                                 };
@@ -1306,14 +1521,12 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             text: "Doc Num",
                             dataIndex: "DocNum",
                             width: 150,
-                            flex: 1,
                             filter: {type: 'string'}
                         },
                         {
                             text: "Numero Card",
                             dataIndex: "NumAtCard",
                             width: 150,
-                            flex: 1,
                             filter: {type: 'string'}
                         },
                         {
@@ -1335,18 +1548,158 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             filter: {type: 'string'}
                         },
                         {
+                            xtype: "actioncolumn",
+                            text: 'Genrar LE',
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            iconCls: 'icn-factura',
+                            width: 90,
+                            items: [
+                                {
+//                                        getClass: function (v, meta, record) {
+//                                            var estatus = record.get("esunombre");
+//                                            return estatus !== "EN PROCESO"
+//                                                    ? "icn-habilita-disable"
+//                                                    : "icn-habilita";
+//                                        },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Central de Ventas",
+                                            msg: '¿Estás seguro que deseas Crear la lista de empaque para el registro ' + record.data.OVID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    OrdenesVentaUtils.GenerarListaEmpaque(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            text: "Lista Empaque",
+                            dataIndex: "preid",
+                            width: 120,
+                            align: "center",
+                            filter: {type: 'number'}
+                        },
+                        {
+                            text: "Estatus Surtido",
+                            dataIndex: "preestatus",
+                            align: "center",
+                            width: 150,
+                            filter: {type: 'string'},
+                            renderer: function (value) {
+                                var color = '';
+                                switch (value) {
+                                    case 'Pendiente':
+                                        color = '#FFC107';
+                                        break; // Amarillo
+                                    case 'En Proceso':
+                                        color = '#2196F3';
+                                        break; // Azul
+                                    case 'Recibido':
+                                    case 'Surtido':
+                                        color = '#4CAF50';
+                                        break; // Verde
+                                    case 'Confirmado':
+                                        color = '#00BCD4';
+                                        break; // Cyan
+                                    case 'Cancelado':
+                                        color = '#F44336';
+                                        break; // Rojo
+                                    default:
+                                        color = '#6c757d';
+                                        break; // Gris - Desconocido
+                                }
+                                return '<b style="color: ' + color + ';">' + value + '</b>';
+                            }
+                        },
+//                        {
+//                            xtype: 'actioncolumn',
+//                            text: 'Genrar LE',
+//                            width: 90,
+//                            align: 'center',
+//                            iconCls: 'icn-factura',
+//                            items: [
+//                                {
+////                                    tooltip: 'Confirmar Envío',
+////                                    getClass: function (v, meta, record) {
+////                                        var estatus = record.get("OVEstatusId");
+////
+////                                        return estatus === "A" || estatus === 'C'
+////                                                ? "icn-habilita"
+////                                                : "icn-habilita-disable";
+////                                    },
+//                                    handler: function (grid, rowIndex, colIndex) {
+//                                        var record = grid.getStore().getAt(rowIndex);
+//                                        OrdenesVentaUtils.GenerarListaEmpaque(record);
+//                                    }
+//                                }]
+//                        },
+                        {
                             xtype: 'actioncolumn',
                             text: 'Confirmar Envío',
                             width: 90,
                             align: 'center',
-                            iconCls: 'icn-habilita',
-                            items: [{
+//                            iconCls: 'icn-habilita',
+                            items: [
+                                {
                                     tooltip: 'Confirmar Envío',
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("preestatus");
+
+                                        return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado"
+                                                ? "icn-habilita"
+                                                : "icn-habilita-disable";
+                                    },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         OrdenesVentaUtils.enviarShipmentConfirm(record);
                                     }
                                 }]
+                        },
+                        {
+                            xtype: "actioncolumn",
+                            text: "Cancelar",
+                            width: 90,
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            items: [
+                                {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("OVEstatusId");
+                                        return estatus === "A"
+                                                ? "icn-cancela"
+                                                : "icn-cancela-disable";
+                                    },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Ordenes de Venta",
+                                            msg: 'Â¿EstÃ¡s seguro que deseas cancelar la venta ' + record.data.OVID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    OrdenesVentaUtils.EliminarOrdenVeta(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
                         },
                     ],
                     listeners: {
@@ -1355,7 +1708,13 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                         },
                         rowdblclick: function (grid, record) {
                             OrdenesVentaUtils.verLineasOrdenLocal(record);
-                        }
+                        },
+                        afterrender: function (grid) {
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                OrdenesVentaUtils.BtnBusqOrdenVenta();
+                            }
+                        },
                     }
                 }
             ],

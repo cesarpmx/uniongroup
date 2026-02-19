@@ -70,6 +70,12 @@ public class CtrlOrdenVenta extends HttpServlet {
                 case "6":
                     out.print(EnviarShipmentConfirm(request, response));
                     break;
+                case "7":
+                    out.print(EliminarOrdenVenta(request, response));
+                    break;
+                case "8":
+                    out.print(GenerarListaEmpaque(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,42 +85,37 @@ public class CtrlOrdenVenta extends HttpServlet {
     }
 
     public String ObtenerOrdenesVenta(HttpServletRequest request, HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        String JSONVal;
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             String idEstatusVenta = Utilities.obtenParametro(request, "idEstatusVenta");
+            String idCmbFechaVenta = Utilities.obtenParametro(request, "idCmbFechaVenta");
+            String idCmbDiasVenta = Utilities.obtenParametro(request, "idCmbDiasVenta");
+
             String limit = Utilities.obtenParametro(request, "limit");
             String offset = Utilities.obtenParametro(request, "offset");
 
-            if (limit == null || limit.isEmpty()) {
-                limit = "25";
-            }
-            if (offset == null || offset.isEmpty()) {
-                offset = "0";
-            }
-
-            String serviceConsignatarios = props.getValueProp("Host")
-                    + props.getValueProp("ServiceOrdenVenta")
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenVenta")
                     + "?estatus=" + idEstatusVenta
+                    + "&fechafin=" + idCmbFechaVenta
+                    + "&diasatras=" + idCmbDiasVenta
                     + "&offset=" + offset
                     + "&limit=" + limit;
 
-            String respuestaItems = requetGet.getGetPaginacion(serviceConsignatarios, request);
+            String respuesta = requetGet.getGetPaginacion(service, request);
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
-            CentralOrdenVenta CItems = mapper.readValue(respuestaItems, CentralOrdenVenta.class);
-
-            return mapper.writeValueAsString(CItems);
+            CentralOrdenVenta centralOrdenVenta = mapper.readValue(respuesta, CentralOrdenVenta.class);
+            JSONVal = mapper.writeValueAsString(centralOrdenVenta);
 
         } catch (Exception e) {
-            System.out.println("? ERROR en ObtenerOrdenesVenta:");
             e.printStackTrace();
-            return "{\"items\":[],\"total\":0,\"count\":0}";
+            JSONVal = "{\"error\": \"Ocurrió un error al procesar la solicitud.\"}";
         }
+        return JSONVal;
     }
 
     public String ObtenerPSDetLocal(HttpServletRequest request, HttpServletResponse response) {
@@ -297,11 +298,10 @@ public class CtrlOrdenVenta extends HttpServlet {
                     confirmDataJSON.put("ConfirmData", confirmDataArray);
 
                     String confirmDataString = mapper.writeValueAsString(confirmDataJSON);
-                    
+
                     try {
                         String serviceCliente = props.getValueProp("HostGlobalInsert")
                                 + props.getValueProp("ServiceSalesOrderPostGlobal");
-
 
                         String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
 
@@ -424,6 +424,40 @@ public class CtrlOrdenVenta extends HttpServlet {
             }
         }
 
+        return JSONVal;
+    }
+
+    public String EliminarOrdenVenta(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "centralVenta");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenVenta");
+            JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
+    public String GenerarListaEmpaque(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "ordenListaEmpaque");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenVentaLE");
+            JSONVal = requetPost.getPost(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
         return JSONVal;
     }
 
