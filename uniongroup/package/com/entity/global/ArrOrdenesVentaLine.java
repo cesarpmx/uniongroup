@@ -15,4 +15,5 @@ public class ArrOrdenesVentaLine {
     public String BarCode;
     public int Quantity; 
     public int DOVOVID; 
+    public String coms;
 }

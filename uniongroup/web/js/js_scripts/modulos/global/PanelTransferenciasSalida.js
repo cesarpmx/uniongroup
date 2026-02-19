@@ -5,17 +5,26 @@
 
 Ext.define('TransferenciaSalidaUtils', {
     singleton: true,
+    dias: localStorage.getItem('diasAtras'),
 
     BtnBusqTransferenciaSalida: function () {
-        var idEstatusTransferenciasSalida = Ext.getCmp('idCmbEstatusOutbound').getValue();
+        var idCmbEstatusOutbound = Ext.getCmp('idCmbEstatusOutbound').getValue();
+        var idCmbFechaOutbound = Ext.Date.format(Ext.getCmp("idCmbFechaOutbound").getValue(), "d-m-Y");
+        var idCmbDiasOutbound = Ext.getCmp('idCmbDiasOutbound').getValue();
 
         var param = {
             busqBnd: 4,
             servicio: 'ServiceTransferenciaSalida',
-            idEstatusTransferenciasSalida: idEstatusTransferenciasSalida
+            idCmbEstatusOutbound: idCmbEstatusOutbound,
+            idCmbFechaOutbound: idCmbFechaOutbound,
+            idCmbDiasOutbound: idCmbDiasOutbound,
         };
 
         TransferenciaSalidaUtils.BuscarTransferenciaSalida(param);
+
+        var storeTransferenciaSalida = Ext.StoreManager.lookup('storeTransferenciaSalida');
+        storeTransferenciaSalida.getProxy().setExtraParams(param);
+        storeTransferenciaSalida.loadPage(1);
     },
 
     BuscarTransferenciaSalida: function (prm) {
@@ -1015,7 +1024,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                         var transactionNumber = new Date().getTime().toString();
 
                                         var transferShipJSON = {
-                                            TransferShipmentConfirm: {
+                                            ShipmentConfirm: {
                                                 DocDate: fechaISO,
                                                 DocNum: docNum,
                                                 NumAtCard: numAtCard,
@@ -1089,6 +1098,106 @@ Ext.define('TransferenciaSalidaUtils', {
         });
 
         win.show();
+    },
+
+    EliminarOrdenSalida: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/TransferenciasSalida',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                centralSalida: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Orden Salida',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqCentralVentas();
+                            Ext.getCmp('TSID').focus();
+                        }
+                    }
+                });
+                TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
+
+        var idCmbFechaOutbound = Ext.Date.format(Ext.getCmp("idCmbFechaOutbound").getValue(), "d-m-Y");
+        var idCmbDiasOutbound = Ext.getCmp("idCmbDiasOutbound").getValue();
+        var idCmbEstatusOutbound = Ext.getCmp("idCmbEstatusOutbound").getValue();
+
+        var grd = Ext.getCmp(storeName);
+        var store = grd.getStore();
+        store.removeAll(true);
+
+        var storeTransferenciaSalida = Ext.StoreManager.lookup('storeTransferenciaSalida');
+
+        var param = {
+            idCmbEstatusOutbound: idCmbEstatusOutbound,
+            idCmbDiasOutbound: idCmbDiasOutbound,
+            idCmbFechaOutbound: idCmbFechaOutbound,
+            busqBnd: 4,
+            servicio: 'ServiceTransferenciaSalida',
+            offset: 0,
+            limit: 99999999
+        };
+
+        store.reload({
+            params: param,
+            callback: function (records, operation, success) {
+                if (success) {
+                    generarExcel(storeName, archivoName, parametros);
+                    storeTransferenciaSalida.loadPage(1);
+                }
+            }
+        });
+    },
+
+    GenerarListaEmpaque: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/TransferenciasSalida',
+            timeout: 60000,
+            params: {
+                busqBnd: 8,
+                ordenListaEmpaque: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Transferencias Salida',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            OrdenesVentaUtils.BtnBusqOrdenVenta();
+                            Ext.getCmp('TSID').focus();
+                        }
+                    }
+                });
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
     }
 
 });
@@ -1118,7 +1227,11 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                 "DocEntry",
                 "DocNum",
                 "NumAtCard",
-                "DocDate",
+                {
+                    name: 'DocDate',
+                    type: 'date',
+                    convert: formatearFechaCorta
+                },
                 "CardCode",
                 "Status",
                 "Memo",
@@ -1128,25 +1241,21 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
             ]
         });
 
-        // ? STORE
         me.storeTransferenciaSalida = Ext.create('Ext.data.Store', {
+            id: "storeTransferenciaSalida",
             model: 'modelTransferenciasSalida',
-            autoLoad: false,
-            pageSize: 25,
+            leadingBufferZone: 100,
+            pageSize: 100,
+            autoLoad: true,
             proxy: {
-                type: "ajax",
-                url: contexto + "/TransferenciasSalida",
-                pageParam: false,
+                type: 'ajax',
+                url: contexto + '/TransferenciasSalida',
                 startParam: "offset",
-                limitParam: "limit",
-                extraParams: {
-                    busqBnd: 4,
-                    servicio: 'ServiceTransferenciaSalida'
-                },
+                leadingBufferZone: 100, // Cantidad de registros adicionales para cargar por adelantado
                 reader: {
-                    type: "json",
-                    rootProperty: "items",
-                    totalProperty: "total"
+                    type: 'json',
+                    rootProperty: 'items',
+                    totalProperty: 'total'
                 }
             }
         });
@@ -1159,7 +1268,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                 {codigo: 'X', descripcion: 'Cancelado'}
             ]
         });
-
 
         Ext.apply(me, {
             items: [
@@ -1200,8 +1308,55 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
-                                            editable: false
-                                        }
+                                            editable: false,
+                                            listeners: {
+                                                select: function () {
+                                                    TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "datefield",
+                                            fieldLabel: "Fecha",
+                                            id: "idCmbFechaOutbound",
+                                            name: "idCntComFecha",
+                                            maxLength: 50,
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            listeners: {
+                                                afterrender: function (datefield) {
+                                                    datefield.setValue(new Date()); // Establecer la fecha actual
+                                                },
+//                                                blur: function () {
+//                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
+//                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "numberfield",
+                                            fieldLabel: "Dias Atras",
+                                            id: "idCmbDiasOutbound",
+                                            name: "idCntComDias",
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            value: 7,
+                                            maxValue: parseInt(TransferenciaSalidaUtils.dias, 10),
+                                            minValue: 0,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: function (field, newValue) {
+                                                    var maxValue = field.maxValue;
+                                                    if (newValue > maxValue) {
+                                                        field.setValue(maxValue);
+                                                    }
+                                                },
+//                                                blur: function () {
+//                                                    CentralComprasUtils.BtnBusqCentralCompras();
+//                                                }
+                                            }
+                                        },
                                     ]
                                 }
                             ]
@@ -1221,7 +1376,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             xtype: 'button',
                             text: 'Buscar',
                             arrowAlign: 'center',
-                            iconCls: "icn-factura",
+                            iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                 TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                             },
@@ -1242,6 +1397,56 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             listeners: {
                                 afterrender: function (btn) {
                                     addTooltip(btn, 'Ver Transferencias de Salida Nuevas');
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Exportar',
+                            iconCls: 'icn-excel',
+                            // width: 120,
+                            handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                var idCmbFechaOutbound = Ext.Date.format(Ext.getCmp("idCmbFechaOutbound").getValue(), "d-m-Y");
+                                var idCmbDiasOutbound = Ext.getCmp("idCmbDiasOutbound").getValue();
+                                var idCmbEstatusOutbound = Ext.getCmp("idCmbEstatusOutbound").getValue();
+
+                                var storeName = "gridTransferenciaSalida";
+                                var archivoName = "Central Salidas";
+                                var fechaActual = new Date();
+                                var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
+                                var titulo = "Central Salidas";
+
+                                var parametros = {
+                                    'titulo': titulo,
+                                    'Estatus': idCmbEstatusOutbound,
+                                    'Fecha': idCmbFechaOutbound,
+                                    'Dias Atras': idCmbDiasOutbound,
+                                    'Fecha Solicitud': fechaFormateada
+                                };
+                                Ext.Msg.show({
+                                    title: 'Generar Excel',
+                                    message: '¿Desea exportar la página actual o todos los registros existentes?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    buttonText: {
+                                        yes: 'Página actual',
+                                        no: 'Todos los registros'
+                                    },
+                                    icon: Ext.MessageBox.QUESTION,
+                                    fn: function (btn) {
+                                        if (btn === 'yes') {
+                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            generarExcel(storeName, archivoName, parametros);
+                                        } else if (btn === 'no') {
+                                            TransferenciaSalidaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
+                                        } else {
+                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
+                                        }
+                                    }
+                                });
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Exportar');
                                 }
                             }
                         },
@@ -1362,6 +1567,42 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         },
                         {
                             xtype: "actioncolumn",
+                            text: 'Genrar LE',
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            iconCls: 'icn-factura',
+                            width: 90,
+                            items: [
+                                {
+//                                        getClass: function (v, meta, record) {
+//                                            var estatus = record.get("esunombre");
+//                                            return estatus !== "EN PROCESO"
+//                                                    ? "icn-habilita-disable"
+//                                                    : "icn-habilita";
+//                                        },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Central de Ventas",
+                                            msg: '¿Estás seguro que deseas Crear la lista de empaque para el registro ' + record.data.TSID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    TransferenciaSalidaUtils.GenerarListaEmpaque(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            xtype: "actioncolumn",
                             text: "Embarcar", // ? CAMBIO
                             menuDisabled: true,
                             sortable: false,
@@ -1370,13 +1611,55 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             width: 90,
                             items: [
                                 {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("TSEstatusId");
+
+                                        return estatus === "A" || estatus === 'C'
+                                                ? "icn-habilita"
+                                                : "icn-habilita-disable";
+                                    },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         TransferenciaSalidaUtils.enviarTransferShipConfirm(record);  // ? Implementarás después
                                     }
                                 }
                             ]
-                        }
+                        },
+                        {
+                            xtype: "actioncolumn",
+                            text: "Cancelar",
+                            width: 90,
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            items: [
+                                {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("TSEstatusId");
+                                        return estatus === "A"
+                                                ? "icn-cancela"
+                                                : "icn-cancela-disable";
+                                    },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Ordenes de salida",
+                                            msg: 'Â¿EstÃ¡s seguro que deseas cancelar la entrada ' + record.data.TSID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    TransferenciaSalidaUtils.EliminarOrdenSalida(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
+                        },
                     ],
                     listeners: {
                         edit: function (editor, e) {
@@ -1384,7 +1667,13 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         },
                         rowdblclick: function (grid, record) {
                             TransferenciaSalidaUtils.verLineasTransferenciaLocal(record);
-                        }
+                        },
+                        afterrender: function (grid) {
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+                            }
+                        },
                     }
                 }
             ],

@@ -4,6 +4,7 @@
  */
 package com.entity.global;
 
+import com.entity.Link;
 import java.util.ArrayList;
 
 /**
@@ -12,10 +13,11 @@ import java.util.ArrayList;
  */
 public class CentralOrdenCompra {
 
-    public ArrayList<ArrDataOrdenCompra> items;  // ? Cambiar "Data" por "items"
+    public ArrayList<ArrDataOrdenCompra> items;
     public boolean hasMore;
     public int total;
     public int limit;
     public int offset;
     public int count;
+    public ArrayList<Link> links;
 }

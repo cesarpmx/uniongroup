@@ -5,10 +5,13 @@
 
 Ext.define('OrdenesCompraUtils', {
     singleton: true,
+    dias: localStorage.getItem('diasAtras'),
 
     BtnBusqOrdenCompra: function () {
 
         var idEstatusCompras = Ext.getCmp('idCmbEstatusCompras').getValue();
+        var idCmbFechaCompras = Ext.Date.format(Ext.getCmp("idCmbFechaCompras").getValue(), "d-m-Y");
+        var idCmbDiasCompras = Ext.getCmp('idCmbDiasCompras').getValue();
 
         var param;
 
@@ -16,9 +19,15 @@ Ext.define('OrdenesCompraUtils', {
             busqBnd: 4,
             servicio: 'ServiceOrdenCompra',
             idEstatusCompras: idEstatusCompras,
+            idCmbFechaCompras: idCmbFechaCompras,
+            idCmbDiasCompras: idCmbDiasCompras,
         };
 
         OrdenesCompraUtils.BuscarOrdenCompra(param);
+
+        var storeOrdenesCompras = Ext.StoreManager.lookup('storeOrdenesCompra');
+        storeOrdenesCompras.getProxy().setExtraParams(param);
+        storeOrdenesCompras.loadPage(1);
     },
 
     BuscarOrdenCompra: function (prm) {
@@ -737,7 +746,10 @@ Ext.define('OrdenesCompraUtils', {
                     "ItemCode",
                     "BarCode",
                     {name: "Quantity", type: 'int'},
-                    "totalrecs"
+                    "totalrecs",
+                    "coms",
+                    "dcoid",
+                    "receivedquantity"
                 ]
             });
         }
@@ -847,6 +859,13 @@ Ext.define('OrdenesCompraUtils', {
                             align: "center"
                         },
                         {
+                            text: "Compra",
+                            dataIndex: "dcoid",
+                            xtype: "rownumberer",
+                            width: 50,
+                            align: "center"
+                        },
+                        {
                             text: "Línea",
                             dataIndex: "LineNum",
                             width: 100,
@@ -873,13 +892,29 @@ Ext.define('OrdenesCompraUtils', {
                         {
                             text: "Cantidad",
                             dataIndex: "Quantity",
-                            width: 120,
-                            align: "right",
+                            width: 100,
+                            align: "center",
                             filter: {type: 'number'},
                             renderer: function (value) {
                                 return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000') + '</b>';
                             }
-                        }
+                        },
+                        {
+                            text: "Recibido",
+                            dataIndex: "receivedquantity",
+                            align: "center",
+                            width: 100,
+                            filter: {type: 'number'},
+                            renderer: function (value) {
+                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000') + '</b>';
+                            }
+                        },
+                        {
+                            text: "Comentarios",
+                            dataIndex: "coms",
+                            width: 200,
+                            filter: {type: 'string'}
+                        },
                     ],
                     viewConfig: {
                         stripeRows: true,
@@ -978,12 +1013,12 @@ Ext.define('OrdenesCompraUtils', {
                                         var totalQty = 0;
 
                                         Ext.Array.each(data.items, function (line) {
-                                            totalQty += line.Quantity;
+                                            totalQty += line.receivedquantity;
                                             lines.push({
                                                 LineNum: line.LineNum,
                                                 ItemCode: line.ItemCode,
                                                 BarCode: line.BarCode,
-                                                Quantity: line.Quantity
+                                                Quantity: line.receivedquantity
                                             });
                                         });
 
@@ -1084,7 +1119,72 @@ Ext.define('OrdenesCompraUtils', {
         });
 
         win.show();
-    }
+    },
+
+    EliminarOrdenCompra: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesCompra',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                centralCompra: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Orden Compra',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqCentralVentas();
+                            Ext.getCmp('OCID').focus();
+                        }
+                    }
+                });
+                OrdenesCompraUtils.BtnBusqOrdenCompra();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
+        var idEstatusCompras = Ext.getCmp('idCmbEstatusCompras').getValue();
+        var idCmbFechaCompras = Ext.Date.format(Ext.getCmp("idCmbFechaCompras").getValue(), "d-m-Y");
+        var idCmbDiasCompras = Ext.getCmp('idCmbDiasCompras').getValue();
+
+        var grd = Ext.getCmp(storeName);
+        var store = grd.getStore();
+        store.removeAll(true);
+
+        var storeCentralCompras = Ext.StoreManager.lookup('storeOrdenesCompra');
+
+        var param = {
+            idEstatusCompras: idEstatusCompras,
+            idCmbFechaCompras: idCmbFechaCompras,
+            idCmbDiasCompras: idCmbDiasCompras,
+            busqBnd: 4,
+            offset: 0,
+            limit: 99999999
+        };
+
+        store.reload({
+            params: param,
+            callback: function (records, operation, success) {
+                if (success) {
+                    generarExcel(storeName, archivoName, parametros);
+                    storeCentralCompras.loadPage(1);
+                }
+            }
+        });
+    },
 
 });
 
@@ -1113,32 +1213,35 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                 "DocEntry",
                 "DocNum",
                 "NumAtCard",
-                "DocDate",
+                {
+                    name: 'DocDate',
+                    type: 'date',
+                    convert: formatearFechaCorta
+                },
                 "CardCode",
                 "Memo",
                 "OCEstatusId",
-                "OCFechaInsercion"
+                "OCFechaInsercion",
+                "comid",
+                "comestatus"
             ]
         });
 
         me.storeOrdenesCompra = Ext.create('Ext.data.Store', {
+            id: "storeOrdenesCompra",
             model: 'modelOrdenesCompra',
-            autoLoad: false,
-            pageSize: 25,
+            leadingBufferZone: 100,
+            pageSize: 100,
+            autoLoad: true,
             proxy: {
-                type: "ajax",
-                url: contexto + "/OrdenesCompra",
-                pageParam: false,
+                type: 'ajax',
+                url: contexto + '/OrdenesCompra',
                 startParam: "offset",
-                limitParam: "limit",
-                extraParams: {
-                    busqBnd: 4,
-                    servicio: 'ServiceOrdenCompra'
-                },
+                leadingBufferZone: 100, // Cantidad de registros adicionales para cargar por adelantado
                 reader: {
-                    type: "json",
-                    rootProperty: "items",
-                    totalProperty: "total"
+                    type: 'json',
+                    rootProperty: 'items',
+                    totalProperty: 'total'
                 }
             }
         });
@@ -1192,8 +1295,56 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
-                                            editable: false
-                                        }
+                                            editable: false,
+                                            listeners: {
+                                                select: function () {
+                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
+                                                }
+                                            }
+
+                                        },
+                                        {
+                                            xtype: "datefield",
+                                            fieldLabel: "Fecha",
+                                            id: "idCmbFechaCompras",
+                                            name: "idCntComFecha",
+                                            maxLength: 50,
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            listeners: {
+                                                afterrender: function (datefield) {
+                                                    datefield.setValue(new Date()); // Establecer la fecha actual
+                                                },
+                                                blur: function () {
+                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "numberfield",
+                                            fieldLabel: "Dias Atras",
+                                            id: "idCmbDiasCompras",
+                                            name: "idCntComDias",
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            value: 7,
+                                            maxValue: parseInt(OrdenesCompraUtils.dias, 10),
+                                            minValue: 0,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: function (field, newValue) {
+                                                    var maxValue = field.maxValue;
+                                                    if (newValue > maxValue) {
+                                                        field.setValue(maxValue);
+                                                    }
+                                                },
+                                                blur: function () {
+                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
+                                                }
+                                            }
+                                        },
                                     ]
                                 }
                             ]
@@ -1211,9 +1362,9 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             arrowAlign: 'center',
-                            iconCls: "icn-factura",
+                            iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                 OrdenesCompraUtils.BtnBusqOrdenCompra();
                             },
@@ -1225,7 +1376,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         },
                         {
                             xtype: 'button',
-                            text: 'Ver Nuevas',
+                            text: 'Cargar',
                             arrowAlign: 'center',
                             iconCls: "icn-factura",
                             handler: function (btn) {
@@ -1234,6 +1385,56 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             listeners: {
                                 afterrender: function (btn) {
                                     addTooltip(btn, 'Ver Órdenes de Compra Nuevas');
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Exportar',
+                            iconCls: 'icn-excel',
+                            // width: 120,
+                            handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                var idCmbFechaCompras = Ext.Date.format(Ext.getCmp("idCmbFechaCompras").getValue(), "d-m-Y");
+                                var idCmbDiasCompras = Ext.getCmp("idCmbDiasCompras").getValue();
+                                var idCmbEstatusCompras = Ext.getCmp("idCmbEstatusCompras").getValue()
+
+                                var storeName = "gridOrdenesCompra";
+                                var archivoName = "Central Compras";
+                                var fechaActual = new Date();
+                                var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
+                                var titulo = "Central Compras";
+
+                                var parametros = {
+                                    'titulo': titulo,
+                                    'Estatus': idCmbEstatusCompras,
+                                    'Fecha': idCmbFechaCompras,
+                                    'Dias Atras': idCmbDiasCompras,
+                                    'Fecha Solicitud': fechaFormateada
+                                };
+                                Ext.Msg.show({
+                                    title: 'Generar Excel',
+                                    message: '¿Desea exportar la página actual o todos los registros existentes?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    buttonText: {
+                                        yes: 'Página actual',
+                                        no: 'Todos los registros'
+                                    },
+                                    icon: Ext.MessageBox.QUESTION,
+                                    fn: function (btn) {
+                                        if (btn === 'yes') {
+                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            generarExcel(storeName, archivoName, parametros);
+                                        } else if (btn === 'no') {
+                                            OrdenesCompraUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
+                                        } else {
+                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
+                                        }
+                                    }
+                                });
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Exportar');
                                 }
                             }
                         },
@@ -1307,6 +1508,44 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             }
                         },
                         {
+                            text: "Compra",
+                            dataIndex: "comid",
+                            width: 80,
+                            align: "center",
+                            filter: {type: 'number'}
+                        },
+                        {
+                            text: "Estatus Compra",
+                            dataIndex: "comestatus",
+                            align: "center",
+                            width: 150,
+                            filter: {type: 'string'},
+                            renderer: function (value) {
+                                var color = '';
+                                switch (value) {
+                                    case 'Pendiente':
+                                        color = '#FFC107';
+                                        break; // Amarillo
+                                    case 'En proceso':
+                                        color = '#2196F3';
+                                        break; // Azul
+                                    case 'Recibido':
+                                        color = '#4CAF50';
+                                        break; // Verde
+                                    case 'Confirmado':
+                                        color = '#00BCD4';
+                                        break; // Cyan
+                                    case 'Cancelado':
+                                        color = '#F44336';
+                                        break; // Rojo
+                                    default:
+                                        color = '#6c757d';
+                                        break; // Gris - Desconocido
+                                }
+                                return '<b style="color: ' + color + ';">' + value + '</b>';
+                            }
+                        },
+                        {
                             text: "Doc Entry",
                             dataIndex: "DocEntry",
                             align: "center",
@@ -1346,20 +1585,60 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         {
                             xtype: "actioncolumn",
                             text: "Confirmar",
-                            dataIndex: "prrtiempo2",
-                            menuDisabled: true,
                             sortable: false,
+                            menuDisabled: true,
                             align: "center",
-                            iconCls: 'icn-habilita',
                             width: 90,
                             items: [
                                 {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("comestatus");
+
+                                        return estatus === "Recibido" || estatus === "Confirmado"
+                                                ? "icn-habilita"
+                                                : "icn-habilita-disable";
+                                    },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         OrdenesCompraUtils.enviarReceiptConfirm(record);
                                     }
                                 }
                             ]
+                        },
+                        {
+                            xtype: "actioncolumn",
+                            text: "Cancelar",
+                            width: 90,
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            items: [
+                                {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("OCEstatusId");
+                                        return estatus === "A"
+                                                ? "icn-cancela"
+                                                : "icn-cancela-disable";
+                                    },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Ordenes de Compra",
+                                            msg: 'Â¿EstÃ¡s seguro que deseas cancelar la compra ' + record.data.OCID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    OrdenesCompraUtils.EliminarOrdenCompra(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
                         },
                     ],
                     listeners: {
@@ -1368,7 +1647,13 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         },
                         rowdblclick: function (grid, record) {
                             OrdenesCompraUtils.verLineasOrdenLocal(record);
-                        }
+                        },
+                        afterrender: function (grid) {
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                OrdenesCompraUtils.BtnBusqOrdenCompra();
+                            }
+                        },
                     }
                 }
             ],

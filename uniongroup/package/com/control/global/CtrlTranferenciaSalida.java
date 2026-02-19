@@ -6,6 +6,7 @@ package com.control.global;
 
 import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
+import com.entity.global.CentralOrdenVenta;
 import com.entity.global.CentralTransferenciaSalida;
 import com.entity.global.CentralTransferenciaSalidaGlobal;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -66,6 +67,12 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                     break;
                 case "6":  // ? NUEVO
                     out.print(EnviarTransferShipConfirm(request, response));
+                    break;
+                case "7":  // ? NUEVO
+                    out.print(EliminarOrdenSalida(request, response));
+                    break;
+                case "8":  // ? NUEVO
+                    out.print(GenerarListaEmpaque(request, response));
                     break;
             }
         } catch (Exception e) {
@@ -246,24 +253,20 @@ public class CtrlTranferenciaSalida extends HttpServlet {
     }
 
     public String BuscarTransferenciasSalidaLocal(HttpServletRequest request, HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        String JSONVal;
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+            String estatus = Utilities.obtenParametro(request, "idCmbEstatusOutbound");
+            String idCmbFechaOutbound = Utilities.obtenParametro(request, "idCmbFechaOutbound");
+            String idCmbDiasOutbound = Utilities.obtenParametro(request, "idCmbDiasOutbound");
 
-            String estatus = Utilities.obtenParametro(request, "idEstatusTransferenciasSalida");
             String limit = Utilities.obtenParametro(request, "limit");
             String offset = Utilities.obtenParametro(request, "offset");
 
-            if (limit == null || limit.isEmpty()) {
-                limit = "25";
-            }
-            if (offset == null || offset.isEmpty()) {
-                offset = "0";
-            }
-
-            String service = props.getValueProp("Host")
-                    + props.getValueProp("ServiceTransferenciaSalida")
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceTransferenciaSalida")
                     + "?estatus=" + estatus
+                    + "&fechafin=" + idCmbFechaOutbound
+                    + "&diasatras=" + idCmbDiasOutbound
                     + "&offset=" + offset
                     + "&limit=" + limit;
 
@@ -273,15 +276,14 @@ public class CtrlTranferenciaSalida extends HttpServlet {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
-            CentralTransferenciaSalida CItems = mapper.readValue(respuesta, CentralTransferenciaSalida.class);
-
-            return mapper.writeValueAsString(CItems);
+            CentralTransferenciaSalida centralTransferenciaSalida = mapper.readValue(respuesta, CentralTransferenciaSalida.class);
+            JSONVal = mapper.writeValueAsString(centralTransferenciaSalida);
 
         } catch (Exception e) {
-            System.out.println("? ERROR en BuscarTransferenciasSalidaLocal:");
             e.printStackTrace();
-            return "{\"items\":[],\"total\":0,\"count\":0}";
+            JSONVal = "{\"error\": \"Ocurrió un error al procesar la solicitud.\"}";
         }
+        return JSONVal;
     }
 
     public String ObtenerLineasLocal(HttpServletRequest request, HttpServletResponse response) {
@@ -429,6 +431,40 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 return "{\"success\":false,\"error\":\"Error desconocido\"}";
             }
         }
+    }
+
+    public String EliminarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "centralSalida");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceTransferenciaSalida");
+            JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
+    public String GenerarListaEmpaque(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "ordenListaEmpaque");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenSaliaLE");
+            JSONVal = requetPost.getPost(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
     }
 
     private String normalizeJson(String json) {

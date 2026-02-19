@@ -5,17 +5,26 @@
 
 Ext.define('TransferenciaEntradaUtils', {
     singleton: true,
+    dias: localStorage.getItem('diasAtras'),
 
     BtnBusqTransferenciaEntrada: function () {
         var idEstatusTransferencias = Ext.getCmp('idCmbEstatusInbound').getValue();
+        var idCmbFechaInbound = Ext.Date.format(Ext.getCmp("idCmbFechaInbound").getValue(), "d-m-Y");
+        var idCmbDiasInbound = Ext.getCmp('idCmbDiasInbound').getValue();
 
         var param = {
             busqBnd: 4,
             servicio: 'ServiceTransferenciaEntrada',
-            idEstatusTransferencias: idEstatusTransferencias
+            idEstatusTransferencias: idEstatusTransferencias,
+            idCmbFechaInbound: idCmbFechaInbound,
+            idCmbDiasInbound: idCmbDiasInbound,
         };
 
         TransferenciaEntradaUtils.BuscarTransferenciaEntrada(param);
+
+        var storeTransferenciaEntrada = Ext.StoreManager.lookup('storeTransferenciaEntrada');
+        storeTransferenciaEntrada.getProxy().setExtraParams(param);
+        storeTransferenciaEntrada.loadPage(1);
     },
 
     BuscarTransferenciaEntrada: function (prm) {
@@ -122,7 +131,7 @@ Ext.define('TransferenciaEntradaUtils', {
                         {
                             xtype: 'button',
                             text: 'Recargar',
-                           iconCls: 'icn-refresh',
+                            iconCls: 'icn-refresh',
                             handler: function () {
                                 storeNuevas.reload();
                             }
@@ -833,7 +842,7 @@ Ext.define('TransferenciaEntradaUtils', {
 
                                         // JSON final
                                         var jsonSend = {
-                                            TransferReceiptConfirm: {
+                                            ReceiptConfirm: {
                                                 DocDate: docDate,
                                                 DocNum: docNum,
                                                 NumAtCard: numAtCard,
@@ -848,7 +857,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                             Lines: lines
                                         };
 
-                                        console.log("? JSON TransferReceiptConfirm:");
+                                        console.log("? JSON ReceiptConfirm:");
                                         console.log(JSON.stringify(jsonSend, null, 4));
 
                                         // Enviar al servlet
@@ -886,14 +895,14 @@ Ext.define('TransferenciaEntradaUtils', {
                                             },
                                             failure: function (response) {
                                                 Ext.getBody().unmask();
-                                                console.error("? Error al enviar TransferReceiptConfirm:", response);
+                                                console.error("? Error al enviar ReceiptConfirm:", response);
                                                 Ext.Msg.alert('Error', 'Error al enviar la confirmación de recepción');
                                             }
                                         });
                                     },
                                     failure: function () {
                                         Ext.getBody().unmask();
-                                        Ext.Msg.alert("Error", "No se pudieron cargar líneas para TransferReceiptConfirm");
+                                        Ext.Msg.alert("Error", "No se pudieron cargar líneas para ReceiptConfirm");
                                     }
                                 });
                             }
@@ -903,7 +912,74 @@ Ext.define('TransferenciaEntradaUtils', {
         });
 
         win.show();
-    }
+    },
+
+    EliminarOrdenEntrada: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/TransferenciasEntrada',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                centralEntrada: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Orden Entrada',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqCentralVentas();
+                            Ext.getCmp('TEID').focus();
+                        }
+                    }
+                });
+                TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
+        var idCmbFechaInbound = Ext.Date.format(Ext.getCmp("idCmbFechaInbound").getValue(), "d-m-Y");
+        var idCmbDiasInbound = Ext.getCmp("idCmbDiasInbound").getValue();
+        var idCmbEstatusInbound = Ext.getCmp("idCmbEstatusInbound").getValue
+                ;
+
+        var grd = Ext.getCmp(storeName);
+        var store = grd.getStore();
+        store.removeAll(true);
+
+        var storeTransferenciaEntrada = Ext.StoreManager.lookup('storeTransferenciaEntrada');
+
+        var param = {
+            idCmbEstatusInbound: idCmbEstatusInbound,
+            idCmbDiasInbound: idCmbDiasInbound,
+            idCmbFechaInbound: idCmbFechaInbound,
+            busqBnd: 4,
+            servicio: 'ServiceTransferenciaEntrada',
+            offset: 0,
+            limit: 99999999
+        };
+
+        store.reload({
+            params: param,
+            callback: function (records, operation, success) {
+                if (success) {
+                    generarExcel(storeName, archivoName, parametros);
+                    storeTransferenciaEntrada.loadPage(1);
+                }
+            }
+        });
+    },
 });
 
 // ? Panel principal - UNA SOLA DEFINICIÓN
@@ -942,23 +1018,20 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
         });
 
         me.storeTransferenciaEntrada = Ext.create('Ext.data.Store', {
+            id: "storeTransferenciaEntrada",
             model: 'modelTransferenciasEntrada',
-            autoLoad: false,
-            pageSize: 25,
+            leadingBufferZone: 100,
+            pageSize: 100,
+            autoLoad: true,
             proxy: {
-                type: "ajax",
-                url: contexto + "/TransferenciasEntrada",
-                pageParam: false, // ? AGREGAR
-                startParam: "offset", // ? AGREGAR
-                limitParam: "limit", // ? AGREGAR
-                extraParams: {
-                    busqBnd: 4,
-                    servicio: 'ServiceTransferenciaEntrada'
-                },
+                type: 'ajax',
+                url: contexto + '/TransferenciasEntrada',
+                startParam: "offset",
+                leadingBufferZone: 100, // Cantidad de registros adicionales para cargar por adelantado
                 reader: {
-                    type: "json",
-                    rootProperty: "items",
-                    totalProperty: "total"
+                    type: 'json',
+                    rootProperty: 'items',
+                    totalProperty: 'total'
                 }
             }
         });
@@ -1002,7 +1075,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                         {
                                             xtype: 'combobox',
                                             id: "idCmbEstatusInbound",
-                                            name: "cmbEstatusOrden",
+                                            name: "idCmbEstatusInbound",
                                             fieldLabel: 'Estatus',
                                             flex: 1,
                                             width: 300,
@@ -1012,8 +1085,55 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
-                                            editable: false
-                                        }
+                                            editable: false,
+                                            listeners: {
+                                                select: function () {
+                                                    TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "datefield",
+                                            fieldLabel: "Fecha",
+                                            id: "idCmbFechaInbound",
+                                            name: "idCmbFechaInbound",
+                                            maxLength: 50,
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            listeners: {
+                                                afterrender: function (datefield) {
+                                                    datefield.setValue(new Date()); // Establecer la fecha actual
+                                                },
+                                                blur: function () {
+                                                    TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: "numberfield",
+                                            fieldLabel: "Dias Atras",
+                                            id: "idCmbDiasInbound",
+                                            name: "idCmbDiasInbound",
+                                            flex: 1,
+                                            width: 300,
+                                            allowBlank: false,
+                                            value: 7,
+                                            maxValue: parseInt(TransferenciaEntradaUtils.dias, 10),
+                                            minValue: 0,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: function (field, newValue) {
+                                                    var maxValue = field.maxValue;
+                                                    if (newValue > maxValue) {
+                                                        field.setValue(maxValue);
+                                                    }
+                                                },
+//                                                blur: function () {
+//                                                    CentralComprasUtils.BtnBusqCentralCompras();
+//                                                }
+                                            }
+                                        },
                                     ]
                                 }
                             ]
@@ -1033,7 +1153,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             xtype: 'button',
                             text: 'Buscar',
                             arrowAlign: 'center',
-                            iconCls: "icn-factura",
+                            iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                 TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                             },
@@ -1054,6 +1174,56 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             listeners: {
                                 afterrender: function (btn) {
                                     addTooltip(btn, 'Ver Transferencias de Entrada Nuevas'); // ? CAMBIO
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Exportar',
+                            iconCls: 'icn-excel',
+                            // width: 120,
+                            handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                var idCmbFechaInbound = Ext.Date.format(Ext.getCmp("idCmbFechaInbound").getValue(), "d-m-Y");
+                                var idCmbDiasInbound = Ext.getCmp("idCmbDiasInbound").getValue();
+                                var idCmbEstatusInbound = Ext.getCmp("idCmbEstatusInbound").getValue()
+
+                                var storeName = "gridTransferenciaEntrada";
+                                var archivoName = "Central Entradas";
+                                var fechaActual = new Date();
+                                var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
+                                var titulo = "Central Entradas";
+
+                                var parametros = {
+                                    'titulo': titulo,
+                                    'Estatus': idCmbEstatusInbound,
+                                    'Fecha': idCmbFechaInbound,
+                                    'Dias Atras': idCmbDiasInbound,
+                                    'Fecha Solicitud': fechaFormateada
+                                };
+                                Ext.Msg.show({
+                                    title: 'Generar Excel',
+                                    message: '¿Desea exportar la página actual o todos los registros existentes?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    buttonText: {
+                                        yes: 'Página actual',
+                                        no: 'Todos los registros'
+                                    },
+                                    icon: Ext.MessageBox.QUESTION,
+                                    fn: function (btn) {
+                                        if (btn === 'yes') {
+                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            generarExcel(storeName, archivoName, parametros);
+                                        } else if (btn === 'no') {
+                                            TransferenciaEntradaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
+                                        } else {
+                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
+                                        }
+                                    }
+                                });
+                            },
+                            listeners: {
+                                afterrender: function (btn) {
+                                    addTooltip(btn, 'Exportar');
                                 }
                             }
                         },
@@ -1183,13 +1353,55 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             width: 90,
                             items: [
                                 {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("TEEstatusId");
+
+                                        return estatus === "A" || estatus === 'C'
+                                                ? "icn-habilita"
+                                                : "icn-habilita-disable";
+                                    },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         TransferenciaEntradaUtils.enviarTransferReceiptConfirm(record);  // ? Implementarás después
                                     }
                                 }
                             ]
-                        }
+                        },
+                        {
+                            xtype: "actioncolumn",
+                            text: "Cancelar",
+                            width: 90,
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            items: [
+                                {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("TEEstatusId");
+                                        return estatus === "A"
+                                                ? "icn-cancela"
+                                                : "icn-cancela-disable";
+                                    },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Ordenes de Entrada",
+                                            msg: 'Â¿EstÃ¡s seguro que deseas cancelar la entrada ' + record.data.TEID + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    var rowData = record.data;
+                                                    record.drop();
+                                                    TransferenciaEntradaUtils.EliminarOrdenEntrada(Ext.JSON.encode(record.data));
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    },
+                                },
+                            ],
+                        },
                     ],
                     listeners: {
                         edit: function (editor, e) {
@@ -1197,7 +1409,13 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                         },
                         rowdblclick: function (grid, record) {
                             TransferenciaEntradaUtils.verLineasTransferenciaLocal(record);
-                        }
+                        },
+                        afterrender: function (grid) {
+                            if (grid.isVisible() && !grid.isSearchExecuted) {
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+                            }
+                        },
                     }
                 }
             ],

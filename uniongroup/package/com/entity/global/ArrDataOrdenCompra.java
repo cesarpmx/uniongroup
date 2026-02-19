@@ -20,4 +20,6 @@ public class ArrDataOrdenCompra {
     public String OCEstatusId;
     public String OCFechaInsercion;
     public int totalrecs;
+    public int comid;
+    public String comestatus;
 }

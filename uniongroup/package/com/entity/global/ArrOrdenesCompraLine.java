@@ -16,4 +16,7 @@ public class ArrOrdenesCompraLine {
     public int Quantity; 
     public int DOCOCID; 
     public int totalrecs;
+    public int dcoid;
+    public String coms;
+    public int receivedquantity;
 }

@@ -31,7 +31,7 @@ Ext.require([
 
 Ext.onReady(function () {
     // Guardar en localStorage el m?ximo de d?as atr?s
-    localStorage.setItem('diasAtras', 10000);
+    localStorage.setItem('diasAtras', 90);
     Ext.util.Format.thousandSeparator = ',';
     Ext.util.Format.decimalSeparator = '.';
 
@@ -137,7 +137,7 @@ Ext.onReady(function () {
                     '->',
                     {
                         xtype: 'label',
-                        html: 'Centro de Informaci&oacute;n Argo (CIA) Ver. 3.0 - Copyright @ 2023.',
+                        html: 'Copyright @ 2023.',
                         style: 'color:#fff;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;font-weight:500;'
                     },
                     '-',
