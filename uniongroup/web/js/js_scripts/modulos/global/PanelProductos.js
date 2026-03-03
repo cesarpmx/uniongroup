@@ -458,24 +458,24 @@ Ext.define('Modulos.global.PanelProductos', {
                                 align: "center"
                             },
                             {
-                                text: "Codigo",
+                                text: "ItemCode",
                                 dataIndex: "ItemCode",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Descripcion",
+                                text: "ItemName",
                                 dataIndex: "ItemName",
                                 flex: 1
                             },
                             {
-                                text: "Grupo",
+                                text: "ItmsGrpCod",
                                 dataIndex: "ItmsGrpCod",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Codigo de barras",
+                                text: "CodeBars",
                                 dataIndex: "CodeBars",
                                 flex: 1,
                                 align: "center"
@@ -487,7 +487,7 @@ Ext.define('Modulos.global.PanelProductos', {
                                 align: "center"
                             },
                             {
-                                text: "Fecha de actualizacion",
+                                text: "UpdateDate",
                                 dataIndex: "UpdateDate",
                                 flex: 1,
                                 align: "center"
@@ -505,99 +505,98 @@ Ext.define('Modulos.global.PanelProductos', {
                                 align: "center"
                             },
                             {
-                                text: "Modelo",
+                                text: "U_ARGNS_MOD",
                                 dataIndex: "U_ARGNS_MOD",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Talla",
+                                text: "U_ARGNS_SIZE",
                                 dataIndex: "U_ARGNS_SIZE",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Año",
+                                text: "U_ARGNS_YEAR",
                                 dataIndex: "U_ARGNS_YEAR",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Grupo de modelo",
+                                text: "U_ARGNS_M_GROUP",
                                 dataIndex: "U_ARGNS_M_GROUP",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Indicador de impuestos",
+                                text: "TaxCodeAR",
                                 dataIndex: "TaxCodeAR",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Escala",
+                                text: "U_ARGNS_SCL",
                                 dataIndex: "U_ARGNS_SCL",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Orden visual de talla",
+                                text: "U_ARGNS_SIZEVO",
                                 dataIndex: "U_ARGNS_SIZEVO",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Division",
+                                text: "U_ARGNS_DIV",
                                 dataIndex: "U_ARGNS_DIV",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Temporada",
+                                text: "U_ARGNS_SEASON",
                                 dataIndex: "U_ARGNS_SEASON",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Línea",
+                                text: "U_ARGNS_LineCode",
                                 dataIndex: "U_ARGNS_LineCode",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Coleccion",
+                                text: "U_ARGNS_Coll",
                                 dataIndex: "U_ARGNS_Coll",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Marca",
+                                text: "U_ARGNS_Brand",
                                 dataIndex: "U_ARGNS_Brand",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Grupo de edad",
+                                text: "U_ARGNS_GEDAD",
                                 dataIndex: "U_ARGNS_GEDAD",
                                 flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Color largo",
+                                text: "U_ARGNS_COLORL",
                                 dataIndex: "U_ARGNS_COLORL",
                                 flex: 1,
                                 align: "center",
-                                hidden:true
+                                hidden: true
                             },
                             {
-                                text: "Color corto",
+                                text: "U_ARGNS_COLORP",
                                 dataIndex: "U_ARGNS_COLORP",
                                 flex: 1,
                                 align: "center",
-                                hidden:true
+                                hidden: true
                             }
                         ]
-
 
 
                     },

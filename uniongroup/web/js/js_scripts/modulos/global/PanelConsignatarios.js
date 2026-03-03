@@ -382,6 +382,8 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                     id: 'gridDirecciones',
                     store: me.storeDirecciones,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridDireccionesState',
                     plugins: {
                         gridfilters: true,
                     },
@@ -433,64 +435,106 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                             {
                                 text: "#",
                                 xtype: "rownumberer",
-                                width: 50,
+                                flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Codigo",
+                                text: "DocEntry",
+                                dataIndex: "DocEntry",
+                                flex: 1,
+                                align: "center"
+                            },
+                            {
+                                text: "AddressCode",
                                 dataIndex: "AddressCode",
-                                width: 150,
+                                flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Cliente",
+                                text: "CardCode",
+                                dataIndex: "CardCode",
+                                flex: 1,
+                                align: "center"
+                            },
+                            {
+                                text: "CardName",
                                 dataIndex: "CardName",
-                                width: 160,
                                 flex: 1
                             },
                             {
-                                text: "Direccion",
+                                text: "CardType",
+                                dataIndex: "CardType",
+                                flex: 1,
+                                align: "center"
+                            },
+                            {
+                                text: "AdresType",
+                                dataIndex: "AdresType",
+                                flex: 1,
+                                align: "center"
+                            },
+                            {
+                                text: "Address",
                                 dataIndex: "Address",
-                                width: 160,
                                 flex: 1
                             },
                             {
-                                text: "Calle",
+                                text: "Address2",
+                                dataIndex: "Address2",
+                                flex: 1
+                            },
+                            {
+                                text: "Address3",
+                                dataIndex: "Address3",
+                                flex: 1
+                            },
+                            {
+                                text: "Street",
                                 dataIndex: "Street",
-                                width: 160
+                                flex: 1
                             },
                             {
-                                text: "No.",
+                                text: "StreetNo",
                                 dataIndex: "StreetNo",
-                                width: 100,
+                                flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Colonia",
+                                text: "Building",
+                                dataIndex: "Building",
+                                flex: 1
+                            },
+                            {
+                                text: "Block",
                                 dataIndex: "Block",
-                                width: 160
+                                flex: 1
                             },
                             {
-                                text: "CP",
+                                text: "ZipCode",
                                 dataIndex: "ZipCode",
-                                width: 100,
+                                flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Ciudad",
+                                text: "City",
+                                dataIndex: "City",
+                                flex: 1
+                            },
+                            {
+                                text: "County",
                                 dataIndex: "County",
-                                width: 150
+                                flex: 1
                             },
                             {
-                                text: "Estado",
+                                text: "State",
                                 dataIndex: "State",
-                                width: 80,
+                                flex: 1,
                                 align: "center"
                             },
                             {
-                                text: "Pais",
+                                text: "Country",
                                 dataIndex: "Country",
-                                width: 80,
+                                flex: 1,
                                 align: "center"
                             }
                         ]

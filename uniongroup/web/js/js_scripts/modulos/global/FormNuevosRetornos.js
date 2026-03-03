@@ -68,7 +68,7 @@ Ext.define('NuevosRetornosUtils', {
                                                             'Y-m-d\\TH:i:s'
                                                             ),
                                                     CardCode: retorno.CardCode,
-                                                    Status: 'A',
+                                                    Status: retorno.Status,
                                                     Memo: retorno.Memo
                                                 },
                                                 ReturnLines: lineas
