@@ -7,8 +7,10 @@ package com.control.global;
 import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
 import com.entity.global.CentralRetornos;
+import com.entity.global.CentralRetornosDet;
 import com.entity.global.CentralRetornosGlobal;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.util.ReadProps;
 import com.util.Utilities;
@@ -62,6 +64,10 @@ public class CtrlRetornos extends HttpServlet {
                     
                      case "4":
                     out.print(ObtenerRetornos(request, response));
+                    break;
+                    
+                    case "5":
+                    out.print(ObtenerRetornosDet(request, response));
                     break;
                 
                 
@@ -265,9 +271,36 @@ public class CtrlRetornos extends HttpServlet {
         try {
             // idEmpresa = Utilities.obtenParametro(request, "idEmpresa");
             String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornos")+ "?estatus="+ estatus + "&diasatras=" +dias + "&fechafin=" + fecha + "&offset=" + offset + "&limit=" + limit;;
+            String respuesta = requetGet.getGetPaginacion(service, request);
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
+            // ? IGUAL QUE TU EJEMPLO: deserializar directamente
+            CentralRetornos wrapper = mapper.readValue(respuesta, CentralRetornos.class);
+
+            // ? IGUAL QUE TU EJEMPLO: devolver todo el objeto
+            return mapper.writeValueAsString(wrapper);
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String ObtenerRetornosDet(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal, idEmpresa;
+        HttpSession session = request.getSession(true);
+        String clave = Utilities.obtenParametro(request, "clave");
+        try {
+            // idEmpresa = Utilities.obtenParametro(request, "idEmpresa");
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornosDet") + "?clave=" + clave;
             String repuesta = requetGet.getGet(service);
-            CentralRetornos tipoIngreso = new ObjectMapper().readValue(repuesta, CentralRetornos.class);
-            JSONVal = new ObjectMapper().writeValueAsString(tipoIngreso.items);
+            CentralRetornosDet CRetornoDet = new ObjectMapper().readValue(repuesta, CentralRetornosDet.class);
+            JSONVal = new ObjectMapper().writeValueAsString(CRetornoDet.items);
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";

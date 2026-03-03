@@ -6,14 +6,13 @@
 
 Ext.define('RetornosUtils', {
     singleton: true,
-    
-    
+
     BtnBusqRetornos: function () {
 
         var idEstatus = Ext.getCmp('idCmbEstatusRetorno').getValue();
         const fecha = Ext.Date.format(Ext.getCmp('idFechaRetorno').getValue(), 'd-m-Y');
         const diasAtras = Ext.getCmp('idDiasAtrasRetorno').getValue();
-        
+
 
         const param = {
             busqBnd: 4,
@@ -37,8 +36,7 @@ Ext.define('RetornosUtils', {
             params: prm
         });
     },
-    
-    
+
     verNuevasOrdenes: function () {
 
         var win = Ext.create('Ext.window.Window', {
@@ -57,9 +55,44 @@ Ext.define('RetornosUtils', {
         });
 
         win.show();
-    }
+    },
 
+    detalleRetorno: function (clave) {
 
+        Ext.require('Modulos.global.FormPanelRetornosDet', function () {
+            var win = Ext.create('Ext.window.Window', {
+                id: 'winPaneldetalleRetorno',
+                title: 'Detalle Retorno',
+                scrollable: 'vertical',
+                width: 800,
+                height: 500,
+                closable: true,
+                closeAction: 'destroy',
+                modal: true,
+                constrain: true,
+                layout: 'fit',
+                resizable: true,
+                listeners: {
+                    destroy: function () {
+                        RetornosUtils.BtnBusqRetornos();
+                    }
+                },
+                items: [
+                    Ext.create('Modulos.global.FormPanelRetornosDet', {
+                        cveRetorno: clave,
+                        titulo: 'Detalle',
+                        itemId: 'pnlRetornoDet',
+                        height: 200,
+                        anchor: '100%'
+                                //window: 'winPaneldetalleEcommerce',
+                    })
+                ]
+            });
+
+            // win.setSize(Ext.getBody().getViewSize());
+            win.show();
+        });
+    },
 
 });
 
@@ -90,7 +123,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                 "DocDate",
                 "CardCode",
                 "Memo",
-                "status",
+                "Status",
                 "FechaInsercion"
             ]
         });
@@ -167,7 +200,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                                             allowBlank: true,
                                             editable: false
                                         },
-                                        
+
                                         {
                                             xtype: 'datefield',
                                             id: 'idFechaRetorno',
@@ -184,12 +217,12 @@ Ext.define('Modulos.global.PanelRetornos', {
                                             name: 'diasAtras',
                                             fieldLabel: 'Dias atras',
                                             value: 7,
-                                           // maxValue: EcommerceUtils.dias,
+                                            // maxValue: EcommerceUtils.dias,
                                             minValue: 0,
                                             allowDecimals: false,
                                             allowBlank: false,
                                             width: 300,
-                                            
+
                                         }
                                     ]
                                 }
@@ -271,8 +304,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                             filter: {type: 'number'}
                         },
                         {
-                            text: "Estatus",
-                            dataIndex: "status",
+                            text: "Status",
+                            dataIndex: "Status",
                             align: "center",
                             width: 150,
                             filter: {type: 'string'},
@@ -304,20 +337,20 @@ Ext.define('Modulos.global.PanelRetornos', {
 //                            }
                         },
                         {
-                            text: "Doc Entry",
+                            text: "DocEntry",
                             dataIndex: "DocEntry",
                             align: "center",
                             width: 150,
                             filter: {type: 'number'}
                         },
                         {
-                            text: "Doc Num",
+                            text: "DocNum",
                             dataIndex: "DocNum",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Doc Date",
+                            text: "DocDate",
                             dataIndex: "DocDate",
                             filter: {type: 'date'},
                             width: 150,
@@ -358,7 +391,10 @@ Ext.define('Modulos.global.PanelRetornos', {
                             e.record.commit();
                         },
                         rowdblclick: function (grid, record) {
-                            RetornosUtils.verLineasOrdenLocal(record);
+
+                            var grid = Ext.getCmp('gridRetornos'); // or e.grid
+                            var cvRetorno = grid.getSelectionModel().getLastSelected().get('rtnid');
+                            RetornosUtils.detalleRetorno(cvRetorno);
                         }
                     }
                 }

@@ -13,6 +13,10 @@ Ext.Loader.setPath('Ext.ux', contexto + '/js/build7/packages/ux');
 Ext.Loader.setPath('Modulos', contexto + '/js/js_scripts/modulos');
 Ext.Loader.setPath('Modulos.global', contexto + '/js/js_scripts/modulos/global');
 
+Ext.state.Manager.setProvider(
+    Ext.create('Ext.state.LocalStorageProvider')
+);
+
 
 Ext.require([
     'Ext.tip.QuickTipManager',

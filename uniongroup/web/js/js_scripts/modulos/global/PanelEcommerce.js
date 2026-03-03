@@ -74,6 +74,8 @@ Ext.define('EcommerceUtils', {
             var win = Ext.create('Ext.window.Window', {
                 id: 'winPaneldetalleEcommerce',
                 title: 'Detalle Pedido',
+                width: 100,
+                height: 500,
                 scrollable: 'vertical',
                 closable: true,
                 closeAction: 'destroy',
@@ -98,7 +100,7 @@ Ext.define('EcommerceUtils', {
                 ]
             });
 
-            win.setSize(Ext.getBody().getViewSize());
+            //win.setSize(Ext.getBody().getViewSize());
             win.show();
         });
     },
@@ -485,9 +487,11 @@ Ext.define('Modulos.global.PanelEcommerce', {
                         },
                         items: [
                             {xtype: 'rownumberer', text: '#', flex: 0.5},
-                            {text: 'ID', dataIndex: 'ecomid', flex: 1},
+
+                            {text: 'ecomid', dataIndex: 'ecomid', flex: 1},
+
                             {
-                                text: 'Estatus',
+                                text: 'estatusecom',
                                 dataIndex: 'estatusecom',
                                 flex: 1,
                                 renderer: function (value) {
@@ -505,45 +509,43 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                     var color = '#000';
                                     switch (value) {
                                         case 'A':
-                                            color = '#4CAF50'; // Verde
+                                            color = '#4CAF50';
                                             break;
                                         case 'S':
-                                            color = '#2196F3'; // Azul
+                                            color = '#2196F3';
                                             break;
                                         case 'C':
-                                            color = '#009688'; // Teal / Azul verdoso
+                                            color = '#009688';
                                             break;
                                         case 'X':
-                                            color = '#F44336'; // Rojo
+                                            color = '#F44336';
                                             break;
                                     }
 
                                     return '<b style="color: ' + color + ';">' + nombre + '</b>';
                                 }
-
                             },
 
-                            /* ====== VISIBLES ====== */
-                            {text: 'Holding', dataIndex: 'holding', flex: 1},
-                            {text: 'Cliente', dataIndex: 'customer', flex: 1},
-                            {text: 'Cliente neutral', dataIndex: 'neutralcustomer', flex: 1},
-                            {text: 'Orden', dataIndex: 'ordernumber', flex: 1},
-                            {text: 'Fecha entrega', dataIndex: 'deliverydate', flex: 1},
+                            {text: 'holding', dataIndex: 'holding', flex: 1},
+                            {text: 'customer', dataIndex: 'customer', flex: 1},
+                            {text: 'neutralcustomer', dataIndex: 'neutralcustomer', flex: 1},
+                            {text: 'ordernumber', dataIndex: 'ordernumber', flex: 1},
+                            {text: 'deliverydate', dataIndex: 'deliverydate', flex: 1},
 
-                            {text: 'Shipper', dataIndex: 'shippername1', flex: 1},
-                            {text: 'Tipo envío', dataIndex: 'shippingtype', flex: 1},
+                            {text: 'shippername1', dataIndex: 'shippername1', flex: 1},
+                            {text: 'shippingtype', dataIndex: 'shippingtype', flex: 1},
 
-                            {text: 'Receptor #', dataIndex: 'receivernumber', flex: 1},
-                            {text: 'Receptor nombre', dataIndex: 'receivername1', flex: 1},
-                            {text: 'ZIP receptor', dataIndex: 'receiverzip', flex: 1},
-                            {text: 'Ciudad receptor', dataIndex: 'receivertown', flex: 1},
+                            {text: 'receivernumber', dataIndex: 'receivernumber', flex: 1},
+                            {text: 'receivername1', dataIndex: 'receivername1', flex: 1},
+                            {text: 'receiverzip', dataIndex: 'receiverzip', flex: 1},
+                            {text: 'receivertown', dataIndex: 'receivertown', flex: 1},
 
-                            {text: 'Fecha proceso', dataIndex: 'processingdate', flex: 1, },
-                            {text: 'Hora proceso', dataIndex: 'processingtime', flex: 1},
-                            {text: 'Programa', dataIndex: 'userprogram', flex: 1},
+                            {text: 'processingdate', dataIndex: 'processingdate', flex: 1},
+                            {text: 'processingtime', dataIndex: 'processingtime', flex: 1},
+                            {text: 'userprogram', dataIndex: 'userprogram', flex: 1},
 
                             {
-                                text: 'Direccion',
+                                text: 'direccion',
                                 dataIndex: 'direccion',
                                 flex: 2,
                                 renderer: function (value) {
@@ -552,79 +554,80 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                     return '<a href="' + value + '" target="_blank">' + value + '</a>';
                                 }
                             },
-                            {text: 'Estatus surtido', dataIndex: 'preestatus', flex: 1},
-                            {text: 'PREID', dataIndex: 'preid', flex: 1},
+
+                            {text: 'preestatus', dataIndex: 'preestatus', flex: 1},
+                            {text: 'preid', dataIndex: 'preid', flex: 1},
 
                             /* ====== OCULTOS ====== */
-                            {text: 'Shipper 2', dataIndex: 'shippername2', hidden: true},
-                            {text: 'Shipper 3', dataIndex: 'shippername3', hidden: true},
-                            {text: 'Calle shipper', dataIndex: 'shipperstreet', hidden: true},
-                            {text: 'País shipper', dataIndex: 'shippercountry', hidden: true},
-                            {text: 'ZIP shipper', dataIndex: 'shipperzip', hidden: true},
-                            {text: 'Ciudad shipper', dataIndex: 'shippertown', hidden: true},
-                            {text: 'Email shipper', dataIndex: 'shipperemail', hidden: true},
+                            {text: 'shippername2', dataIndex: 'shippername2', hidden: true},
+                            {text: 'shippername3', dataIndex: 'shippername3', hidden: true},
+                            {text: 'shipperstreet', dataIndex: 'shipperstreet', hidden: true},
+                            {text: 'shippercountry', dataIndex: 'shippercountry', hidden: true},
+                            {text: 'shipperzip', dataIndex: 'shipperzip', hidden: true},
+                            {text: 'shippertown', dataIndex: 'shippertown', hidden: true},
+                            {text: 'shipperemail', dataIndex: 'shipperemail', hidden: true},
 
-                            {text: 'Receptor 2', dataIndex: 'receivername2', hidden: true},
-                            {text: 'Receptor 3', dataIndex: 'receivername3', hidden: true},
-                            {text: 'Calle receptor', dataIndex: 'receiverstreet', hidden: true},
-                            {text: 'País receptor', dataIndex: 'receivercountry', hidden: true},
-                            {text: 'Tel receptor', dataIndex: 'receiverphone', hidden: true},
-                            {text: 'Email receptor', dataIndex: 'receiveremail', hidden: true},
-                            {text: 'ILN receptor', dataIndex: 'receiveriln', hidden: true},
+                            {text: 'receivername2', dataIndex: 'receivername2', hidden: true},
+                            {text: 'receivername3', dataIndex: 'receivername3', hidden: true},
+                            {text: 'receiverstreet', dataIndex: 'receiverstreet', hidden: true},
+                            {text: 'receivercountry', dataIndex: 'receivercountry', hidden: true},
+                            {text: 'receiverphone', dataIndex: 'receiverphone', hidden: true},
+                            {text: 'receiveremail', dataIndex: 'receiveremail', hidden: true},
+                            {text: 'receiveriln', dataIndex: 'receiveriln', hidden: true},
 
-                            {text: 'Pagador flete', dataIndex: 'freightpayer', hidden: true},
-                            {text: 'Fecha fija', dataIndex: 'fixeddate', hidden: true},
-                            {text: 'Hora fija', dataIndex: 'fixedtime', hidden: true},
-                            {text: 'Tipo fecha fija', dataIndex: 'fixeddatetype', hidden: true},
-                            {text: 'Altura pallet', dataIndex: 'palletheight', hidden: true},
-                            {text: 'Valor mercancía', dataIndex: 'goodsvalue', hidden: true},
-                            {text: 'Estatus proceso', dataIndex: 'processingstatus', hidden: true},
-                            {
-                                xtype: 'actioncolumn',
-                                text: "Generar LE",
-                                align: 'center',
-                                width: 100,
-                                items: [
+                            {text: 'freightpayer', dataIndex: 'freightpayer', hidden: true},
+                            {text: 'fixeddate', dataIndex: 'fixeddate', hidden: true},
+                            {text: 'fixedtime', dataIndex: 'fixedtime', hidden: true},
+                            {text: 'fixeddatetype', dataIndex: 'fixeddatetype', hidden: true},
+                            {text: 'palletheight', dataIndex: 'palletheight', hidden: true},
+                            {text: 'goodsvalue', dataIndex: 'goodsvalue', hidden: true},
+                            {text: 'processingstatus', dataIndex: 'processingstatus', hidden: true},
                                     {
-                                        tooltip: 'Acción Pedido',
-                                        getClass: function (v, meta, record) {
-                                            var estatus = record.get("estatusecom");
+                                        xtype: 'actioncolumn',
+                                        text: "Generar LE",
+                                        align: 'center',
+                                        width: 100,
+                                        items: [
+                                            {
+                                                tooltip: 'Acción Pedido',
+                                                getClass: function (v, meta, record) {
+                                                    var estatus = record.get("estatusecom");
 
-                                            if (estatus === 'P') {
-                                                return "icn-habilita"; // Activo o Confirmado -> habilitado
-                                            } else {
-                                                return "icn-habilita-disable"; // Surtido o Cancelado
-                                            }
-                                        },
-                                        handler: function (grid, rowIndex, colIndex) {
-                                            const rec = grid.getStore().getAt(rowIndex);
-                                            const ecomid = rec.get('ecomid');
-                                            const estatus = rec.get('estatusecom');
-
-                                            // Si está Surtido o Cancelado, no hace nada
-                                            if (estatus === 'S' || estatus === 'X') {
-                                                return;
-                                            }
-
-                                            // Activo -> Confirmar pedido
-                                            if (estatus === 'P') {
-                                                Ext.MessageBox.show({
-                                                    title: 'Ecommerce',
-                                                    msg: '¿Estas seguro que deseas confirmar el pedido ' + ecomid + ' ?',
-                                                    buttons: Ext.MessageBox.OKCANCEL,
-                                                    icon: Ext.MessageBox.QUESTION,
-                                                    fn: function (btn) {
-                                                        if (btn === 'ok') {
-                                                            EcommerceUtils.ConfirmarPedido(Ext.JSON.encode({
-                                                                ecomid: ecomid
-                                                            }));
-                                                        }
+                                                    if (estatus === 'P') {
+                                                        return "icn-habilita"; // Activo o Confirmado -> habilitado
+                                                    } else {
+                                                        return "icn-habilita-disable"; // Surtido o Cancelado
                                                     }
-                                                });
-                                                return;
-                                            }
+                                                },
+                                                handler: function (grid, rowIndex, colIndex) {
+                                                    const rec = grid.getStore().getAt(rowIndex);
+                                                    const ecomid = rec.get('ecomid');
+                                                    const estatus = rec.get('estatusecom');
 
-                                            // Confirmado -> Generar archivo de confirmación
+                                                    // Si está Surtido o Cancelado, no hace nada
+                                                    if (estatus === 'S' || estatus === 'X') {
+                                                        return;
+                                                    }
+
+                                                    // Activo -> Confirmar pedido
+                                                    if (estatus === 'P') {
+                                                        Ext.MessageBox.show({
+                                                            title: 'Ecommerce',
+                                                            msg: '¿Estas seguro que deseas confirmar el pedido ' + ecomid + ' ?',
+                                                            buttons: Ext.MessageBox.OKCANCEL,
+                                                            icon: Ext.MessageBox.QUESTION,
+                                                            fn: function (btn) {
+                                                                if (btn === 'ok') {
+                                                                    EcommerceUtils.ConfirmarPedido(Ext.JSON.encode({
+                                                                        ecomid: ecomid
+                                                                    }));
+                                                                }
+                                                            }
+                                                        });
+                                                        return;
+                                                    }
+
+                                                    // Confirmado -> Generar archivo de confirmación
 //                                            if (estatus === 'C') {
 //                                                Ext.MessageBox.show({
 //                                                    title: 'Ecommerce',
@@ -639,10 +642,10 @@ Ext.define('Modulos.global.PanelEcommerce', {
 //                                                });
 //                                                return;
 //                                            }
-                                        }
-                                    }
-                                ]
-                            },
+                                                }
+                                            }
+                                        ]
+                                    },
                             {
                                 xtype: 'actioncolumn',
                                 text: "Confirmar Pedido",
@@ -653,8 +656,8 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                         tooltip: 'Acción Pedido',
                                         getClass: function (v, meta, record) {
                                             var estatus = record.get("preestatus");
-                                            
-                                            return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado" ? "icn-habilita": "icn-habilita-disable";
+
+                                            return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado" ? "icn-habilita" : "icn-habilita-disable";
                                         },
                                         handler: function (grid, rowIndex, colIndex) {
                                             const rec = grid.getStore().getAt(rowIndex);
