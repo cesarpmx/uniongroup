@@ -73,6 +73,9 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
                 case "7":  // ? NUEVO
                     out.print(EliminarOrdenEntrada(request, response));
                     break;
+                case "8":  // ? NUEVO
+                    out.print(ConfirmarTransferenciaEntrada(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +89,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            String serviceTransferencias = props.getValueProp("HostGlobal")
+            String serviceTransferencias = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceInboundTransferGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceTransferencias);
@@ -138,7 +141,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
             String docEntry = Utilities.obtenParametro(request, "docEntry");
 
             // Primero obtener todas las transferencias
-            String serviceTransferencias = props.getValueProp("HostGlobal")
+            String serviceTransferencias = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceInboundTransferGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceTransferencias);
@@ -550,6 +553,20 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
             String service = props.getValueProp("Host") + props.getValueProp("ServiceTransferenciaEntrada");
             JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
+    public String ConfirmarTransferenciaEntrada(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonTransferencia = Utilities.obtenParametro(request, "centralTransferenciaEntrada");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceTransferenciaEntradaConfirm");
+            JSONVal = requetPost.setPut(service, jsonTransferencia, request);
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";

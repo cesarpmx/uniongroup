@@ -76,6 +76,12 @@ public class CtrlOrdenVenta extends HttpServlet {
                 case "8":
                     out.print(GenerarListaEmpaque(request, response));
                     break;
+                case "9":
+                    out.print(ObtenerProductoSurtido(request, response));
+                    break;
+                case "10":
+                    out.print(ConfirmarOrdenVenta(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,7 +192,7 @@ public class CtrlOrdenVenta extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceSalesOrderGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
@@ -232,7 +238,7 @@ public class CtrlOrdenVenta extends HttpServlet {
                 return "[]";
             }
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceSalesOrderGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
@@ -461,6 +467,52 @@ public class CtrlOrdenVenta extends HttpServlet {
         return JSONVal;
     }
 
+    public String ObtenerProductoSurtido(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        try {
+            String preid = Utilities.obtenParametro(request, "preid");
+
+            String service = props.getValueProp("Host")
+                    + "uniongroup/productosurtido/?clave=" + preid;
+
+            JSONVal = requetGet.getGetPaginacion(service, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "{\"items\":[]}";
+        }
+        return JSONVal;
+    }
+
+    public String ConfirmarOrdenVenta(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonOrdenVenta = Utilities.obtenParametro(request, "centralVenta");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenVentaConfirm");
+            JSONVal = requetPost.setPut(service, jsonOrdenVenta, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
+//    public String ObtenerProductoSurtido(HttpServletRequest request, HttpServletResponse response) {
+//        String JSONVal = "";
+//        try {
+//            String preid = Utilities.obtenParametro(request, "preid");
+//
+//            String service = props.getValueProp("Host") + "ServiceProdSurt" + preid;
+//
+//            JSONVal = requetGet.getGetPaginacion(service, request);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JSONVal = "{\"items\":[]}";
+//        }
+//        return JSONVal;
+//    }
 //    public String NuevoOrdenVenta(HttpServletRequest request, HttpServletResponse response) {
 //        String JSONVal = "";
 //        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");

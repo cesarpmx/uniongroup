@@ -204,7 +204,7 @@ Ext.define('OrdenesCompraUtils', {
                             align: "right",
                             filter: {type: 'number'},
                             renderer: function (value) {
-                                return '<b style="color: #4CAF50;">$' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                             }
                         },
                         {
@@ -926,6 +926,45 @@ Ext.define('OrdenesCompraUtils', {
 
         win.show();
     },
+
+    ConfirmarOrdenCompra: function (ocid) {
+        var payload = {
+            OCID: ocid,
+            OCEstatusId: "A",
+        };
+
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesCompra',
+            timeout: 60000,
+            params: {
+                busqBnd: 8,
+                centralCompra: Ext.JSON.encode(payload)
+            },
+            success: function (response) {
+                var resultado = Ext.JSON.decode(response.responseText);
+                Ext.MessageBox.show({
+                    title: 'Orden Compra',
+                    msg: resultado.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            OrdenesCompraUtils.BtnBusqOrdenCompra();
+                        }
+                    }
+                });
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo confirmar la orden...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
     enviarReceiptConfirm: function (record) {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
@@ -1057,7 +1096,11 @@ Ext.define('OrdenesCompraUtils', {
                                                     var resultado = Ext.decode(response.responseText);
 
                                                     if (resultado.success) {
+
                                                         console.log("? Respuesta del cliente:", resultado.clienteResponse);
+
+                                                        var ocid = record.get("OCID");  // Obtener OCID del record
+                                                        OrdenesCompraUtils.ConfirmarOrdenCompra(ocid);
 
                                                         // ? EXTRAER VALORES
                                                         var docNum = 'N/A';
@@ -1484,7 +1527,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                 // ? Mapeo de códigos a nombres
                                 var estatusMap = {
                                     'A': 'Activo',
-                                    'C': 'Cerrado',
+                                    'C': 'Confirmado',
                                     'X': 'Cancelado'
                                             // Agrega los estatus que necesites
                                 };
@@ -1546,26 +1589,26 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             }
                         },
                         {
-                            text: "Doc Entry",
+                            text: "DocEntry",
                             dataIndex: "DocEntry",
                             align: "center",
                             width: 150,
                             filter: {type: 'number'}
                         },
                         {
-                            text: "Doc Num",
+                            text: "DocNum",
                             dataIndex: "DocNum",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Numero Card",
+                            text: "NumeroAtCard",
                             dataIndex: "NumAtCard",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Doc Date",
+                            text: "DocDate",
                             dataIndex: "DocDate",
                             filter: {type: 'date'},
                             width: 150,
@@ -1616,7 +1659,9 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                 {
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("OCEstatusId");
-                                        return estatus === "A"
+                                        var estatusCom = record.get("comestatus");
+
+                                        return estatus === "A" && estatusCom !== "Recibido"
                                                 ? "icn-cancela"
                                                 : "icn-cancela-disable";
                                     },

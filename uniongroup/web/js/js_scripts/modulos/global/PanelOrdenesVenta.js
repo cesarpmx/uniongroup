@@ -6,13 +6,11 @@
 Ext.define('OrdenesVentaUtils', {
     singleton: true,
     dias: localStorage.getItem('diasAtras'),
-
     BtnBusqOrdenVenta: function () {
 
         var idEstatusVenta = Ext.getCmp('idCmbEstatusVenta').getValue();
         var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
         var idCmbDiasVenta = Ext.getCmp('idCmbDiasVenta').getValue();
-
         var param;
         param = {
             busqBnd: 1,
@@ -22,29 +20,24 @@ Ext.define('OrdenesVentaUtils', {
             idCmbDiasVenta: idCmbDiasVenta,
         };
         OrdenesVentaUtils.BuscarOrdenVenta(param);
-
         var storeOrdenesVentas = Ext.StoreManager.lookup('storeOrdenesVenta');
         storeOrdenesVentas.getProxy().setExtraParams(param);
         storeOrdenesVentas.loadPage(1);
     },
-
     BuscarOrdenVenta: function (prm) {
         var grd = Ext.getCmp('gridOrdenesVenta');
         if (!grd)
             return;
-
         var store = grd.getStore();
         store.removeAll(true);
         store.reload({
             params: prm
         });
     },
-
     verLineasOrdenLocal: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
-
         if (!Ext.ClassManager.get('modelLineasOrdenVentaLocal')) {
             Ext.define('modelLineasOrdenVentaLocal', {
                 extend: 'Ext.data.Model',
@@ -95,7 +88,6 @@ Ext.define('OrdenesVentaUtils', {
                 }
             }
         });
-
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrdenVentaLocal',
             title: 'Líneas de Orden #' + docNum + ' - Cliente: ' + cardCode,
@@ -202,15 +194,12 @@ Ext.define('OrdenesVentaUtils', {
                 }
             ]
         });
-
         win.show();
     },
-
     verLineasOrden: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
-
         // Modelo para las líneas
         if (!Ext.ClassManager.get('modelLineasOrdenVenta')) {
             Ext.define('modelLineasOrdenVenta', {
@@ -255,7 +244,6 @@ Ext.define('OrdenesVentaUtils', {
                 }
             }
         });
-
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrdenVenta',
             title: 'Líneas de Orden #' + docNum + ' - Cliente: ' + cardCode,
@@ -348,15 +336,12 @@ Ext.define('OrdenesVentaUtils', {
                 }
             ]
         });
-
         win.show();
     },
-
     // ? MODIFICAR PARA ACEPTAR ÓRDENES SELECCIONADAS
     guardarNuevasOrdenes: function (selectedRecords) {
         var ordenesAGuardar = selectedRecords || [];
         var totalSeleccionadas = ordenesAGuardar.length;
-
         Ext.MessageBox.confirm(
                 'Confirmar',
                 '¿Está seguro de cargar ' + totalSeleccionadas + ' orden(es) de venta seleccionada(s)?',
@@ -364,7 +349,6 @@ Ext.define('OrdenesVentaUtils', {
                     if (btn === 'yes') {
 
                         Ext.getBody().mask('Obteniendo órdenes de venta...');
-
                         // ? Convertir records a array de objetos planos
                         var ordenesHeader = [];
                         Ext.Array.each(ordenesAGuardar, function (record) {
@@ -379,9 +363,7 @@ Ext.define('OrdenesVentaUtils', {
                                 Memo: record.get('Memo')
                             });
                         });
-
                         console.log('? Órdenes de venta seleccionadas para guardar:', ordenesHeader.length);
-
                         if (ordenesHeader.length === 0) {
                             Ext.getBody().unmask();
                             Ext.Msg.alert('Información', 'No hay órdenes de venta para procesar');
@@ -391,7 +373,6 @@ Ext.define('OrdenesVentaUtils', {
                         // PASO 2: Obtener las líneas de cada orden
                         var promises = [];
                         var ordenesCompletas = [];
-
                         ordenesHeader.forEach(function (orden) {
                             promises.push(
                                     new Promise(function (resolve, reject) {
@@ -404,7 +385,6 @@ Ext.define('OrdenesVentaUtils', {
                                             },
                                             success: function (responseLineas) {
                                                 var lineas = Ext.decode(responseLineas.responseText);
-
                                                 ordenesCompletas.push({
                                                     SalesOrder: {
                                                         DocEntry: orden.DocEntry,
@@ -418,7 +398,6 @@ Ext.define('OrdenesVentaUtils', {
                                                     },
                                                     Lines: lineas
                                                 });
-
                                                 resolve();
                                             },
                                             failure: function () {
@@ -428,7 +407,6 @@ Ext.define('OrdenesVentaUtils', {
                                     })
                                     );
                         });
-
                         // PASO 3: Cuando todas las líneas estén cargadas, enviar por lotes
                         Promise.all(promises).then(function () {
                             Ext.getBody().unmask();
@@ -442,7 +420,6 @@ Ext.define('OrdenesVentaUtils', {
                 }
         );
     },
-
     iniciarEnvioPorLotes: function (allOrders) {
         var me = this,
                 loteSize = 10,
@@ -451,7 +428,6 @@ Ext.define('OrdenesVentaUtils', {
                 erroresGlobal = [],
                 clienteResponseGlobal = [],
                 index = 0;
-
         var progressWin = Ext.create('Ext.window.Window', {
             title: 'Guardando Órdenes de Venta',
             width: 400,
@@ -466,21 +442,16 @@ Ext.define('OrdenesVentaUtils', {
             ]
         });
         progressWin.show();
-
         function enviarSiguienteLote() {
             var fin = Math.min(index + loteSize, totalOrders),
                     loteActual = allOrders.slice(index, fin);
-
             var payload = {
                 orders: loteActual
             };
-
             var jsonToSend = Ext.encode(payload);
-
             var pct = index / totalOrders;
             Ext.getCmp('lblProgresoOrdenesVenta').setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalOrders);
             Ext.getCmp('barProgresoOrdenesVenta').updateProgress(pct);
-
             Ext.Ajax.request({
                 url: contexto + '/OrdenesVenta',
                 method: 'POST',
@@ -509,7 +480,6 @@ Ext.define('OrdenesVentaUtils', {
                             var ordenOriginal = loteActual.find(
                                     o => o.SalesOrder.DocEntry === item.DocEntry
                             );
-
                             var row = {
                                 DocEntry: item.DocEntry || 'N/A',
                                 DocNum: item.DocNum || '',
@@ -521,14 +491,12 @@ Ext.define('OrdenesVentaUtils', {
                                 linesFailed: item.linesFailed || 0,
                                 mensaje: item.status === 'inserted' ? 'OK' : item.message
                             };
-
                             if (item.status === 'inserted') {
                                 confirmadosGlobal.push(row);
                             } else {
                                 erroresGlobal.push(row);
                             }
                         });
-
                         // ? CAPTURAR respuesta del cliente (solo se envía en el último lote)
                         if (resultado.clienteResponse) {
                             clienteResponseGlobal = resultado.clienteResponse;
@@ -558,7 +526,6 @@ Ext.define('OrdenesVentaUtils', {
         }
         enviarSiguienteLote();
     },
-
     mostrarResultados: function (confirmData, noConfirmData, clienteData) {
         if (!Ext.ClassManager.get('ResultadoOrdenesVentaModel')) {
             Ext.define('ResultadoOrdenesVentaModel', {
@@ -578,7 +545,6 @@ Ext.define('OrdenesVentaUtils', {
         var storeConfirm = Ext.create('Ext.data.Store', {model: 'ResultadoOrdenesVentaModel', data: confirmData});
         var storeNoConfirm = Ext.create('Ext.data.Store', {model: 'ResultadoOrdenesVentaModel', data: noConfirmData});
         var storeCliente = Ext.create('Ext.data.Store', {model: 'ClienteResponseVentaModel', data: clienteData || []});
-
         const win = Ext.create('Ext.window.Window', {
             title: 'Resultados de Sincronización - Órdenes de Venta',
             width: 1000,
@@ -700,7 +666,6 @@ Ext.define('OrdenesVentaUtils', {
         });
         win.show();
     },
-
     verNuevasOrdenes: function () {
         // Modelo para las órdenes
         if (!Ext.ClassManager.get('modelOrdenesVentaHeader')) {
@@ -737,7 +702,6 @@ Ext.define('OrdenesVentaUtils', {
                 }
             }
         });
-
         const win = Ext.create('Ext.window.Window', {
             id: 'winOrdenesVenta',
             title: 'Órdenes de Venta Nuevas',
@@ -772,7 +736,6 @@ Ext.define('OrdenesVentaUtils', {
                             handler: function () {
                                 var grid = this.up('grid');
                                 var selected = grid.getSelection();
-
                                 if (selected.length === 0) {
                                     Ext.Msg.alert('Atención', 'Debe seleccionar al menos una orden de venta');
                                     return;
@@ -872,7 +835,7 @@ Ext.define('OrdenesVentaUtils', {
                             align: "right",
                             filter: {type: 'number'},
                             renderer: function (value) {
-                                return '<b style="color: #4CAF50;">$' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                             }
                         },
                         {
@@ -897,211 +860,735 @@ Ext.define('OrdenesVentaUtils', {
                 }
             ]
         });
-
         win.show();
+    },
+//    enviarShipmentConfirm: function (record) {
+//        var docEntry = record.get('DocEntry');
+//        var docNum = record.get('DocNum');
+//        var cardCode = record.get('CardCode');
+//
+//        // Modal para seleccionar estatus y agregar observaciones
+//        var winConfirm = Ext.create('Ext.window.Window', {
+//            title: 'Confirmar Envío - Orden #' + docNum,
+//            width: 500,
+//            height: 320,
+//            modal: true,
+//            layout: 'fit',
+//            items: [{
+//                    xtype: 'form',
+//                    bodyPadding: 20,
+//                    defaults: {
+//                        anchor: '100%',
+//                        labelWidth: 120
+//                    },
+//                    items: [
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Doc Entry',
+//                            value: docEntry,
+//                            fieldStyle: 'font-weight: bold; color: #2196F3;'
+//                        },
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Doc Num',
+//                            value: docNum,
+//                            fieldStyle: 'font-weight: bold;'
+//                        },
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Cliente',
+//                            value: cardCode
+//                        },
+//                        {
+//                            xtype: 'combobox',
+//                            fieldLabel: 'Estatus',
+//                            id: 'cmbEstatusEnvio',
+//                            allowBlank: false,
+//                            editable: false,
+//                            store: Ext.create('Ext.data.Store', {
+//                                fields: ['value', 'text'],
+//                                data: [
+//                                    {value: 'Total', text: 'Total'}, // ? CAMBIO
+//                                    {value: 'Parcial', text: 'Parcial'},
+//                                    {value: 'Cancelada', text: 'Cancelada'} // ? CAMBIO
+//                                ]
+//                            }),
+//                            valueField: 'value',
+//                            displayField: 'text',
+//                            value: 'Total'
+//                        },
+//                        {
+//                            xtype: 'textareafield',
+//                            fieldLabel: 'Observaciones',
+//                            id: 'txtMemoEnvio',
+//                            height: 80,
+//                            maxLength: 250
+//                        }
+//                    ]
+//                }],
+//            buttons: [
+//                {
+//                    text: 'Confirmar Envío',
+//                    iconCls: 'fa fa-check',
+//                    handler: function () {
+//                        var form = winConfirm.down('form').getForm();
+//                        if (!form.isValid()) {
+//                            Ext.Msg.alert('Atención', 'Complete todos los campos obligatorios');
+//                            return;
+//                        }
+//
+//                        var estatus = Ext.getCmp('cmbEstatusEnvio').getValue();
+//                        var memo = Ext.getCmp('txtMemoEnvio').getValue() || '';
+//
+//                        winConfirm.close();
+//                        Ext.getBody().mask('Procesando envío...');
+//
+//                        // Obtener líneas de BD local
+//                        Ext.Ajax.request({
+//                            url: contexto + '/OrdenesVenta',
+//                            method: 'POST',
+//                            params: {
+//                                busqBnd: 2,
+//                                docEntry: docEntry,
+//                                servicio: 'ServiceOrdenVentaDet'
+//                            },
+//                            success: function (response) {
+//                                var data = Ext.decode(response.responseText);
+//                                var lineas = data.items || data || [];  // ? Extraer items igual que compras
+//
+//                                if (!lineas || lineas.length === 0) {
+//                                    Ext.getBody().unmask();
+//                                    Ext.Msg.alert('Error', 'No se encontraron líneas para esta orden');
+//                                    return;
+//                                }
+//                                
+//                                // Construir JSON ShipmentConfirm
+//                                var now = new Date();
+//                                var docDate = now.getFullYear() + '-' +
+//                                        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+//                                        String(now.getDate()).padStart(2, '0') + 'T' +
+//                                        String(now.getHours()).padStart(2, '0') + ':' +
+//                                        String(now.getMinutes()).padStart(2, '0') + ':' +
+//                                        String(now.getSeconds()).padStart(2, '0');
+//
+//                                // Generar TransactionNumber único (timestamp)
+//                                var transactionNumber = String(Date.now());
+//
+//                                var shipmentConfirm = {
+//                                    
+//                                    ShipmentConfirm: {
+//                                        DocDate: docDate, // ? Formato: 2026-01-29T17:53:52
+//                                        DocNum: docNum,
+//                                        NumAtCard: record.get('NumAtCard') || '',
+//                                        TransactionNumber: transactionNumber, // ? Número largo único
+//                                        AddressCode: record.get('AddressCode') || '',
+//                                        Status: estatus,
+//                                        Memo: memo
+//                                    },
+//                                    ControlValues: {
+//                                        TotalQuantity: lineas.reduce((sum, l) => sum + (l.Quantity || 0), 0),
+//                                        TotalLines: lineas.length
+//                                    },
+//                                    Lines: lineas.map(function (linea) {
+//                                        return {
+//                                            LineNum: linea.LineNum,
+//                                            ItemCode: linea.ItemCode,
+//                                            BarCode: linea.BarCode,
+//                                            Quantity: linea.Quantity
+//                                        };
+//                                    })
+//                                };
+//
+//                                var jsonToSend = Ext.encode(shipmentConfirm);
+//                                console.log('? ShipmentConfirm a enviar:', jsonToSend);
+//
+//                                // Enviar al servlet (busqBnd=6)
+//                                Ext.Ajax.request({
+//                                    url: contexto + '/OrdenesVenta',
+//                                    method: 'POST',
+//                                    params: {
+//                                        busqBnd: 6,
+//                                        valores: jsonToSend
+//                                    },
+//                                    success: function (responseConfirm) {
+//                                        Ext.getBody().unmask();
+//
+//                                        try {
+//                                            var resultado = Ext.decode(responseConfirm.responseText);
+//
+//                                            if (resultado.success) {
+//                                                var msg = 'Confirmación de envío procesada exitosamente<br><br>';
+//                                                msg += '<b>Orden:</b> ' + docNum + '<br>';
+//                                                msg += '<b>Estatus:</b> ' + estatus + '<br>';
+//
+//                                                if (resultado.clienteResponse) {
+//                                                    var cr = resultado.clienteResponse;
+//                                                    msg += '<b>Fecha Sistema:</b> ' + (cr.SystemDate || '') + '<br>';
+//                                                    msg += '<b>Transaction #:</b> ' + (cr.TransactionNumber || '');
+//                                                }
+//
+//                                                Ext.Msg.alert('Éxito', msg, function () {
+//                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+//                                                });
+//                                            } else {
+//                                                Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
+//                                            }
+//                                        } catch (e) {
+//                                            console.error('Error al parsear respuesta:', e);
+//                                            Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor');
+//                                        }
+//                                    },
+//                                    failure: function () {
+//                                        Ext.getBody().unmask();
+//                                        Ext.Msg.alert('Error', 'Error al enviar la confirmación de envío');
+//                                    }
+//                                });
+//
+//                            },
+//                            failure: function () {
+//                                Ext.getBody().unmask();
+//                                Ext.Msg.alert('Error', 'Error al obtener las líneas de la orden');
+//                            }
+//                        });
+//                    }
+//                },
+//                {
+//                    text: 'Cancelar',
+//                    iconCls: 'icn-back',
+//                    handler: function () {
+//                        winConfirm.close();
+//                    }
+//                }
+//            ]
+//        });
+//
+//        winConfirm.show();
+//    },
+
+//    enviarShipmentConfirm: function (record) {
+//        var docEntry = record.get('DocEntry');
+//        var docNum = record.get('DocNum');
+//        var cardCode = record.get('CardCode');
+//        var preid = record.get('preid');  // ? NUEVO: Obtener PREID
+//
+//        // Validar que tenga PREID
+//        if (!preid || preid === 0) {
+//            Ext.Msg.alert('Error', 'Esta orden no tiene Lista de Empaque generada');
+//            return;
+//        }
+//
+//        // Modal para seleccionar estatus y agregar observaciones
+//        var winConfirm = Ext.create('Ext.window.Window', {
+//            title: 'Confirmar Envío - Orden #' + docNum,
+//            width: 500,
+//            height: 320,
+//            modal: true,
+//            layout: 'fit',
+//            items: [{
+//                    xtype: 'form',
+//                    bodyPadding: 20,
+//                    defaults: {
+//                        anchor: '100%',
+//                        labelWidth: 120
+//                    },
+//                    items: [
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Doc Entry',
+//                            value: docEntry,
+//                            fieldStyle: 'font-weight: bold; color: #2196F3;'
+//                        },
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Doc Num',
+//                            value: docNum,
+//                            fieldStyle: 'font-weight: bold;'
+//                        },
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Cliente',
+//                            value: cardCode
+//                        },
+//                        {
+//                            xtype: 'displayfield',
+//                            fieldLabel: 'Lista Empaque',
+//                            value: preid,
+//                            fieldStyle: 'font-weight: bold; color: #4CAF50;'
+//                        },
+//                        {
+//                            xtype: 'combobox',
+//                            fieldLabel: 'Estatus',
+//                            id: 'cmbEstatusEnvio',
+//                            allowBlank: false,
+//                            editable: false,
+//                            store: Ext.create('Ext.data.Store', {
+//                                fields: ['value', 'text'],
+//                                data: [
+//                                    {value: 'Total', text: 'Total'},
+//                                    {value: 'Parcial', text: 'Parcial'},
+//                                    {value: 'Cancelada', text: 'Cancelada'}
+//                                ]
+//                            }),
+//                            valueField: 'value',
+//                            displayField: 'text',
+//                            value: 'Total'
+//                        },
+//                        {
+//                            xtype: 'textareafield',
+//                            fieldLabel: 'Observaciones',
+//                            id: 'txtMemoEnvio',
+//                            height: 80,
+//                            maxLength: 250
+//                        }
+//                    ]
+//                }],
+//            buttons: [
+//                {
+//                    text: 'Confirmar Envío',
+//                    iconCls: 'fa fa-check',
+//                    handler: function () {
+//                        var form = winConfirm.down('form').getForm();
+//                        if (!form.isValid()) {
+//                            Ext.Msg.alert('Atención', 'Complete todos los campos obligatorios');
+//                            return;
+//                        }
+//
+//                        var estatus = Ext.getCmp('cmbEstatusEnvio').getValue();
+//                        var memo = Ext.getCmp('txtMemoEnvio').getValue() || '';
+//
+//                        winConfirm.close();
+//                        Ext.getBody().mask('Procesando envío...');
+//
+//                        // ? CAMBIO: Obtener productos surtidos desde productosurtido
+//                        Ext.Ajax.request({
+//                            url: contexto + '/OrdenesVenta',
+//                            method: 'POST',
+//                            params: {
+//                                busqBnd: 9, // ? NUEVO ENDPOINT
+//                                preid: preid
+//                            },
+//                            success: function (response) {
+//                                var data = Ext.decode(response.responseText);
+//                                var productos = data.items || [];
+//
+//                                if (!productos || productos.length === 0) {
+//                                    Ext.getBody().unmask();
+//                                    Ext.Msg.alert('Error', 'No se encontraron productos surtidos para esta lista de empaque');
+//                                    return;
+//                                }
+//
+//                                // ? Calcular totales desde productosurtido
+//                                var totalQty = 0;
+//                                var lineas = [];
+//                                var lineNum = 0;
+//
+//                                Ext.Array.each(productos, function (producto) {
+//                                    totalQty += producto.unidades || 0;
+//                                    lineas.push({
+//                                        LineNum: lineNum++,
+//                                        ItemCode: producto.itemcode,
+//                                        BarCode: producto.barcode,
+//                                        Quantity: producto.unidades
+//                                    });
+//                                });
+//
+//                                // ? Construir JSON ShipmentConfirm
+//                                var now = new Date();
+//                                var docDate = now.getFullYear() + '-' +
+//                                        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+//                                        String(now.getDate()).padStart(2, '0') + 'T' +
+//                                        String(now.getHours()).padStart(2, '0') + ':' +
+//                                        String(now.getMinutes()).padStart(2, '0') + ':' +
+//                                        String(now.getSeconds()).padStart(2, '0');
+//
+//                                var shipmentConfirm = {
+//                                    ShipmentConfirm: {
+//                                        DocDate: docDate,
+//                                        DocNum: docNum,
+//                                        NumAtCard: record.get('NumAtCard') || '',
+//                                        TransactionNumber: String(preid), // ? USAR PREID
+//                                        AddressCode: record.get('AddressCode') || '',
+//                                        Status: estatus,
+//                                        Memo: memo
+//                                    },
+//                                    ControlValues: {
+//                                        TotalQuantity: totalQty, // ? SUMA REAL
+//                                        TotalLines: lineas.length  // ? COUNT REAL
+//                                    },
+//                                    Lines: lineas  // ? LÍNEAS REALES SURTIDAS
+//                                };
+//
+//                                var jsonToSend = Ext.encode(shipmentConfirm);
+//                                console.log('? ShipmentConfirm a enviar:', jsonToSend);
+//
+//                                // Enviar al servlet (busqBnd=6)
+//                                Ext.Ajax.request({
+//                                    url: contexto + '/OrdenesVenta',
+//                                    method: 'POST',
+//                                    params: {
+//                                        busqBnd: 6,
+//                                        valores: jsonToSend
+//                                    },
+//                                    success: function (responseConfirm) {
+//                                        Ext.getBody().unmask();
+//
+//                                        try {
+//                                            var resultado = Ext.decode(responseConfirm.responseText);
+//
+//                                            if (resultado.success) {
+//                                                var msg = 'Confirmación de envío procesada exitosamente<br><br>';
+//                                                msg += '<b>Orden:</b> ' + docNum + '<br>';
+//                                                msg += '<b>Lista Empaque:</b> ' + preid + '<br>';
+//                                                msg += '<b>Estatus:</b> ' + estatus + '<br>';
+//                                                msg += '<b>Productos:</b> ' + lineas.length + '<br>';
+//                                                msg += '<b>Cantidad Total:</b> ' + totalQty + '<br>';
+//
+//                                                if (resultado.clienteResponse) {
+//                                                    var cr = resultado.clienteResponse;
+//                                                    msg += '<b>Fecha Sistema:</b> ' + (cr.SystemDate || '') + '<br>';
+//                                                    msg += '<b>Transaction #:</b> ' + (cr.TransactionNumber || '');
+//                                                }
+//
+//                                                Ext.Msg.alert('Éxito', msg, function () {
+//                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+//                                                });
+//                                            } else {
+//                                                Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
+//                                            }
+//                                        } catch (e) {
+//                                            console.error('Error al parsear respuesta:', e);
+//                                            Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor');
+//                                        }
+//                                    },
+//                                    failure: function () {
+//                                        Ext.getBody().unmask();
+//                                        Ext.Msg.alert('Error', 'Error al enviar la confirmación de envío');
+//                                    }
+//                                });
+//
+//                            },
+//                            failure: function () {
+//                                Ext.getBody().unmask();
+//                                Ext.Msg.alert('Error', 'Error al obtener los productos surtidos');
+//                            }
+//                        });
+//                    }
+//                },
+//                {
+//                    text: 'Cancelar',
+//                    iconCls: 'icn-back',
+//                    handler: function () {
+//                        winConfirm.close();
+//                    }
+//                }
+//            ]
+//        });
+//
+//        winConfirm.show();
+//    },
+
+    ConfirmarOrdenVenta: function (ovid, idUsuario) {
+        var payload = {
+            OVID: ovid,
+            OVEstatusId: "A",
+        };
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesVenta',
+            timeout: 60000,
+            params: {
+                busqBnd: 10,
+                centralVenta: Ext.JSON.encode(payload)
+            },
+            success: function (response) {
+                var resultado = Ext.JSON.decode(response.responseText);
+                Ext.MessageBox.show({
+                    title: 'Orden Venta',
+                    msg: resultado.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function () {
+                        OrdenesVentaUtils.BtnBusqOrdenVenta();
+                    }
+                });
+            },
+            failure: function () {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo confirmar la orden...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
     },
 
     enviarShipmentConfirm: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
+        var preid = record.get('preid');
+        if (!preid || preid === 0) {
+            Ext.Msg.alert('Error', 'Esta orden no tiene Lista de Empaque generada');
+            return;
+        }
 
-        // Modal para seleccionar estatus y agregar observaciones
-        var winConfirm = Ext.create('Ext.window.Window', {
-            title: 'Confirmar Envío - Orden #' + docNum,
-            width: 500,
-            height: 320,
-            modal: true,
-            layout: 'fit',
-            items: [{
-                    xtype: 'form',
-                    bodyPadding: 20,
-                    defaults: {
-                        anchor: '100%',
-                        labelWidth: 120
+// ? PRIMERO: Obtener datos para calcular estatus
+        Ext.getBody().mask('Calculando estatus...');
+        var totalPedido = 0;
+        var totalSurtido = 0;
+        var productosSurtidos = [];
+        // Obtener líneas originales
+        Ext.Ajax.request({
+            url: contexto + '/OrdenesVenta',
+            method: 'POST',
+            params: {
+                busqBnd: 2,
+                docEntry: docEntry,
+                servicio: 'ServiceOrdenVentaDet',
+                limit: 9999,
+                offset: 0
+            },
+            success: function (responseOriginal) {
+                var dataOriginal = Ext.decode(responseOriginal.responseText);
+                var lineasOriginales = dataOriginal.items || [];
+                Ext.Array.each(lineasOriginales, function (linea) {
+                    totalPedido += linea.Quantity || 0;
+                });
+                // Obtener productos surtidos
+                Ext.Ajax.request({
+                    url: contexto + '/OrdenesVenta',
+                    method: 'POST',
+                    params: {
+                        busqBnd: 9,
+                        preid: preid
                     },
-                    items: [
-                        {
-                            xtype: 'displayfield',
-                            fieldLabel: 'Doc Entry',
-                            value: docEntry,
-                            fieldStyle: 'font-weight: bold; color: #2196F3;'
-                        },
-                        {
-                            xtype: 'displayfield',
-                            fieldLabel: 'Doc Num',
-                            value: docNum,
-                            fieldStyle: 'font-weight: bold;'
-                        },
-                        {
-                            xtype: 'displayfield',
-                            fieldLabel: 'Cliente',
-                            value: cardCode
-                        },
-                        {
-                            xtype: 'combobox',
-                            fieldLabel: 'Estatus',
-                            id: 'cmbEstatusEnvio',
-                            allowBlank: false,
-                            editable: false,
-                            store: Ext.create('Ext.data.Store', {
-                                fields: ['value', 'text'],
-                                data: [
-                                    {value: 'Total', text: 'Total'}, // ? CAMBIO
-                                    {value: 'Parcial', text: 'Parcial'},
-                                    {value: 'Cancelada', text: 'Cancelada'} // ? CAMBIO
-                                ]
-                            }),
-                            valueField: 'value',
-                            displayField: 'text',
-                            value: 'Total'
-                        },
-                        {
-                            xtype: 'textareafield',
-                            fieldLabel: 'Observaciones',
-                            id: 'txtMemoEnvio',
-                            height: 80,
-                            maxLength: 250
-                        }
-                    ]
-                }],
-            buttons: [
-                {
-                    text: 'Confirmar Envío',
-                    iconCls: 'fa fa-check',
-                    handler: function () {
-                        var form = winConfirm.down('form').getForm();
-                        if (!form.isValid()) {
-                            Ext.Msg.alert('Atención', 'Complete todos los campos obligatorios');
-                            return;
-                        }
-
-                        var estatus = Ext.getCmp('cmbEstatusEnvio').getValue();
-                        var memo = Ext.getCmp('txtMemoEnvio').getValue() || '';
-
-                        winConfirm.close();
-                        Ext.getBody().mask('Procesando envío...');
-
-                        // Obtener líneas de BD local
-                        Ext.Ajax.request({
-                            url: contexto + '/OrdenesVenta',
-                            method: 'POST',
-                            params: {
-                                busqBnd: 2,
-                                docEntry: docEntry,
-                                servicio: 'ServiceOrdenVentaDet'
-                            },
-                            success: function (response) {
-                                var data = Ext.decode(response.responseText);
-                                var lineas = data.items || data || [];  // ? Extraer items igual que compras
-
-                                if (!lineas || lineas.length === 0) {
-                                    Ext.getBody().unmask();
-                                    Ext.Msg.alert('Error', 'No se encontraron líneas para esta orden');
-                                    return;
-                                }
-// Construir JSON ShipmentConfirm
-                                var now = new Date();
-                                var docDate = now.getFullYear() + '-' +
-                                        String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                                        String(now.getDate()).padStart(2, '0') + 'T' +
-                                        String(now.getHours()).padStart(2, '0') + ':' +
-                                        String(now.getMinutes()).padStart(2, '0') + ':' +
-                                        String(now.getSeconds()).padStart(2, '0');
-
-// Generar TransactionNumber único (timestamp)
-                                var transactionNumber = String(Date.now());
-
-                                var shipmentConfirm = {
-                                    ShipmentConfirm: {
-                                        DocDate: docDate, // ? Formato: 2026-01-29T17:53:52
-                                        DocNum: docNum,
-                                        NumAtCard: record.get('NumAtCard') || '',
-                                        TransactionNumber: transactionNumber, // ? Número largo único
-                                        AddressCode: record.get('AddressCode') || '',
-                                        Status: estatus,
-                                        Memo: memo
-                                    },
-                                    ControlValues: {
-                                        TotalQuantity: lineas.reduce((sum, l) => sum + (l.Quantity || 0), 0),
-                                        TotalLines: lineas.length
-                                    },
-                                    Lines: lineas.map(function (linea) {
-                                        return {
-                                            LineNum: linea.LineNum,
-                                            ItemCode: linea.ItemCode,
-                                            BarCode: linea.BarCode,
-                                            Quantity: linea.Quantity
-                                        };
-                                    })
-                                };
-
-                                var jsonToSend = Ext.encode(shipmentConfirm);
-                                console.log('? ShipmentConfirm a enviar:', jsonToSend);
-
-                                // Enviar al servlet (busqBnd=6)
-                                Ext.Ajax.request({
-                                    url: contexto + '/OrdenesVenta',
-                                    method: 'POST',
-                                    params: {
-                                        busqBnd: 6,
-                                        valores: jsonToSend
-                                    },
-                                    success: function (responseConfirm) {
-                                        Ext.getBody().unmask();
-
-                                        try {
-                                            var resultado = Ext.decode(responseConfirm.responseText);
-
-                                            if (resultado.success) {
-                                                var msg = 'Confirmación de envío procesada exitosamente<br><br>';
-                                                msg += '<b>Orden:</b> ' + docNum + '<br>';
-                                                msg += '<b>Estatus:</b> ' + estatus + '<br>';
-
-                                                if (resultado.clienteResponse) {
-                                                    var cr = resultado.clienteResponse;
-                                                    msg += '<b>Fecha Sistema:</b> ' + (cr.SystemDate || '') + '<br>';
-                                                    msg += '<b>Transaction #:</b> ' + (cr.TransactionNumber || '');
-                                                }
-
-                                                Ext.Msg.alert('Éxito', msg, function () {
-                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
-                                                });
-                                            } else {
-                                                Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
-                                            }
-                                        } catch (e) {
-                                            console.error('Error al parsear respuesta:', e);
-                                            Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor');
-                                        }
-                                    },
-                                    failure: function () {
-                                        Ext.getBody().unmask();
-                                        Ext.Msg.alert('Error', 'Error al enviar la confirmación de envío');
-                                    }
-                                });
-
-                            },
-                            failure: function () {
-                                Ext.getBody().unmask();
-                                Ext.Msg.alert('Error', 'Error al obtener las líneas de la orden');
-                            }
+                    success: function (responseSurtido) {
+                        Ext.getBody().unmask();
+                        var dataSurtido = Ext.decode(responseSurtido.responseText);
+                        productosSurtidos = dataSurtido.items || [];
+                        Ext.Array.each(productosSurtidos, function (producto) {
+                            totalSurtido += producto.unidades || 0;
                         });
+                        // ? CALCULAR ESTATUS AUTOMÁTICO
+                        var estatusCalculado = '';
+                        if (totalSurtido === 0) {
+                            estatusCalculado = 'Cancelada';
+                        } else if (totalSurtido >= totalPedido) {
+                            estatusCalculado = 'Total';
+                        } else {
+                            estatusCalculado = 'Parcial';
+                        }
+
+                        console.log('? Total Pedido:', totalPedido);
+                        console.log('? Total Surtido:', totalSurtido);
+                        console.log('? Estatus Calculado:', estatusCalculado);
+                        // ? CREAR MODAL CON ESTATUS PRE-SELECCIONADO
+                        var winConfirm = Ext.create('Ext.window.Window', {
+                            title: 'Confirmar Envío - Orden #' + docNum,
+                            width: 550,
+                            height: 450,
+                            modal: true,
+                            layout: 'fit',
+                            items: [{
+                                    xtype: 'form',
+                                    bodyPadding: 20,
+                                    defaults: {
+                                        anchor: '100%',
+                                        labelWidth: 130
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Doc Entry',
+                                            value: docEntry,
+                                            fieldStyle: 'font-weight: bold; color: #2196F3;'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Doc Num',
+                                            value: docNum,
+                                            fieldStyle: 'font-weight: bold;'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Cliente',
+                                            value: cardCode
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Lista Empaque',
+                                            value: preid,
+                                            fieldStyle: 'font-weight: bold; color: #4CAF50;'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Total Pedido',
+                                            value: '<b style="color: #2196F3;">' + totalPedido + '</b> unidades'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Total Surtido',
+                                            value: '<b style="color: #4CAF50;">' + totalSurtido + '</b> unidades'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            fieldLabel: 'Estatus',
+                                            id: 'cmbEstatusEnvio',
+                                            allowBlank: false,
+                                            editable: false,
+                                            store: Ext.create('Ext.data.Store', {
+                                                fields: ['value', 'text'],
+                                                data: [
+                                                    {value: 'Total', text: 'Total'},
+                                                    {value: 'Parcial', text: 'Parcial'},
+                                                    {value: 'Cancelada', text: 'Cancelada'}
+                                                ]
+                                            }),
+                                            valueField: 'value',
+                                            displayField: 'text',
+                                            value: estatusCalculado, // ? PRE-SELECCIONADO
+                                            fieldStyle: 'font-weight: bold;',
+                                            listeners: {
+                                                change: function (combo, newValue) {
+                                                    // ?? Advertir si cambia el valor
+                                                    if (newValue !== estatusCalculado) {
+                                                        Ext.Msg.alert(
+                                                                'Advertencia',
+                                                                'El estatus calculado es <b>' + estatusCalculado + '</b> pero seleccionaste <b>' + newValue + '</b>'
+                                                                );
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'textareafield',
+                                            fieldLabel: 'Observaciones',
+                                            id: 'txtMemoEnvio',
+                                            height: 80,
+                                            maxLength: 250
+                                        }
+                                    ]
+                                }],
+                            buttons: [
+                                {
+                                    text: 'Confirmar Envío',
+                                    iconCls: 'fa fa-check',
+                                    handler: function () {
+                                        var form = winConfirm.down('form').getForm();
+                                        if (!form.isValid()) {
+                                            Ext.Msg.alert('Atención', 'Complete todos los campos obligatorios');
+                                            return;
+                                        }
+
+                                        var estatus = Ext.getCmp('cmbEstatusEnvio').getValue();
+                                        var memo = Ext.getCmp('txtMemoEnvio').getValue() || '';
+                                        winConfirm.close();
+                                        Ext.getBody().mask('Procesando envío...');
+                                        // Construir líneas
+                                        var lineas = [];
+                                        var lineNum = 0;
+                                        Ext.Array.each(productosSurtidos, function (producto) {
+                                            lineas.push({
+                                                LineNum: lineNum++,
+                                                ItemCode: producto.itemcode,
+                                                BarCode: producto.barcode,
+                                                Quantity: producto.unidades
+                                            });
+                                        });
+                                        var now = new Date();
+                                        var docDate = now.getFullYear() + '-' +
+                                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                                String(now.getDate()).padStart(2, '0') + 'T' +
+                                                String(now.getHours()).padStart(2, '0') + ':' +
+                                                String(now.getMinutes()).padStart(2, '0') + ':' +
+                                                String(now.getSeconds()).padStart(2, '0');
+                                        var shipmentConfirm = {
+                                            ShipmentConfirm: {
+                                                DocDate: docDate,
+                                                DocNum: docNum,
+                                                NumAtCard: record.get('NumAtCard') || '',
+                                                TransactionNumber: String(preid),
+                                                AddressCode: record.get('AddressCode') || '',
+                                                Status: estatus,
+                                                Memo: memo
+                                            },
+                                            ControlValues: {
+                                                TotalQuantity: totalSurtido,
+                                                TotalLines: lineas.length
+                                            },
+                                            Lines: lineas
+                                        };
+                                        var jsonToSend = Ext.encode(shipmentConfirm);
+                                        console.log('? ShipmentConfirm a enviar:', jsonToSend);
+                                        Ext.Ajax.request({
+                                            url: contexto + '/OrdenesVenta',
+                                            method: 'POST',
+                                            params: {
+                                                busqBnd: 6,
+                                                valores: jsonToSend
+                                            },
+                                            success: function (responseConfirm) {
+                                                Ext.getBody().unmask();
+                                                try {
+                                                    var resultado = Ext.decode(responseConfirm.responseText);
+                                                    
+                                                    if (resultado.success) {
+                                                        
+                                                        var msg = 'Confirmación de envío procesada exitosamente<br><br>';
+                                                        msg += '<b>Orden:</b> ' + docNum + '<br>';
+                                                        msg += '<b>Lista Empaque:</b> ' + preid + '<br>';
+                                                        msg += '<b>Estatus:</b> ' + estatus + '<br>';
+                                                        msg += '<b>Pedido:</b> ' + totalPedido + ' | <b>Surtido:</b> ' + totalSurtido + '<br>';
+                                                        if (resultado.clienteResponse) {
+                                                            var cr = resultado.clienteResponse;
+                                                            msg += '<b>Fecha Sistema:</b> ' + (cr.SystemDate || '') + '<br>';
+                                                            msg += '<b>Transaction #:</b> ' + (cr.TransactionNumber || '');
+                                                        }
+                                                        
+                                                         var ovid = record.get("OVID");  // Obtener OCID del record
+                                                        OrdenesVentaUtils.ConfirmarOrdenCompra(ovid);
+
+                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                            OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                        });
+                                                    } else {
+                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar');
+                                                    }
+                                                } catch (e) {
+                                                    console.error('Error:', e);
+                                                    Ext.Msg.alert('Error', 'Error al procesar la respuesta');
+                                                }
+                                            },
+                                            failure: function () {
+                                                Ext.getBody().unmask();
+                                                Ext.Msg.alert('Error', 'Error al enviar la confirmación');
+                                            }
+                                        });
+                                    }
+                                },
+                                {
+                                    text: 'Cancelar',
+                                    iconCls: 'icn-back',
+                                    handler: function () {
+                                        winConfirm.close();
+                                    }
+                                }
+                            ]
+                        });
+                        winConfirm.show();
+                    },
+                    failure: function () {
+                        Ext.getBody().unmask();
+                        Ext.Msg.alert('Error', 'Error al obtener productos surtidos');
                     }
-                },
-                {
-                    text: 'Cancelar',
-                    iconCls: 'icn-back',
-                    handler: function () {
-                        winConfirm.close();
-                    }
-                }
-            ]
+                });
+            },
+            failure: function () {
+                Ext.getBody().unmask();
+                Ext.Msg.alert('Error', 'Error al obtener líneas originales');
+            }
         });
-
-        winConfirm.show();
     },
-
     EliminarOrdenVeta: function (prm) {
         Ext.Ajax.request({
             url: contexto + '/OrdenesVenta',
@@ -1135,18 +1622,14 @@ Ext.define('OrdenesVentaUtils', {
             }
         });
     },
-
     cargarStoreYGenerarExcel: function (storeName, archivoName, parametros) {
         var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
         var idCmbDiasVenta = Ext.getCmp("idCmbDiasVenta").getValue();
         var idCmbEstatusVenta = Ext.getCmp("idCmbEstatusVenta").getValue();
-
         var grd = Ext.getCmp(storeName);
         var store = grd.getStore();
         store.removeAll(true);
-
         var storeOrdenesVenta = Ext.StoreManager.lookup('storeOrdenesVenta');
-
         var param = {
             idCmbFechaVenta: idCmbFechaVenta,
             idCmbDiasVenta: idCmbDiasVenta,
@@ -1156,7 +1639,6 @@ Ext.define('OrdenesVentaUtils', {
             offset: 0,
             limit: 99999999
         };
-
         store.reload({
             params: param,
             callback: function (records, operation, success) {
@@ -1167,7 +1649,6 @@ Ext.define('OrdenesVentaUtils', {
             }
         });
     },
-
     GenerarListaEmpaque: function (prm) {
         Ext.Ajax.request({
             url: contexto + '/OrdenesVenta',
@@ -1202,7 +1683,6 @@ Ext.define('OrdenesVentaUtils', {
     }
 
 });
-
 // Panel principal
 Ext.define('Modulos.global.PanelOrdenesVenta', {
     extend: 'Ext.form.Panel',
@@ -1220,7 +1700,6 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
     scrollable: true,
     initComponent: function () {
         var me = this;
-
         Ext.define('modelOrdenesVenta', {
             extend: 'Ext.data.Model',
             fields: [
@@ -1242,7 +1721,6 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                 "preid"
             ]
         });
-
         me.storeOrdenesVenta = Ext.create('Ext.data.Store', {
             id: "storeOrdenesVenta",
             model: 'modelOrdenesVenta',
@@ -1261,7 +1739,6 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                 }
             }
         });
-
         var storeEstatusVentas = Ext.create('Ext.data.Store', {
             fields: ['codigo', 'descripcion'],
             data: [
@@ -1270,7 +1747,6 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                 {codigo: 'X', descripcion: 'Cancelado'}
             ]
         });
-
         Ext.apply(me, {
             items: [
                 {
@@ -1410,13 +1886,11 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                 var idCmbFechaVenta = Ext.Date.format(Ext.getCmp("idCmbFechaVenta").getValue(), "d-m-Y");
                                 var idCmbDiasVenta = Ext.getCmp("idCmbDiasVenta").getValue();
                                 var idCmbEstatusVenta = Ext.getCmp("idCmbEstatusVenta").getValue();
-
                                 var storeName = "gridOrdenesVenta";
                                 var archivoName = "Central Venta";
                                 var fechaActual = new Date();
                                 var fechaFormateada = Ext.Date.format(fechaActual, 'd/m/Y H:i:s');
                                 var titulo = "Central Venta";
-
                                 var parametros = {
                                     'titulo': titulo,
                                     'Estatus': idCmbEstatusVenta,
@@ -1489,12 +1963,10 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             renderer: function (value) {
                                 var estatusMap = {
                                     'A': 'Activo',
-                                    'C': 'Cerrado',
+                                    'C': 'Confirmado',
                                     'X': 'Cancelado'
                                 };
-
                                 var nombre = estatusMap[value] || value;
-
                                 var color = '';
                                 switch (value) {
                                     case 'A':
@@ -1511,26 +1983,26 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             }
                         },
                         {
-                            text: "Doc Entry",
+                            text: "DocEntry",
                             dataIndex: "DocEntry",
                             width: 150,
                             align: "center",
                             filter: {type: 'number'}
                         },
                         {
-                            text: "Doc Num",
+                            text: "DocNum",
                             dataIndex: "DocNum",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Numero Card",
+                            text: "NumeAtCard",
                             dataIndex: "NumAtCard",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Doc Date",
+                            text: "DocDate",
                             dataIndex: "DocDate",
                             width: 150,
                             filter: {type: 'date'}
@@ -1550,19 +2022,20 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                         {
                             xtype: "actioncolumn",
                             text: 'Genrar LE',
-                            menuDisabled: true,
                             sortable: false,
                             align: "center",
-                            iconCls: 'icn-factura',
                             width: 90,
                             items: [
                                 {
-//                                        getClass: function (v, meta, record) {
-//                                            var estatus = record.get("esunombre");
-//                                            return estatus !== "EN PROCESO"
-//                                                    ? "icn-habilita-disable"
-//                                                    : "icn-habilita";
-//                                        },
+                                    getClass: function (v, meta, record) {
+
+                                        var estatus = record.get("OVEstatusId");
+                                        var leNo = record.get("preid");
+                                        var estatusVenta = record.get("preestatus");
+                                        return estatus === "C" || leNo !== 0 || estatusVenta === "Surtido"
+                                                ? "icn-lista-disable"
+                                                : "icn-lista";
+                                    },
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
                                             title: "Central de Ventas",
@@ -1655,7 +2128,6 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                     tooltip: 'Confirmar Envío',
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("preestatus");
-
                                         return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado"
                                                 ? "icn-habilita"
                                                 : "icn-habilita-disable";
@@ -1677,7 +2149,8 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                 {
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("OVEstatusId");
-                                        return estatus === "A"
+                                        var estatus2 = record.get("preestatus");
+                                        return estatus === "A" && estatus2 === "Cancelado" && estatus2 === "Surtido"
                                                 ? "icn-cancela"
                                                 : "icn-cancela-disable";
                                     },

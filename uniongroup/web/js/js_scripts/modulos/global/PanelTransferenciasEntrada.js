@@ -742,6 +742,42 @@ Ext.define('TransferenciaEntradaUtils', {
         win.show();
     },
 
+    ConfirmarTransferenciaEntrada: function (teid) {
+        var payload = {
+            TEID: teid,
+            TEEstatusId: "A",
+        };
+
+        Ext.Ajax.request({
+            url: contexto + '/TransferenciasEntrada',
+            timeout: 60000,
+            params: {
+                busqBnd: 8, // Ajusta el número según tu servlet
+                centralTransferenciaEntrada: Ext.JSON.encode(payload)
+            },
+            success: function (response) {
+                var resultado = Ext.JSON.decode(response.responseText);
+                Ext.MessageBox.show({
+                    title: 'Transferencia Entrada',
+                    msg: resultado.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function () {
+                        TransferenciasEntradaUtils.BtnBusqTransferenciaEntrada();
+                    }
+                });
+            },
+            failure: function () {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo confirmar la transferencia...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
     // ========================================
 // ? FUNCIÓN: Enviar TransferReceiptConfirm
 // ========================================
@@ -883,6 +919,9 @@ Ext.define('TransferenciaEntradaUtils', {
                                                                     TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                                                                 }
                                                         );
+
+                                                        var teid = record.get("TEID");  // Obtener OCID del record
+                                                        TransferenciaEntradaUtils.ConfirmarTransferenciaEntrada(teid);
 
                                                         console.log("? Respuesta completa:", resultado);
                                                     } else {

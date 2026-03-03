@@ -74,7 +74,7 @@ public class CtrlConsignatarios extends HttpServlet {
 
         // 2. Construir la URL dinámica con los parámetros de la página
         // Asumiendo que ServiceAdressGlobal termina en .../AddressGLOBAL/
-        String serviceConsignatarios = props.getValueProp("HostGlobal")
+        String serviceConsignatarios = props.getValueProp("HostItems")
                 + props.getValueProp("ServiceAdressGlobal") 
                 + "PageNum/" + page + "/Records/" + limit;
 
