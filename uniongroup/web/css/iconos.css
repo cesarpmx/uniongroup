@@ -417,6 +417,21 @@
     background-repeat: no-repeat;
 }
 
+.icn-factura-disable{
+    background-image: url(../img/iconos/report_disable.png) !important;
+    background-repeat: no-repeat;
+}
+
+.icn-lista{
+    background-image: url(../img/iconos/list_enable.png) !important;
+    background-repeat: no-repeat;
+}
+
+.icn-lista-disable{
+    background-image: url(../img/iconos/list_disable.png) !important;
+    background-repeat: no-repeat;
+}
+
 .icn-pdf{
     background-image: url(../img/iconos/pdf.png) !important;
     background-repeat: no-repeat;

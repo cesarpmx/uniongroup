@@ -87,7 +87,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            String serviceTransferencias = props.getValueProp("HostGlobal")
+            String serviceTransferencias = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceOutboundTransferGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceTransferencias);
@@ -139,7 +139,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 return "[]";
             }
 
-            String serviceTransferencias = props.getValueProp("HostGlobal")
+            String serviceTransferencias = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceOutboundTransferGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceTransferencias);

@@ -73,6 +73,9 @@ public class CtrlOrdenesCompra extends HttpServlet {
                 case "7":  // ? NUEVO CASO
                     out.print(EliminarOrdenCompra(request, response));
                     break;
+                 case "8":  // ? NUEVO CASO
+                    out.print(ConfirmarOrdenCompra(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +89,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServicePurchaseOrderGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
@@ -132,7 +135,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
                 return "[]";
             }
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServicePurchaseOrderGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
@@ -412,6 +415,23 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
         try {
             String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra");
+            JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+   
+    public String ConfirmarOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+
+        String jsonTipoProduct = Utilities.obtenParametro(request, "centralCompra");
+        RequestPostApi requetPost = new RequestPostApi();
+
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompraConfirm");
             JSONVal = requetPost.setPut(service, jsonTipoProduct, request);
 
         } catch (Exception e) {
