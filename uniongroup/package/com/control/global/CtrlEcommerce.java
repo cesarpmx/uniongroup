@@ -20,9 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
 /**
  *
  * @author ray_w
@@ -119,41 +123,124 @@ public class CtrlEcommerce extends HttpServlet {
     try {
         ObjectMapper mapper = new ObjectMapper();
 
-        // 1. Obtener header (regresa CentralEcommerce, no ArrEcommerce directo)
+        // 1 y 2. (Mantenemos igual la obtención de datos...)
         String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
         String respH = requetGet.getGet(serviceH);
-
         CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
-
         if (centralHeader.items == null || centralHeader.items.isEmpty()) {
-            return "{\"ok\":false, \"error\":\"No se encontró header para ecomid " + ecomid + "\"}";
+            return "{\"ok\":false, \"error\":\"No se encontró header\"}";
         }
-
         ArrEcommerce header = centralHeader.items.get(0);
 
-        // 2. Obtener detalle
         String serviceD = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceDet") + "?clave=" + ecomid;
         String respD = requetGet.getGet(serviceD);
-
         CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
 
-        if (det.items == null || det.items.isEmpty()) {
-            return "{\"ok\":false, \"error\":\"No hay líneas de detalle para ecomid " + ecomid + "\"}";
-        }
-
-        // 3. Generar archivo
+        // 3. Generar archivo temporalmente
         String ts = new java.text.SimpleDateFormat("yyMMdd_HHmmss").format(new java.util.Date());
-        Path out = Paths.get("C:/ECOM-OUT/STDRUEAP_" + ts + ".txt");
+        String fileName = "STDRUEAP_" + ts + ".txt";
+        
+        // Creamos un archivo temporal en el sistema antes de subirlo
+        Path tempFile = Files.createTempFile("stdrueap_", ".txt");
+        STDRUEAPGenerator.generate(header, det.items, tempFile);
 
-        STDRUEAPGenerator.generate(header, det.items, out);
+        // 4. Subir a FTP
+        // Estas variables deberías leerlas de tu AppConfig o Properties
+        String ftpHost = "globalmx.dyndns.org";
+        String ftpUser = "ftpglobal";
+        String ftpPass = "Gl0b4l25=";
+        String remoteDir = "/Ecommerce/ECOM-OUT"; 
 
-        return "{\"ok\":true, \"file\":\"" + out.toString().replace("\\", "/") + "\"}";
+        boolean uploaded = uploadToFTP(tempFile, fileName, ftpHost, ftpUser, ftpPass, remoteDir);
+
+        // Borrar archivo temporal después de subir
+        Files.deleteIfExists(tempFile);
+
+        if (uploaded) {
+            return "{\"ok\":true, \"file\":\"" + remoteDir + "/" + fileName + "\"}";
+        } else {
+            return "{\"ok\":false, \"error\":\"Error al subir el archivo al servidor FTP\"}";
+        }
 
     } catch (Exception e) {
         e.printStackTrace();
         return "{\"ok\":false, \"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
     }
 }
+
+// Método auxiliar para la conexión FTP
+private boolean uploadToFTP(Path localFilePath, String remoteFileName, String host, String user, String pass, String remoteDir) {
+    FTPClient ftpClient = new FTPClient();
+    try {
+        ftpClient.connect(host, 21);
+        ftpClient.login(user, pass);
+        
+     
+        ftpClient.enterLocalActiveMode();
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        // -----------------------------------------------------------------------
+
+        try (InputStream inputStream = Files.newInputStream(localFilePath)) {
+            boolean done = ftpClient.storeFile(remoteDir + "/" + remoteFileName, inputStream);
+            return done;
+        }
+    } catch (IOException ex) {
+        ex.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (ftpClient.isConnected()) {
+                ftpClient.logout();
+                ftpClient.disconnect();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+    
+    
+//    public String GenerarSTDRUEAP(HttpServletRequest request, HttpServletResponse response) {
+//    String ecomid = Utilities.obtenParametro(request, "ecomid");
+//
+//    try {
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        // 1. Obtener header (regresa CentralEcommerce, no ArrEcommerce directo)
+//        String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
+//        String respH = requetGet.getGet(serviceH);
+//
+//        CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
+//
+//        if (centralHeader.items == null || centralHeader.items.isEmpty()) {
+//            return "{\"ok\":false, \"error\":\"No se encontró header para ecomid " + ecomid + "\"}";
+//        }
+//
+//        ArrEcommerce header = centralHeader.items.get(0);
+//
+//        // 2. Obtener detalle
+//        String serviceD = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceDet") + "?clave=" + ecomid;
+//        String respD = requetGet.getGet(serviceD);
+//
+//        CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
+//
+//        if (det.items == null || det.items.isEmpty()) {
+//            return "{\"ok\":false, \"error\":\"No hay líneas de detalle para ecomid " + ecomid + "\"}";
+//        }
+//
+//        // 3. Generar archivo
+//        String ts = new java.text.SimpleDateFormat("yyMMdd_HHmmss").format(new java.util.Date());
+//        Path out = Paths.get("C:/ECOM-OUT/STDRUEAP_" + ts + ".txt");
+//
+//        STDRUEAPGenerator.generate(header, det.items, out);
+//
+//        return "{\"ok\":true, \"file\":\"" + out.toString().replace("\\", "/") + "\"}";
+//
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return "{\"ok\":false, \"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
+//    }
+//}
     
     
     public String eliminarPedido(HttpServletRequest request, HttpServletResponse response) {

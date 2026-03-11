@@ -29,7 +29,8 @@ Ext.define('NuevosRetornosUtils', {
                             DocNum: record.get('DocNum'),
                             DocDate: record.get('DocDate'),
                             CardCode: record.get('CardCode'),
-                            Memo: record.get('Memo')
+                            Memo: record.get('Memo'),
+                            Warehouse: record.get('Warehouse')
                         });
                     });
 
@@ -69,7 +70,8 @@ Ext.define('NuevosRetornosUtils', {
                                                             ),
                                                     CardCode: retorno.CardCode,
                                                     Status: retorno.Status,
-                                                    Memo: retorno.Memo
+                                                    Memo: retorno.Memo,
+                                                    Warehouse:retorno.Warehouse
                                                 },
                                                 ReturnLines: lineas
                                             });
@@ -309,7 +311,7 @@ Ext.define('NuevosRetornosUtils', {
                 extend: 'Ext.data.Model',
                 fields: [
                     {name: 'LineNum', type: 'int'},
-                    'ItemCode',
+                    'ItemCode','BarCode',
                     {name: 'Quantity', type: 'number'}
                 ]
             });
@@ -333,7 +335,7 @@ Ext.define('NuevosRetornosUtils', {
         });
 
         Ext.create('Ext.window.Window', {
-            title: 'Líneas Retorno #' + docNum,
+            title: 'Lineas Retorno #' + docNum,
             width: 800,
             height: 450,
             modal: true,
@@ -343,10 +345,11 @@ Ext.define('NuevosRetornosUtils', {
                     store: storeLineas,
                     columns: [
                         {xtype: 'rownumberer', width: 50},
-                        {text: 'Línea', dataIndex: 'LineNum', width: 100},
-                        {text: 'Artículo', dataIndex: 'ItemCode', flex: 1},
+                        {text: 'LineNum', dataIndex: 'LineNum', width: 100},
+                        {text: 'ItemCode', dataIndex: 'ItemCode', flex: 1},
+                        {text: 'BarCode', dataIndex: 'BarCode', flex: 1},
                         {
-                            text: 'Cantidad',
+                            text: 'Quantity',
                             dataIndex: 'Quantity',
                             width: 120,
                             align: 'right',
@@ -382,11 +385,11 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                     {name: 'id', type: 'int'},
                     {name: 'DocEntry', type: 'int'},
                     'DocNum',
-                    'DocNum',
                     'DocDate',
                     'CardCode',
                     'Memo',
                     'Status',
+                    'Warehouse',
                     {name: 'TotalLines', type: 'int'}
                 ]
             });
@@ -475,13 +478,6 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: 'DocNum',
-                            dataIndex: 'DocNum',
-                            width: 150,
-                            align: 'center',
-                            filter: {type: 'string'}
-                        },
-                        {
                             text: 'Fecha',
                             dataIndex: 'DocDate',
                             width: 120,
@@ -518,6 +514,12 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                         {
                             text: 'Memo',
                             dataIndex: 'Memo',
+                            flex: 1,
+                            filter: {type: 'string'}
+                        },
+                        {
+                            text: 'Warehouse',
+                            dataIndex: 'Warehouse',
                             flex: 1,
                             filter: {type: 'string'}
                         }

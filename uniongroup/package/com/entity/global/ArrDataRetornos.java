@@ -18,6 +18,8 @@ public class ArrDataRetornos {
     public String Memo;
     public String Status;
     public String FechaInsercion;
+    public String Warehouse;
     public int totalrecs;
+    public int comid;
     
 }
