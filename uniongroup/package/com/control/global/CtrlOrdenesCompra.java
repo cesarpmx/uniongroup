@@ -73,7 +73,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
                 case "7":  // ? NUEVO CASO
                     out.print(EliminarOrdenCompra(request, response));
                     break;
-                 case "8":  // ? NUEVO CASO
+                case "8":  // ? NUEVO CASO
                     out.print(ConfirmarOrdenCompra(request, response));
                     break;
             }
@@ -111,6 +111,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
                 item.put("DocDate", orden.PurchaseOrder.DocDate);
                 item.put("CardCode", orden.PurchaseOrder.CardCode);
                 item.put("Memo", orden.PurchaseOrder.Memo);
+                item.put("Warehouse", orden.PurchaseOrder.Warehouse);
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
                 item.put("TotalLines", orden.ControlValues.TotalLines);
                 resultado.add(item);
@@ -235,12 +236,12 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-                JSONVal = "{\"success\":false, \"message\":\"Error en servlet: " + e.getMessage().replace("\"", "") + "\"}";
+            JSONVal = "{\"success\":false, \"message\":\"Error en servlet: " + e.getMessage().replace("\"", "") + "\"}";
             JSONVal = "";
         }
         return JSONVal;
     }
-    
+
     public String ObtenerOrdenesCompra(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         String JSONVal;
@@ -248,8 +249,8 @@ public class CtrlOrdenesCompra extends HttpServlet {
             String idEstatusCompras = Utilities.obtenParametro(request, "idEstatusCompras");
             String idCmbFechaCompras = Utilities.obtenParametro(request, "idCmbFechaCompras");
             String idCmbDiasCompras = Utilities.obtenParametro(request, "idCmbDiasCompras");
-             
-           String limit = Utilities.obtenParametro(request, "limit");
+
+            String limit = Utilities.obtenParametro(request, "limit");
             String offset = Utilities.obtenParametro(request, "offset");
 
             String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenCompra")
@@ -423,7 +424,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
         }
         return JSONVal;
     }
-   
+
     public String ConfirmarOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "";
 

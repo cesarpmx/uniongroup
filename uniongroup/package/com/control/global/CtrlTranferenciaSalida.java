@@ -32,6 +32,7 @@ import java.util.Map;
  *
  * @author ray_w
  */
+
 @WebServlet(name = "CtrlTranferenciaSalida", urlPatterns = {"/TransferenciasSalida"})
 public class CtrlTranferenciaSalida extends HttpServlet {
 
@@ -74,6 +75,9 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 case "8":  // ? NUEVO
                     out.print(GenerarListaEmpaque(request, response));
                     break;
+                case "9":  // ? NUEVO
+                    out.print(ConfirmarTransferenciaSalida(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +116,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 item.put("DocDate", transferencia.OutboundTransferRequest.DocDate);
                 item.put("CardCode", transferencia.OutboundTransferRequest.CardCode);
                 item.put("Status", transferencia.OutboundTransferRequest.Status);
+                item.put("Warehouse", transferencia.OutboundTransferRequest.Warehouse);
                 item.put("Memo", transferencia.OutboundTransferRequest.Memo);
                 item.put("AddressCode", transferencia.OutboundTransferRequest.AddressCode);
                 item.put("OrderTotal", transferencia.ControlValues.OrderTotal);
@@ -460,6 +465,20 @@ public class CtrlTranferenciaSalida extends HttpServlet {
             String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenSaliaLE");
             JSONVal = requetPost.getPost(service, jsonTipoProduct, request);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+
+    public String ConfirmarTransferenciaSalida(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonTransferencia = Utilities.obtenParametro(request, "centralTransferenciaSalida");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceTransferenciaSalidaConfirm");
+            JSONVal = requetPost.setPut(service, jsonTransferencia, request);
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";

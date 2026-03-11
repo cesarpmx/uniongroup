@@ -22,4 +22,5 @@ public class ArrDataOrdenCompra {
     public int totalrecs;
     public int comid;
     public String comestatus;
+    public String Warehouse;
 }

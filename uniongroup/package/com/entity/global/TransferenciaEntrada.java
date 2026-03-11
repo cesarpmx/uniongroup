@@ -10,14 +10,16 @@ package com.entity.global;
  */
 public class TransferenciaEntrada {
     public String TEID;
-        public String DocEntry;
-        public String DocNum;
-        public String NumAtCard;
-        public String DocDate;
-        public String CardCode;
-        public String Status;
-        public String Memo;
-        public String AddressCode;
-        public String TEEstatusId;
-        public String TEFechaInsercion;
+    public String DocEntry;
+    public String DocNum;
+    public String NumAtCard;
+    public String DocDate;
+    public String CardCode;
+    public String Status;
+    public String Memo;
+    public String AddressCode;
+    public String TEEstatusId;
+    public String TEFechaInsercion;
+    public String entid;
+    public String comestatus;
 }

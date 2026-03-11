@@ -9,9 +9,11 @@ package com.control.global;
  * @author azielocampo
  */
 public class LineaTransferenciaSalida {
+
     public String LineNum;
-        public String ItemCode;
-        public String Barcode;
-        public String Quantity;
-        public String DTSID;
+    public String ItemCode;
+    public String Barcode;
+    public String Quantity;
+    public String DTSID;
+    public String coms;
 }
