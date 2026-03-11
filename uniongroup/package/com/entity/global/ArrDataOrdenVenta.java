@@ -8,8 +8,8 @@ package com.entity.global;
  *
  * @author azielocampo
  */
-
 public class ArrDataOrdenVenta {
+
     public int OVID;
     public String DocDate;
     public String DocNum;
@@ -19,6 +19,7 @@ public class ArrDataOrdenVenta {
     public String AddressCode;
     public String Status;
     public String Memo;
+    public String Warehouse;
     public String OVEstatusId;
     public String OVFechaInsercion;
     public int preid;

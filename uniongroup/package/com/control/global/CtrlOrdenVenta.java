@@ -214,6 +214,7 @@ public class CtrlOrdenVenta extends HttpServlet {
                 item.put("AddressCode", orden.SalesOrder.AddressCode);
                 item.put("Status", orden.SalesOrder.Status);
                 item.put("Memo", orden.SalesOrder.Memo);
+                item.put("Warehouse", orden.SalesOrder.Warehouse);
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
                 item.put("TotalLines", orden.ControlValues.TotalLines); // ? YA ESTÁ
                 resultado.add(item);

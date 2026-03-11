@@ -16,5 +16,6 @@ public class OutboundTransferRequest {
         public String CardCode;
         public String Status;
         public String Memo;
+        public String Warehouse;
         public String AddressCode;
 }

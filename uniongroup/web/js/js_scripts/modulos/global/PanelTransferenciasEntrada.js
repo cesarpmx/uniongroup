@@ -588,7 +588,10 @@ Ext.define('TransferenciaEntradaUtils', {
                     "LineNum",
                     "ItemCode",
                     "Barcode",
-                    "Quantity"
+                    "Quantity",
+                    "coms",
+                    "detid",
+                    "receivedquantity"
                 ]
             });
         }
@@ -697,6 +700,12 @@ Ext.define('TransferenciaEntradaUtils', {
                             align: "center"
                         },
                         {
+                            text: "Compra",
+                            dataIndex: "detid",
+                            width: 100,
+                            align: "center"
+                        },
+                        {
                             text: "Línea",
                             dataIndex: "LineNum",
                             width: 100,
@@ -729,7 +738,23 @@ Ext.define('TransferenciaEntradaUtils', {
                             renderer: function (value) {
                                 return '<b style="color: #4CAF50;">' + Ext.util.Format.number(parseFloat(value), '0,000') + '</b>';
                             }
-                        }
+                        },
+                        {
+                            text: "Recibido",
+                            dataIndex: "receivedquantity",
+                            align: "center",
+                            width: 100,
+                            filter: {type: 'number'},
+                            renderer: function (value) {
+                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000') + '</b>';
+                            }
+                        },
+                        {
+                            text: "Comentarios",
+                            dataIndex: "coms",
+                            width: 200,
+                            filter: {type: 'string'}
+                        },
                     ],
                     viewConfig: {
                         stripeRows: true,
@@ -785,6 +810,7 @@ Ext.define('TransferenciaEntradaUtils', {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
         var numAtCard = record.get("NumAtCard");
+        var entid = record.get("entid");
 
         // Ventana para seleccionar estatus
         var statusCombo = Ext.create('Ext.form.field.ComboBox', {
@@ -847,7 +873,7 @@ Ext.define('TransferenciaEntradaUtils', {
 
                                 win.close();
 
-                                var transactionNumber = String(Date.now());
+                                var transactionNumber = entid;
                                 var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
 
                                 Ext.getBody().mask('Procesando confirmación de recepción...');
@@ -867,12 +893,12 @@ Ext.define('TransferenciaEntradaUtils', {
                                         var totalQty = 0;
 
                                         Ext.Array.each(data.items, function (line, index) {
-                                            totalQty += parseFloat(line.Quantity);
+                                            totalQty += parseFloat(line.receivedquantity);
                                             lines.push({
                                                 LineNum: index + 1, // Forzar inicio en 1
                                                 ItemCode: line.ItemCode,
                                                 Barcode: line.Barcode,
-                                                Quantity: parseFloat(line.Quantity)
+                                                Quantity: parseFloat(line.receivedquantity)
                                             });
                                         });
 
@@ -1084,7 +1110,6 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
             ]
         });
 
-
         Ext.apply(me, {
             items: [
                 {
@@ -1190,7 +1215,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             arrowAlign: 'center',
                             iconCls: "icn-busquedaDos",
                             handler: function (btn) {
@@ -1204,7 +1229,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                         },
                         {
                             xtype: 'button',
-                            text: 'Ver Nuevas',
+                            text: 'Cargar',
                             arrowAlign: 'center',
                             iconCls: "icn-factura",
                             handler: function (btn) {
@@ -1311,7 +1336,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             renderer: function (value) {
                                 var estatusMap = {
                                     'A': 'Activo',
-                                    'C': 'Cerrado',
+                                    'C': 'Confirmado',
                                     'X': 'Cancelado'
                                 };
 
@@ -1330,6 +1355,44 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                         break;
                                 }
                                 return '<b style="color: ' + color + ';">' + nombre + '</b>';
+                            }
+                        },
+                        {
+                            text: "Compra",
+                            dataIndex: "entid",
+                            width: 80,
+                            align: "center",
+                            filter: {type: 'number'}
+                        },
+                        {
+                            text: "Estatus Compra",
+                            dataIndex: "comestatus",
+                            align: "center",
+                            width: 150,
+                            filter: {type: 'string'},
+                            renderer: function (value) {
+                                var color = '';
+                                switch (value) {
+                                    case 'Pendiente':
+                                        color = '#FFC107';
+                                        break; // Amarillo
+                                    case 'En proceso':
+                                        color = '#2196F3';
+                                        break; // Azul
+                                    case 'Recibido':
+                                        color = '#4CAF50';
+                                        break; // Verde
+                                    case 'Confirmado':
+                                        color = '#00BCD4';
+                                        break; // Cyan
+                                    case 'Cancelado':
+                                        color = '#F44336';
+                                        break; // Rojo
+                                    default:
+                                        color = '#6c757d';
+                                        break; // Gris - Desconocido
+                                }
+                                return '<b style="color: ' + color + ';">' + value + '</b>';
                             }
                         },
                         {
@@ -1376,6 +1439,12 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             filter: {type: 'string'}
                         },
                         {
+                            text: "Warehouse",
+                            dataIndex: "Warehouse",
+                            width: 220,
+                            filter: {type: 'string'}
+                        },
+                        {
                             text: "Memo",
                             dataIndex: "Memo",
                             width: 220,
@@ -1388,14 +1457,14 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             menuDisabled: true,
                             sortable: false,
                             align: "center",
-                            iconCls: 'icn-habilita',
+//                            iconCls: 'icn-habilita',
                             width: 90,
                             items: [
                                 {
                                     getClass: function (v, meta, record) {
-                                        var estatus = record.get("TEEstatusId");
+                                        var estatus = record.get("comestatus");
 
-                                        return estatus === "A" || estatus === 'C'
+                                        return estatus === "Recibido" || estatus === "Confirmado"
                                                 ? "icn-habilita"
                                                 : "icn-habilita-disable";
                                     },
@@ -1416,8 +1485,11 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                             items: [
                                 {
                                     getClass: function (v, meta, record) {
+
                                         var estatus = record.get("TEEstatusId");
-                                        return estatus === "A"
+                                        var estatusCom = record.get("comestatus");
+
+                                        return estatus === "A" && estatusCom !== "Recibido"
                                                 ? "icn-cancela"
                                                 : "icn-cancela-disable";
                                     },

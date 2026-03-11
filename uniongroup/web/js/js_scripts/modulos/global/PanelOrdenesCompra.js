@@ -55,7 +55,8 @@ Ext.define('OrdenesCompraUtils', {
                     "CardCode",
                     "Memo",
                     {name: "OrderTotal", type: 'number'},
-                    {name: "TotalLines", type: 'int'}
+                    {name: "TotalLines", type: 'int'},
+                    "Warehouse"
                 ]
             });
         }
@@ -181,10 +182,15 @@ Ext.define('OrdenesCompraUtils', {
                             }
                         },
                         {
-                            text: "Proveedor",
+                            text: "CardCode",
                             dataIndex: "CardCode",
                             width: 150,
-                            flex: 1,
+                            filter: {type: 'string'}
+                        },
+                        {
+                            text: "Warehouse",
+                            dataIndex: "Warehouse",
+                            width: 150,
                             filter: {type: 'string'}
                         },
                         {
@@ -204,14 +210,13 @@ Ext.define('OrdenesCompraUtils', {
                             align: "right",
                             filter: {type: 'number'},
                             renderer: function (value) {
-                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                return '<b style="color: #4CAF50;">' + Ext.util.Format.number(value, '0,000') + '</b>';
                             }
                         },
                         {
                             text: "Memo",
                             dataIndex: "Memo",
                             width: 200,
-                            flex: 1,
                             filter: {type: 'string'}
                         }
                     ],
@@ -861,8 +866,7 @@ Ext.define('OrdenesCompraUtils', {
                         {
                             text: "Compra",
                             dataIndex: "dcoid",
-                            xtype: "rownumberer",
-                            width: 50,
+                            width: 100,
                             align: "center"
                         },
                         {
@@ -927,7 +931,7 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-    ConfirmarOrdenCompra: function (ocid) {
+    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parámetro silent
         var payload = {
             OCID: ocid,
             OCEstatusId: "A",
@@ -942,19 +946,27 @@ Ext.define('OrdenesCompraUtils', {
             },
             success: function (response) {
                 var resultado = Ext.JSON.decode(response.responseText);
-                Ext.MessageBox.show({
-                    title: 'Orden Compra',
-                    msg: resultado.message,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.INFO,
-                    fn: function (btn) {
-                        if (btn === 'ok') {
-                            OrdenesCompraUtils.BtnBusqOrdenCompra();
+
+                // ? Solo mostrar mensaje si NO es silencioso
+                if (!silent) {
+                    Ext.MessageBox.show({
+                        title: 'Orden Compra',
+                        msg: resultado.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                        fn: function (btn) {
+                            if (btn === 'ok') {
+                                OrdenesCompraUtils.BtnBusqOrdenCompra();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    // ? Si es silencioso, solo refrescar el grid
+                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
+                }
             },
             failure: function (response, opts) {
+                // ?? Siempre mostrar errores
                 Ext.MessageBox.show({
                     title: 'Error',
                     msg: 'No se pudo confirmar la orden...',
@@ -969,6 +981,11 @@ Ext.define('OrdenesCompraUtils', {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
         var numAtCard = record.get("NumAtCard");
+        var comid = record.get("comid");
+
+        console.log(comid)
+        console.log(record)
+
 
         // ================= VENTANA PARA SELECCIONAR ESTATUS =================
         var statusCombo = Ext.create('Ext.form.field.ComboBox', {
@@ -1032,7 +1049,7 @@ Ext.define('OrdenesCompraUtils', {
                                 win.close();
 
                                 // ================= CONTINUAR CON EL FLUJO =================
-                                var transactionNumber = "1";
+                                var transactionNumber = comid;
                                 var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
 
                                 Ext.getBody().mask('Procesando confirmación de recepción...');
@@ -1096,11 +1113,10 @@ Ext.define('OrdenesCompraUtils', {
                                                     var resultado = Ext.decode(response.responseText);
 
                                                     if (resultado.success) {
-
                                                         console.log("? Respuesta del cliente:", resultado.clienteResponse);
 
-                                                        var ocid = record.get("OCID");  // Obtener OCID del record
-                                                        OrdenesCompraUtils.ConfirmarOrdenCompra(ocid);
+                                                        var ocid = record.get("OCID");
+                                                        OrdenesCompraUtils.ConfirmarOrdenCompra(ocid, true);  // ? Pasar true para silencioso
 
                                                         // ? EXTRAER VALORES
                                                         var docNum = 'N/A';
@@ -1126,6 +1142,7 @@ Ext.define('OrdenesCompraUtils', {
                                                             }
                                                         }
 
+                                                        // ? ESTE ES EL ÚNICO MENSAJE QUE APARECERÁ
                                                         Ext.Msg.alert(
                                                                 'Éxito',
                                                                 '<b>Orden:</b> ' + docNum + '<br>' +
@@ -1266,7 +1283,8 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                 "OCEstatusId",
                 "OCFechaInsercion",
                 "comid",
-                "comestatus"
+                "comestatus",
+                "Warehouse"
             ]
         });
 
@@ -1616,6 +1634,12 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         {
                             text: "CardCode",
                             dataIndex: "CardCode",
+                            width: 150,
+                            filter: {type: 'string'}
+                        },
+                        {
+                            text: "Warehouse",
+                            dataIndex: "Warehouse",
                             width: 150,
                             filter: {type: 'string'}
                         },

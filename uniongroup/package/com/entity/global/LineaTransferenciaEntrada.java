@@ -8,9 +8,14 @@ package com.entity.global;
  *
  * @author azielocampo
  */
+
 public class LineaTransferenciaEntrada {
+
     public String LineNum;
-        public String ItemCode;
-        public String Barcode;
-        public String Quantity;
+    public String ItemCode;
+    public String Barcode;
+    public String Quantity;
+    public int detid;
+    public String coms;
+    public int receivedquantity;
 }

@@ -9,15 +9,19 @@ package com.entity.global;
  * @author azielocampo
  */
 public class TransferenciaSalida {
-      public String TSID;
-        public String DocEntry;
-        public String DocNum;
-        public String NumAtCard;
-        public String DocDate;
-        public String CardCode;
-        public String Status;
-        public String Memo;
-        public String AddressCode;
-        public String TSEstatusId;
-        public String TSFechaInsercion;
+
+    public String TSID;
+    public String DocEntry;
+    public String DocNum;
+    public String NumAtCard;
+    public String DocDate;
+    public String CardCode;
+    public String Status;
+    public String Memo;
+    public String AddressCode;
+    public String TSEstatusId;
+    public String TSFechaInsercion;
+    public int preid;
+    public String preestatus;
+    public String Warehouse;
 }
