@@ -14,6 +14,7 @@ public class ArrDataProductos {
     public String ItemCode;
     public String ItemName;
     public String ItmsGrpCod;
+    public String ItmsGrpNam;
     public String CodeBars;
     public String SuppCatNum;
     public String UpdateDate;

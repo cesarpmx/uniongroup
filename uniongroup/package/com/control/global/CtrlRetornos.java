@@ -84,7 +84,7 @@ public class CtrlRetornos extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceRetornosGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
@@ -105,6 +105,7 @@ public class CtrlRetornos extends HttpServlet {
                 item.put("DocDate", orden.ReturnRequest.DocDate);
                 item.put("CardCode", orden.ReturnRequest.CardCode);
                 item.put("Memo", orden.ReturnRequest.Memo);
+                item.put("Warehouse", orden.ReturnRequest.Warehouse);
                 item.put("Status", orden.ReturnRequest.Status);
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
                 item.put("TotalLines", orden.ControlValues.TotalLines);
@@ -130,7 +131,7 @@ public class CtrlRetornos extends HttpServlet {
                 return "[]";
             }
 
-            String serviceConsignatarios = props.getValueProp("HostGlobal")
+            String serviceConsignatarios = props.getValueProp("HostGlobalDev")
                     + props.getValueProp("ServiceRetornosGlobal");
 
             String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);

@@ -124,7 +124,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                 "CardCode",
                 "Memo",
                 "Status",
-                "FechaInsercion"
+                "FechaInsercion",
+                'comid'
             ]
         });
 
@@ -235,6 +236,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                     id: 'gridRetornos',
                     store: me.storeRetornos,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridRetornosState',
                     plugins: {
                         gridfilters: true
                     },
@@ -364,6 +367,18 @@ Ext.define('Modulos.global.PanelRetornos', {
                         {
                             text: "Memo",
                             dataIndex: "Memo",
+                            width: 220,
+                            filter: {type: 'string'}
+                        },
+                        {
+                            text: "Warehouse",
+                            dataIndex: "Warehouse",
+                            width: 220,
+                            filter: {type: 'string'}
+                        },
+                        {
+                            text: "Comid",
+                            dataIndex: "comid",
                             width: 220,
                             filter: {type: 'string'}
                         },

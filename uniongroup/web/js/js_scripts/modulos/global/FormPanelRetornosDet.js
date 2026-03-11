@@ -59,6 +59,8 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                     'itemcode',
                     'quantity',
                     'rtnid',
+                    'receivedquantity',
+                    'coms'
                 ]
             });
         }
@@ -123,6 +125,16 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                 {text: 'Line num', dataIndex: 'linenum', flex: 1},
                 {text: 'Item Code', dataIndex: 'itemcode', flex: 1},
                 {text: 'Quantity', dataIndex: 'quantity', flex: 1},
+                {text: 'Received Quantity', dataIndex: 'receivedquantity', flex: 1},
+                {
+                    text: 'Coms',
+                    dataIndex: 'coms',
+                    flex: 1,
+                    renderer: function (value, metaData) {
+                        metaData.style = "white-space: normal; word-wrap: break-word;"; // Estilo inline
+                        metaData.tdCls = "wrap-cell"; // Clase CSS personalizada
+                        return Ext.String.htmlEncode(value); // Escapa caracteres especiales para evitar vulnerabilidades
+                    }},
                 {text: 'ID Retorno', dataIndex: 'rtnid', flex: 1}
             ],
 

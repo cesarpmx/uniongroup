@@ -13,7 +13,11 @@ public class ArrRetornoDet {
     public int detrnid;
     public int linenum;
     public String itemcode;
+    public String barcode;
     public int quantity;
     public int rtnid;
+    public int dcoid;
+    public int receivedquantity;
+    public String coms;
 
 }

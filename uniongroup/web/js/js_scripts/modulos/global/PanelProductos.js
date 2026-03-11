@@ -104,6 +104,7 @@ Ext.define('ProductosUtils', {
                     ItemCode: d.ItemCode,
                     ItemName: d.ItemName,
                     ItmsGrpCod: d.ItmsGrpCod,
+                    ItmsGrpNam:d.ItmsGrpNam,
                     CodeBars: d.CodeBars,
                     SuppCatNum: d.SuppCatNum,
                     UpdateDate: d.UpdateDate,
@@ -357,6 +358,7 @@ Ext.define('Modulos.global.PanelProductos', {
                 "ItemCode",
                 "ItemName",
                 "ItmsGrpCod",
+                "ItmsGrpNam",
                 "CodeBars",
                 "SuppCatNum",
                 "UpdateDate",
@@ -405,6 +407,8 @@ Ext.define('Modulos.global.PanelProductos', {
                     id: 'gridProductos',
                     store: me.storeProductos,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridProductosState',
                     plugins: {
                         gridfilters: true,
                     },
@@ -474,6 +478,14 @@ Ext.define('Modulos.global.PanelProductos', {
                                 flex: 1,
                                 align: "center"
                             },
+                            {
+                                text: "ItmsGrpNam",
+                                dataIndex: "ItmsGrpNam",
+                                flex: 1,
+                                align: "center"
+                            },
+                            
+                            
                             {
                                 text: "CodeBars",
                                 dataIndex: "CodeBars",
