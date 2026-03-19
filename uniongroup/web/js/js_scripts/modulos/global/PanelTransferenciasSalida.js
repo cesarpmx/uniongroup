@@ -1250,204 +1250,6 @@ Ext.define('TransferenciaSalidaUtils', {
         });
     },
 
-//    enviarTransferShipConfirm: function (record) {
-//        var docEntry = record.get('DocEntry');
-//        var docNum = record.get('DocNum');
-//        var numAtCard = record.get('NumAtCard');
-//
-//        // Store para status
-//        var storeStatus = Ext.create('Ext.data.Store', {
-//            fields: ['codigo', 'descripcion'],
-//            data: [
-//                {codigo: 'Total', descripcion: 'Total'},
-//                {codigo: 'Parcial', descripcion: 'Parcial'},
-//                {codigo: 'Cancelada', descripcion: 'Cancelada'}
-//            ]
-//        });
-//
-//        const win = Ext.create('Ext.window.Window', {
-//            title: 'Confirmar Embarque - ' + docNum,
-//            width: 500,
-//            modal: true,
-//            layout: 'fit',
-//            items: [
-//                {
-//                    xtype: 'form',
-//                    bodyPadding: 20,
-//                    defaults: {
-//                        anchor: '100%',
-//                        labelWidth: 120
-//                    },
-//                    items: [
-//                        {
-//                            xtype: 'displayfield',
-//                            fieldLabel: 'Doc Num',
-//                            value: docNum
-//                        },
-//                        {
-//                            xtype: 'displayfield',
-//                            fieldLabel: 'Cliente',
-//                            value: numAtCard
-//                        },
-//                        {
-//                            xtype: 'combobox',
-//                            fieldLabel: 'Status',
-//                            id: 'cmbStatusShip',
-//                            store: storeStatus,
-//                            valueField: 'codigo',
-//                            displayField: 'descripcion',
-//                            queryMode: 'local',
-//                            emptyText: 'Seleccione status',
-//                            allowBlank: false,
-//                            editable: false,
-//                            value: 'Total'
-//                        },
-//                        {
-//                            xtype: 'textareafield',
-//                            fieldLabel: 'Memo',
-//                            id: 'txtMemoShip',
-//                            value: 'Embarque desde sistema local',
-//                            height: 80
-//                        }
-//                    ],
-//                    buttons: [
-//                        {
-//                            text: 'Enviar Confirmación',
-//                            iconCls: 'fa fa-truck',
-//                            formBind: true,
-//                            handler: function () {
-//                                var status = Ext.getCmp('cmbStatusShip').getValue();
-//                                var memo = Ext.getCmp('txtMemoShip').getValue();
-//
-//                                if (!status) {
-//                                    Ext.Msg.alert('Error', 'Debe seleccionar un status');
-//                                    return;
-//                                }
-//
-//                                Ext.getBody().mask('Obteniendo líneas...');
-//
-//                                // Obtener líneas desde BD local
-//                                Ext.Ajax.request({
-//                                    url: contexto + '/TransferenciasSalida',
-//                                    method: 'POST',
-//                                    params: {
-//                                        busqBnd: 5,
-//                                        docEntry: docEntry,
-//                                        servicio: 'ServiceTransferenciaSalidaDet'
-//                                    },
-//                                    success: function (response) {
-//                                        Ext.getBody().unmask();
-//
-//                                        var data = Ext.decode(response.responseText);
-//                                        var lineas = data.items || [];
-//
-//                                        if (lineas.length === 0) {
-//                                            Ext.Msg.alert('Error', 'No se encontraron líneas para esta transferencia');
-//                                            return;
-//                                        }
-//
-//                                        // Calcular totales
-//                                        var totalQuantity = 0;
-//                                        var linesArray = [];
-//
-//                                        lineas.forEach(function (linea) {
-//                                            var qty = parseFloat(linea.Quantity) || 0;
-//                                            totalQuantity += qty;
-//
-//                                            linesArray.push({
-//                                                LineNum: parseInt(linea.LineNum),
-//                                                ItemCode: linea.ItemCode,
-//                                                BarCode: linea.Barcode,
-//                                                Quantity: qty
-//                                            });
-//                                        });
-//
-//                                        // Construir JSON TransferShipConfirm
-//                                        var fechaActual = new Date();
-//                                        var fechaISO = Ext.Date.format(fechaActual, 'Y-m-d\\TH:i:s');
-//                                        var transactionNumber = new Date().getTime().toString();
-//
-//                                        var transferShipJSON = {
-//                                            ShipmentConfirm: {
-//                                                DocDate: fechaISO,
-//                                                DocNum: docNum,
-//                                                NumAtCard: numAtCard,
-//                                                TransactionNumber: transactionNumber,
-//                                                Status: status,
-//                                                Memo: memo
-//                                            },
-//                                            ControlValues: {
-//                                                TotalQuantity: totalQuantity,
-//                                                TotalLines: linesArray.length
-//                                            },
-//                                            Lines: linesArray
-//                                        };
-//
-//                                        console.log('? JSON TransferShipConfirm:', transferShipJSON);
-//
-//                                        // Enviar al servlet
-//                                        Ext.getBody().mask('Enviando confirmación de embarque...');
-//
-//                                        Ext.Ajax.request({
-//                                            url: contexto + '/TransferenciasSalida',
-//                                            method: 'POST',
-//                                            params: {
-//                                                busqBnd: 6,
-//                                                valores: Ext.encode(transferShipJSON)
-//                                            },
-//                                            success: function (responseShip) {
-//                                                Ext.getBody().unmask();
-//
-//                                                var resultado = Ext.decode(responseShip.responseText);
-//
-//                                                if (resultado.success) {
-//
-//                                                    Ext.Msg.alert('Éxito', 'Confirmación de embarque enviada correctamente', function () {
-//                                                        win.close();
-//
-//                                                        // Recargar grid principal
-//                                                        var grid = Ext.getCmp('gridTransferenciaSalida');
-//                                                        if (grid && grid.getStore()) {
-//                                                            grid.getStore().reload();
-//                                                        }
-//                                                    });
-//
-//                                                    var tsid = record.get("TSID");  // Obtener OCID del record
-//                                                    TransferenciaSalidaUtils.ConfirmarTransferenciaSalida(tsid);
-//
-//                                                    console.log('? Respuesta cliente:', resultado.clienteResponse);
-//                                                } else {
-//                                                    Ext.Msg.alert('Error', resultado.error || 'Error al enviar confirmación');
-//                                                }
-//                                            },
-//                                            failure: function () {
-//                                                Ext.getBody().unmask();
-//                                                Ext.Msg.alert('Error', 'Error de comunicación con el servidor');
-//                                            }
-//                                        });
-//                                    },
-//                                    failure: function () {
-//                                        Ext.getBody().unmask();
-//                                        Ext.Msg.alert('Error', 'No se pudieron obtener las líneas');
-//                                    }
-//                                });
-//                            }
-//                        },
-//                        {
-//                            text: 'Cancelar',
-//                            iconCls: 'icn-back',
-//                            handler: function () {
-//                                win.close();
-//                            }
-//                        }
-//                    ]
-//                }
-//            ]
-//        });
-//
-//        win.show();
-//    },
-
     EliminarOrdenSalida: function (prm) {
         Ext.Ajax.request({
             url: contexto + '/TransferenciasSalida',
@@ -1681,9 +1483,9 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                                 afterrender: function (datefield) {
                                                     datefield.setValue(new Date()); // Establecer la fecha actual
                                                 },
-//                                                blur: function () {
-//                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
-//                                                }
+                                                blur: function () {
+                                                    TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+                                                }
                                             }
                                         },
                                         {
@@ -1705,9 +1507,9 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                                         field.setValue(maxValue);
                                                     }
                                                 },
-//                                                blur: function () {
-//                                                    CentralComprasUtils.BtnBusqCentralCompras();
-//                                                }
+                                                blur: function () {
+                                                     TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+                                                }
                                             }
                                         },
                                     ]
