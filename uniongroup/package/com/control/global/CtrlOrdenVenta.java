@@ -161,32 +161,6 @@ public class CtrlOrdenVenta extends HttpServlet {
         }
     }
 
-//    public String ObtenerPSDetLocal(HttpServletRequest request, HttpServletResponse response) {
-//        try {
-//            response.setContentType("application/json");
-//            response.setCharacterEncoding("UTF-8");
-//
-//            String docEntry = Utilities.obtenParametro(request, "docEntry");
-//            String service = props.getValueProp("Host")
-//                    + props.getValueProp("ServiceOrdenVentaDet")
-//                    + docEntry;
-//
-//            String respuesta = requetGet.getGetGlobal(service);
-//            respuesta = normalizeJson(respuesta);
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-//
-//            // ? Reutilizar la clase wrapper de ORDS
-//            LineasOrdenVentaResponseWrapper wrapper = mapper.readValue(respuesta, LineasOrdenVentaResponseWrapper.class);
-//
-//            return mapper.writeValueAsString(wrapper.items);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "[]";
-//        }
-//    }
     public String ObtenerOrdenesVentaGlobal(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.setContentType("application/json");
@@ -499,35 +473,6 @@ public class CtrlOrdenVenta extends HttpServlet {
         return JSONVal;
     }
 
-//    public String ObtenerProductoSurtido(HttpServletRequest request, HttpServletResponse response) {
-//        String JSONVal = "";
-//        try {
-//            String preid = Utilities.obtenParametro(request, "preid");
-//
-//            String service = props.getValueProp("Host") + "ServiceProdSurt" + preid;
-//
-//            JSONVal = requetGet.getGetPaginacion(service, request);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JSONVal = "{\"items\":[]}";
-//        }
-//        return JSONVal;
-//    }
-//    public String NuevoOrdenVenta(HttpServletRequest request, HttpServletResponse response) {
-//        String JSONVal = "";
-//        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
-//        RequestPostApi requetPost = new RequestPostApi();
-//        try {
-//            String service = props.getValueProp("Host") + props.getValueProp("ServiceOrdenVenta");
-//            JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JSONVal = "";
-//        }
-//        return JSONVal;
-//    }
     private String normalizeJson(String json) {
         json = json.trim();
 
