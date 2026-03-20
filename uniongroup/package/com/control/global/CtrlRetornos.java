@@ -69,6 +69,15 @@ public class CtrlRetornos extends HttpServlet {
                     case "5":
                     out.print(ObtenerRetornosDet(request, response));
                     break;
+                    case "6":
+                    out.print(EnviarReturnConfirm(request, response));
+                    break;
+                    case "7":
+                    out.print(CancelarRetorno(request, response));
+                    break;
+                     case "8":
+                    out.print(ConfirmarRetorno(request, response));
+                    break;
                 
                 
             }
@@ -145,12 +154,12 @@ public class CtrlRetornos extends HttpServlet {
             for (CentralRetornosGlobal orden : ordenes) {
                 if (orden.ReturnRequest.DocEntry.equals(docEntry)) {
                     String jsonResult = mapper.writeValueAsString(orden.Lines);
-                    System.out.println("? Se encontraron " + orden.Lines.size() + " líneas para DocEntry: " + docEntry);
+                    System.out.println("? Se encontraron " + orden.Lines.size() + " l?neas para DocEntry: " + docEntry);
                     return jsonResult;
                 }
             }
 
-            System.out.println("?? No se encontró orden con DocEntry: " + docEntry);
+            System.out.println("?? No se encontr? orden con DocEntry: " + docEntry);
             return "[]";
 
         } catch (Exception e) {
@@ -193,7 +202,7 @@ public class CtrlRetornos extends HttpServlet {
                     }
                 }
 
-                // Solo enviar al cliente si hay órdenes exitosas
+                // Solo enviar al cliente si hay ?rdenes exitosas
                 if (!confirmDataArray.isEmpty()) {
                     Map<String, Object> confirmDataJSON = new HashMap<>();
                     confirmDataJSON.put("ConfirmData", confirmDataArray);
@@ -206,49 +215,49 @@ public class CtrlRetornos extends HttpServlet {
                     System.out.println("========================================");
 
                     // 4. POST al cliente GLOBAL
-//                    try {
-//                        String serviceCliente = props.getValueProp("HostGlobalInsert")
-//                                + props.getValueProp("ServiceRetornosPostGlobal");
-//
-//                        System.out.println("? Enviando POST a: " + serviceCliente);
-//
-//                        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
-//
-//                        System.out.println("========================================");
-//                        System.out.println("? Respuesta del cliente:");
-//                        System.out.println(respuestaCliente);
-//                        System.out.println("========================================");
-//
-//                        // 5. Parsear la respuesta del cliente (viene como JSON escapado)
-//                        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
-//
-//                        List<Map<String, Object>> clienteResponse = mapper.readValue(
-//                                jsonLimpio,
-//                                new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {
-//                        }
-//                        );
-//
-//                        // Imprimir detalles
-//                        for (Map<String, Object> item : clienteResponse) {
-//                            System.out.println("  ? Folio: " + item.get("Folio"));
-//                            System.out.println("  ? DocEntry: " + item.get("DocEntry"));
-//                            System.out.println("  ? ObjType: " + item.get("ObjType"));
-//                            System.out.println("  ? SystemDate: " + item.get("SystemDate"));
-//                        }
-//
-//                        // 6. Agregar respuesta del cliente al JSON de retorno
-//                        respuesta.put("clienteResponse", clienteResponse);
-//                        JSONVal = mapper.writeValueAsString(respuesta);
-//
-//                    } catch (Exception ex) {
-//                        System.out.println("? Error al enviar al cliente:");
-//                        ex.printStackTrace();
-//                        // Agregar error al response
-//                        respuesta.put("clienteError", ex.getMessage());
-//                        JSONVal = mapper.writeValueAsString(respuesta);
-//                    }
+                    try {
+                        String serviceCliente = props.getValueProp("HostGlobalInsert")
+                                + props.getValueProp("ServiceRetornosPostGlobal");
+
+                        System.out.println("? Enviando POST a: " + serviceCliente);
+
+                        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
+
+                        System.out.println("========================================");
+                        System.out.println("? Respuesta del cliente:");
+                        System.out.println(respuestaCliente);
+                        System.out.println("========================================");
+
+                        // 5. Parsear la respuesta del cliente (viene como JSON escapado)
+                        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+
+                        List<Map<String, Object>> clienteResponse = mapper.readValue(
+                                jsonLimpio,
+                                new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {
+                        }
+                        );
+
+                        // Imprimir detalles
+                        for (Map<String, Object> item : clienteResponse) {
+                            System.out.println("  ? Folio: " + item.get("Folio"));
+                            System.out.println("  ? DocEntry: " + item.get("DocEntry"));
+                            System.out.println("  ? ObjType: " + item.get("ObjType"));
+                            System.out.println("  ? SystemDate: " + item.get("SystemDate"));
+                        }
+
+                        // 6. Agregar respuesta del cliente al JSON de retorno
+                        respuesta.put("clienteResponse", clienteResponse);
+                        JSONVal = mapper.writeValueAsString(respuesta);
+
+                    } catch (Exception ex) {
+                        System.out.println("? Error al enviar al cliente:");
+                        ex.printStackTrace();
+                        // Agregar error al response
+                        respuesta.put("clienteError", ex.getMessage());
+                        JSONVal = mapper.writeValueAsString(respuesta);
+                    }
                 } else {
-                    System.out.println("?? No hay órdenes exitosas para confirmar al cliente");
+                    System.out.println("?? No hay ?rdenes exitosas para confirmar al cliente");
                 }
             }
 
@@ -308,6 +317,143 @@ public class CtrlRetornos extends HttpServlet {
         }
         return JSONVal;
     }
+    
+    
+    public String EnviarReturnConfirm(HttpServletRequest request, HttpServletResponse response) {
+    String JSONVal = "";
+    String jsonReceipt = Utilities.obtenParametro(request, "valores");
+    RequestPostApi requetPost = new RequestPostApi();
+    
+    // El ObjectMapper se define una sola vez fuera del try para mayor eficiencia
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    try {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // 1. Parsear el JSON recibido del frontend
+        Map<String, Object> receiptData = mapper.readValue(jsonReceipt, Map.class);
+
+        // 2. Enviar al API del cliente GLOBAL
+        String serviceCliente = props.getValueProp("HostGlobalInsert")
+                + props.getValueProp("ServiceReturnConfirm");
+
+        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
+
+        // 3. DOBLE DESERIALIZACIÓN (CORRECCIÓN CRÍTICA AQUÍ)
+        // El API devuelve un String que contiene un Array JSON: "[{...}]"
+        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+        
+        // Cambiamos Map.class por TypeReference<List<Map<String, Object>>> 
+        // para poder recibir el formato [ ] que causaba el error.
+        List<Map<String, Object>> listaRespuestas = mapper.readValue(jsonLimpio, 
+                new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {});
+
+        Map<String, Object> clienteResponse = new HashMap<>();
+
+        // Validamos que la lista tenga contenido antes de extraer el primer objeto
+        if (listaRespuestas != null && !listaRespuestas.isEmpty()) {
+            clienteResponse = listaRespuestas.get(0);
+        } else {
+            throw new Exception("La respuesta del API Global está vacía (Array vacío)");
+        }
+
+        // 4. CONSTRUIR JSON PARA GUARDAR EN UG_CONFIRMATION_LOG
+        Map<String, Object> confirmationLog = new HashMap<>();
+        confirmationLog.put("CLOPROCESS", "ReturnConfirmDEV");
+
+        // Extraer Status y Mensaje del StatusInfo
+        if (clienteResponse.get("StatusInfo") != null) {
+            Map<String, Object> statusInfo = (Map<String, Object>) clienteResponse.get("StatusInfo");
+            confirmationLog.put("CLOSTATUS", statusInfo.get("Status"));
+            confirmationLog.put("CLOMENSSAGE", statusInfo.get("Mensaje"));
+        } else {
+            confirmationLog.put("CLOSTATUS", 200);
+            confirmationLog.put("CLOMENSSAGE", "OK");
+        }
+
+        confirmationLog.put("CLOSYSTEMDATE", clienteResponse.get("SystemDate"));
+        confirmationLog.put("CLOTRANSACTIONNUMBER", clienteResponse.get("TransactionNumber"));
+        confirmationLog.put("CLODOCDATE", clienteResponse.get("DocDate"));
+        confirmationLog.put("CLODOCNUM", clienteResponse.get("DocNum"));
+
+        String confirmationJson = mapper.writeValueAsString(confirmationLog);
+
+        // 5. GUARDAR EN TU API LOCAL (LOG)
+        try {
+            String serviceLog = "https://seyl.mx/apps/globale/uniongroup/confirmationlog/";
+            String resultadoLog = requetPost.getPost(serviceLog, confirmationJson, request);
+
+            Map<String, Object> logResponse = mapper.readValue(resultadoLog, Map.class);
+            if (logResponse.get("success") != null && (Boolean) logResponse.get("success")) {
+                System.out.println("Log guardado exitosamente con CLOID: " + logResponse.get("CLOID"));
+            } else {
+                System.out.println("Advertencia al guardar log: " + logResponse.get("message"));
+            }
+        } catch (Exception logEx) {
+            System.out.println("Error al guardar en Confirmation Log (no crítico):");
+            logEx.printStackTrace();
+        }
+
+        // 6. Construir respuesta final para el Frontend
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("success", true);
+        resultado.put("message", "Confirmación de recepción enviada exitosamente");
+        resultado.put("clienteResponse", clienteResponse);
+
+        JSONVal = mapper.writeValueAsString(resultado);
+
+    } catch (Exception e) {
+        System.out.println("Error en EnviarReceiptConfirm:");
+        e.printStackTrace();
+
+        try {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "Error al procesar ReceiptConfirm: " + e.getMessage());
+            JSONVal = mapper.writeValueAsString(error);
+        } catch (Exception ex) {
+            JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";
+        }
+    }
+
+    return JSONVal;
+}
+    
+    public String CancelarRetorno(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+        String rutaServicio = Utilities.obtenParametro(request, "servicio");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornos");
+            JSONVal = requetPost.setPut(service, jsonLineaNegocio, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String ConfirmarRetorno(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
+        String rutaServicio = Utilities.obtenParametro(request, "servicio");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornosConfirm");
+            JSONVal = requetPost.setPut(service, jsonLineaNegocio, request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    
 
     private String normalizeJson(String json) {
         json = json.trim();

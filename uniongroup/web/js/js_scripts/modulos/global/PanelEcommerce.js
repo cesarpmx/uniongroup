@@ -74,7 +74,7 @@ Ext.define('EcommerceUtils', {
             var win = Ext.create('Ext.window.Window', {
                 id: 'winPaneldetalleEcommerce',
                 title: 'Detalle Pedido',
-                width: 100,
+                width: 900,
                 height: 500,
                 scrollable: 'vertical',
                 closable: true,

@@ -153,7 +153,12 @@ Ext.define('Modulos.global.FormPanelEcommerceDet', {
                 { text: 'user', dataIndex: 'user', flex: 1 },
                 { text: 'requestedquantity', dataIndex: 'requestedquantity', flex: 1 },
                 { text: 'ean', dataIndex: 'ean', flex: 1 },
-                { text: 'ean', dataIndex: 'coms', flex: 1 },
+                { text: 'coms', dataIndex: 'coms', flex: 1,
+                renderer: function (value, metaData) {
+                        metaData.style = "white-space: normal; word-wrap: break-word;"; // Estilo inline
+                        metaData.tdCls = "wrap-cell"; // Clase CSS personalizada
+                        return Ext.String.htmlEncode(value); // Escapa caracteres especiales para evitar vulnerabilidades
+                    }},
 
                 /* ===== OCULTOS (SIN VALOR EN EJEMPLO) ===== */
                 { text: 'deliverynote', dataIndex: 'deliverynote', hidden: true },
