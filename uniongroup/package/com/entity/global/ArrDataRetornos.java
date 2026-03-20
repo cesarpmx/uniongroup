@@ -21,5 +21,7 @@ public class ArrDataRetornos {
     public String Warehouse;
     public int totalrecs;
     public int comid;
+    public String comestatus;
+    public String retestatus;
     
 }

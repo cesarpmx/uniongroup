@@ -93,6 +93,246 @@ Ext.define('RetornosUtils', {
             win.show();
         });
     },
+    
+    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parámetro silent
+        var payload = {
+            rtnid: ocid,
+            retestatus: "C"
+        };
+
+        Ext.Ajax.request({
+            url: contexto + '/Retornos',
+            timeout: 60000,
+            params: {
+                busqBnd: 8,
+                valores: Ext.JSON.encode(payload)
+            },
+            success: function (response) {
+                var resultado = Ext.JSON.decode(response.responseText);
+
+                // ? Solo mostrar mensaje si NO es silencioso
+                if (!silent) {
+                    Ext.MessageBox.show({
+                        title: 'Retornos',
+                        msg: resultado.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                        fn: function (btn) {
+                            if (btn === 'ok') {
+                               RetornosUtils.BtnBusqRetornos();
+                            }
+                        }
+                    });
+                } else {
+                    // ? Si es silencioso, solo refrescar el grid
+                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
+                }
+            },
+            failure: function (response, opts) {
+                // ?? Siempre mostrar errores
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo confirmar la orden...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    enviarReturnConfirm: function (record) {
+    var me = this;
+    var clave = record.get("rtnid");
+    var docEntry = record.get("DocEntry");
+    var docNum = record.get("DocNum");
+    var cardCode = record.get("CardCode");
+    var transaccionNum = record.get("comid");
+
+    // 1. Bloqueo preventivo mientras cargamos los datos para la ventana
+    Ext.getBody().mask('Calculando totales...');
+
+    /* ================= PASO 1: OBTENER DATOS ANTES DE MOSTRAR VENTANA ================= */
+    Ext.Ajax.request({
+        url: contexto + "/Retornos",
+        method: "POST",
+        params: {
+            busqBnd: 5,
+            clave: clave
+        },
+        success: function (resp) {
+            Ext.getBody().unmask();
+            var data = Ext.decode(resp.responseText);
+
+            if (!data || data.length === 0) {
+                Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
+                return;
+            }
+
+            // Variables para cálculos
+            var lines = [];
+            var totalPedido = 0;
+            var totalSurtido = 0;
+
+            Ext.Array.each(data, function (line) {
+                var qty = line.receivedquantity || 0;
+                var pedido = line.quantity || 0;
+
+                totalPedido += pedido;
+                totalSurtido += qty;
+
+                lines.push({
+                    LineNum: line.linenum,
+                    ItemCode: line.itemcode,
+                    BarCode: line.barcode || line.itemcode,
+                    Quantity: qty
+                });
+            });
+
+            var estatusCalculado = (totalSurtido >= totalPedido) ? 'Total' : 'Parcial';
+
+            /* ================= PASO 2: CREAR VENTANA CON DATOS CARGADOS ================= */
+            
+            var memoField = Ext.create('Ext.form.field.TextArea', {
+                fieldLabel: 'Observaciones',
+                name: 'memo',
+                labelAlign: 'top',
+                anchor: '100%',
+                height: 70
+            });
+
+            var win = Ext.create('Ext.window.Window', {
+                title: 'Confirmar Retorno - ' + docNum,
+                modal: true,
+                width: 400,
+                layout: 'fit',
+                resizable: false,
+                items: [{
+                    xtype: 'form',
+                    bodyPadding: 15,
+                    items: [
+                        { xtype: 'displayfield', fieldLabel: 'DocEntry', value: docEntry },
+                        { xtype: 'displayfield', fieldLabel: 'Transaccion Num', value: transaccionNum, fieldStyle: 'color:blue; font-weight:bold;' },
+                        { xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido },
+                        { xtype: 'displayfield', fieldLabel: 'Total Surtido', value: totalSurtido, fieldStyle: 'color:blue; font-weight:bold;' },
+                        { 
+                            xtype: 'displayfield', 
+                            fieldLabel: 'Estatus', 
+                            value: estatusCalculado,
+                            fieldStyle: 'color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + '; font-weight:bold;'
+                        },
+                        memoField
+                    ],
+                    buttons: [
+                        {
+                            text: 'Cancelar',
+                            handler: function () { win.close(); }
+                        },
+                        {
+                            text: 'Confirmar Retorno',
+                            //scale: 'medium',
+                            handler: function () {
+                                var memoText = memoField.getValue();
+                                var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+
+                                win.close();
+                                Ext.getBody().mask('Procesando en SAP...');
+
+                                /* ================= PASO 3: ENVIAR JSON FINAL ================= */
+                                var jsonSend = {
+                                    ReturnConfirm: {
+                                        DocDate: docDate,
+                                        DocNum: docNum,
+                                        NumAtCard: cardCode,
+                                        TransactionNumber: transaccionNum,
+                                        Status: estatusCalculado,
+                                        Memo: memoText
+                                    },
+                                    ControlValues: {
+                                        TotalQuantity: totalSurtido,
+                                        TotalLines: lines.length
+                                    },
+                                    Lines: lines
+                                };
+
+                                Ext.Ajax.request({
+                                    url: contexto + "/Retornos",
+                                    method: "POST",
+                                    params: {
+                                        busqBnd: 6,
+                                        valores: Ext.encode(jsonSend)
+                                    },
+                                    success: function (response) {
+                                        Ext.getBody().unmask();
+                                        var resultado = Ext.decode(response.responseText);
+
+                                        if (resultado.success) {
+                                            RetornosUtils.ConfirmarOrdenCompra(clave, true);
+                                            
+                                            var res = resultado.clienteResponse || {};
+                                            var fecha = res.SystemDate ? Ext.Date.format(new Date(res.SystemDate), 'd/m/Y H:i:s') : 'N/A';
+
+                                            Ext.Msg.alert('Éxito', 
+                                                '<b>SAP Doc:</b> ' + (res.DocNum || 'N/A') + '<br>' +
+                                                '<b>Fecha:</b> ' + fecha + '<br>' +
+                                                '<b>Mensaje:</b> ' + (res.StatusInfo ? res.StatusInfo.Mensaje : 'OK')
+                                            );
+                                        } else {
+                                            Ext.Msg.alert('Error SAP', resultado.message || 'Error en el proceso.');
+                                        }
+                                    },
+                                    failure: function () {
+                                        Ext.getBody().unmask();
+                                        Ext.Msg.alert('Error', 'Fallo de conexión.');
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                }]
+            });
+
+            win.show();
+        },
+        failure: function () {
+            Ext.getBody().unmask();
+            Ext.Msg.alert("Error", "No se pudo conectar para obtener los totales.");
+        }
+    });
+},
+    
+     EliminarRetorno: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/Retornos',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                valores: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Retornos',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqRetornos();
+                           
+                        }
+                    }
+                });
+                RetornosUtils.BtnBusqRetornos();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
 
 });
 
@@ -125,7 +365,9 @@ Ext.define('Modulos.global.PanelRetornos', {
                 "Memo",
                 "Status",
                 "FechaInsercion",
-                'comid'
+                'comid',
+               "comestatus",
+               "retestatus"
             ]
         });
 
@@ -266,7 +508,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                             },
                             listeners: {
                                 afterrender: function (btn) {
-                                    addTooltip(btn, 'Ver Órdenes de Compra Nuevas');
+                                    addTooltip(btn, 'Ver ?rdenes de Compra Nuevas');
                                 }
                             }
                         },
@@ -289,8 +531,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                         xtype: 'pagingtoolbar',
                         store: me.storeRetornos,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} órdenes',
-                        emptyMsg: "No hay órdenes para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} ?rdenes',
+                        emptyMsg: "No hay ?rdenes para mostrar"
                     },
                     columns: [
                         {
@@ -306,38 +548,79 @@ Ext.define('Modulos.global.PanelRetornos', {
                             align: "center",
                             filter: {type: 'number'}
                         },
-                        {
-                            text: "Status",
-                            dataIndex: "Status",
+                       {
+                            text: "Estatus",
+                            dataIndex: "retestatus",
                             align: "center",
                             width: 150,
                             filter: {type: 'string'},
-//                            renderer: function (value) {
-//                                // ? Mapeo de códigos a nombres
-//                                var estatusMap = {
-//                                    'A': 'Activo',
-//                                    'C': 'Cerrado',
-//                                    'X': 'Cancelado'
-//                                            // Agrega los estatus que necesites
-//                                };
-//
-//                                var nombre = estatusMap[value] || value;
-//
-//                                // ? Opcional: Agregar colores según estatus
-//                                var color = '';
-//                                switch (value) {
-//                                    case 'A':
-//                                        color = '#4CAF50';
-//                                        break; // Verde
-//                                    case 'C':
-//                                        color = '#2196F3';
-//                                        break; // Azul
-//                                    case 'X':
-//                                        color = '#F44336';
-//                                        break; // Rojo
-//                                }
-//                                return '<b style="color: ' + color + ';">' + nombre + '</b>';
-//                            }
+                            renderer: function (value) {
+                                // ? Mapeo de c?digos a nombres
+                                var estatusMap = {
+                                    'A': 'Activo',
+                                    'C': 'Confirmado',
+                                    'X': 'Cancelado',
+                                    null: 'Estatus no valido'
+                                            // Agrega los estatus que necesites
+                                };
+
+                                var nombre = estatusMap[value] || value;
+
+                                // ? Opcional: Agregar colores seg?n estatus
+                                var color = '';
+                                switch (value) {
+                                    case 'A':
+                                        color = '#4CAF50';
+                                        break; // Verde
+                                    case 'C':
+                                        color = '#2196F3';
+                                        break; // Azul
+                                    case 'X':
+                                        color = '#F44336';
+                                        break; // Rojo
+                                }
+                                return '<b style="color: ' + color + ';">' + nombre + '</b>';
+                            }
+                        },
+                        
+                        {
+                            text: "Comid",
+                            dataIndex: "comid",
+                            align: "center",
+                            width: 220,
+                            filter: {type: 'string'}
+                        },
+                        
+                        {
+                            text: "Estatus Compra",
+                            dataIndex: "comestatus",
+                            align: "center",
+                            width: 150,
+                            filter: {type: 'string'},
+                            renderer: function (value) {
+                                var color = '';
+                                switch (value) {
+                                    case 'Pendiente':
+                                        color = '#FFC107';
+                                        break; // Amarillo
+                                    case 'En proceso':
+                                        color = '#2196F3';
+                                        break; // Azul
+                                    case 'Recibido':
+                                        color = '#4CAF50';
+                                        break; // Verde
+                                    case 'Confirmado':
+                                        color = '#00BCD4';
+                                        break; // Cyan
+                                    case 'Cancelado':
+                                        color = '#F44336';
+                                        break; // Rojo
+                                    default:
+                                        color = '#6c757d';
+                                        break; // Gris - Desconocido
+                                }
+                                return '<b style="color: ' + color + ';">' + value + '</b>';
+                            }
                         },
                         {
                             text: "DocEntry",
@@ -349,43 +632,43 @@ Ext.define('Modulos.global.PanelRetornos', {
                         {
                             text: "DocNum",
                             dataIndex: "DocNum",
+                            align: "center",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
                             text: "DocDate",
                             dataIndex: "DocDate",
+                            align: "center",
                             filter: {type: 'date'},
                             width: 150,
                         },
                         {
                             text: "CardCode",
                             dataIndex: "CardCode",
+                            align: "center",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
                             text: "Memo",
                             dataIndex: "Memo",
+                            align: "center",
                             width: 220,
                             filter: {type: 'string'}
                         },
                         {
                             text: "Warehouse",
                             dataIndex: "Warehouse",
+                            align: "center",
                             width: 220,
                             filter: {type: 'string'}
                         },
-                        {
-                            text: "Comid",
-                            dataIndex: "comid",
-                            width: 220,
-                            filter: {type: 'string'}
-                        },
+                        
                         {
                             xtype: "actioncolumn",
                             text: "Confirmar",
-                            dataIndex: "prrtiempo2",
+                           // dataIndex: "prrtiempo2",
                             menuDisabled: true,
                             sortable: false,
                             align: "center",
@@ -395,11 +678,58 @@ Ext.define('Modulos.global.PanelRetornos', {
                                 {
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
-                                        RetornosUtils.enviarReceiptConfirm(record);
+                                        RetornosUtils.enviarReturnConfirm(record);
                                     }
                                 }
                             ]
                         },
+                        
+                        {
+                            xtype: "actioncolumn",
+                            text: "Cancelar",
+                            width: 90,
+                            menuDisabled: true,
+                            sortable: false,
+                            align: "center",
+                            items: [
+                                {
+                                    getClass: function (v, meta, record) {
+                                        var estatus = record.get("retestatus");
+                                        var estatusCom = record.get("comestatus");
+
+                                        return estatus === "A" && estatusCom !== "Recibido"
+                                                ? "icn-cancela"
+                                                : "icn-cancela-disable";
+                                    },
+                                    handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        Ext.MessageBox.show({
+                                            title: "Cancelar Retorno",
+                                            msg: '¿Estás seguro que deseas cancelar el retorno: ' + record.data.rtnid + ' ?',
+                                            buttons: Ext.MessageBox.OKCANCEL,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            fn: function (btn) {
+                                                if (btn === 'ok') {
+                                                    
+                                                     var rowData = record.data.rtnid;
+                                                        var dteestatus = record.data.retestatus;
+
+                                                        var nuevoObjeto = {
+                                                            rtnid: rowData,
+                                                            retestatus: dteestatus
+                                                        };
+
+                                                    
+                                                    RetornosUtils.EliminarRetorno(Ext.JSON.encode(nuevoObjeto));
+                                                    record.drop();
+                                                } else {
+                                                    this.close();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            ]
+                        }
                     ],
                     listeners: {
                         edit: function (editor, e) {

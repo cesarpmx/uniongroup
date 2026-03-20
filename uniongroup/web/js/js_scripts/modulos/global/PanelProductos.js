@@ -27,7 +27,7 @@ Ext.define('ProductosUtils', {
         var grid = Ext.getCmp('gridProductos'),
             mainStore = grid.getStore(),
             //totalRegistros = mainStore.getTotalCount();
-            totalRegistros = 100;
+            totalRegistros = 10000;
 
         if (totalRegistros === 0) {
             Ext.Msg.alert('Sin datos', 'No hay productos para enviar');
@@ -35,8 +35,8 @@ Ext.define('ProductosUtils', {
         }
 
         Ext.Msg.confirm(
-            'Confirmar sincronización',
-            '¿Desea procesar los ' + totalRegistros + ' productos? (Se enviarán en lotes)',
+            'Confirmar sincronizaci?n',
+            '?Desea procesar los ' + totalRegistros + ' productos? (Se enviar?n en lotes)',
             function (btn) {
                 if (btn === 'yes') {
 
@@ -70,7 +70,7 @@ Ext.define('ProductosUtils', {
 
     iniciarEnvioPorLotes: function (allRecords) {
         var me = this,
-            loteSize = 50,
+            loteSize = 100,
             totalRecords = allRecords.length,
             confirmadosGlobal = [],
             erroresGlobal = [],
@@ -146,7 +146,7 @@ Ext.define('ProductosUtils', {
                     try {
                         result = Ext.decode(response.responseText);
                     } catch (e) {
-                        Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
+                        Ext.Msg.alert('Error', 'Respuesta inv?lida del servidor');
                         progressWin.close();
                         return;
                     }
@@ -198,7 +198,7 @@ Ext.define('ProductosUtils', {
 
                 failure: function () {
                     progressWin.close();
-                    Ext.Msg.alert('Error', 'Fallo de conexión en lote ' + index);
+                    Ext.Msg.alert('Error', 'Fallo de conexi?n en lote ' + index);
                 }
             });
         }
@@ -210,13 +210,13 @@ Ext.define('ProductosUtils', {
         
         var progressMsg = Ext.Msg.show({
             title: 'Confirmando consignatarios',
-            message: 'Enviando confirmación a VectorDelta...',
+            message: 'Enviando confirmaci?n a VectorDelta...',
             progress: true,
             closable: false,
             buttons: false
         });
 
-        // Animación simple (indeterminada)
+        // Animaci?n simple (indeterminada)
         progressMsg.wait('Procesando...');
         
         Ext.Ajax.request({
@@ -233,7 +233,7 @@ Ext.define('ProductosUtils', {
                     resp = Ext.decode(response.responseText);
                 } catch (e) {
                     progressMsg.close();
-                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
+                    Ext.Msg.alert('Error', 'Respuesta inv?lida del servidor');
                     return;
                 }
 
@@ -243,13 +243,13 @@ Ext.define('ProductosUtils', {
                     var totalConfirmados = resp.confirmedItems.length;
 
                     Ext.Msg.alert(
-                            'Confirmación exitosa',
+                            'Confirmaci?n exitosa',
                             'Se confirmaron <b>' + totalConfirmados + '</b> productos(s) correctamente.'
                             );
                 } else {
                     Ext.Msg.alert(
                             'Aviso',
-                            resp.message || 'La confirmación se procesó sin detalle.'
+                            resp.message || 'La confirmaci?n se proces? sin detalle.'
                             );
                 }
             },
@@ -282,7 +282,7 @@ Ext.define('ProductosUtils', {
         });
 
         Ext.create('Ext.window.Window', {
-            title: 'Resultados sincronización de Productos',
+            title: 'Resultados sincronizaci?n de Productos',
             width: 950,
             height: 600,
             modal: true,
@@ -296,14 +296,14 @@ Ext.define('ProductosUtils', {
                 xtype: 'tabpanel',
                 items: [
                     {
-                        title: 'Éxitos (' + confirmados.length + ')',
+                        title: '?xitos (' + confirmados.length + ')',
                         layout: 'fit',
                         items: [{
                             xtype: 'grid',
                             store: storeOk,
                             columns: [
                                 { text: 'Item', dataIndex: 'ItemCode', width: 160 },
-                                { text: 'Descripción', dataIndex: 'ItemName', flex: 1 },
+                                { text: 'Descripci?n', dataIndex: 'ItemName', flex: 1 },
                                 { text: 'Fecha', dataIndex: 'fecha', width: 160 }
                             ]
                         }]
@@ -390,7 +390,7 @@ Ext.define('Modulos.global.PanelProductos', {
             proxy: {
                 type: "ajax",
                 url: contexto + "/Productos",
-                // ExtJS envía automáticamente page, start y limit
+                // ExtJS env?a autom?ticamente page, start y limit
                 reader: {
                     type: "json",
                     rootProperty: "Data", // Coincide con public ArrayList<ArrDataConsignatarios> Data
@@ -627,7 +627,7 @@ Ext.define('Modulos.global.PanelProductos', {
                         afterrender: function (grid) {
                          
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la b?squeda se ha ejecutado
                               ProductosUtils.BtnBusqProductos();
                             }
                         }
