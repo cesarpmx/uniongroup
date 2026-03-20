@@ -369,6 +369,7 @@ Ext.define('TransferenciaEntradaUtils', {
                 };
             });
 
+            Ext.getBody().unmask();
             TransferenciaEntradaUtils.iniciarEnvioPorLotes(ordersToSend);
 
         }).catch(function (error) {
@@ -1025,12 +1026,17 @@ Ext.define('TransferenciaEntradaUtils', {
                                                         var docNumResp = 'N/A';
                                                         var systemDate = 'N/A';
                                                         var transNumber = 'N/A';
+                                                        var statusMensaje = 'N/A';
 
-                                                        if (resultado.clienteResponse && resultado.clienteResponse[0]) {
-                                                            var cr = resultado.clienteResponse[0];
+                                                        if (resultado.clienteResponse) {
+                                                            var cr = resultado.clienteResponse; // ? Acceso directo (no array)
                                                             docNumResp = cr.DocNum || 'N/A';
-                                                            systemDate = cr.DocDate || 'N/A';
+                                                            systemDate = cr.SystemDate || 'N/A'; // ? Usar SystemDate
                                                             transNumber = cr.TransactionNumber || 'N/A';
+
+                                                            if (cr.StatusInfo) {
+                                                                statusMensaje = cr.StatusInfo.Mensaje || 'N/A';
+                                                            }
                                                         }
 
                                                         // Formatear fecha
@@ -1051,7 +1057,8 @@ Ext.define('TransferenciaEntradaUtils', {
                                                         msg += '<b>Pedido:</b> ' + totalPedido + ' | <b>Recibido:</b> ' + totalRecibido + '<br>';
                                                         msg += '<b>Folio:</b> ' + docNumResp + '<br>';
                                                         msg += '<b>Fecha:</b> ' + fechaFormateada + '<br>';
-                                                        msg += '<b>Transaction #:</b> ' + transNumber;
+                                                        msg += '<b>Transaction #:</b> ' + transNumber + '<br>';
+                                                        msg += '<b>Estado:</b> ' + statusMensaje; // ? Agregar StatusInfo
 
                                                         Ext.Msg.alert('Éxito', msg, function () {
                                                             TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
