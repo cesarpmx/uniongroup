@@ -1,12 +1,12 @@
 /**
- * Slovenian translation by Matjaž (UTF-8 encoding)
+ * Slovenian translation by MatjaÅ¾ (UTF-8 encoding)
  * 25 April 2007
  */
 Ext.onReady(function() {
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"];
 
-        Ext.Date.dayNames = ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"];
+        Ext.Date.dayNames = ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Äetrtek", "Petek", "Sobota"];
     }
 
     if (Ext.util && Ext.util.Format) {
@@ -54,7 +54,7 @@ Ext.define("Ext.locale.sl.picker.Date", {
     disabledDaysText: "",
     disabledDatesText: "",
     nextText: 'Naslednji mesec (Control+Desno)',
-    prevText: 'Prejšnji mesec (Control+Levo)',
+    prevText: 'PrejÅ¡nji mesec (Control+Levo)',
     monthYearText: 'Izberite mesec (Control+Gor/Dol za premik let)',
     todayTip: "{0} (Preslednica)",
     format: "d.m.y",
@@ -66,18 +66,18 @@ Ext.define("Ext.locale.sl.toolbar.Paging", {
     beforePageText: "Stran",
     afterPageText: "od {0}",
     firstText: "Prva stran",
-    prevText: "Prejšnja stran",
+    prevText: "PrejÅ¡nja stran",
     nextText: "Naslednja stran",
     lastText: "Zadnja stran",
-    refreshText: "Osveži",
+    refreshText: "OsveÅ¾i",
     displayMsg: "Prikazujem {0} - {1} od {2}",
     emptyMsg: 'Ni podatkov za prikaz'
 });
 
 Ext.define("Ext.locale.sl.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Minimalna dolžina tega polja je {0}",
-    maxLengthText: "Maksimalna dolžina tega polja je {0}",
+    minLengthText: "Minimalna dolÅ¾ina tega polja je {0}",
+    maxLengthText: "Maksimalna dolÅ¾ina tega polja je {0}",
     blankText: "To polje je obvezno",
     regexText: "",
     emptyText: null
@@ -87,13 +87,13 @@ Ext.define("Ext.locale.sl.form.field.Number", {
     override: "Ext.form.field.Number",
     minText: "Minimalna vrednost tega polja je {0}",
     maxText: "Maksimalna vrednost tega polja je {0}",
-    nanText: "{0} ni veljavna številka"
+    nanText: "{0} ni veljavna Å¡tevilka"
 });
 
 Ext.define("Ext.locale.sl.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "Onemogočen",
-    disabledDatesText: "Onemogočen",
+    disabledDaysText: "OnemogoÄen",
+    disabledDatesText: "OnemogoÄen",
     minText: "Datum mora biti po {0}",
     maxText: "Datum mora biti pred {0}",
     invalidText: "{0} ni veljaven datum - mora biti v tem formatu {1}",
@@ -113,14 +113,14 @@ Ext.define("Ext.locale.sl.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
     emailText: 'To polje je e-mail naslov formata "ime@domena.si"',
     urlText: 'To polje je URL naslov formata "http:/' + '/www.domena.si"',
-    alphaText: 'To polje lahko vsebuje samo črke in _',
-    alphanumText: 'To polje lahko vsebuje samo črke, številke in _'
+    alphaText: 'To polje lahko vsebuje samo Ärke in _',
+    alphanumText: 'To polje lahko vsebuje samo Ärke, Å¡tevilke in _'
 });
 
 Ext.define("Ext.locale.sl.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Sortiraj naraščajoče",
-    sortDescText: "Sortiraj padajoče",
+    sortAscText: "Sortiraj naraÅ¡ÄajoÄe",
+    sortDescText: "Sortiraj padajoÄe",
     lockText: "Zakleni stolpec",
     unlockText: "Odkleni stolpec",
     columnsText: "Stolpci"
@@ -137,7 +137,7 @@ Ext.define("Ext.locale.sl.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
         ok: "V redu",
-        cancel: "Prekliči",
+        cancel: "PrekliÄi",
         yes: "Da",
         no: "Ne"
     }

@@ -10,19 +10,19 @@ Ext.onReady(function() {
     var parseCodes;
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+        Ext.Date.monthNames = ["ä¸æ", "äºæ", "ä¸æ", "åæ", "äºæ", "å­æ", "ä¸æ", "å«æ", "ä¹æ", "åæ", "åä¸æ", "åäºæ"];
 
-        Ext.Date.dayNames = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        Ext.Date.dayNames = ["æææ¥", "ææä¸", "ææäº", "ææä¸", "ææå", "ææäº", "ææå­"];
 
-        Ext.Date.formatCodes.a = "(this.getHours() < 12 ? '上午' : '下午')";
-        Ext.Date.formatCodes.A = "(this.getHours() < 12 ? '上午' : '下午')";
+        Ext.Date.formatCodes.a = "(this.getHours() < 12 ? 'ä¸å' : 'ä¸å')";
+        Ext.Date.formatCodes.A = "(this.getHours() < 12 ? 'ä¸å' : 'ä¸å')";
 
         parseCodes = {
             g: 1,
-            c: "if (/(上午)/i.test(results[{0}])) {\n" +
+            c: "if (/(ä¸å)/i.test(results[{0}])) {\n" +
                 "if (!h || h == 12) { h = 0; }\n" +
                 "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
-            s: "(上午|下午)",
+            s: "(ä¸å|ä¸å)",
             calcAtEnd: true
         };
 
@@ -35,7 +35,7 @@ Ext.onReady(function() {
             decimalSeparator: '.',
             currencySign: '\u00a5',
             // Chinese Yuan
-            dateFormat: 'y年m月d日'
+            dateFormat: 'yå¹´mædæ¥'
         });
     }
 });
@@ -47,40 +47,40 @@ Ext.define("Ext.locale.zh_CN.view.View", {
 
 Ext.define("Ext.locale.zh_CN.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "选择了 {0} 行"
+    dragText: "éæ©äº {0} è¡"
 });
 
 Ext.define("Ext.locale.zh_CN.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "关闭此标签"
+    closeText: "å³é­æ­¤æ ç­¾"
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "输入值非法"
+    invalidText: "è¾å¥å¼éæ³"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.zh_CN.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "讀取中..."
+    loadingText: "è®åä¸­..."
 });
 
 Ext.define("Ext.locale.zh_CN.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "今天",
-    minText: "日期必须大于最小允许日期",
+    todayText: "ä»å¤©",
+    minText: "æ¥æå¿é¡»å¤§äºæå°åè®¸æ¥æ",
     // update
-    maxText: "日期必须小于最大允许日期",
+    maxText: "æ¥æå¿é¡»å°äºæå¤§åè®¸æ¥æ",
     // update
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: '下个月 (Ctrl+Right)',
-    prevText: '上个月 (Ctrl+Left)',
-    monthYearText: '选择一个月 (Control+Up/Down 来改变年份)',
+    nextText: 'ä¸ä¸ªæ (Ctrl+Right)',
+    prevText: 'ä¸ä¸ªæ (Ctrl+Left)',
+    monthYearText: 'éæ©ä¸ä¸ªæ (Control+Up/Down æ¥æ¹åå¹´ä»½)',
     // update
-    todayTip: "{0} (空格键选择)",
-    format: "y年m月d日",
+    todayTip: "{0} (ç©ºæ ¼é®éæ©)",
+    format: "yå¹´mædæ¥",
     ariaTitle: '{0}',
     ariaTitleDateFormat: 'Y\u5e74m\u6708d\u65e5',
     longDayFormat: 'Y\u5e74m\u6708d\u65e5',
@@ -93,51 +93,51 @@ Ext.define("Ext.locale.zh_CN.picker.Date", {
 
 Ext.define("Ext.locale.zh_CN.picker.Month", {
     override: "Ext.picker.Month",
-    okText: "确定",
-    cancelText: "取消"
+    okText: "ç¡®å®",
+    cancelText: "åæ¶"
 });
 
 Ext.define("Ext.locale.zh_CN.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "第",
+    beforePageText: "ç¬¬",
     // update
-    afterPageText: "页,共 {0} 页",
+    afterPageText: "é¡µ,å± {0} é¡µ",
     // update
-    firstText: "第一页",
-    prevText: "上一页",
+    firstText: "ç¬¬ä¸é¡µ",
+    prevText: "ä¸ä¸é¡µ",
     // update
-    nextText: "下一页",
-    lastText: "最后页",
-    refreshText: "刷新",
-    displayMsg: "显示 {0} - {1}条，共 {2} 条",
+    nextText: "ä¸ä¸é¡µ",
+    lastText: "æåé¡µ",
+    refreshText: "å·æ°",
+    displayMsg: "æ¾ç¤º {0} - {1}æ¡ï¼å± {2} æ¡",
     // update
-    emptyMsg: '没有数据'
+    emptyMsg: 'æ²¡ææ°æ®'
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "该输入项的最小长度是 {0} 个字符",
-    maxLengthText: "该输入项的最大长度是 {0} 个字符",
-    blankText: "该输入项为必输项",
+    minLengthText: "è¯¥è¾å¥é¡¹çæå°é¿åº¦æ¯ {0} ä¸ªå­ç¬¦",
+    maxLengthText: "è¯¥è¾å¥é¡¹çæå¤§é¿åº¦æ¯ {0} ä¸ªå­ç¬¦",
+    blankText: "è¯¥è¾å¥é¡¹ä¸ºå¿è¾é¡¹",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "该输入项的最小值是 {0}",
-    maxText: "该输入项的最大值是 {0}",
-    nanText: "{0} 不是有效数值"
+    minText: "è¯¥è¾å¥é¡¹çæå°å¼æ¯ {0}",
+    maxText: "è¯¥è¾å¥é¡¹çæå¤§å¼æ¯ {0}",
+    nanText: "{0} ä¸æ¯æææ°å¼"
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "禁用",
-    disabledDatesText: "禁用",
-    minText: "该输入项的日期必须在 {0} 之后",
-    maxText: "该输入项的日期必须在 {0} 之前",
-    invalidText: "{0} 是无效的日期 - 必须符合格式： {1}",
-    format: "y年m月d日"
+    disabledDaysText: "ç¦ç¨",
+    disabledDatesText: "ç¦ç¨",
+    minText: "è¯¥è¾å¥é¡¹çæ¥æå¿é¡»å¨ {0} ä¹å",
+    maxText: "è¯¥è¾å¥é¡¹çæ¥æå¿é¡»å¨ {0} ä¹å",
+    invalidText: "{0} æ¯æ æçæ¥æ - å¿é¡»ç¬¦åæ ¼å¼ï¼ {1}",
+    format: "yå¹´mædæ¥"
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.ComboBox", {
@@ -145,93 +145,93 @@ Ext.define("Ext.locale.zh_CN.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "读取中..."
+        loadingText: "è¯»åä¸­..."
     });
 });
 
 Ext.define("Ext.locale.zh_CN.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: '该输入项必须是电子邮件地址，格式如： "user@example.com"',
-    urlText: '该输入项必须是URL地址，格式如： "http:/' + '/www.example.com"',
-    alphaText: '该输入项只能包含半角字母和_',
-    alphanumText: '该输入项只能包含半角字母,数字和_'
+    emailText: 'è¯¥è¾å¥é¡¹å¿é¡»æ¯çµå­é®ä»¶å°åï¼æ ¼å¼å¦ï¼ "user@example.com"',
+    urlText: 'è¯¥è¾å¥é¡¹å¿é¡»æ¯URLå°åï¼æ ¼å¼å¦ï¼ "http:/' + '/www.example.com"',
+    alphaText: 'è¯¥è¾å¥é¡¹åªè½åå«åè§å­æ¯å_',
+    alphanumText: 'è¯¥è¾å¥é¡¹åªè½åå«åè§å­æ¯,æ°å­å_'
 });
 
 // add HTMLEditor's tips by andy_ghg
 Ext.define("Ext.locale.zh_CN.form.field.HtmlEditor", {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: '添加超级链接:'
+    createLinkText: 'æ·»å è¶çº§é¾æ¥:'
 }, function() {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
         buttonTips: {
             bold: {
-                title: '粗体 (Ctrl+B)',
-                text: '将选中的文字设置为粗体',
+                title: 'ç²ä½ (Ctrl+B)',
+                text: 'å°éä¸­çæå­è®¾ç½®ä¸ºç²ä½',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: '斜体 (Ctrl+I)',
-                text: '将选中的文字设置为斜体',
+                title: 'æä½ (Ctrl+I)',
+                text: 'å°éä¸­çæå­è®¾ç½®ä¸ºæä½',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
-                title: '下划线 (Ctrl+U)',
-                text: '给所选文字加下划线',
+                title: 'ä¸åçº¿ (Ctrl+U)',
+                text: 'ç»æéæå­å ä¸åçº¿',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: '增大字体',
-                text: '增大字号',
+                title: 'å¢å¤§å­ä½',
+                text: 'å¢å¤§å­å·',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: '缩小字体',
-                text: '减小字号',
+                title: 'ç¼©å°å­ä½',
+                text: 'åå°å­å·',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: '以不同颜色突出显示文本',
-                text: '使文字看上去像是用荧光笔做了标记一样',
+                title: 'ä»¥ä¸åé¢è²çªåºæ¾ç¤ºææ¬',
+                text: 'ä½¿æå­çä¸å»åæ¯ç¨è§åç¬åäºæ è®°ä¸æ ·',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: '字体颜色',
-                text: '更改字体颜色',
+                title: 'å­ä½é¢è²',
+                text: 'æ´æ¹å­ä½é¢è²',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
-                title: '左对齐',
-                text: '将文字左对齐',
+                title: 'å·¦å¯¹é½',
+                text: 'å°æå­å·¦å¯¹é½',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: '居中',
-                text: '将文字居中对齐',
+                title: 'å±ä¸­',
+                text: 'å°æå­å±ä¸­å¯¹é½',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: '右对齐',
-                text: '将文字右对齐',
+                title: 'å³å¯¹é½',
+                text: 'å°æå­å³å¯¹é½',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: '项目符号',
-                text: '开始创建项目符号列表',
+                title: 'é¡¹ç®ç¬¦å·',
+                text: 'å¼å§åå»ºé¡¹ç®ç¬¦å·åè¡¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
-                title: '编号',
-                text: '开始创建编号列表',
+                title: 'ç¼å·',
+                text: 'å¼å§åå»ºç¼å·åè¡¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
-                title: '转成超级链接',
-                text: '将所选文本转换成超级链接',
+                title: 'è½¬æè¶çº§é¾æ¥',
+                text: 'å°æéææ¬è½¬æ¢æè¶çº§é¾æ¥',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: '代码视图',
-                text: '以代码的形式展现文本',
+                title: 'ä»£ç è§å¾',
+                text: 'ä»¥ä»£ç çå½¢å¼å±ç°ææ¬',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -240,31 +240,31 @@ Ext.define("Ext.locale.zh_CN.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.zh_CN.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "正序",
+    sortAscText: "æ­£åº",
     // update
-    sortDescText: "倒序",
+    sortDescText: "ååº",
     // update
-    lockText: "锁定列",
+    lockText: "éå®å",
     // update
-    unlockText: "解除锁定",
+    unlockText: "è§£é¤éå®",
     // update
-    columnsText: "列"
+    columnsText: "å"
 });
 
 Ext.define("Ext.locale.zh_CN.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
-    nameText: "名称",
-    valueText: "值",
-    dateFormat: "y年m月d日"
+    nameText: "åç§°",
+    valueText: "å¼",
+    dateFormat: "yå¹´mædæ¥"
 });
 
 Ext.define("Ext.locale.zh_CN.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
-        ok: "确定",
-        cancel: "取消",
-        yes: "是",
-        no: "否"
+        ok: "ç¡®å®",
+        cancel: "åæ¶",
+        yes: "æ¯",
+        no: "å¦"
     }
 });
 

@@ -13,7 +13,7 @@ function submitFormularioload(formPanel, parametros) {
     var parametro2 = (parametros.parametro2 == null ? '' : parametros.parametro2);
     var parametro3 = (parametros.parametro3 == null ? '' : parametros.parametro3);
     var namewindow = (parametros.namewindow == null ? '' : parametros.namewindow);
-    var msg = (prm.msg == null ? 'Espere un segundo, estamos procesando la informaciÛn' : prm.msg);
+    var msg = (prm.msg == null ? 'Espere un segundo, estamos procesando la informaci√≥n' : prm.msg);
     var form = formPanel.getForm();
     var idForm = parametros.formPanel;
     var param = {
@@ -35,8 +35,8 @@ function submitFormularioload(formPanel, parametros) {
 
 //Producto032023
                 if (action.result.accion == null) {
-                    var m = (action.result.message == null ? 'Se realizÛ la operaciÛn con Èxito' : action.result.message);
-                    Ext.Msg.alert("…xito", m);
+                    var m = (action.result.message == null ? 'Se realiz√≥ la operaci√≥n con √©xito' : action.result.message);
+                    Ext.Msg.alert("√âxito", m);
 
                     if (namewindow != '') {
                         var w = Ext.getCmp(namewindow);
@@ -59,9 +59,9 @@ function submitFormularioload(formPanel, parametros) {
 
                 //Descomentar para mostrar el msj excepto en el formEmpresas
                 // if (action.result.accion == null) {
-                //  var m = (action.result.message == null ? 'Se realiz√É¬≥ la operaci√É¬≥n con √É¬©xito' : action.result.message);
+                //  var m = (action.result.message == null ? 'Se realiz√É¬É√Ç¬≥ la operaci√É¬É√Ç¬≥n con √É¬É√Ç¬©xito' : action.result.message);
                 //var m=(form);
-                //  Ext.Msg.alert("√É?xito"/*, m*/);
+                //  Ext.Msg.alert("√É¬É?xito"/*, m*/);
                 //var w = Ext.getCmp(idForm);
                 //    w.close();
                 // }
@@ -153,7 +153,7 @@ function loadFormularioload(formPanel, parametros) {
          var w = Ext.getCmp(parametros.window);
          w.close();
          Ext.MessageBox.show({
-         title: 'Informaci√É¬≥n',
+         title: 'Informaci√É¬É√Ç¬≥n',
          msg: 'No existe la Informacion Solicitada.',
          buttons: Ext.MessageBox.OK,
          icon: Ext.MessageBox.WARNING
@@ -166,7 +166,7 @@ function loadFormularioload(formPanel, parametros) {
             var w = Ext.getCmp('winPanelProducto');
             //        w.close();
             Ext.MessageBox.show({
-                title: 'InformaciÛn',
+                title: 'Informaci√≥n',
                 msg: 'No existe la Informacion Solicitada.',
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.WARNING
@@ -207,9 +207,9 @@ function submitSubirArchivos(formPanel, parametros) {
             success: function (form1, action) {
                 //Descomentar para mostrar el msj excepto en el formEmpresas
                 // if (action.result.accion == null) {
-                //  var m = (action.result.message == null ? 'Se realiz√≥ la operaci√≥n con √©xito' : action.result.message);
+                //  var m = (action.result.message == null ? 'Se realiz√É¬≥ la operaci√É¬≥n con √©xito' : action.result.message);
                 var m = (form);
-                Ext.Msg.alert("√âxito"/*, m*/);
+                Ext.Msg.alert("√É¬âxito"/*, m*/);
                 var w = Ext.getCmp(idForm);
                 w.close();
                 // }
@@ -256,7 +256,7 @@ function loadFiles(urlContexto, bnd, idEvidencia, idRegistro, fileTag) {
                 if (archivoValue === null) {
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'No se encontrÛ ning˙n archivo...',
+                        msg: 'No se encontr√≥ ning√∫n archivo...',
                         buttons: Ext.MessageBox.CANCEL,
                         icon: Ext.MessageBox.ERROR
                     });
@@ -271,8 +271,8 @@ function loadFiles(urlContexto, bnd, idEvidencia, idRegistro, fileTag) {
                             var mostrarEvidencia = new Ext.create('Ext.window.Window', {
                                 title: tituloVentana,
                                 modal: true,
-                                width: width + 20, // AÒadir un poco de margen
-                                height: height + 60, // AÒadir un poco de margen
+                                width: width + 20, // A√±adir un poco de margen
+                                height: height + 60, // A√±adir un poco de margen
                                 layout: 'fit',
                                 closeAction: 'destroy',
                                 items: [{
@@ -301,7 +301,7 @@ function loadFiles(urlContexto, bnd, idEvidencia, idRegistro, fileTag) {
                     } else {
                         Ext.MessageBox.show({
                             title: 'Error',
-                            msg: 'El archivo no es v·lido.',
+                            msg: 'El archivo no es v√°lido.',
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.ERROR
                         });
@@ -344,12 +344,12 @@ function loadPdf(urlContexto, bnd, idEvidencia, idRegistro, fileTag) {
                 if (archivoValue === null) {
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'No se encontrÛ ning˙n archivo ...',
+                        msg: 'No se encontr√≥ ning√∫n archivo ...',
                         buttons: Ext.MessageBox.CANCEL,
                         icon: Ext.MessageBox.ERROR
                     });
                 } else {
-                    // Validar si evidencia64 es un archivo base64 v·lido
+                    // Validar si evidencia64 es un archivo base64 v√°lido
                     if (archivoValue && archivoValue.startsWith('data:application/pdf;base64,')) {
                         // Crear una ventana modal
                         var tituloVentana = 'ID: ' + idRegistro;
@@ -376,7 +376,7 @@ function loadPdf(urlContexto, bnd, idEvidencia, idRegistro, fileTag) {
                     } else {
                         Ext.MessageBox.show({
                             title: 'Error',
-                            msg: 'El archivo no es v·lido.',
+                            msg: 'El archivo no es v√°lido.',
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.ERROR
                         });
@@ -409,9 +409,9 @@ function validarArchivoSize(value, maxSize) {
     var fileInput = this.fileInputEl ? this.fileInputEl.dom : undefined;
 
     if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        return (fileInput.files[0].size <= maxSize) || 'El tamaÒo del archivo no puede superar ' + (maxSize / 1024) + ' KB';
+        return (fileInput.files[0].size <= maxSize) || 'El tama√±o del archivo no puede superar ' + (maxSize / 1024) + ' KB';
     } else {
-        return true;  // No hay archivo seleccionado, asumimos que es v·lido
+        return true;  // No hay archivo seleccionado, asumimos que es v√°lido
     }
 }
 
@@ -460,7 +460,7 @@ function generarExcel2(idGrid) {
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error',
-                        msg: 'No se pudo cargar los datos de la cuadrÌcula',
+                        msg: 'No se pudo cargar los datos de la cuadr√≠cula',
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
                     });
@@ -470,7 +470,7 @@ function generarExcel2(idGrid) {
     } else {
         Ext.MessageBox.show({
             title: 'Error',
-            msg: 'No se pudo encontrar la cuadrÌcula con el ID especificado o la cuadrÌcula no tiene un store definido',
+            msg: 'No se pudo encontrar la cuadr√≠cula con el ID especificado o la cuadr√≠cula no tiene un store definido',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR
         });
@@ -482,9 +482,9 @@ function generarExcel2(idGrid) {
 
 function generarExcel(idGrid, archivoName, parametros) {
     if (store && store.getCount() > 0) {
-        var grid = Ext.getCmp(idGrid); // Obtener referencia a la cuadrÌcula por ID
-        var confidencialidad = "El presente documento y toda la informaciÛn contenida en Èl son de car·cter estrictamente confidencial. Su uso est· limitado ˙nicamente a los fines especÌficos para los cuales ha sido proporcionado. " +
-                "Queda expresamente prohibida la reproducciÛn, distribuciÛn, divulgaciÛn o cualquier otro uso no autorizado de la informaciÛn contenida en este documento, total o parcialmente, sin el consentimiento previo y por escrito.";
+        var grid = Ext.getCmp(idGrid); // Obtener referencia a la cuadr√≠cula por ID
+        var confidencialidad = "El presente documento y toda la informaci√≥n contenida en √©l son de car√°cter estrictamente confidencial. Su uso est√° limitado √∫nicamente a los fines espec√≠ficos para los cuales ha sido proporcionado. " +
+                "Queda expresamente prohibida la reproducci√≥n, distribuci√≥n, divulgaci√≥n o cualquier otro uso no autorizado de la informaci√≥n contenida en este documento, total o parcialmente, sin el consentimiento previo y por escrito.";
 
         if (grid) { // Verificar si la referencia existe
             var workbook = new ExcelJS.Workbook();
@@ -493,7 +493,7 @@ function generarExcel(idGrid, archivoName, parametros) {
             // Cargar la imagen desde la URL
             var imgPath = contexto + '/img/newLogoLogin22222.png'; // Ruta de la imagen
 
-            // Crear una funciÛn para cargar la imagen
+            // Crear una funci√≥n para cargar la imagen
             fetch(imgPath)
                     .then(response => response.arrayBuffer())
                     .then(arrayBuffer => {
@@ -504,20 +504,20 @@ function generarExcel(idGrid, archivoName, parametros) {
 
                         // Insertar la imagen en la celda B2
                         worksheet.addImage(imageId, {
-                            tl: {col: 0, row: 0}, // B2 (col: 1, row: 1 en Ìndice 0)
+                            tl: {col: 0, row: 0}, // B2 (col: 1, row: 1 en √≠ndice 0)
                             ext: {width: 110, height: 90}
                         });
 
-                        // Agregar el tÌtulo de par·metros y aplicar formato
+                        // Agregar el t√≠tulo de par√°metros y aplicar formato
                         var paramKeys = Object.keys(parametros);
-                        var maxParamsPerColumn = 3; // N˙mero m·ximo de pares de par·metros por columna
+                        var maxParamsPerColumn = 3; // N√∫mero m√°ximo de pares de par√°metros por columna
                         var startColumn = 2; // Comenzar en la primera columna
-                        var startRow = 2; // Comenzar en la segunda fila (despuÈs del tÌtulo)
+                        var startRow = 2; // Comenzar en la segunda fila (despu√©s del t√≠tulo)
 
-                        // Establecer el tÌtulo de par·metros de consulta
+                        // Establecer el t√≠tulo de par√°metros de consulta
                         worksheet.getCell('B1').value = parametros.titulo;
                         worksheet.getCell('B1').alignment = {horizontal: 'center', vertical: 'middle'};
-                        worksheet.getCell('B1').font = {bold: true}; // Negritas para el tÌtulo
+                        worksheet.getCell('B1').font = {bold: true}; // Negritas para el t√≠tulo
 
                         worksheet.mergeCells('D1:O1'); // Unir las celdas de D1 a O1
                         worksheet.getRow(1).height = 50;
@@ -537,7 +537,7 @@ function generarExcel(idGrid, archivoName, parametros) {
                             return key !== 'titulo';
                         });
 
-// Agregar los par·metros de consulta organizados en filas verticales
+// Agregar los par√°metros de consulta organizados en filas verticales
                         filteredParamKeys.forEach(function (key, index) {
                             var row = startRow + (index % maxParamsPerColumn); // Comienza en la tercera fila (B3)
                             var col = startColumn + Math.floor(index / maxParamsPerColumn) * 2; // Determina la columna
@@ -549,17 +549,17 @@ function generarExcel(idGrid, archivoName, parametros) {
 
                             keyCell.value = key + ':';
                             keyCell.alignment = {horizontal: 'center', vertical: 'middle'};
-                            keyCell.font = {bold: true}; // Negritas para las claves de los par·metros
+                            keyCell.font = {bold: true}; // Negritas para las claves de los par√°metros
 
                             valueCell.value = value;
                         });
 
 
 
-                        // Agregar una fila vacÌa para separaciÛn antes de los datos del grid
+                        // Agregar una fila vac√≠a para separaci√≥n antes de los datos del grid
                         worksheet.addRow([]);
 
-                        // Ajustar la posiciÛn de los encabezados
+                        // Ajustar la posici√≥n de los encabezados
                         var headerRowIndex = worksheet.lastRow.number + 1; // Determinar la fila para los encabezados
 
                         var columns = grid.getColumns();
@@ -622,12 +622,12 @@ function generarExcel(idGrid, archivoName, parametros) {
                     .catch(error => console.error('Error al cargar la imagen:', error));
 
         } else {
-            console.error('No se pudo encontrar la cuadrÌcula con el ID especificado.');
+            console.error('No se pudo encontrar la cuadr√≠cula con el ID especificado.');
         }
     } else {
         Ext.MessageBox.show({
             title: 'Error',
-            msg: 'No se encontrÛ ning˙n dato en la tabla',
+            msg: 'No se encontr√≥ ning√∫n dato en la tabla',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR
         });
@@ -660,7 +660,7 @@ function generarExcel(idGrid, archivoName, parametros) {
 function generarExcelOcultarColumna(idGrid, archivoName) {
 
     if (store && store.getCount() > 0) {
-        var grid = Ext.getCmp(idGrid); // Obtener referencia a la cuadrÌcula por ID
+        var grid = Ext.getCmp(idGrid); // Obtener referencia a la cuadr√≠cula por ID
 
         if (grid) { // Verificar si la referencia existe
             var gridData = [];
@@ -698,14 +698,14 @@ function generarExcelOcultarColumna(idGrid, archivoName) {
             a.click();
             URL.revokeObjectURL(url);
         } else {
-            console.error('No se pudo encontrar la cuadrÌcula con el ID especificado.');
+            console.error('No se pudo encontrar la cuadr√≠cula con el ID especificado.');
         }
 
     } else {
 
         Ext.MessageBox.show({
             title: 'Error',
-            msg: 'No se encontrÛ ningun dato en la tabla',
+            msg: 'No se encontr√≥ ningun dato en la tabla',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR
         });
@@ -779,7 +779,7 @@ function mesANumero(mes) {
         'NOVIEMBRE': 11,
         'DICIEMBRE': 12
     };
-    return meses[mes.toUpperCase()] || null; // Manejo de error si el mes no es v·lido
+    return meses[mes.toUpperCase()] || null; // Manejo de error si el mes no es v√°lido
 }
 
 function numeroAMes(num) {
@@ -787,7 +787,7 @@ function numeroAMes(num) {
         'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
         'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
     ];
-    return meses[num - 1] || 'DESCONOCIDO'; // Manejo de error si el n˙mero no est· en el rango 1-12
+    return meses[num - 1] || 'DESCONOCIDO'; // Manejo de error si el n√∫mero no est√° en el rango 1-12
 }
 
 function adjuntarEvidencia(cveEvidencia, empresa, fechaEmbarque, documento) {

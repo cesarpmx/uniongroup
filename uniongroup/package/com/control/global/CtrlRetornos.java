@@ -341,7 +341,7 @@ public class CtrlRetornos extends HttpServlet {
 
         String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
 
-        // 3. DOBLE DESERIALIZACI”N (CORRECCI”N CRÕTICA AQUÕ)
+        // 3. DOBLE DESERIALIZACI√ìN (CORRECCI√ìN CR√çTICA AQU√ç)
         // El API devuelve un String que contiene un Array JSON: "[{...}]"
         String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
         
@@ -356,7 +356,7 @@ public class CtrlRetornos extends HttpServlet {
         if (listaRespuestas != null && !listaRespuestas.isEmpty()) {
             clienteResponse = listaRespuestas.get(0);
         } else {
-            throw new Exception("La respuesta del API Global est· vacÌa (Array vacÌo)");
+            throw new Exception("La respuesta del API Global est√° vac√≠a (Array vac√≠o)");
         }
 
         // 4. CONSTRUIR JSON PARA GUARDAR EN UG_CONFIRMATION_LOG
@@ -392,14 +392,14 @@ public class CtrlRetornos extends HttpServlet {
                 System.out.println("Advertencia al guardar log: " + logResponse.get("message"));
             }
         } catch (Exception logEx) {
-            System.out.println("Error al guardar en Confirmation Log (no crÌtico):");
+            System.out.println("Error al guardar en Confirmation Log (no cr√≠tico):");
             logEx.printStackTrace();
         }
 
         // 6. Construir respuesta final para el Frontend
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("success", true);
-        resultado.put("message", "ConfirmaciÛn de recepciÛn enviada exitosamente");
+        resultado.put("message", "Confirmaci√≥n de recepci√≥n enviada exitosamente");
         resultado.put("clienteResponse", clienteResponse);
 
         JSONVal = mapper.writeValueAsString(resultado);

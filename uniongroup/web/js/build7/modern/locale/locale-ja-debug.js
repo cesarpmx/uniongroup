@@ -2,7 +2,7 @@ Ext.define('Ext.locale.ja.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'OK',
-    cancelButtonText: 'キャンセル'
+    cancelButtonText: 'ã­ã£ã³ã»ã«'
 });
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ja.Component", {
@@ -13,10 +13,10 @@ Ext.define('Ext.locale.ja.Dialog', {
 
     config: {
         maximizeTool: {
-            tooltip: "全画面表示に最大化"
+            tooltip: "å¨ç»é¢è¡¨ç¤ºã«æå¤§å"
         },
         restoreTool: {
-            tooltip: "元のサイズに復元"
+            tooltip: "åã®ãµã¤ãºã«å¾©å"
         }
     }
 });
@@ -24,7 +24,7 @@ Ext.define("Ext.locale.ja.LoadMask", {
     override: "Ext.LoadMask",
 
     config: {
-        message: '読み込み中...'
+        message: 'èª­ã¿è¾¼ã¿ä¸­...'
     }
 });
 Ext.define('Ext.locale.ja.Panel', {
@@ -36,71 +36,71 @@ Ext.define('Ext.locale.ja.Panel', {
                 text: 'OK'
             },
             abort: {
-                text: 'やめる'
+                text: 'ããã'
             },
             retry: {
-                text: 'リトライ'
+                text: 'ãªãã©ã¤'
             },
             ignore: {
-                text: '無視する'
+                text: 'ç¡è¦ãã'
             },
             yes: {
-                text: 'はい'
+                text: 'ã¯ã'
             },
             no: {
-                text: 'いいえ'
+                text: 'ããã'
             },
             cancel: {
-                text: 'キャンセル'
+                text: 'ã­ã£ã³ã»ã«'
             },
             apply: {
-                text: '適用する'
+                text: 'é©ç¨ãã'
             },
             save: {
-                text: '保存する'
+                text: 'ä¿å­ãã'
             },
             submit: {
-                text: '提出する'
+                text: 'æåºãã'
             },
             help: {
-                text: '助けて'
+                text: 'å©ãã¦'
             },
             close: {
-                text: '閉じる'
+                text: 'éãã'
             }
         },
-        closeToolText: 'Panel 閉じる'
+        closeToolText: 'Panel éãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: '存在する必要があります',
-        minOnlyMessage: '少なくとも{0}にする必要があります',
-        maxOnlyMessage: '{0}以下にする必要があります',
-        bothMessage: '値は{0}と{1}の間になければなりません'
+        emptyMessage: 'å­å¨ããå¿è¦ãããã¾ã',
+        minOnlyMessage: 'å°ãªãã¨ã{0}ã«ããå¿è¦ãããã¾ã',
+        maxOnlyMessage: '{0}ä»¥ä¸ã«ããå¿è¦ãããã¾ã',
+        bothMessage: 'å¤ã¯{0}ã¨{1}ã®éã«ãªããã°ãªãã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: '有効なCIDRブロックではありません'
+        message: 'æå¹ãªCIDRãã­ãã¯ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: '有効なCIDRブロックではありません'
+        message: 'æå¹ãªCIDRãã­ãã¯ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: '有効な通貨金額ではありません'
+        message: 'æå¹ãªéè²¨éé¡ã§ã¯ããã¾ãã'
     }
 
 });
@@ -108,139 +108,139 @@ Ext.define('Ext.locale.ja.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "有効な日付ではありません"
+        message: "æå¹ãªæ¥ä»ã§ã¯ããã¾ãã"
     }
 });
 Ext.define('Ext.locale.ja.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: '有効な日時ではありません'
+        message: 'æå¹ãªæ¥æã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: '有効なメールアドレスではありません'
+        message: 'æå¹ãªã¡ã¼ã«ã¢ãã¬ã¹ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: '除外された値です'
+        message: 'é¤å¤ãããå¤ã§ã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'フォーマットが違います'
+        message: 'ãã©ã¼ããããéãã¾ã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: '有効なIPアドレスではありません'
+        message: 'æå¹ãªIPã¢ãã¬ã¹ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: '許容値のリストに含まれていません'
+        message: 'è¨±å®¹å¤ã®ãªã¹ãã«å«ã¾ãã¦ãã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: '長さは少なくとも{0}でなければなりません',
-        maxOnlyMessage: '長さは{0}を超えてはいけません',
-        bothMessage: '長さは{0}と{1}の間でなければなりません'
+        minOnlyMessage: 'é·ãã¯å°ãªãã¨ã{0}ã§ãªããã°ãªãã¾ãã',
+        maxOnlyMessage: 'é·ãã¯{0}ãè¶ãã¦ã¯ããã¾ãã',
+        bothMessage: 'é·ãã¯{0}ã¨{1}ã®éã§ãªããã°ãªãã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: '数字ではありません'
+        message: 'æ°å­ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: '有効な電話番号ではありません'
+        message: 'æå¹ãªé»è©±çªå·ã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: '存在している必要があります'
+        message: 'å­å¨ãã¦ããå¿è¦ãããã¾ã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: '数値でなければなりません',
-        minOnlyMessage: '少なくとも{0}にする必要があります',
-        maxOnlyMessage: '{0}以下にする必要があります',
-        bothMessage: '値は{0}と{1}の間になければなりません'
+        nanMessage: 'æ°å¤ã§ãªããã°ãªãã¾ãã',
+        minOnlyMessage: 'å°ãªãã¨ã{0}ã«ããå¿è¦ãããã¾ã',
+        maxOnlyMessage: '{0}ä»¥ä¸ã«ããå¿è¦ãããã¾ã',
+        bothMessage: 'å¤ã¯{0}ã¨{1}ã®éã«ãªããã°ãªãã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: '有効な時間ではありません'
+        message: 'æå¹ãªæéã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: '有効なURLではありません'
+        message: 'æå¹ãªURLã§ã¯ããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.dataview.Abstract', {
     override: 'Ext.dataview.Abstract',
 
     config: {
-        loadingText: '読み込み中...'
+        loadingText: 'èª­ã¿è¾¼ã¿ä¸­...'
     }
 });
 Ext.define("Ext.locale.ja.dataview.DataView", {
     override: "Ext.dataview.DataView",
 
     config: {
-        emptyText: "表示するデータがありません"
+        emptyText: "è¡¨ç¤ºãããã¼ã¿ãããã¾ãã"
     }
 });
 Ext.define('Ext.locale.ja.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: '表示するデータがありません'
+        html: 'è¡¨ç¤ºãããã¼ã¿ãããã¾ãã'
     }
 });
 Ext.define('Ext.locale.ja.dataview.List', {
     override: 'Ext.dataview.List',
 
     config: {
-        loadingText: '読み込み中...'
+        loadingText: 'èª­ã¿è¾¼ã¿ä¸­...'
     }
 });
 Ext.define('Ext.locale.ja.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: 'さらに読み込む...',
-        noMoreRecordsText: 'これ以上レコードがない'
+        loadMoreText: 'ããã«èª­ã¿è¾¼ã...',
+        noMoreRecordsText: 'ããä»¥ä¸ã¬ã³ã¼ãããªã'
     }
 });
 /**
@@ -250,8 +250,8 @@ Ext.onReady(function() {
     var parseCodes;
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月',
-                               '10月', '11月', '12月'];
+        Ext.Date.monthNames = ['1æ', '2æ', '3æ', '4æ', '5æ', '6æ', '7æ', '8æ', '9æ',
+                               '10æ', '11æ', '12æ'];
 
         Ext.Date.defaultFormat = 'd.m.Y';
         Ext.Date.defaultTimeFormat = 'H:i';
@@ -280,21 +280,21 @@ Ext.onReady(function() {
             // or simply parseInt(name.substring(0, name.length - 1)) - 1
         };
 
-        Ext.Date.dayNames = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+        Ext.Date.dayNames = ["æ¥ææ¥", "æææ¥", "ç«ææ¥", "æ°´ææ¥", "æ¨ææ¥", "éææ¥", "åææ¥"];
 
         Ext.Date.getShortDayName = function(day) {
-            return Ext.Date.dayNames[day].substring(0, 1); // just remove "曜日" suffix
+            return Ext.Date.dayNames[day].substring(0, 1); // just remove "ææ¥" suffix
         };
 
-        Ext.Date.formatCodes.a = "(this.getHours() < 12 ? '午前' : '午後')";
-        Ext.Date.formatCodes.A = "(this.getHours() < 12 ? '午前' : '午後')"; // no case difference
+        Ext.Date.formatCodes.a = "(this.getHours() < 12 ? 'åå' : 'åå¾')";
+        Ext.Date.formatCodes.A = "(this.getHours() < 12 ? 'åå' : 'åå¾')"; // no case difference
 
         parseCodes = {
             g: 1,
-            c: "if (/(午前)/i.test(results[{0}])) {\n" +
+            c: "if (/(åå)/i.test(results[{0}])) {\n" +
                 "if (!h || h == 12) { h = 0; }\n" +
                 "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
-            s: "(午前|午後)",
+            s: "(åå|åå¾)",
             calcAtEnd: true
         };
 
@@ -314,46 +314,46 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.ja.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'このフィールドの日付は、 {0} 以降の日付に設定してください。',
-    maxDateMessage: 'このフィールドの日付は、 {0} 以前の日付に設定してください。'
+    minDateMessage: 'ãã®ãã£ã¼ã«ãã®æ¥ä»ã¯ã {0} ä»¥éã®æ¥ä»ã«è¨­å®ãã¦ãã ããã',
+    maxDateMessage: 'ãã®ãã£ã¼ã«ãã®æ¥ä»ã¯ã {0} ä»¥åã®æ¥ä»ã«è¨­å®ãã¦ãã ããã'
 });
 Ext.define('Ext.locale.ja.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'このフィールドは必須です',
-        validationMessage: '形式が間違っています'
+        requiredMessage: 'ãã®ãã£ã¼ã«ãã¯å¿é ã§ã',
+        validationMessage: 'å½¢å¼ãééã£ã¦ãã¾ã'
     }
 });
 Ext.define("Ext.locale.ja.field.FileButton", {
     override: "Ext.field.FileButton",
 
     config: {
-        text: '参照...'
+        text: 'åç§...'
     }
 });
 Ext.define('Ext.locale.ja.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'このフィールドの最小値は {0} です。',
-    minValueText: 'このフィールドの最小値は {0} です。',
-    maxValueText: 'このフィールドの最大値は {0} です。',
-    badFormatMessage: '{0} は数値ではありません。'
+    decimalsText: 'ãã®ãã£ã¼ã«ãã®æå°å¤ã¯ {0} ã§ãã',
+    minValueText: 'ãã®ãã£ã¼ã«ãã®æå°å¤ã¯ {0} ã§ãã',
+    maxValueText: 'ãã®ãã£ã¼ã«ãã®æå¤§å¤ã¯ {0} ã§ãã',
+    badFormatMessage: '{0} ã¯æ°å¤ã§ã¯ããã¾ããã'
 });
 Ext.define('Ext.locale.ja.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: '値が必要なフォーマットと一致しません',
+    badFormatMessage: 'å¤ãå¿è¦ãªãã©ã¼ãããã¨ä¸è´ãã¾ãã',
     config: {
-        requiredMessage: 'このフィールドは必須です',
-        validationMessage: '形式が間違っています'
+        requiredMessage: 'ãã®ãã£ã¼ã«ãã¯å¿é ã§ã',
+        validationMessage: 'å½¢å¼ãééã£ã¦ãã¾ã'
     }
 });
 Ext.define("Ext.locale.ja.grid.filters.menu.Base", {
     override: "Ext.grid.filters.menu.Base",
 
     config: {
-        text: "フィルタ"
+        text: "ãã£ã«ã¿"
     }
 });
 Ext.define("Ext.locale.ja.grid.locked.Grid", {
@@ -363,19 +363,19 @@ Ext.define("Ext.locale.ja.grid.locked.Grid", {
         columnMenu: {
             items: {
                 region: {
-                    text: '領域'
+                    text: 'é å'
                 }
             }
         },
         regions: {
             left: {
-                menuLabel: 'ロック（左）'
+                menuLabel: 'ã­ãã¯ï¼å·¦ï¼'
             },
             center: {
-                menuLabel: 'ロック解除'
+                menuLabel: 'ã­ãã¯è§£é¤'
             },
             right: {
-                menuLabel: 'ロック（右）'
+                menuLabel: 'ã­ãã¯ï¼å³ï¼'
             }
         }
     }
@@ -384,58 +384,58 @@ Ext.define("Ext.locale.ja.grid.menu.Columns", {
     override: "Ext.grid.menu.Columns",
 
     config: {
-        text: "カラム"
+        text: "ã«ã©ã "
     }
 });
 Ext.define("Ext.locale.ja.grid.menu.GroupByThis", {
     override: "Ext.grid.menu.GroupByThis",
 
     config: {
-        text: "これでグループ化する"
+        text: "ããã§ã°ã«ã¼ãåãã"
     }
 });
 Ext.define("Ext.locale.ja.grid.menu.ShowInGroups", {
     override: "Ext.grid.menu.ShowInGroups",
 
     config: {
-        text: "グループで表示"
+        text: "ã°ã«ã¼ãã§è¡¨ç¤º"
     }
 });
 Ext.define("Ext.locale.ja.grid.menu.SortAsc", {
     override: "Ext.grid.menu.SortAsc",
 
     config: {
-        text: "昇順"
+        text: "æé "
     }
 });
 Ext.define("Ext.locale.ja.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "降順"
+        text: "éé "
     }
 });
 Ext.define("Ext.locale.ja.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} 行選択"
+    dragText: "{0} è¡é¸æ"
 });
 Ext.define('Ext.locale.ja.panel.Collapser', {
     override: 'Ext.panel.Collapser',
 
     config: {
-        collapseToolText: "パネルを閉じる",
-        expandToolText: "パネルを開く"
+        collapseToolText: "ããã«ãéãã",
+        expandToolText: "ããã«ãéã"
     }
 });
 Ext.define('Ext.locale.ja.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: '次月へ (コントロール+右)',
-        prevText: '前月へ (コントロール+左)',
+        nextText: 'æ¬¡æã¸ (ã³ã³ãã­ã¼ã«+å³)',
+        prevText: 'åæã¸ (ã³ã³ãã­ã¼ã«+å·¦)',
         buttons: {
             footerTodayButton: {
-                text: "今日"
+                text: "ä»æ¥"
             }
         }
     }
@@ -445,9 +445,9 @@ Ext.define('Ext.locale.ja.picker.Date', {
 
     config: {
         doneButton: 'done',
-        monthText: '月',
-        dayText: '日',
-        yearText: '年'
+        monthText: 'æ',
+        dayText: 'æ¥',
+        yearText: 'å¹´'
     }
 });
 Ext.define('Ext.locale.ja.picker.Picker', {
@@ -455,6 +455,6 @@ Ext.define('Ext.locale.ja.picker.Picker', {
 
     config: {
         doneButton: 'done',
-        cancelButton: 'キャンセル'
+        cancelButton: 'ã­ã£ã³ã»ã«'
     }
 });

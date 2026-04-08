@@ -2,7 +2,7 @@ Ext.define('Ext.locale.ru.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'OK',
-    cancelButtonText: 'отменить'
+    cancelButtonText: 'Ð¾ÑÐ¼ÐµÐ½Ð¸ÑÑ'
 });
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ru.Component", {
@@ -13,10 +13,10 @@ Ext.define('Ext.locale.ru.Dialog', {
 
     config: {
         maximizeTool: {
-            tooltip: 'Развернуть на весь экран'
+            tooltip: 'Ð Ð°Ð·Ð²ÐµÑÐ½ÑÑÑ Ð½Ð° Ð²ÐµÑÑ ÑÐºÑÐ°Ð½'
         },
         restoreTool: {
-            tooltip: 'Восстановить исходный размер'
+            tooltip: 'ÐÐ¾ÑÑÑÐ°Ð½Ð¾Ð²Ð¸ÑÑ Ð¸ÑÑÐ¾Ð´Ð½ÑÐ¹ ÑÐ°Ð·Ð¼ÐµÑ'
         }
     }
 });
@@ -24,7 +24,7 @@ Ext.define('Ext.locale.ru.LoadMask', {
     override: 'Ext.LoadMask',
 
     config: {
-        message: 'Загрузка...'
+        message: 'ÐÐ°Ð³ÑÑÐ·ÐºÐ°...'
     }
 });
 Ext.define('Ext.locale.ru.Panel', {
@@ -33,184 +33,184 @@ Ext.define('Ext.locale.ru.Panel', {
     config: {
         standardButtons: {
             ok: {
-                text: 'ОК'
+                text: 'ÐÐ'
             },
             abort: {
-                text: 'Прервать'
+                text: 'ÐÑÐµÑÐ²Ð°ÑÑ'
             },
             retry: {
-                text: 'Повторить'
+                text: 'ÐÐ¾Ð²ÑÐ¾ÑÐ¸ÑÑ'
             },
             ignore: {
-                text: 'Пропустить'
+                text: 'ÐÑÐ¾Ð¿ÑÑÑÐ¸ÑÑ'
             },
             yes: {
-                text: 'Да'
+                text: 'ÐÐ°'
             },
             no: {
-                text: 'Нет'
+                text: 'ÐÐµÑ'
             },
             cancel: {
-                text: 'Отмена'
+                text: 'ÐÑÐ¼ÐµÐ½Ð°'
             },
             apply: {
-                text: 'Применить'
+                text: 'ÐÑÐ¸Ð¼ÐµÐ½Ð¸ÑÑ'
             },
             save: {
-                text: 'Сохранить'
+                text: 'Ð¡Ð¾ÑÑÐ°Ð½Ð¸ÑÑ'
             },
             submit: {
-                text: 'Отправить'
+                text: 'ÐÑÐ¿ÑÐ°Ð²Ð¸ÑÑ'
             },
             help: {
-                text: 'Справка'
+                text: 'Ð¡Ð¿ÑÐ°Ð²ÐºÐ°'
             },
             close: {
-                text: 'Закрыть'
+                text: 'ÐÐ°ÐºÑÑÑÑ'
             }
         },
-        closeToolText: 'Закрыть панель'
+        closeToolText: 'ÐÐ°ÐºÑÑÑÑ Ð¿Ð°Ð½ÐµÐ»Ñ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: 'Обязательно к заполнению',
-        minOnlyMessage: 'Значение должно быть больше {0}',
-        maxOnlyMessage: 'Значение должно быть меньше {0}',
-        bothMessage: 'Значение должно быть между {0} и {1}'
+        emptyMessage: 'ÐÐ±ÑÐ·Ð°ÑÐµÐ»ÑÐ½Ð¾ Ðº Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ',
+        minOnlyMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±ÑÑÑ Ð±Ð¾Ð»ÑÑÐµ {0}',
+        maxOnlyMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±ÑÑÑ Ð¼ÐµÐ½ÑÑÐµ {0}',
+        bothMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±ÑÑÑ Ð¼ÐµÐ¶Ð´Ñ {0} Ð¸ {1}'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'Недопустимый формат блока CIDR'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ Ð±Ð»Ð¾ÐºÐ° CIDR'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'Недопустимый формат блока CIDR'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ Ð±Ð»Ð¾ÐºÐ° CIDR'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Недопустимая денежная сумма'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼Ð°Ñ Ð´ÐµÐ½ÐµÐ¶Ð½Ð°Ñ ÑÑÐ¼Ð¼Ð°'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: 'Некорректный формат даты'
+        message: 'ÐÐµÐºÐ¾ÑÑÐµÐºÑÐ½ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ Ð´Ð°ÑÑ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'Недопустимые дата и время'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐµ Ð´Ð°ÑÐ° Ð¸ Ð²ÑÐµÐ¼Ñ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'Недопустимый адрес электронной почты'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ Ð°Ð´ÑÐµÑ ÑÐ»ÐµÐºÑÑÐ¾Ð½Ð½Ð¾Ð¹ Ð¿Ð¾ÑÑÑ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'Значение является исключенным'
+        message: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ ÑÐ²Ð»ÑÐµÑÑÑ Ð¸ÑÐºÐ»ÑÑÐµÐ½Ð½ÑÐ¼'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'Недопустимый формат'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'Некорректный IP-адрес'
+        message: 'ÐÐµÐºÐ¾ÑÑÐµÐºÑÐ½ÑÐ¹ IP-Ð°Ð´ÑÐµÑ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'Значение отсутствует в списке допустимых'
+        message: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð¾ÑÑÑÑÑÑÐ²ÑÐµÑ Ð² ÑÐ¿Ð¸ÑÐºÐµ Ð´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÑ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: 'Длина не может быть меньше {0}',
-        maxOnlyMessage: 'Длина не может быть больше {0}',
-        bothMessage: 'Длина должна быть между {0} и {1}'
+        minOnlyMessage: 'ÐÐ»Ð¸Ð½Ð° Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð¼ÐµÐ½ÑÑÐµ {0}',
+        maxOnlyMessage: 'ÐÐ»Ð¸Ð½Ð° Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð±Ð¾Ð»ÑÑÐµ {0}',
+        bothMessage: 'ÐÐ»Ð¸Ð½Ð° Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±ÑÑÑ Ð¼ÐµÐ¶Ð´Ñ {0} Ð¸ {1}'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: 'Недопустимый формат числа'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÐ»Ð°'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'Недопустимый номер телефона'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ Ð½Ð¾Ð¼ÐµÑ ÑÐµÐ»ÐµÑÐ¾Ð½Ð°'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: 'Обязательно к заполнению'
+        message: 'ÐÐ±ÑÐ·Ð°ÑÐµÐ»ÑÐ½Ð¾ Ðº Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Значение должно быть числовым',
-        minOnlyMessage: 'Значение не может быть меньше {0}',
-        maxOnlyMessage: 'Значение не может быть больше {0}',
-        bothMessage: 'Значение должно быть между {0} и {1}'
+        nanMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±ÑÑÑ ÑÐ¸ÑÐ»Ð¾Ð²ÑÐ¼',
+        minOnlyMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð¼ÐµÐ½ÑÑÐµ {0}',
+        maxOnlyMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð±Ð¾Ð»ÑÑÐµ {0}',
+        bothMessage: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±ÑÑÑ Ð¼ÐµÐ¶Ð´Ñ {0} Ð¸ {1}'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'Некорректный формат времени'
+        message: 'ÐÐµÐºÐ¾ÑÑÐµÐºÑÐ½ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ Ð²ÑÐµÐ¼ÐµÐ½Ð¸'
     }
 });
 Ext.define('Ext.locale.ru.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'Недопустимый URL-адрес'
+        message: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ URL-Ð°Ð´ÑÐµÑ'
     }
 });
 Ext.define('Ext.locale.ru.dataview.Abstract', {
     override: 'Ext.dataview.Abstract',
 
     config: {
-        loadingText: 'Загрузка...'
+        loadingText: 'ÐÐ°Ð³ÑÑÐ·ÐºÐ°...'
     }
 });
 Ext.define('Ext.locale.ru.dataview.DataView', {
@@ -224,22 +224,22 @@ Ext.define('Ext.locale.ru.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: 'Нет данных'
+        html: 'ÐÐµÑ Ð´Ð°Ð½Ð½ÑÑ'
     }
 });
 Ext.define('Ext.locale.ru.dataview.List', {
     override: 'Ext.dataview.List',
 
     config: {
-        loadingText: 'Загрузка...'
+        loadingText: 'ÐÐ°Ð³ÑÑÐ·ÐºÐ°...'
     }
 });
 Ext.define('Ext.locale.ru.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: 'Загрузить больше...',
-        noMoreRecordsText: 'Больше нет записей'
+        loadMoreText: 'ÐÐ°Ð³ÑÑÐ·Ð¸ÑÑ Ð±Ð¾Ð»ÑÑÐµ...',
+        noMoreRecordsText: 'ÐÐ¾Ð»ÑÑÐµ Ð½ÐµÑ Ð·Ð°Ð¿Ð¸ÑÐµÐ¹'
     }
 });
 /**
@@ -250,8 +250,8 @@ Ext.define('Ext.locale.ru.dataview.plugin.ListPaging', {
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
-                               'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+        Ext.Date.monthNames = ['Ð¯Ð½Ð²Ð°ÑÑ', 'Ð¤ÐµÐ²ÑÐ°Ð»Ñ', 'ÐÐ°ÑÑ', 'ÐÐ¿ÑÐµÐ»Ñ', 'ÐÐ°Ð¹', 'ÐÑÐ½Ñ', 'ÐÑÐ»Ñ',
+                               'ÐÐ²Ð³ÑÑÑ', 'Ð¡ÐµÐ½ÑÑÐ±ÑÑ', 'ÐÐºÑÑÐ±ÑÑ', 'ÐÐ¾ÑÐ±ÑÑ', 'ÐÐµÐºÐ°Ð±ÑÑ'];
 
         Ext.Date.defaultFormat = 'd.m.Y';
         Ext.Date.defaultTimeFormat = 'H:i';
@@ -265,18 +265,18 @@ Ext.onReady(function() {
         };
 
         Ext.Date.monthNumbers = {
-            'Янв': 0,
-            'Фев': 1,
-            'Мар': 2,
-            'Апр': 3,
-            'Май': 4,
-            'Июн': 5,
-            'Июл': 6,
-            'Авг': 7,
-            'Сен': 8,
-            'Окт': 9,
-            'Ноя': 10,
-            'Дек': 11
+            'Ð¯Ð½Ð²': 0,
+            'Ð¤ÐµÐ²': 1,
+            'ÐÐ°Ñ': 2,
+            'ÐÐ¿Ñ': 3,
+            'ÐÐ°Ð¹': 4,
+            'ÐÑÐ½': 5,
+            'ÐÑÐ»': 6,
+            'ÐÐ²Ð³': 7,
+            'Ð¡ÐµÐ½': 8,
+            'ÐÐºÑ': 9,
+            'ÐÐ¾Ñ': 10,
+            'ÐÐµÐº': 11
         };
 
         Ext.Date.getMonthNumber = function(name) {
@@ -284,12 +284,12 @@ Ext.onReady(function() {
             .toLowerCase()];
         };
 
-        Ext.Date.dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница',
-                             'Суббота'];
+        Ext.Date.dayNames = ['ÐÐ¾ÑÐºÑÐµÑÐµÐ½ÑÐµ', 'ÐÐ¾Ð½ÐµÐ´ÐµÐ»ÑÐ½Ð¸Ðº', 'ÐÑÐ¾ÑÐ½Ð¸Ðº', 'Ð¡ÑÐµÐ´Ð°', 'Ð§ÐµÑÐ²ÐµÑÐ³', 'ÐÑÑÐ½Ð¸ÑÐ°',
+                             'Ð¡ÑÐ±Ð±Ð¾ÑÐ°'];
 
         Ext.Date.getShortDayName = function(day) {
             if (day === 1) {
-                return "Пон";
+                return "ÐÐ¾Ð½";
             }
 
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -310,46 +310,46 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.ru.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'Дата в этом поле должна быть равна или позже {0}',
-    maxDateMessage: 'Дата в этом поле должна быть равна или раньше {0}'
+    minDateMessage: 'ÐÐ°ÑÐ° Ð² ÑÑÐ¾Ð¼ Ð¿Ð¾Ð»Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±ÑÑÑ ÑÐ°Ð²Ð½Ð° Ð¸Ð»Ð¸ Ð¿Ð¾Ð·Ð¶Ðµ {0}',
+    maxDateMessage: 'ÐÐ°ÑÐ° Ð² ÑÑÐ¾Ð¼ Ð¿Ð¾Ð»Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±ÑÑÑ ÑÐ°Ð²Ð½Ð° Ð¸Ð»Ð¸ ÑÐ°Ð½ÑÑÐµ {0}'
 });
 Ext.define('Ext.locale.ru.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Это поле обязательно для заполнения',
-        validationMessage: 'Недопустимый формат'
+        requiredMessage: 'Ð­ÑÐ¾ Ð¿Ð¾Ð»Ðµ Ð¾Ð±ÑÐ·Ð°ÑÐµÐ»ÑÐ½Ð¾ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ',
+        validationMessage: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ'
     }
 });
 Ext.define('Ext.locale.ru.field.FileButton', {
     override: 'Ext.field.FileButton',
 
     config: {
-        text: 'Обзор...'
+        text: 'ÐÐ±Ð·Ð¾Ñ...'
     }
 });
 Ext.define('Ext.locale.ru.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'Максимальное количество знаков после запятой: {0}',
-    minValueText: 'Значение этого поля не может быть меньше {0}',
-    maxValueText: 'Значение этого поля не может быть больше {0}',
-    badFormatMessage: 'Недопустимый формат числа'
+    decimalsText: 'ÐÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑÐ½Ð¾Ðµ ÐºÐ¾Ð»Ð¸ÑÐµÑÑÐ²Ð¾ Ð·Ð½Ð°ÐºÐ¾Ð² Ð¿Ð¾ÑÐ»Ðµ Ð·Ð°Ð¿ÑÑÐ¾Ð¹: {0}',
+    minValueText: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ ÑÑÐ¾Ð³Ð¾ Ð¿Ð¾Ð»Ñ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð¼ÐµÐ½ÑÑÐµ {0}',
+    maxValueText: 'ÐÐ½Ð°ÑÐµÐ½Ð¸Ðµ ÑÑÐ¾Ð³Ð¾ Ð¿Ð¾Ð»Ñ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ Ð±ÑÑÑ Ð±Ð¾Ð»ÑÑÐµ {0}',
+    badFormatMessage: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÐ»Ð°'
 });
 Ext.define('Ext.locale.ru.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Недопустимый формат значения',
+    badFormatMessage: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ Ð·Ð½Ð°ÑÐµÐ½Ð¸Ñ',
     config: {
-        requiredMessage: 'Это поле обязательно для заполнения',
-        validationMessage: 'Недопустимый формат'
+        requiredMessage: 'Ð­ÑÐ¾ Ð¿Ð¾Ð»Ðµ Ð¾Ð±ÑÐ·Ð°ÑÐµÐ»ÑÐ½Ð¾ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ',
+        validationMessage: 'ÐÐµÐ´Ð¾Ð¿ÑÑÑÐ¸Ð¼ÑÐ¹ ÑÐ¾ÑÐ¼Ð°Ñ'
     }
 });
 Ext.define("Ext.locale.ru.grid.filters.menu.Base", {
     override: "Ext.grid.filters.menu.Base",
 
     config: {
-        text: "Фильтр"
+        text: "Ð¤Ð¸Ð»ÑÑÑ"
     }
 });
 Ext.define("Ext.locale.ru.grid.locked.Grid", {
@@ -359,19 +359,19 @@ Ext.define("Ext.locale.ru.grid.locked.Grid", {
         columnMenu: {
             items: {
                 region: {
-                    text: 'область'
+                    text: 'Ð¾Ð±Ð»Ð°ÑÑÑ'
                 }
             }
         },
         regions: {
             left: {
-                menuLabel: 'Заблокировано (слева)'
+                menuLabel: 'ÐÐ°Ð±Ð»Ð¾ÐºÐ¸ÑÐ¾Ð²Ð°Ð½Ð¾ (ÑÐ»ÐµÐ²Ð°)'
             },
             center: {
-                menuLabel: 'разблокирована'
+                menuLabel: 'ÑÐ°Ð·Ð±Ð»Ð¾ÐºÐ¸ÑÐ¾Ð²Ð°Ð½Ð°'
             },
             right: {
-                menuLabel: 'Заблокировано (справа)'
+                menuLabel: 'ÐÐ°Ð±Ð»Ð¾ÐºÐ¸ÑÐ¾Ð²Ð°Ð½Ð¾ (ÑÐ¿ÑÐ°Ð²Ð°)'
             }
         }
     }
@@ -380,58 +380,58 @@ Ext.define('Ext.locale.ru.grid.menu.Columns', {
     override: 'Ext.grid.menu.Columns',
 
     config: {
-        text: 'Столбцы'
+        text: 'Ð¡ÑÐ¾Ð»Ð±ÑÑ'
     }
 });
 Ext.define('Ext.locale.ru.grid.menu.GroupByThis', {
     override: 'Ext.grid.menu.GroupByThis',
 
     config: {
-        text: 'Группировать по этому полю'
+        text: 'ÐÑÑÐ¿Ð¿Ð¸ÑÐ¾Ð²Ð°ÑÑ Ð¿Ð¾ ÑÑÐ¾Ð¼Ñ Ð¿Ð¾Ð»Ñ'
     }
 });
 Ext.define('Ext.locale.ru.grid.menu.ShowInGroups', {
     override: 'Ext.grid.menu.ShowInGroups',
 
     config: {
-        text: 'Показать в группах'
+        text: 'ÐÐ¾ÐºÐ°Ð·Ð°ÑÑ Ð² Ð³ÑÑÐ¿Ð¿Ð°Ñ'
     }
 });
 Ext.define('Ext.locale.ru.grid.menu.SortAsc', {
     override: 'Ext.grid.menu.SortAsc',
 
     config: {
-        text: 'Сортировать по возрастанию'
+        text: 'Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²Ð°ÑÑ Ð¿Ð¾ Ð²Ð¾Ð·ÑÐ°ÑÑÐ°Ð½Ð¸Ñ'
     }
 });
 Ext.define('Ext.locale.ru.grid.menu.SortDesc', {
     override: 'Ext.grid.menu.SortDesc',
 
     config: {
-        text: 'Сортировать по убыванию'
+        text: 'Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²Ð°ÑÑ Ð¿Ð¾ ÑÐ±ÑÐ²Ð°Ð½Ð¸Ñ'
     }
 });
 Ext.define("Ext.locale.ru.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} выбранных строк"
+    dragText: "{0} Ð²ÑÐ±ÑÐ°Ð½Ð½ÑÑ ÑÑÑÐ¾Ðº"
 });
 Ext.define('Ext.locale.ru.panel.Collapser', {
     override: 'Ext.panel.Collapser',
 
     config: {
-        collapseToolText: 'Свернуть панель',
-        expandToolText: 'Развернуть панель'
+        collapseToolText: 'Ð¡Ð²ÐµÑÐ½ÑÑÑ Ð¿Ð°Ð½ÐµÐ»Ñ',
+        expandToolText: 'Ð Ð°Ð·Ð²ÐµÑÐ½ÑÑÑ Ð¿Ð°Ð½ÐµÐ»Ñ'
     }
 });
 Ext.define('Ext.locale.ru.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Следующий месяц (Control + Вправо)',
-        prevText: 'Предыдущий месяц (Control + Влево)',
+        nextText: 'Ð¡Ð»ÐµÐ´ÑÑÑÐ¸Ð¹ Ð¼ÐµÑÑÑ (Control + ÐÐ¿ÑÐ°Ð²Ð¾)',
+        prevText: 'ÐÑÐµÐ´ÑÐ´ÑÑÐ¸Ð¹ Ð¼ÐµÑÑÑ (Control + ÐÐ»ÐµÐ²Ð¾)',
         buttons: {
             footerTodayButton: {
-                text: 'Сегодня'
+                text: 'Ð¡ÐµÐ³Ð¾Ð´Ð½Ñ'
             }
         }
     }
@@ -440,17 +440,17 @@ Ext.define('Ext.locale.ru.picker.Date', {
     override: 'Ext.picker.Date',
 
     config: {
-        doneButton: 'Готово',
-        monthText: 'Месяц',
-        dayText: 'День',
-        yearText: 'Год'
+        doneButton: 'ÐÐ¾ÑÐ¾Ð²Ð¾',
+        monthText: 'ÐÐµÑÑÑ',
+        dayText: 'ÐÐµÐ½Ñ',
+        yearText: 'ÐÐ¾Ð´'
     }
 });
 Ext.define('Ext.locale.ru.picker.Picker', {
     override: 'Ext.picker.Picker',
 
     config: {
-        doneButton: 'Выполнить',
-        cancelButton: 'Отмена'
+        doneButton: 'ÐÑÐ¿Ð¾Ð»Ð½Ð¸ÑÑ',
+        cancelButton: 'ÐÑÐ¼ÐµÐ½Ð°'
     }
 });

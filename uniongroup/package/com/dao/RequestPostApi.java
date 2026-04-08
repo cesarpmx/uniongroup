@@ -151,14 +151,14 @@ public class RequestPostApi {
         http.setRequestProperty("Authorization", "Basic " + encoder);
         http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-        // Lógica de Usuario y Payload
+        // LÃ³gica de Usuario y Payload
         String data = content;
         String usuId = (session.getAttribute("usuario") != null) ? session.getAttribute("usuario").toString() : "";
 
         if (!usuId.isEmpty()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode newData = mapper.readTree(data);
-            // Si el JSON viene con la raíz "addresses"
+            // Si el JSON viene con la raÃ­z "addresses"
             if (newData.has("addresses") && newData.get("addresses").isArray()) {
                 ArrayNode arrayNode = (ArrayNode) newData.get("addresses");
                 for (JsonNode node : arrayNode) {

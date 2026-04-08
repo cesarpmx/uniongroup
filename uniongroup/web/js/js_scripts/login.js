@@ -50,7 +50,7 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 name: 'password',
                 inputType: 'password',
-                emptyText: 'Contraseña',
+                emptyText: 'ContraseÃ±a',
                 fieldLabel: 'Contrase&ntilde;a',
                 allowBlank: false,
                 enableKeyEvents: true,
@@ -58,7 +58,7 @@ Ext.onReady(function () {
             },
             {
                 xtype: 'component',
-                html: '<a href="#" onclick="formRecuperar()" style="display: block; margin-top: 10px; text-align: right;">Restablecer Contraseña</a>'
+                html: '<a href="#" onclick="formRecuperar()" style="display: block; margin-top: 10px; text-align: right;">Restablecer ContraseÃ±a</a>'
             }
         ],
         
@@ -86,7 +86,7 @@ Ext.onReady(function () {
 
 function formRecuperar() {
     Ext.create('Ext.window.Window', {
-        title: 'Restablecer Contraseña',
+        title: 'Restablecer ContraseÃ±a',
         id: 'FormOlvidarContra',
         modal: true,
         closable: false, // Permite cerrar la ventana
@@ -109,7 +109,7 @@ function formRecuperar() {
                     padding: 5,
                     border: true
                 },
-                // Configuración del formulario
+                // ConfiguraciÃ³n del formulario
                 items: [
                     {
                         xtype: 'fieldset',
@@ -162,9 +162,9 @@ function formRecuperar() {
                         text: 'Enviar',
                         id: "idBtnRecuperarEntrar",
                         handler: function (btn) {
-                            // Obtén el formulario completo
+                            // ObtÃ©n el formulario completo
                             var formPanel = Ext.getCmp('pnlRecuperar');
-                            var form = formPanel.getForm(); // Aquí se obtiene el formulario para usar sus métodos como isValid()
+                            var form = formPanel.getForm(); // AquÃ­ se obtiene el formulario para usar sus mÃ©todos como isValid()
 
                             var btnEnviar = Ext.getCmp('idBtnRecuperarEntrar');
                             var btnSalir = Ext.getCmp('idBtnRecuperarSalir');
@@ -200,7 +200,7 @@ function formRecuperar() {
                                     success: function (response) {
                                         var jsonResponse = Ext.decode(response.responseText);
                                         if (jsonResponse.success) {
-                                            Ext.Msg.alert('Éxito', jsonResponse.message);
+                                            Ext.Msg.alert('Ã‰xito', jsonResponse.message);
                                             btn.up('window').close();
                                         } else {
                                             Ext.Msg.alert('Error', jsonResponse.message);
@@ -241,7 +241,7 @@ function generarTokenAleatorio() {
         token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
 
-    // Asegurar que tiene al menos un número y un símbolo especial
+    // Asegurar que tiene al menos un nÃºmero y un sÃ­mbolo especial
     const numeros = "0123456789";
     const simbolos = "@$!%*?&=";
 

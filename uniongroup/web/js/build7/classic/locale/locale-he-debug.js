@@ -13,7 +13,7 @@ Ext.define('Ext.locale.container.Viewport', {
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+        Ext.Date.monthNames = ["×× ×××¨", "×¤××¨×××¨", "××¨×¥", "××¤×¨××", "×××", "××× ×", "××××", "×××××¡×", "×¡×¤××××¨", "×××§××××¨", "× ×××××¨", "××¦×××¨"];
 
         Ext.Date.getShortMonthName = function(month) {
             return Ext.Date.monthNames[month].substring(0, 3);
@@ -38,7 +38,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
+        Ext.Date.dayNames = ["×", "×", "×", "×", "×", "×", "×©"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -63,89 +63,89 @@ Ext.define("Ext.locale.he.view.View", {
 
 Ext.define("Ext.locale.he.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "שורות נבחרות {0}"
+    dragText: "×©××¨××ª × ×××¨××ª {0}"
 });
 
 Ext.define("Ext.locale.he.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "סגור לשונית"
+    closeText: "×¡×××¨ ××©×× ××ª"
 });
 
 Ext.define("Ext.locale.he.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "הערך בשדה זה שגוי"
+    invalidText: "××¢×¨× ××©×× ×× ×©×××"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.he.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "...טוען"
+    loadingText: "...×××¢×"
 });
 
 Ext.define("Ext.locale.he.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "היום",
-    minText: ".תאריך זה חל קודם לתאריך ההתחלתי שנקבע",
-    maxText: ".תאריך זה חל לאחר התאריך הסופי שנקבע",
+    todayText: "××××",
+    minText: ".×ª××¨×× ×× ×× ×§××× ××ª××¨×× ×××ª×××ª× ×©× ×§××¢",
+    maxText: ".×ª××¨×× ×× ×× ××××¨ ××ª××¨×× ××¡××¤× ×©× ×§××¢",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: '(Control+Right) החודש הבא',
-    prevText: '(Control+Left) החודש הקודם',
-    monthYearText: '(לבחירת שנה Control+Up/Down) בחר חודש',
-    todayTip: "מקש רווח) {0})",
+    nextText: '(Control+Right) ×××××© ×××',
+    prevText: '(Control+Left) ×××××© ××§×××',
+    monthYearText: '(×××××¨×ª ×©× × Control+Up/Down) ×××¨ ××××©',
+    todayTip: "××§×© ×¨×××) {0})",
     format: "d/m/Y",
     startDay: 0
 });
 
 Ext.define("Ext.locale.he.picker.Month", {
     override: "Ext.picker.Month",
-    okText: "&#160;אישור&#160;",
-    cancelText: "ביטול"
+    okText: "&#160;×××©××¨&#160;",
+    cancelText: "×××××"
 });
 
 Ext.define("Ext.locale.he.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "עמוד",
-    afterPageText: "{0} מתוך",
-    firstText: "עמוד ראשון",
-    prevText: "עמוד קודם",
-    nextText: "עמוד הבא",
-    lastText: "עמוד אחרון",
-    refreshText: "רענן",
-    displayMsg: "מציג {0} - {1} מתוך {2}",
-    emptyMsg: 'אין מידע להצגה'
+    beforePageText: "×¢×××",
+    afterPageText: "{0} ××ª××",
+    firstText: "×¢××× ×¨××©××",
+    prevText: "×¢××× ×§×××",
+    nextText: "×¢××× ×××",
+    lastText: "×¢××× ×××¨××",
+    refreshText: "×¨×¢× ×",
+    displayMsg: "××¦×× {0} - {1} ××ª×× {2}",
+    emptyMsg: '××× ××××¢ ×××¦××'
 });
 
 Ext.define("Ext.locale.he.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "{0} האורך המינימאלי לשדה זה הוא",
-    maxLengthText: "{0} האורך המירבי לשדה זה הוא",
-    blankText: "שדה זה הכרחי",
+    minLengthText: "{0} ××××¨× ×××× ××××× ××©×× ×× ×××",
+    maxLengthText: "{0} ××××¨× ××××¨×× ××©×× ×× ×××",
+    blankText: "×©×× ×× ×××¨××",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.he.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "{0} הערך המינימאלי לשדה זה הוא",
-    maxText: "{0} הערך המירבי לשדה זה הוא",
-    nanText: "הוא לא מספר {0}"
+    minText: "{0} ××¢×¨× ×××× ××××× ××©×× ×× ×××",
+    maxText: "{0} ××¢×¨× ××××¨×× ××©×× ×× ×××",
+    nanText: "××× ×× ××¡×¤×¨ {0}"
 });
 
 Ext.define("Ext.locale.he.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "מנוטרל",
-    disabledDatesText: "מנוטרל",
-    minText: "{0} התאריך בשדה זה חייב להיות לאחר",
-    maxText: "{0} התאריך בשדה זה חייב להיות לפני",
-    invalidText: "{1} הוא לא תאריך תקני - חייב להיות בפורמט {0}",
+    disabledDaysText: "×× ×××¨×",
+    disabledDatesText: "×× ×××¨×",
+    minText: "{0} ××ª××¨×× ××©×× ×× ×××× ×××××ª ××××¨",
+    maxText: "{0} ××ª××¨×× ××©×× ×× ×××× ×××××ª ××¤× ×",
+    invalidText: "{1} ××× ×× ×ª××¨×× ×ª×§× × - ×××× ×××××ª ××¤××¨×× {0}",
     format: "m/d/y",
     altFormats: "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
 });
 
 Ext.define("Ext.locale.he.form.field.File", {
     override: "Ext.form.field.File",
-    buttonText: "עיון ..."
+    buttonText: "×¢××× ..."
 });
 
 Ext.define("Ext.locale.he.form.field.ComboBox", {
@@ -153,92 +153,92 @@ Ext.define("Ext.locale.he.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "...טוען"
+        loadingText: "...×××¢×"
     });
 });
 
 Ext.define("Ext.locale.he.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: '"user@example.com" שדה זה צריך להיות כתובת דואר אלקטרוני בפורמט',
-    urlText: '"http:/' + '/www.example.com" שדה זה צריך להיות כתובת אינטרנט בפורמט',
-    alphaText: '_שדה זה יכול להכיל רק אותיות ו',
-    alphanumText: '_שדה זה יכול להכיל רק אותיות, מספרים ו'
+    emailText: '"user@example.com" ×©×× ×× ×¦×¨×× ×××××ª ××ª×××ª ××××¨ ×××§××¨×× × ××¤××¨××',
+    urlText: '"http:/' + '/www.example.com" ×©×× ×× ×¦×¨×× ×××××ª ××ª×××ª ××× ××¨× × ××¤××¨××',
+    alphaText: '_×©×× ×× ×××× ××××× ×¨×§ ×××ª×××ª ×',
+    alphanumText: '_×©×× ×× ×××× ××××× ×¨×§ ×××ª×××ª, ××¡×¤×¨×× ×'
 });
 
 Ext.define("Ext.locale.he.form.field.HtmlEditor", {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: ':אנא הקלד את כתובת האינטרנט עבור הקישור'
+    createLinkText: ':×× × ××§×× ××ª ××ª×××ª ×××× ××¨× × ×¢×××¨ ××§××©××¨'
 }, function() {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
         buttonTips: {
             bold: {
-                title: '(Ctrl+B) מודגש',
-                text: '.הדגש את הטקסט הנבחר',
+                title: '(Ctrl+B) ×××××©',
+                text: '.××××© ××ª ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: '(Ctrl+I) נטוי',
-                text: '.הטה את הטקסט הנבחר',
+                title: '(Ctrl+I) × ×××',
+                text: '.××× ××ª ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
-                title: '(Ctrl+U) קו תחתי',
-                text: '.הוסף קן תחתי עבור הטקסט הנבחר',
+                title: '(Ctrl+U) ×§× ×ª××ª×',
+                text: '.×××¡×£ ×§× ×ª××ª× ×¢×××¨ ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'הגדל טקסט',
-                text: '.הגדל גופן עבור הטקסט הנבחר',
+                title: '×××× ××§×¡×',
+                text: '.×××× ×××¤× ×¢×××¨ ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: 'הקטן טקסט',
-                text: '.הקטן גופן עבור הטקסט הנבחר',
+                title: '××§×× ××§×¡×',
+                text: '.××§×× ×××¤× ×¢×××¨ ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'צבע רקע לטקסט',
-                text: '.שנה את צבע הרקע עבור הטקסט הנבחר',
+                title: '×¦××¢ ×¨×§×¢ ×××§×¡×',
+                text: '.×©× × ××ª ×¦××¢ ××¨×§×¢ ×¢×××¨ ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: 'צבע גופן',
-                text: '.שנה את צבע הגופן עבור הטקסט הנבחר',
+                title: '×¦××¢ ×××¤×',
+                text: '.×©× × ××ª ×¦××¢ ××××¤× ×¢×××¨ ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
-                title: 'ישור לשמאל',
-                text: '.ישר שמאלה את הטקסט הנבחר',
+                title: '××©××¨ ××©×××',
+                text: '.××©×¨ ×©×××× ××ª ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: 'ישור למרכז',
-                text: '.ישר למרכז את הטקסט הנבחר',
+                title: '××©××¨ ×××¨××',
+                text: '.××©×¨ ×××¨×× ××ª ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: 'ישור לימין',
-                text: '.ישר ימינה את הטקסט הנבחר',
+                title: '××©××¨ ×××××',
+                text: '.××©×¨ ×××× × ××ª ×××§×¡× ×× ×××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'רשימת נקודות',
-                text: '.התחל רשימת נקודות',
+                title: '×¨×©×××ª × ×§××××ª',
+                text: '.××ª×× ×¨×©×××ª × ×§××××ª',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
-                title: 'רשימה ממוספרת',
-                text: '.התחל רשימה ממוספרת',
+                title: '×¨×©××× ××××¡×¤×¨×ª',
+                text: '.××ª×× ×¨×©××× ××××¡×¤×¨×ª',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
-                title: 'קישור',
-                text: '.הפוך את הטקסט הנבחר לקישור',
+                title: '×§××©××¨',
+                text: '.××¤×× ××ª ×××§×¡× ×× ×××¨ ××§××©××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'עריכת קוד מקור',
-                text: '.הצג קוד מקור',
+                title: '×¢×¨×××ª ×§×× ××§××¨',
+                text: '.××¦× ×§×× ××§××¨',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -247,34 +247,34 @@ Ext.define("Ext.locale.he.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.he.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "מיין בסדר עולה",
-    sortDescText: "מיין בסדר יורד",
-    lockText: "נעל עמודה",
-    unlockText: "שחרר עמודה",
-    columnsText: "עמודות"
+    sortAscText: "×××× ××¡××¨ ×¢×××",
+    sortDescText: "×××× ××¡××¨ ×××¨×",
+    lockText: "× ×¢× ×¢××××",
+    unlockText: "×©××¨×¨ ×¢××××",
+    columnsText: "×¢×××××ª"
 });
 
 Ext.define("Ext.locale.he.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
-    emptyGroupText: '(ריק)',
-    groupByText: 'הצג בקבוצות לפי שדה זה',
-    showGroupsText: 'הצג בקבוצות'
+    emptyGroupText: '(×¨××§)',
+    groupByText: '××¦× ××§×××¦××ª ××¤× ×©×× ××',
+    showGroupsText: '××¦× ××§×××¦××ª'
 });
 
 Ext.define("Ext.locale.he.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
-    nameText: "שם",
-    valueText: "ערך",
+    nameText: "×©×",
+    valueText: "×¢×¨×",
     dateFormat: "m/j/Y"
 });
 
 Ext.define("Ext.locale.he.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
-        ok: "אישור",
-        cancel: "ביטול",
-        yes: "כן",
-        no: "לא"
+        ok: "×××©××¨",
+        cancel: "×××××",
+        yes: "××",
+        no: "××"
     }
 });
 

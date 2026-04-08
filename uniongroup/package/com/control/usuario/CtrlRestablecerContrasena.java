@@ -34,7 +34,7 @@
 ///*     */   {
 ///*  43 */     response.setContentType("text/html;charset=UTF-8");
 ///*  44 */     PrintWriter out = response.getWriter();
-///*  45 */     String strJson = "{success: false,msg: 'La informaci�n es incorrecta verifique sus datos.'}";
+///*  45 */     String strJson = "{success: false,msg: 'La información es incorrecta verifique sus datos.'}";
 ///*     */     try {
 ///*  47 */       String valorRadio = ""; String email = ""; String usuario = "";
 ///*  48 */       valorRadio = Utilities.obtenParametro(request, "rd_CRM01_6");
@@ -70,7 +70,7 @@
 ///*     */   }
 ///*     */ 
 ///*     */   public String enviarContrasena(String email, String idWnd) {
-///* 100 */     String strJson = "{success: false,msg: 'La informaci�n es incorrecta verifique sus datos.'}";
+///* 100 */     String strJson = "{success: false,msg: 'La información es incorrecta verifique sus datos.'}";
 ///*     */     try {
 ///* 102 */       String nombreUsuario = ""; String apellido = ""; String correo = ""; String alias = ""; String contrasena = ""; String Mfrom = ""; String Msubject = "";
 ///* 103 */       Integer a = Integer.valueOf(3);
@@ -94,7 +94,7 @@
 //      Mfrom = objMensaje.getVmFromEmail();
 //       Msubject = objMensaje.getVmSubject();
 // */       mensaje.put("to", correo);
-///* 124 */       mensaje.put("mensaje", "<table><tr><td>Estimado " + nombreUsuario + " </td></tr><tr><td>De acuerdo a tu solicitud te hacemos llegar su nombre de usuario para acceder a <strong>Siempre a tu Lado.</strong></td></tr><tr><td><strong>nombre de usuario: " + alias + "</strong></td></tr><tr><td>&nbsp;</td></tr><tr><td>Nota: La informaci�n contenida en este mensaje as� como  cualquier archivo dentro de �l, es confidencial y queda restringida únicamente  para el uso de las personas o entidades a las cuales es dirigido.</td></tr></table>");
+///* 124 */       mensaje.put("mensaje", "<table><tr><td>Estimado " + nombreUsuario + " </td></tr><tr><td>De acuerdo a tu solicitud te hacemos llegar su nombre de usuario para acceder a <strong>Siempre a tu Lado.</strong></td></tr><tr><td><strong>nombre de usuario: " + alias + "</strong></td></tr><tr><td>&nbsp;</td></tr><tr><td>Nota: La información contenida en este mensaje así como  cualquier archivo dentro de él, es confidencial y queda restringida Ãºnicamente  para el uso de las personas o entidades a las cuales es dirigido.</td></tr></table>");
 ///* 125 */       mensaje.put("from", Mfrom);
 ///* 126 */       mensaje.put("subject", Msubject);
 ///*     */ 
@@ -115,7 +115,7 @@
 ///*     */ 
 ///*     */   public String enviarUsuario(String usuario, String idWnd)
 ///*     */   {
-///* 145 */     String strJson = "{success: false,msg: 'La informaci�n es incorrecta verifique sus datos.'}";
+///* 145 */     String strJson = "{success: false,msg: 'La información es incorrecta verifique sus datos.'}";
 ///*     */     try {
 ///* 147 */       String nombreUsuario = ""; String apellido = ""; String correo = ""; String alias = ""; String contrasena = ""; String Mfrom = ""; String Msubject = "";
 ///* 148 */       int a = 4;
@@ -139,7 +139,7 @@
 //      Mfrom = objMensaje.getVmFromEmail();
 //      Msubject = objMensaje.getVmSubject();
 ///* 168 */       mensaje.put("to", correo);
-///* 169 */       mensaje.put("mensaje", "<table><tr><td>Estimado " + nombreUsuario + " </td></tr><tr><td>De acuerdo a tu solicitud te hacemos llegar su contraseña para acceder a <strong>Siempre a tu Lado.</strong></td></tr><tr><td><strong>su contraseña es la siguiente: " + contrasena + "</strong></td></tr><tr><td>&nbsp;</td></tr><tr><td>Nota: La informaci�n contenida en este mensaje as� como  cualquier archivo dentro de �l, es confidencial y queda restringida únicamente  para el uso de las personas o entidades a las cuales es dirigido.</td></tr></table>");
+///* 169 */       mensaje.put("mensaje", "<table><tr><td>Estimado " + nombreUsuario + " </td></tr><tr><td>De acuerdo a tu solicitud te hacemos llegar su contraseÃ±a para acceder a <strong>Siempre a tu Lado.</strong></td></tr><tr><td><strong>su contraseÃ±a es la siguiente: " + contrasena + "</strong></td></tr><tr><td>&nbsp;</td></tr><tr><td>Nota: La información contenida en este mensaje así como  cualquier archivo dentro de él, es confidencial y queda restringida Ãºnicamente  para el uso de las personas o entidades a las cuales es dirigido.</td></tr></table>");
 ///* 170 */       mensaje.put("from", Mfrom);
 ///* 171 */       mensaje.put("subject", Msubject);
 ///* 172 */       Address from = new InternetAddress((String)mensaje.get("from"));
@@ -152,7 +152,7 @@
 ///* 179 */         strJson = "{success: true,msg: 'Su solicitud a sido exitosa, se ha enviado un mensaje al siguiente correo " + correo + ".',wnd:'" + idWnd + "'}";
 ///*     */     }
 ///*     */     catch (Exception ex) {
-///* 182 */       strJson = "{success: false,msg: 'La informaci�n es incorrecta verifique sus datos.'}";
+///* 182 */       strJson = "{success: false,msg: 'La información es incorrecta verifique sus datos.'}";
 ///*     */     }
 ///* 184 */     return strJson;
 ///*     */   }

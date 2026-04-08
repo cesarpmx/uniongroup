@@ -119,7 +119,7 @@ public class CtrlOrdenVenta extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "{\"error\": \"OcurriÛ un error al procesar la solicitud.\"}";
+            JSONVal = "{\"error\": \"Ocurri√≥ un error al procesar la solicitud.\"}";
         }
         return JSONVal;
     }
@@ -190,7 +190,7 @@ public class CtrlOrdenVenta extends HttpServlet {
                 item.put("Memo", orden.SalesOrder.Memo);
                 item.put("Warehouse", orden.SalesOrder.Warehouse);
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
-                item.put("TotalLines", orden.ControlValues.TotalLines); // ? YA EST¡
+                item.put("TotalLines", orden.ControlValues.TotalLines); // ? YA EST√Å
                 resultado.add(item);
             }
 
@@ -273,7 +273,7 @@ public class CtrlOrdenVenta extends HttpServlet {
                     }
                 }
 
-                // Solo enviar al cliente si hay Ûrdenes exitosas
+                // Solo enviar al cliente si hay √≥rdenes exitosas
                 if (!confirmDataArray.isEmpty()) {
                     Map<String, Object> confirmDataJSON = new HashMap<>();
                     confirmDataJSON.put("ConfirmData", confirmDataArray);
@@ -306,7 +306,7 @@ public class CtrlOrdenVenta extends HttpServlet {
                         JSONVal = mapper.writeValueAsString(respuesta);
                     }
                 } else {
-                    System.out.println("?? No hay Ûrdenes de venta exitosas para confirmar al cliente");
+                    System.out.println("?? No hay √≥rdenes de venta exitosas para confirmar al cliente");
                 }
             }
 
@@ -337,7 +337,7 @@ public class CtrlOrdenVenta extends HttpServlet {
 
             String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonShipment);
 
-            // 3. ? DOBLE DESERIALIZACI”N - RESPUESTA COMO ARRAY
+            // 3. ? DOBLE DESERIALIZACI√ìN - RESPUESTA COMO ARRAY
             String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
 
             // Deserializar como LISTA y tomar el primer elemento
@@ -378,14 +378,14 @@ public class CtrlOrdenVenta extends HttpServlet {
 
             } catch (Exception logEx) {
                 // ?? Si falla el log, solo lo registramos pero NO afectamos la respuesta al usuario
-                System.out.println("? Error al guardar en Confirmation Log (no crÌtico):");
+                System.out.println("? Error al guardar en Confirmation Log (no cr√≠tico):");
                 logEx.printStackTrace();
             }
 
             // 6. Construir respuesta (sin mencionar el log interno)
             Map<String, Object> resultado = new HashMap<>();
             resultado.put("success", true);
-            resultado.put("message", "ConfirmaciÛn de envÌo procesada exitosamente");
+            resultado.put("message", "Confirmaci√≥n de env√≠o procesada exitosamente");
             resultado.put("clienteResponse", clienteResponse);
 
             JSONVal = mapper.writeValueAsString(resultado);

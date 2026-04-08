@@ -13,10 +13,10 @@ Ext.define('Ext.locale.fi.Dialog', {
 
     config: {
         maximizeTool: {
-            tooltip: "Maksimoi koko näyttöön"
+            tooltip: "Maksimoi koko nÃ¤yttÃ¶Ã¶n"
         },
         restoreTool: {
-            tooltip: "Palauta alkuperäiseen kokoon"
+            tooltip: "Palauta alkuperÃ¤iseen kokoon"
         }
     }
 });
@@ -36,13 +36,13 @@ Ext.define('Ext.locale.fi.Panel', {
                 text: 'OK'
             },
             abort: {
-                text: 'Keskeyttää'
+                text: 'KeskeyttÃ¤Ã¤'
             },
             retry: {
-                text: 'yritä uudelleen'
+                text: 'yritÃ¤ uudelleen'
             },
             ignore: {
-                text: 'Jättää huomiotta'
+                text: 'JÃ¤ttÃ¤Ã¤ huomiotta'
             },
             yes: {
                 text: 'Joo'
@@ -54,13 +54,13 @@ Ext.define('Ext.locale.fi.Panel', {
                 text: 'Peruuttaa'
             },
             apply: {
-                text: 'Käytä'
+                text: 'KÃ¤ytÃ¤'
             },
             save: {
                 text: 'Tallentaa'
             },
             submit: {
-                text: 'Lähetä'
+                text: 'LÃ¤hetÃ¤'
             },
             help: {
                 text: 'auta'
@@ -76,10 +76,10 @@ Ext.define('Ext.locale.fi.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: 'On oltava läsnä',
-        minOnlyMessage: 'On oltava vähintään {0}',
-        maxOnlyMessage: 'Ei saa olla enempää kuin {0}',
-        bothMessage: 'On oltava välillä {0} ja {1}'
+        emptyMessage: 'On oltava lÃ¤snÃ¤',
+        minOnlyMessage: 'On oltava vÃ¤hintÃ¤Ã¤n {0}',
+        maxOnlyMessage: 'Ei saa olla enempÃ¤Ã¤ kuin {0}',
+        bothMessage: 'On oltava vÃ¤lillÃ¤ {0} ja {1}'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.CIDRv4', {
@@ -100,42 +100,42 @@ Ext.define('Ext.locale.fi.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Ei ole kelvollinen valuutan määrä'
+        message: 'Ei ole kelvollinen valuutan mÃ¤Ã¤rÃ¤'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "Ei ole kelvollinen päivämäärä"
+        message: "Ei ole kelvollinen pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤"
     }
 });
 Ext.define('Ext.locale.fi.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'Ei ole kelvollinen päivämäärä ja kellonaika'
+        message: 'Ei ole kelvollinen pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤ ja kellonaika'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'Ei ole kelvollinen sähköpostiosoite'
+        message: 'Ei ole kelvollinen sÃ¤hkÃ¶postiosoite'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'Onko arvo jätetty pois'
+        message: 'Onko arvo jÃ¤tetty pois'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'Sillä on väärä muoto'
+        message: 'SillÃ¤ on vÃ¤Ã¤rÃ¤ muoto'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.IPAddress', {
@@ -149,16 +149,16 @@ Ext.define('Ext.locale.fi.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'Se ei ole hyväksyttävien arvojen luettelossa'
+        message: 'Se ei ole hyvÃ¤ksyttÃ¤vien arvojen luettelossa'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: 'Pituuden on oltava vähintään {0}',
-        maxOnlyMessage: 'Pituuden on oltava enintään {0}',
-        bothMessage: 'Pituuden on oltava välillä {0} ja {1}'
+        minOnlyMessage: 'Pituuden on oltava vÃ¤hintÃ¤Ã¤n {0}',
+        maxOnlyMessage: 'Pituuden on oltava enintÃ¤Ã¤n {0}',
+        bothMessage: 'Pituuden on oltava vÃ¤lillÃ¤ {0} ja {1}'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Number', {
@@ -179,7 +179,7 @@ Ext.define('Ext.locale.fi.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: 'On oltava läsnä'
+        message: 'On oltava lÃ¤snÃ¤'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Range', {
@@ -187,9 +187,9 @@ Ext.define('Ext.locale.fi.data.validator.Range', {
 
     config: {
         nanMessage: 'Sen on oltava numeerinen',
-        minOnlyMessage: 'On oltava vähintään {0}',
-        maxOnlyMessage: 'Ei saa olla enempää kuin {0}',
-        bothMessage: 'On oltava välillä {0} ja {1}'
+        minOnlyMessage: 'On oltava vÃ¤hintÃ¤Ã¤n {0}',
+        maxOnlyMessage: 'Ei saa olla enempÃ¤Ã¤ kuin {0}',
+        bothMessage: 'On oltava vÃ¤lillÃ¤ {0} ja {1}'
     }
 });
 Ext.define('Ext.locale.fi.data.validator.Time', {
@@ -217,14 +217,14 @@ Ext.define("Ext.locale.fi.dataview.DataView", {
     override: "Ext.dataview.DataView",
 
     config: {
-        emptyText: "tietoja ei näytetä"
+        emptyText: "tietoja ei nÃ¤ytetÃ¤"
     }
 });
 Ext.define('Ext.locale.fi.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: 'Ei näytettäviä tietoja'
+        html: 'Ei nÃ¤ytettÃ¤viÃ¤ tietoja'
     }
 });
 Ext.define('Ext.locale.fi.dataview.List', {
@@ -238,7 +238,7 @@ Ext.define('Ext.locale.fi.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: 'Lataa lisää ...',
+        loadMoreText: 'Lataa lisÃ¤Ã¤ ...',
         noMoreRecordsText: 'ei muita tallenteita'
     }
 });
@@ -249,7 +249,7 @@ Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu",
-                               "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu",
+                               "kesÃ¤kuu", "heinÃ¤kuu", "elokuu", "syyskuu", "lokakuu",
                                "marraskuu", "joulukuu"];
 
         Ext.Date.getShortMonthName = function(month) {
@@ -262,8 +262,8 @@ Ext.onReady(function() {
             'maaliskuu': 2,
             'huhtikuu': 3,
             'toukokuu': 4,
-            'kesäkuu': 5,
-            'heinäkuu': 6,
+            'kesÃ¤kuu': 5,
+            'heinÃ¤kuu': 6,
             'elokuu': 7,
             'syyskuu': 8,
             'lokakuu': 9,
@@ -315,15 +315,15 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.fi.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'Tämän kentän päivämäärän tulee olla {0} jälkeen',
-    maxDateMessage: 'Tämän kentän päivämäärän tulee olla ennen {0}'
+    minDateMessage: 'TÃ¤mÃ¤n kentÃ¤n pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤n tulee olla {0} jÃ¤lkeen',
+    maxDateMessage: 'TÃ¤mÃ¤n kentÃ¤n pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤n tulee olla ennen {0}'
 });
 Ext.define('Ext.locale.fi.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Tämä kenttä on pakollinen',
-        validationMessage: 'on väärässä muodossa'
+        requiredMessage: 'TÃ¤mÃ¤ kenttÃ¤ on pakollinen',
+        validationMessage: 'on vÃ¤Ã¤rÃ¤ssÃ¤ muodossa'
     }
 });
 Ext.define("Ext.locale.fi.field.FileButton", {
@@ -337,8 +337,8 @@ Ext.define('Ext.locale.fi.field.Number', {
     override: 'Ext.field.Number',
 
     decimalsText: 'Suurin desimaaliluku on (0)',
-    minValueText: 'Tämän kentän pienin sallittu arvo on {0}',
-    maxValueText: 'Tämän kentän suurin sallittu arvo on {0}',
+    minValueText: 'TÃ¤mÃ¤n kentÃ¤n pienin sallittu arvo on {0}',
+    maxValueText: 'TÃ¤mÃ¤n kentÃ¤n suurin sallittu arvo on {0}',
     badFormatMessage: '{0} ei ole numero'
 });
 Ext.define('Ext.locale.fi.field.Text', {
@@ -346,8 +346,8 @@ Ext.define('Ext.locale.fi.field.Text', {
 
     badFormatMessage: 'Arvo ei vastaa vaadittua muotoa',
     config: {
-        requiredMessage: 'Tämä kenttä on pakollinen',
-        validationMessage: 'on väärässä muodossa'
+        requiredMessage: 'TÃ¤mÃ¤ kenttÃ¤ on pakollinen',
+        validationMessage: 'on vÃ¤Ã¤rÃ¤ssÃ¤ muodossa'
     }
 });
 Ext.define("Ext.locale.fi.grid.filters.menu.Base", {
@@ -392,33 +392,33 @@ Ext.define("Ext.locale.fi.grid.menu.GroupByThis", {
     override: "Ext.grid.menu.GroupByThis",
 
     config: {
-        text: "Ryhmä tähän"
+        text: "RyhmÃ¤ tÃ¤hÃ¤n"
     }
 });
 Ext.define("Ext.locale.fi.grid.menu.ShowInGroups", {
     override: "Ext.grid.menu.ShowInGroups",
 
     config: {
-        text: "Näytä ryhmissä"
+        text: "NÃ¤ytÃ¤ ryhmissÃ¤"
     }
 });
 Ext.define("Ext.locale.fi.grid.menu.SortAsc", {
     override: "Ext.grid.menu.SortAsc",
 
     config: {
-        text: "Järjestä A-Ö"
+        text: "JÃ¤rjestÃ¤ A-Ã"
     }
 });
 Ext.define("Ext.locale.fi.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "Järjestä Ö-A"
+        text: "JÃ¤rjestÃ¤ Ã-A"
     }
 });
 Ext.define("Ext.locale.fi.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} rivi(ä) valittu"
+    dragText: "{0} rivi(Ã¤) valittu"
 });
 Ext.define('Ext.locale.fi.panel.Collapser', {
     override: 'Ext.panel.Collapser',
@@ -436,7 +436,7 @@ Ext.define('Ext.locale.fi.panel.Date', {
         prevText: 'Edellinen kuukausi (Control+vasemmalle)',
         buttons: {
             footerTodayButton: {
-                text: "Tänään"
+                text: "TÃ¤nÃ¤Ã¤n"
             }
         }
     }
@@ -447,7 +447,7 @@ Ext.define('Ext.locale.nl.picker.Date', {
     config: {
         doneButton: 'valmis',
         monthText: 'Kuukausi',
-        dayText: 'päivä',
+        dayText: 'pÃ¤ivÃ¤',
         yearText: 'vuosi'
     }
 });

@@ -6,8 +6,8 @@
 
 function CerrarSesion(){
     Ext.Msg.show({
-        title:'Terminar Sesión',
-        msg: '¿Desea terminar la sesión?',
+        title:'Terminar SesiÃ³n',
+        msg: 'Â¿Desea terminar la sesiÃ³n?',
         buttons: Ext.Msg.YESNO,
         animEl: 'elId',
         fn: function(btn){
@@ -15,7 +15,7 @@ function CerrarSesion(){
             }
             if(btn == 'yes'){
                 Ext.MessageBox.show({
-                   msg: 'Cerrando la sesión, espere por favor...',
+                   msg: 'Cerrando la sesiÃ³n, espere por favor...',
                    progressText: 'Saving...',
                    width:300,
                    wait:true,

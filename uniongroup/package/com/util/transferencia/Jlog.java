@@ -167,7 +167,7 @@ public class Jlog {
     private void setPropertyConfigurartor() {
         String file=this.getDirectorioProperties()+this.getArchivoProperties();
         if(file == null || file.length() == 0 || !(new File(file)).isFile()) {
-            System.err.println("ERROR: No puede leer el archivo "+file+" de configuración. ");
+            System.err.println("ERROR: No puede leer el archivo "+file+" de configuraciÃ³n. ");
         }
         else
             PropertyConfigurator.configure(file);

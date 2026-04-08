@@ -1,12 +1,12 @@
 /**
  * Finnish Translations
  * <tuomas.salo (at) iki.fi>
- * 'ä' should read as lowercase 'a' with two dots on top (&auml;)
+ * 'Ã¤' should read as lowercase 'a' with two dots on top (&auml;)
  */
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
+        Ext.Date.monthNames = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesÃ¤kuu", "heinÃ¤kuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
 
         Ext.Date.getShortMonthName = function(month) {
             return (month + 1) + ".";
@@ -18,8 +18,8 @@ Ext.onReady(function() {
             'maaliskuu': 2,
             'huhtikuu': 3,
             'toukokuu': 4,
-            'kesäkuu': 5,
-            'heinäkuu': 6,
+            'kesÃ¤kuu': 5,
+            'heinÃ¤kuu': 6,
             'elokuu': 7,
             'syyskuu': 8,
             'lokakuu': 9,
@@ -74,12 +74,12 @@ Ext.define("Ext.locale.fi.view.View", {
 
 Ext.define("Ext.locale.fi.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} rivi(ä) valittu"
+    dragText: "{0} rivi(Ã¤) valittu"
 });
 
 Ext.define("Ext.locale.fi.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Sulje tämä välilehti"
+    closeText: "Sulje tÃ¤mÃ¤ vÃ¤lilehti"
 });
 
 // changing the msg text below will affect the LoadMask
@@ -90,15 +90,15 @@ Ext.define("Ext.locale.fi.view.AbstractView", {
 
 Ext.define("Ext.locale.fi.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "Tänään",
-    minText: "Tämä päivämäärä on aikaisempi kuin ensimmäinen sallittu",
-    maxText: "Tämä päivämäärä on myöhäisempi kuin viimeinen sallittu",
+    todayText: "TÃ¤nÃ¤Ã¤n",
+    minText: "TÃ¤mÃ¤ pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤ on aikaisempi kuin ensimmÃ¤inen sallittu",
+    maxText: "TÃ¤mÃ¤ pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤ on myÃ¶hÃ¤isempi kuin viimeinen sallittu",
     disabledDaysText: "",
     disabledDatesText: "",
     nextText: 'Seuraava kuukausi (Control+oikealle)',
     prevText: 'Edellinen kuukausi (Control+vasemmalle)',
-    monthYearText: 'Valitse kuukausi (vaihda vuotta painamalla Control+ylös/alas)',
-    todayTip: "{0} (välilyönti)",
+    monthYearText: 'Valitse kuukausi (vaihda vuotta painamalla Control+ylÃ¶s/alas)',
+    todayTip: "{0} (vÃ¤lilyÃ¶nti)",
     format: "j.n.Y",
     startDay: 1 // viikko alkaa maanantaista
 });
@@ -113,43 +113,43 @@ Ext.define("Ext.locale.fi.toolbar.Paging", {
     override: "Ext.PagingToolbar",
     beforePageText: "Sivu",
     afterPageText: "/ {0}",
-    firstText: "Ensimmäinen sivu",
+    firstText: "EnsimmÃ¤inen sivu",
     prevText: "Edellinen sivu",
     nextText: "Seuraava sivu",
     lastText: "Viimeinen sivu",
-    refreshText: "Päivitä",
-    displayMsg: "Näytetään {0} - {1} / {2}",
+    refreshText: "PÃ¤ivitÃ¤",
+    displayMsg: "NÃ¤ytetÃ¤Ã¤n {0} - {1} / {2}",
     emptyMsg: 'Ei tietoja'
 });
 
 Ext.define("Ext.locale.fi.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "Tämän kentän arvo ei kelpaa"
+    invalidText: "TÃ¤mÃ¤n kentÃ¤n arvo ei kelpaa"
 });
 
 Ext.define("Ext.locale.fi.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Tämän kentän minimipituus on {0}",
-    maxLengthText: "Tämän kentän maksimipituus on {0}",
-    blankText: "Tämä kenttä on pakollinen",
+    minLengthText: "TÃ¤mÃ¤n kentÃ¤n minimipituus on {0}",
+    maxLengthText: "TÃ¤mÃ¤n kentÃ¤n maksimipituus on {0}",
+    blankText: "TÃ¤mÃ¤ kenttÃ¤ on pakollinen",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.fi.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "Tämän kentän pienin sallittu arvo on {0}",
-    maxText: "Tämän kentän suurin sallittu arvo on {0}",
+    minText: "TÃ¤mÃ¤n kentÃ¤n pienin sallittu arvo on {0}",
+    maxText: "TÃ¤mÃ¤n kentÃ¤n suurin sallittu arvo on {0}",
     nanText: "{0} ei ole numero"
 });
 
 Ext.define("Ext.locale.fi.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "Ei käytössä",
-    disabledDatesText: "Ei käytössä",
-    minText: "Tämän kentän päivämäärän tulee olla {0} jälkeen",
-    maxText: "Tämän kentän päivämäärän tulee olla ennen {0}",
-    invalidText: "Päivämäärä {0} ei ole oikeassa muodossa - kirjoita päivämäärä muodossa {1}",
+    disabledDaysText: "Ei kÃ¤ytÃ¶ssÃ¤",
+    disabledDatesText: "Ei kÃ¤ytÃ¶ssÃ¤",
+    minText: "TÃ¤mÃ¤n kentÃ¤n pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤n tulee olla {0} jÃ¤lkeen",
+    maxText: "TÃ¤mÃ¤n kentÃ¤n pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤n tulee olla ennen {0}",
+    invalidText: "PÃ¤ivÃ¤mÃ¤Ã¤rÃ¤ {0} ei ole oikeassa muodossa - kirjoita pÃ¤ivÃ¤mÃ¤Ã¤rÃ¤ muodossa {1}",
     format: "j.n.Y",
     altFormats: "j.n.|d.m.|mdy|mdY|d|Y-m-d|Y/m/d"
 });
@@ -165,10 +165,10 @@ Ext.define("Ext.locale.fi.form.field.ComboBox", {
 
 Ext.define("Ext.locale.fi.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Syötä tähän kenttään sähköpostiosoite, esim. "etunimi.sukunimi@osoite.fi"',
-    urlText: 'Syötä tähän kenttään URL-osoite, esim. "http:/' + '/www.osoite.fi"',
-    alphaText: 'Syötä tähän kenttään vain kirjaimia (a-z, A-Z) ja alaviivoja (_)',
-    alphanumText: 'Syötä tähän kenttään vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_)'
+    emailText: 'SyÃ¶tÃ¤ tÃ¤hÃ¤n kenttÃ¤Ã¤n sÃ¤hkÃ¶postiosoite, esim. "etunimi.sukunimi@osoite.fi"',
+    urlText: 'SyÃ¶tÃ¤ tÃ¤hÃ¤n kenttÃ¤Ã¤n URL-osoite, esim. "http:/' + '/www.osoite.fi"',
+    alphaText: 'SyÃ¶tÃ¤ tÃ¤hÃ¤n kenttÃ¤Ã¤n vain kirjaimia (a-z, A-Z) ja alaviivoja (_)',
+    alphanumText: 'SyÃ¶tÃ¤ tÃ¤hÃ¤n kenttÃ¤Ã¤n vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_)'
 });
 
 Ext.define("Ext.locale.fi.form.field.HtmlEditor", {
@@ -193,23 +193,23 @@ Ext.define("Ext.locale.fi.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Suurenna tekstiä',
+                title: 'Suurenna tekstiÃ¤',
                 text: 'Kasvata tekstin kirjasinkokoa.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: 'Pienennä tekstiä',
-                text: 'Pienennä tekstin kirjasinkokoa.',
+                title: 'PienennÃ¤ tekstiÃ¤',
+                text: 'PienennÃ¤ tekstin kirjasinkokoa.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'Tekstin korostusväri',
-                text: 'Vaihda valitun tekstin taustaväriä.',
+                title: 'Tekstin korostusvÃ¤ri',
+                text: 'Vaihda valitun tekstin taustavÃ¤riÃ¤.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: 'Tekstin väri',
-                text: 'Vaihda valitun tekstin väriä.',
+                title: 'Tekstin vÃ¤ri',
+                text: 'Vaihda valitun tekstin vÃ¤riÃ¤.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
@@ -218,8 +218,8 @@ Ext.define("Ext.locale.fi.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: 'Keskitä',
-                text: 'Keskitä teksti.',
+                title: 'KeskitÃ¤',
+                text: 'KeskitÃ¤ teksti.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
@@ -239,12 +239,12 @@ Ext.define("Ext.locale.fi.form.field.HtmlEditor", {
             },
             createlink: {
                 title: 'Linkki',
-                text: 'Tee valitusta tekstistä hyperlinkki.',
+                text: 'Tee valitusta tekstistÃ¤ hyperlinkki.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Lähdekoodin muokkaus',
-                text: 'Vaihda lähdekoodin muokkausnäkymään.',
+                title: 'LÃ¤hdekoodin muokkaus',
+                text: 'Vaihda lÃ¤hdekoodin muokkausnÃ¤kymÃ¤Ã¤n.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -258,8 +258,8 @@ Ext.define("Ext.locale.fi.form.Basic", {
 
 Ext.define("Ext.locale.fi.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Järjestä A-Ö",
-    sortDescText: "Järjestä Ö-A",
+    sortAscText: "JÃ¤rjestÃ¤ A-Ã",
+    sortDescText: "JÃ¤rjestÃ¤ Ã-A",
     lockText: "Lukitse sarake",
     unlockText: "Vapauta sarakkeen lukitus",
     columnsText: "Sarakkeet"
@@ -267,9 +267,9 @@ Ext.define("Ext.locale.fi.grid.header.Container", {
 
 Ext.define("Ext.locale.fi.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
-    emptyGroupText: '(ei mitään)',
-    groupByText: 'Ryhmittele tämän kentän mukaan',
-    showGroupsText: 'Näytä ryhmissä'
+    emptyGroupText: '(ei mitÃ¤Ã¤n)',
+    groupByText: 'Ryhmittele tÃ¤mÃ¤n kentÃ¤n mukaan',
+    showGroupsText: 'NÃ¤ytÃ¤ ryhmissÃ¤'
 });
 
 Ext.define("Ext.locale.fi.grid.PropertyColumnModel", {
@@ -284,7 +284,7 @@ Ext.define("Ext.locale.fi.window.MessageBox", {
     buttonText: {
         ok: "OK",
         cancel: "Peruuta",
-        yes: "Kyllä",
+        yes: "KyllÃ¤",
         no: "Ei"
     }
 });

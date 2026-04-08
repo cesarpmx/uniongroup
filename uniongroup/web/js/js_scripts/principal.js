@@ -14,7 +14,7 @@ Ext.Loader.setPath('Modulos', contexto + '/js/js_scripts/modulos');
 Ext.Loader.setPath('Modulos.global', contexto + '/js/js_scripts/modulos/global');
 
 Ext.state.Manager.setProvider(
-    Ext.create('Ext.state.LocalStorageProvider')
+    Ext.create('Ext.state.LocalStorageProvider')
 );
 
 
@@ -183,7 +183,7 @@ Ext.onReady(function () {
             var archivo = MODULOS_MAP[idRecord];
 
             if (!archivo) {
-                console.warn('No hay módulo definido para el id:', idRecord);
+                console.warn('No hay mÃ³dulo definido para el id:', idRecord);
                 return;
             }
 

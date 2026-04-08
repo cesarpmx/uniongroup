@@ -24,7 +24,7 @@
 //
 //    }
 //    /*
-//     * @Params Vector con los par醡etros para la consulta, int con el n鷐ero de consulta que se requeire
+//     * @Params Vector con los par谩metros para la consulta, int con el n煤mero de consulta que se requeire
 //     * @Return Un ArrayList con Hashtables que contienen cada uno de los registros de la consulta
 //     */
 //    public ArrayList getArray (Vector params){
@@ -39,7 +39,7 @@
 //        return null;       
 //    }
 //    /*
-//     * @Params Vector con los par醡etros para la consulta, int con el n鷐ero de consulta que se requeire
+//     * @Params Vector con los par谩metros para la consulta, int con el n煤mero de consulta que se requeire
 //     * @Return Hashtable con los datos del registro que se requiere
 //     */
 //    public Hashtable getRegistro(Vector params){
@@ -57,11 +57,11 @@
 //        }
 //        return null;
 //    }
-//    /*Funci髇 que env韆 un correo electr髇ico con campos que no se encuentran en la base de datos
+//    /*Funci贸n que env铆a un correo electr贸nico con campos que no se encuentran en la base de datos
 //     *@Params String    str_clv    Clave del mensaje a mandar
 //     *@Params Hashtable hash       con todos los campos que no estan en la base de datos y que son parte del mensaje
-//     *@Params Vector    params_reg Par醡etros para la consulta del mensaje, para los campos que si se encuentran en la base de datos
-//     *@Params String    str_email  Correo electr髇ico destino
+//     *@Params Vector    params_reg Par谩metros para la consulta del mensaje, para los campos que si se encuentran en la base de datos
+//     *@Params String    str_email  Correo electr贸nico destino
 //     */
 //    public void enviaMensaje(String str_clv,Hashtable hash,Vector params_reg,String str_email){
 //        Vector params = new Vector(0);
@@ -96,9 +96,9 @@
 //            }
 //        }  
 //    }
-//    /*Funci髇 que env韆 un correo electr髇ico
+//    /*Funci贸n que env铆a un correo electr贸nico
 //     *@Params String str_clv    Clave del mensaje a mandar
-//     *@Params Vector params_reg Par醡etros para la consulta del mensaje
+//     *@Params Vector params_reg Par谩metros para la consulta del mensaje
 //     */
 //    public void enviaMensaje(String str_clv, Vector params_reg){
 //        Vector params = new Vector(0);

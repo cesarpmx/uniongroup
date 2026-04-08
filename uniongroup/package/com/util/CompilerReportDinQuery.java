@@ -57,11 +57,11 @@
 //        try {
 //            conn.close();
 //        } catch (Exception ex) {
-//            System.out.println("Error de conexión: " + ex.getMessage());
+//            System.out.println("Error de conexiÃ³n: " + ex.getMessage());
 //        }
 //    }
 //
-//    /*     Este método  exporta a HTML
+//    /*     Este mÃ©todo  exporta a HTML
 //     *
 //     */
 //    public void getPDF(Map parameters, String query) {
@@ -81,7 +81,7 @@
 //        }
 //    }
 //
-//    /*     Este método  exporta a HTML
+//    /*     Este mÃ©todo  exporta a HTML
 //     *
 //     */
 //    public static void main(String[] args) {
@@ -161,7 +161,7 @@
 //        }
 //        return bandera;
 //    }
-//    /*     Este método es interno y exporta a PDF en byte
+//    /*     Este mÃ©todo es interno y exporta a PDF en byte
 //     *
 //     */
 //
@@ -177,7 +177,7 @@
 //        }
 //        return array_bytes;
 //    }
-//    /*     Este método  exporta a Excel
+//    /*     Este mÃ©todo  exporta a Excel
 //     *
 //     */
 //
@@ -208,7 +208,7 @@
 //        }
 //    }
 //
-//    /*     Este método  exporta a XML
+//    /*     Este mÃ©todo  exporta a XML
 //     *
 //     */
 //    public void getExport(Map parameters) {
@@ -247,7 +247,7 @@
 //    public String getUrlFile() {
 //        return this.urlFile;
 //    }
-//    /*     Este método exporta y muestra a un Excel
+//    /*     Este mÃ©todo exporta y muestra a un Excel
 //     *     @param HttpServletResponse response, Map parameters
 //     */
 //
@@ -285,7 +285,7 @@
 //        }
 //    }
 //
-//    /*     Este método exporta y muestra a un PDF
+//    /*     Este mÃ©todo exporta y muestra a un PDF
 //     *     @param HttpServletResponse response, Map parameters
 //     */
 //    public void viewPDFByte(HttpServletResponse response, Map parameters) {
@@ -309,7 +309,7 @@
 //        }
 //    }
 //
-//    /*     Este método exporta y muestra a un PDF
+//    /*     Este mÃ©todo exporta y muestra a un PDF
 //     *     @param HttpServletResponse response, Map parameters
 //     */
 //    public void viewPDF(HttpServletResponse response, Map parameters) {

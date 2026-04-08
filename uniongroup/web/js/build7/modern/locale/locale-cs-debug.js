@@ -15,7 +15,7 @@ Ext.define('Ext.locale.cs.Dialog', {
             tooltip: "Maximalizovat na celou obrazovku"
         },
         restoreTool: {
-            tooltip: "Obnovit původní velikost"
+            tooltip: "Obnovit pÅ¯vodnÃ­ velikost"
         }
     }
 });
@@ -23,7 +23,7 @@ Ext.define("Ext.locale.cs.LoadMask", {
     override: "Ext.LoadMask",
 
     config: {
-        message: 'Prosím čekejte...'
+        message: 'ProsÃ­m Äekejte...'
     }
 });
 Ext.define('Ext.locale.cs.Panel', {
@@ -35,7 +35,7 @@ Ext.define('Ext.locale.cs.Panel', {
                 text: 'OK'
             },
             abort: {
-                text: 'Přerušit'
+                text: 'PÅeruÅ¡it'
             },
             retry: {
                 text: 'Opakujte'
@@ -50,98 +50,98 @@ Ext.define('Ext.locale.cs.Panel', {
                 text: 'Ne.'
             },
             cancel: {
-                text: 'zrušit'
+                text: 'zruÅ¡it'
             },
             apply: {
                 text: 'Aplikovat'
             },
             save: {
-                text: 'Uložit'
+                text: 'UloÅ¾it'
             },
             submit: {
-                text: 'Předložit'
+                text: 'PÅedloÅ¾it'
             },
             help: {
                 text: 'Pomoc'
             },
             close: {
-                text: 'Zavřít'
+                text: 'ZavÅÃ­t'
             }
         },
-        closeToolText: 'Zavřete panel'
+        closeToolText: 'ZavÅete panel'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: 'Musí být přítomen',
-        minOnlyMessage: 'Musí být alespoň {0}',
-        maxOnlyMessage: 'Nesmí být větší než {0}',
-        bothMessage: 'Musí být v rozsahu {0} a {1}'
+        emptyMessage: 'MusÃ­ bÃ½t pÅÃ­tomen',
+        minOnlyMessage: 'MusÃ­ bÃ½t alespoÅ {0}',
+        maxOnlyMessage: 'NesmÃ­ bÃ½t vÄtÅ¡Ã­ neÅ¾ {0}',
+        bothMessage: 'MusÃ­ bÃ½t v rozsahu {0} a {1}'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'Není platný blok CIDR'
+        message: 'NenÃ­ platnÃ½ blok CIDR'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'Není platný blok CIDR'
+        message: 'NenÃ­ platnÃ½ blok CIDR'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Není platná částka měny'
+        message: 'NenÃ­ platnÃ¡ ÄÃ¡stka mÄny'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: 'Není platné datumčas'
+        message: 'NenÃ­ platnÃ© datumÄas'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'Není platné datum a čas'
+        message: 'NenÃ­ platnÃ© datum a Äas'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'Není platná e-mailová adresa'
+        message: 'NenÃ­ platnÃ¡ e-mailovÃ¡ adresa'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'Je hodnota, která byla vyloučena'
+        message: 'Je hodnota, kterÃ¡ byla vylouÄena'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'Má nesprávný formát'
+        message: 'MÃ¡ nesprÃ¡vnÃ½ formÃ¡t'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'Není platná adresa IP'
+        message: 'NenÃ­ platnÃ¡ adresa IP'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Inclusion', {
@@ -155,90 +155,90 @@ Ext.define('Ext.locale.cs.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: 'Délka musí být alespoň {0}',
-        maxOnlyMessage: 'Délka nesmí být větší než {0}',
-        bothMessage: 'Délka musí být mezi {0} a {1}'
+        minOnlyMessage: 'DÃ©lka musÃ­ bÃ½t alespoÅ {0}',
+        maxOnlyMessage: 'DÃ©lka nesmÃ­ bÃ½t vÄtÅ¡Ã­ neÅ¾ {0}',
+        bothMessage: 'DÃ©lka musÃ­ bÃ½t mezi {0} a {1}'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: 'Není platné číslo'
+        message: 'NenÃ­ platnÃ© ÄÃ­slo'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'Není platné telefonní číslo'
+        message: 'NenÃ­ platnÃ© telefonnÃ­ ÄÃ­slo'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: 'Musí být přítomen'
+        message: 'MusÃ­ bÃ½t pÅÃ­tomen'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Musí být číselné',
-        minOnlyMessage: 'Musí být alespoň {0}',
-        maxOnlyMessage: 'Nesmí být větší než {0}',
-        bothMessage: 'Musí být v rozsahu {0} a {1}'
+        nanMessage: 'MusÃ­ bÃ½t ÄÃ­selnÃ©',
+        minOnlyMessage: 'MusÃ­ bÃ½t alespoÅ {0}',
+        maxOnlyMessage: 'NesmÃ­ bÃ½t vÄtÅ¡Ã­ neÅ¾ {0}',
+        bothMessage: 'MusÃ­ bÃ½t v rozsahu {0} a {1}'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'Není platný čas'
+        message: 'NenÃ­ platnÃ½ Äas'
     }
 });
 Ext.define('Ext.locale.cs.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'Není platná adresa URL'
+        message: 'NenÃ­ platnÃ¡ adresa URL'
     }
 });
 Ext.define('Ext.locale.cs.dataview.Abstract', {
     override: 'Ext.dataview.Abstract',
 
     config: {
-        loadingText: 'Prosím čekejte...'
+        loadingText: 'ProsÃ­m Äekejte...'
     }
 });
 Ext.define("Ext.locale.cs.dataview.DataView", {
     override: "Ext.dataview.DataView",
 
     config: {
-        emptyText: "žádná data k zobrazení"
+        emptyText: "Å¾Ã¡dnÃ¡ data k zobrazenÃ­"
     }
 });
 Ext.define('Ext.locale.cs.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: 'Žádná data k zobrazení'
+        html: 'Å½Ã¡dnÃ¡ data k zobrazenÃ­'
     }
 });
 Ext.define('Ext.locale.cs.dataview.List', {
     override: 'Ext.dataview.List',
 
     config: {
-        loadingText: 'Prosím čekejte...'
+        loadingText: 'ProsÃ­m Äekejte...'
     }
 });
 Ext.define('Ext.locale.cs.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: 'Načíst další ...',
-        noMoreRecordsText: 'Žádné další záznamy'
+        loadMoreText: 'NaÄÃ­st dalÅ¡Ã­ ...',
+        noMoreRecordsText: 'Å½Ã¡dnÃ© dalÅ¡Ã­ zÃ¡znamy'
     }
 });
 /**
@@ -248,21 +248,21 @@ Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.monthNames = [
-            "Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec",
-            "Srpen", "Září", "Říjen", "Listopad", "Prosinec"
+            "Leden", "Ãnor", "BÅezen", "Duben", "KvÄten", "Äerven", "Äervenec",
+            "Srpen", "ZÃ¡ÅÃ­", "ÅÃ­jen", "Listopad", "Prosinec"
         ];
 
         Ext.Date.shortMonthNames = {
             "Leden": "Led",
-            "Únor": "Úno",
-            "Březen": "Bře",
+            "Ãnor": "Ãno",
+            "BÅezen": "BÅe",
             "Duben": "Dub",
-            "Květen": "Kvě",
-            "Červen": "Čer",
-            "Červenec": "Čvc",
+            "KvÄten": "KvÄ",
+            "Äerven": "Äer",
+            "Äervenec": "Ävc",
             "Srpen": "Srp",
-            "Září": "Zář",
-            "Říjen": "Říj",
+            "ZÃ¡ÅÃ­": "ZÃ¡Å",
+            "ÅÃ­jen": "ÅÃ­j",
             "Listopad": "Lis",
             "Prosinec": "Pro"
         };
@@ -273,15 +273,15 @@ Ext.onReady(function() {
 
         Ext.Date.monthNumbers = {
             "Leden": 0,
-            "Únor": 1,
-            "Březen": 2,
+            "Ãnor": 1,
+            "BÅezen": 2,
             "Duben": 3,
-            "Květen": 4,
-            "Červen": 5,
-            "Červenec": 6,
+            "KvÄten": 4,
+            "Äerven": 5,
+            "Äervenec": 6,
             "Srpen": 7,
-            "Září": 8,
-            "Říjen": 9,
+            "ZÃ¡ÅÃ­": 8,
+            "ÅÃ­jen": 9,
             "Listopad": 10,
             "Prosinec": 11
         };
@@ -291,7 +291,7 @@ Ext.onReady(function() {
             .toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
+        Ext.Date.dayNames = ["NedÄle", "PondÄlÃ­", "ÃterÃ½", "StÅeda", "Ätvrtek", "PÃ¡tek", "Sobota"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -311,15 +311,15 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.cs.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'Datum v tomto poli nesmí být starší než {0}',
-    maxDateMessage: 'Datum v tomto poli nesmí být novější než {0}'
+    minDateMessage: 'Datum v tomto poli nesmÃ­ bÃ½t starÅ¡Ã­ neÅ¾ {0}',
+    maxDateMessage: 'Datum v tomto poli nesmÃ­ bÃ½t novÄjÅ¡Ã­ neÅ¾ {0}'
 });
 Ext.define('Ext.locale.cs.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Toto pole je povinné',
-        validationMessage: 'je ve špatném formátu'
+        requiredMessage: 'Toto pole je povinnÃ©',
+        validationMessage: 'je ve Å¡patnÃ©m formÃ¡tu'
     }
 });
 Ext.define("Ext.locale.cs.field.FileButton", {
@@ -332,18 +332,18 @@ Ext.define("Ext.locale.cs.field.FileButton", {
 Ext.define('Ext.locale.cs.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'Maximální desetinné číslo je (0)',
-    minValueText: 'Hodnota v tomto poli nesmí být menší než {0}',
-    maxValueText: 'Hodnota v tomto poli nesmí být větší než {0}',
-    badFormatMessage: '{0} není platné číslo'
+    decimalsText: 'MaximÃ¡lnÃ­ desetinnÃ© ÄÃ­slo je (0)',
+    minValueText: 'Hodnota v tomto poli nesmÃ­ bÃ½t menÅ¡Ã­ neÅ¾ {0}',
+    maxValueText: 'Hodnota v tomto poli nesmÃ­ bÃ½t vÄtÅ¡Ã­ neÅ¾ {0}',
+    badFormatMessage: '{0} nenÃ­ platnÃ© ÄÃ­slo'
 });
 Ext.define('Ext.locale.cs.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Hodnota neodpovídá požadovanému formátu',
+    badFormatMessage: 'Hodnota neodpovÃ­dÃ¡ poÅ¾adovanÃ©mu formÃ¡tu',
     config: {
-        requiredMessage: 'Toto pole je povinné',
-        validationMessage: 'je ve špatném formátu'
+        requiredMessage: 'Toto pole je povinnÃ©',
+        validationMessage: 'je ve Å¡patnÃ©m formÃ¡tu'
     }
 });
 Ext.define("Ext.locale.cs.grid.filters.menu.Base", {
@@ -369,10 +369,10 @@ Ext.define('Ext.locale.cs.grid.locked.Grid', {
                 menuLabel: 'Zamknuto (Vlevo)'
             },
             center: {
-                menuLabel: 'Odemčeno'
+                menuLabel: 'OdemÄeno'
             },
             right: {
-                menuLabel: 'Zamčené (Vpravo) '
+                menuLabel: 'ZamÄenÃ© (Vpravo) '
             }
         }
     }
@@ -395,32 +395,32 @@ Ext.define("Ext.locale.cs.grid.menu.ShowInGroups", {
     override: "Ext.grid.menu.ShowInGroups",
 
     config: {
-        text: "Zobrazit ve skupinách"
+        text: "Zobrazit ve skupinÃ¡ch"
     }
 });
 Ext.define("Ext.locale.cs.grid.menu.SortAsc", {
     override: "Ext.grid.menu.SortAsc",
 
     config: {
-        text: "Řadit vzestupně"
+        text: "Åadit vzestupnÄ"
     }
 });
 Ext.define("Ext.locale.cs.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "Řadit sestupně"
+        text: "Åadit sestupnÄ"
     }
 });
 Ext.define("Ext.locale.cs.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} vybraných řádků"
+    dragText: "{0} vybranÃ½ch ÅÃ¡dkÅ¯"
 });
 Ext.define('Ext.locale.cs.panel.Collapser', {
     override: 'Ext.panel.Collapser',
 
     config: {
-        collapseToolText: "Zavřete okno",
+        collapseToolText: "ZavÅete okno",
         expandToolText: "rozbalte panel"
     }
 });
@@ -428,8 +428,8 @@ Ext.define('Ext.locale.cs.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Následující měsíc (Control+Right)',
-        prevText: 'Předcházející měsíc (Control+Left)',
+        nextText: 'NÃ¡sledujÃ­cÃ­ mÄsÃ­c (Control+Right)',
+        prevText: 'PÅedchÃ¡zejÃ­cÃ­ mÄsÃ­c (Control+Left)',
         buttons: {
             footerTodayButton: {
                 text: "Dnes"
@@ -442,7 +442,7 @@ Ext.define('Ext.locale.cs.picker.Date', {
 
     config: {
         doneButton: 'Hotovo',
-        monthText: 'Měsíc',
+        monthText: 'MÄsÃ­c',
         dayText: 'Den',
         yearText: 'Rok'
     }

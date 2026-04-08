@@ -62,7 +62,7 @@ public class EncriptadoSimple {
                     }
                 }
             }
-            System.out.println("Tiempo de conversión: " + time);
+            System.out.println("Tiempo de conversiÃ³n: " + time);
             tiempo.stop();
             System.out.println("Clave: " + encriptado.toLowerCase());
         }

@@ -55,11 +55,11 @@ Ext.define('TransferenciaEntradaUtils', {
                     var transferencias = Ext.decode(response.responseText);
 
                     if (!transferencias || transferencias.length === 0) {
-                        Ext.Msg.alert('InformaciÛn', 'No hay transferencias nuevas disponibles');
+                        Ext.Msg.alert('Informaci√≥n', 'No hay transferencias nuevas disponibles');
                         return;
                     }
 
-                    console.log('? Transferencias obtenidas:', transferencias);
+//                    console.log('? Transferencias obtenidas:', transferencias);
 
                     // Crear ventana modal con grid
                     TransferenciaEntradaUtils.mostrarVentanaTransferencias(transferencias);
@@ -113,7 +113,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                 var seleccionadas = grid.getSelection();
 
                                 if (seleccionadas.length === 0) {
-                                    Ext.Msg.alert('AtenciÛn', 'Debe seleccionar al menos una transferencia');
+                                    Ext.Msg.alert('Atenci√≥n', 'Debe seleccionar al menos una transferencia');
                                     return;
                                 }
 
@@ -195,7 +195,7 @@ Ext.define('TransferenciaEntradaUtils', {
                             }
                         },
                         {
-                            text: "Total LÌneas",
+                            text: "Total L√≠neas",
                             dataIndex: "TotalLines",
                             width: 100,
                             align: "center",
@@ -239,13 +239,13 @@ Ext.define('TransferenciaEntradaUtils', {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
 
-        Ext.getBody().mask('Cargando lÌneas...');
+        Ext.getBody().mask('Cargando l√≠neas...');
 
         Ext.Ajax.request({
             url: contexto + '/TransferenciasEntrada',
             method: 'POST',
             params: {
-                busqBnd: 2, // Obtener lÌneas desde GLOBAL
+                busqBnd: 2, // Obtener l√≠neas desde GLOBAL
                 docEntry: docEntry
             },
             success: function (response) {
@@ -260,7 +260,7 @@ Ext.define('TransferenciaEntradaUtils', {
                     });
 
                     var winLineas = Ext.create('Ext.window.Window', {
-                        title: 'LÌneas de Transferencia - ' + docNum,
+                        title: 'L√≠neas de Transferencia - ' + docNum,
                         width: 700,
                         height: 400,
                         modal: true,
@@ -269,9 +269,9 @@ Ext.define('TransferenciaEntradaUtils', {
                                 xtype: 'grid',
                                 store: storeLineas,
                                 columns: [
-                                    {text: "LÌnea", dataIndex: "LineNum", width: 80, align: "center"},
+                                    {text: "L√≠nea", dataIndex: "LineNum", width: 80, align: "center"},
                                     {text: "Item Code", dataIndex: "ItemCode", flex: 1},
-                                    {text: "CÛdigo Barras", dataIndex: "Barcode", width: 150},
+                                    {text: "C√≥digo Barras", dataIndex: "Barcode", width: 150},
                                     {
                                         text: "Cantidad",
                                         dataIndex: "Quantity",
@@ -297,19 +297,19 @@ Ext.define('TransferenciaEntradaUtils', {
                     winLineas.show();
 
                 } catch (e) {
-                    console.error('Error al parsear lÌneas:', e);
-                    Ext.Msg.alert('Error', 'Error al procesar las lÌneas');
+                    console.error('Error al parsear l√≠neas:', e);
+                    Ext.Msg.alert('Error', 'Error al procesar las l√≠neas');
                 }
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert('Error', 'Error al obtener las lÌneas');
+                Ext.Msg.alert('Error', 'Error al obtener las l√≠neas');
             }
         });
     },
 
     // ========================================
-// ? FUNCI”N: Guardar Transferencias Seleccionadas
+// ? FUNCI√ìN: Guardar Transferencias Seleccionadas
 // ========================================
     guardarTransferencias: function (transferencias) {
         // Convertir records de ExtJS a objetos planos
@@ -317,9 +317,9 @@ Ext.define('TransferenciaEntradaUtils', {
             return record.getData ? record.getData() : record;
         });
 
-        console.log('? Transferencias a guardar:', allTransfers);
+//        console.log('? Transferencias a guardar:', allTransfers);
 
-        // Obtener lÌneas para cada transferencia
+        // Obtener l√≠neas para cada transferencia
         var promises = [];
         allTransfers.forEach(function (transfer) {
             var promise = new Promise(function (resolve, reject) {
@@ -342,10 +342,10 @@ Ext.define('TransferenciaEntradaUtils', {
             promises.push(promise);
         });
 
-        Ext.getBody().mask('Obteniendo lÌneas...');
+        Ext.getBody().mask('Obteniendo l√≠neas...');
 
         Promise.all(promises).then(function (results) {
-            // Construir JSON con transferencias y lÌneas
+            // Construir JSON con transferencias y l√≠neas
             var ordersToSend = results.map(function (result) {
                 return {
                     InboundTransferRequest: {
@@ -374,7 +374,7 @@ Ext.define('TransferenciaEntradaUtils', {
 
         }).catch(function (error) {
             Ext.getBody().unmask();
-            Ext.Msg.alert('Error', 'Error al obtener lÌneas para DocEntry: ' + error);
+            Ext.Msg.alert('Error', 'Error al obtener l√≠neas para DocEntry: ' + error);
         });
     },
 
@@ -476,7 +476,7 @@ Ext.define('TransferenciaEntradaUtils', {
     },
 
 // ========================================
-// ? FUNCI”N: Mostrar Resultados
+// ? FUNCI√ìN: Mostrar Resultados
 // ========================================
     mostrarResultados: function (confirmados, errores, clienteResponse) {
         // Stores
@@ -506,7 +506,7 @@ Ext.define('TransferenciaEntradaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: '…xitos (' + confirmados.length + ')',
+                            title: '√âxitos (' + confirmados.length + ')',
                             xtype: 'grid',
                             store: storeExitos,
                             columns: [
@@ -517,10 +517,10 @@ Ext.define('TransferenciaEntradaUtils', {
                                 {text: 'DocNum', dataIndex: 'DocNum', flex: 1},
                                 {text: 'NumAtCard', dataIndex: 'NumAtCard', width: 120},
                                 {text: 'CardCode', dataIndex: 'CardCode', width: 120},
-                                {text: 'LÌneas OK', dataIndex: 'linesInserted', width: 90, align: 'center', renderer: function (v) {
+                                {text: 'L√≠neas OK', dataIndex: 'linesInserted', width: 90, align: 'center', renderer: function (v) {
                                         return '<b style="color:#4CAF50;">' + v + '</b>';
                                     }},
-                                {text: 'LÌneas Error', dataIndex: 'linesFailed', width: 100, align: 'center', renderer: function (v) {
+                                {text: 'L√≠neas Error', dataIndex: 'linesFailed', width: 100, align: 'center', renderer: function (v) {
                                         return v > 0 ? '<b style="color:#F44336;">' + v + '</b>' : v;
                                     }},
                                 {text: 'Fecha', dataIndex: 'RecordDate', width: 150}
@@ -540,7 +540,7 @@ Ext.define('TransferenciaEntradaUtils', {
                             ]
                         },
                         {
-                            title: 'ConfirmaciÛn Cliente (' + clienteResponse.length + ')',
+                            title: 'Confirmaci√≥n Cliente (' + clienteResponse.length + ')',
                             xtype: 'grid',
                             store: storeCliente,
                             columns: [
@@ -574,14 +574,14 @@ Ext.define('TransferenciaEntradaUtils', {
     },
 
     // ========================================
-// ?? FUNCI”N: Ver LÌneas desde BD Local
+// ?? FUNCI√ìN: Ver L√≠neas desde BD Local
 // ========================================
     verLineasTransferenciaLocal: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
 
-        // Modelo para las lÌneas
+        // Modelo para las l√≠neas
         if (!Ext.ClassManager.get('modelLineasTransferenciaLocal')) {
             Ext.define('modelLineasTransferenciaLocal', {
                 extend: 'Ext.data.Model',
@@ -597,7 +597,7 @@ Ext.define('TransferenciaEntradaUtils', {
             });
         }
 
-        // Store para las lÌneas LOCALES
+        // Store para las l√≠neas LOCALES
         var storeLineas = Ext.create('Ext.data.Store', {
             model: 'modelLineasTransferenciaLocal',
             leadingBufferZone: 100,
@@ -623,10 +623,10 @@ Ext.define('TransferenciaEntradaUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' lÌneas locales para transferencia #' + docNum);
+//                        console.log('? Cargadas ' + records.length + ' l√≠neas locales para transferencia #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' lÌneas',
-                            title: '…xito',
+                            html: 'Se cargaron ' + records.length + ' l√≠neas',
+                            title: '√âxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -638,7 +638,7 @@ Ext.define('TransferenciaEntradaUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasTransferenciaLocal',
-            title: 'LÌneas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
+            title: 'L√≠neas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -683,12 +683,12 @@ Ext.define('TransferenciaEntradaUtils', {
                         xtype: 'pagingtoolbar',
                         store: storeLineas,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} lÌneas',
-                        emptyMsg: "No hay lÌneas para mostrar",
-                        beforePageText: 'P·gina',
+                        displayMsg: 'Mostrando {0} - {1} de {2} l√≠neas',
+                        emptyMsg: "No hay l√≠neas para mostrar",
+                        beforePageText: 'P√°gina',
                         afterPageText: 'de {0}',
-                        firstText: 'Primera p·gina',
-                        lastText: '⁄ltima p·gina',
+                        firstText: 'Primera p√°gina',
+                        lastText: '√öltima p√°gina',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -707,7 +707,7 @@ Ext.define('TransferenciaEntradaUtils', {
                             align: "center"
                         },
                         {
-                            text: "LÌnea",
+                            text: "L√≠nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -717,14 +717,14 @@ Ext.define('TransferenciaEntradaUtils', {
                             }
                         },
                         {
-                            text: "CÛdigo",
+                            text: "C√≥digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "CÛdigo de Barras",
+                            text: "C√≥digo de Barras",
                             dataIndex: "Barcode",
                             width: 250,
                             flex: 1,
@@ -778,7 +778,7 @@ Ext.define('TransferenciaEntradaUtils', {
             url: contexto + '/TransferenciasEntrada',
             timeout: 60000,
             params: {
-                busqBnd: 8, // Ajusta el n˙mero seg˙n tu servlet
+                busqBnd: 8, // Ajusta el n√∫mero seg√∫n tu servlet
                 centralTransferenciaEntrada: Ext.JSON.encode(payload)
             },
             success: function (response) {
@@ -812,11 +812,8 @@ Ext.define('TransferenciaEntradaUtils', {
         var numAtCard = record.get("NumAtCard");
         var entid = record.get("entid");
 
-        console.log(entid);
-        console.log(record);
-
-        // ? PRIMERO: Obtener lÌneas y calcular estatus
-        Ext.getBody().mask('Calculando estatus de recepciÛn...');
+        // ? PRIMERO: Obtener l√≠neas y calcular estatus
+        Ext.getBody().mask('Calculando estatus de recepci√≥n...');
 
         Ext.Ajax.request({
             url: contexto + "/TransferenciasEntrada",
@@ -843,7 +840,7 @@ Ext.define('TransferenciaEntradaUtils', {
                     totalRecibido += parseFloat(linea.receivedquantity) || 0;
                 });
 
-                // ? CALCULAR ESTATUS AUTOM¡TICO
+                // ? CALCULAR ESTATUS AUTOM√ÅTICO
                 var estatusCalculado = '';
                 if (totalRecibido === 0) {
                     estatusCalculado = 'Cancelada';
@@ -853,13 +850,13 @@ Ext.define('TransferenciaEntradaUtils', {
                     estatusCalculado = 'Parcial';
                 }
 
-                console.log('? Total Pedido:', totalPedido);
-                console.log('? Total Recibido:', totalRecibido);
-                console.log('? Estatus Calculado:', estatusCalculado);
+//                console.log('? Total Pedido:', totalPedido);
+//                console.log('? Total Recibido:', totalRecibido);
+//                console.log('? Estatus Calculado:', estatusCalculado);
 
                 // ================= VENTANA PARA CONFIRMAR =================
                 var statusCombo = Ext.create('Ext.form.field.ComboBox', {
-                    fieldLabel: 'Estatus de RecepciÛn',
+                    fieldLabel: 'Estatus de Recepci√≥n',
                     name: 'status',
                     store: Ext.create('Ext.data.Store', {
                         fields: ['value', 'text'],
@@ -890,7 +887,7 @@ Ext.define('TransferenciaEntradaUtils', {
                 });
 
                 var win = Ext.create('Ext.window.Window', {
-                    title: 'Confirmar RecepciÛn - ' + docNum,
+                    title: 'Confirmar Recepci√≥n - ' + docNum,
                     modal: true,
                     width: 450,
                     layout: 'fit',
@@ -952,7 +949,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                     }
                                 },
                                 {
-                                    text: 'Confirmar RecepciÛn',
+                                    text: 'Confirmar Recepci√≥n',
                                     iconCls: 'fa fa-check',
                                     formBind: true,
                                     handler: function () {
@@ -964,9 +961,9 @@ Ext.define('TransferenciaEntradaUtils', {
                                         var transactionNumber = entid;
                                         var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
 
-                                        Ext.getBody().mask('Procesando confirmaciÛn de recepciÛn...');
+                                        Ext.getBody().mask('Procesando confirmaci√≥n de recepci√≥n...');
 
-                                        // ? CONSTRUIR LÕNEAS CON RECEIVED QUANTITY
+                                        // ? CONSTRUIR L√çNEAS CON RECEIVED QUANTITY
                                         var lines = [];
                                         var totalQty = 0;
 
@@ -999,8 +996,8 @@ Ext.define('TransferenciaEntradaUtils', {
                                             Lines: lines
                                         };
 
-                                        console.log("? JSON ReceiptConfirm:");
-                                        console.log(JSON.stringify(jsonSend, null, 4));
+//                                        console.log("? JSON ReceiptConfirm:");
+//                                        console.log(JSON.stringify(jsonSend, null, 4));
 
                                         // ================= ENVIAR AL SERVLET =================
                                         Ext.Ajax.request({
@@ -1017,7 +1014,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                                     var resultado = Ext.decode(response.responseText);
 
                                                     if (resultado.success) {
-                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
+//                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
 
                                                         var teid = record.get("TEID");
                                                         TransferenciaEntradaUtils.ConfirmarTransferenciaEntrada(teid, true); // ? Silencioso
@@ -1050,7 +1047,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                                         }
 
                                                         // ? MENSAJE FINAL
-                                                        var msg = 'ConfirmaciÛn de recepciÛn procesada exitosamente<br><br>';
+                                                        var msg = 'Confirmaci√≥n de recepci√≥n procesada exitosamente<br><br>';
                                                         msg += '<b>Transferencia:</b> ' + docNum + '<br>';
                                                         msg += '<b>ID Entrada:</b> ' + entid + '<br>';
                                                         msg += '<b>Estatus:</b> ' + selectedStatus + '<br>';
@@ -1060,11 +1057,11 @@ Ext.define('TransferenciaEntradaUtils', {
                                                         msg += '<b>Transaction #:</b> ' + transNumber + '<br>';
                                                         msg += '<b>Estado:</b> ' + statusMensaje; // ? Agregar StatusInfo
 
-                                                        Ext.Msg.alert('…xito', msg, function () {
+                                                        Ext.Msg.alert('√âxito', msg, function () {
                                                             TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                                                         });
                                                     } else {
-                                                        Ext.Msg.alert('Error', resultado.error || 'Error al procesar la confirmaciÛn');
+                                                        Ext.Msg.alert('Error', resultado.error || 'Error al procesar la confirmaci√≥n');
                                                     }
                                                 } catch (e) {
                                                     console.error("Error al parsear respuesta:", e);
@@ -1074,7 +1071,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                             failure: function (response) {
                                                 Ext.getBody().unmask();
                                                 console.error("? Error al enviar ReceiptConfirm:", response);
-                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÛn de recepciÛn');
+                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaci√≥n de recepci√≥n');
                                             }
                                         });
                                     }
@@ -1087,186 +1084,10 @@ Ext.define('TransferenciaEntradaUtils', {
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert("Error", "No se pudieron cargar lÌneas para calcular recepciÛn");
+                Ext.Msg.alert("Error", "No se pudieron cargar l√≠neas para calcular recepci√≥n");
             }
         });
     },
-
-//    // ========================================
-//// ? FUNCI”N: Enviar TransferReceiptConfirm
-//// ========================================
-//    enviarTransferReceiptConfirm: function (record) {
-//        var docEntry = record.get("DocEntry");
-//        var docNum = record.get("DocNum");
-//        var numAtCard = record.get("NumAtCard");
-//        var entid = record.get("entid");
-//
-//        // Ventana para seleccionar estatus
-//        var statusCombo = Ext.create('Ext.form.field.ComboBox', {
-//            fieldLabel: 'Estatus de RecepciÛn',
-//            name: 'status',
-//            store: Ext.create('Ext.data.Store', {
-//                fields: ['value', 'text'],
-//                data: [
-//                    {value: 'Total', text: 'Total'},
-//                    {value: 'Parcial', text: 'Parcial'},
-//                    {value: 'Cancelada', text: 'Cancelada'}
-//                ]
-//            }),
-//            queryMode: 'local',
-//            displayField: 'text',
-//            valueField: 'value',
-//            editable: false,
-//            allowBlank: false,
-//            value: 'Total',
-//            labelWidth: 150,
-//            width: 350
-//        });
-//
-//        var memoField = Ext.create('Ext.form.field.TextArea', {
-//            fieldLabel: 'Observaciones',
-//            name: 'memo',
-//            value: 'RecepciÛn desde sistema local',
-//            labelWidth: 150,
-//            width: 350,
-//            height: 60
-//        });
-//
-//        var win = Ext.create('Ext.window.Window', {
-//            title: 'Confirmar RecepciÛn - ' + docNum,
-//            modal: true,
-//            width: 400,
-//            layout: 'fit',
-//            items: [{
-//                    xtype: 'form',
-//                    bodyPadding: 15,
-//                    items: [statusCombo, memoField],
-//                    buttons: [
-//                        {
-//                            text: 'Cancelar',
-//                            handler: function () {
-//                                win.close();
-//                            }
-//                        },
-//                        {
-//                            text: 'Confirmar RecepciÛn',
-//                            formBind: true,
-//                            handler: function () {
-//                                var selectedStatus = statusCombo.getValue();
-//                                var memoText = memoField.getValue();
-//
-//                                if (!selectedStatus) {
-//                                    Ext.Msg.alert('Error', 'Debe seleccionar un estatus');
-//                                    return;
-//                                }
-//
-//                                win.close();
-//
-//                                var transactionNumber = entid;
-//                                var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
-//
-//                                Ext.getBody().mask('Procesando confirmaciÛn de recepciÛn...');
-//
-//                                // Obtener lÌneas desde BD local
-//                                Ext.Ajax.request({
-//                                    url: contexto + "/TransferenciasEntrada",
-//                                    method: "POST",
-//                                    params: {
-//                                        busqBnd: 5,
-//                                        docEntry: docEntry,
-//                                        servicio: 'ServiceTransferenciaEntradaDet'
-//                                    },
-//                                    success: function (resp) {
-//                                        var data = Ext.decode(resp.responseText);
-//                                        var lines = [];
-//                                        var totalQty = 0;
-//
-//                                        Ext.Array.each(data.items, function (line, index) {
-//                                            totalQty += parseFloat(line.receivedquantity);
-//                                            lines.push({
-//                                                LineNum: index + 1, // Forzar inicio en 1
-//                                                ItemCode: line.ItemCode,
-//                                                Barcode: line.Barcode,
-//                                                Quantity: parseFloat(line.receivedquantity)
-//                                            });
-//                                        });
-//
-//                                        // JSON final
-//                                        var jsonSend = {
-//                                            ReceiptConfirm: {
-//                                                DocDate: docDate,
-//                                                DocNum: docNum,
-//                                                NumAtCard: numAtCard,
-//                                                TransactionNumber: transactionNumber,
-//                                                Status: selectedStatus,
-//                                                Memo: memoText
-//                                            },
-//                                            ControlValues: {
-//                                                TotalQuantity: totalQty,
-//                                                TotalLines: lines.length
-//                                            },
-//                                            Lines: lines
-//                                        };
-//
-//                                        console.log("? JSON ReceiptConfirm:");
-//                                        console.log(JSON.stringify(jsonSend, null, 4));
-//
-//                                        // Enviar al servlet
-//                                        Ext.Ajax.request({
-//                                            url: contexto + "/TransferenciasEntrada",
-//                                            method: "POST",
-//                                            params: {
-//                                                busqBnd: 6,
-//                                                valores: Ext.encode(jsonSend)
-//                                            },
-//                                            success: function (response) {
-//                                                Ext.getBody().unmask();
-//
-//                                                try {
-//                                                    var resultado = Ext.decode(response.responseText);
-//
-//                                                    if (resultado.success) {
-//                                                        // Mensaje simple y directo
-//                                                        Ext.Msg.alert(
-//                                                                '…xito',
-//                                                                'ConfirmaciÛn de recepciÛn enviada correctamente',
-//                                                                function () {
-//                                                                    TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
-//                                                                }
-//                                                        );
-//
-//                                                        var teid = record.get("TEID");  // Obtener OCID del record
-//                                                        TransferenciaEntradaUtils.ConfirmarTransferenciaEntrada(teid);
-//
-//                                                        console.log("? Respuesta completa:", resultado);
-//                                                    } else {
-//                                                        Ext.Msg.alert('Error', resultado.error || 'Error al procesar la confirmaciÛn');
-//                                                    }
-//                                                } catch (e) {
-//                                                    console.error("Error al parsear respuesta:", e);
-//                                                    Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor: ' + e.message);
-//                                                }
-//                                            },
-//                                            failure: function (response) {
-//                                                Ext.getBody().unmask();
-//                                                console.error("? Error al enviar ReceiptConfirm:", response);
-//                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÛn de recepciÛn');
-//                                            }
-//                                        });
-//                                    },
-//                                    failure: function () {
-//                                        Ext.getBody().unmask();
-//                                        Ext.Msg.alert("Error", "No se pudieron cargar lÌneas para ReceiptConfirm");
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    ]
-//                }]
-//        });
-//
-//        win.show();
-//    },
 
     EliminarOrdenEntrada: function (prm) {
         Ext.Ajax.request({
@@ -1336,7 +1157,7 @@ Ext.define('TransferenciaEntradaUtils', {
     },
 });
 
-// ? Panel principal - UNA SOLA DEFINICI”N
+// ? Panel principal - UNA SOLA DEFINICI√ìN
 Ext.define('Modulos.global.PanelTransferenciasEntrada', {
     extend: 'Ext.form.Panel',
     requires: [
@@ -1555,10 +1376,10 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                 };
                                 Ext.Msg.show({
                                     title: 'Generar Excel',
-                                    message: 'øDesea exportar la p·gina actual o todos los registros existentes?',
+                                    message: '¬øDesea exportar la p√°gina actual o todos los registros existentes?',
                                     buttons: Ext.MessageBox.YESNO,
                                     buttonText: {
-                                        yes: 'P·gina actual',
+                                        yes: 'P√°gina actual',
                                         no: 'Todos los registros'
                                     },
                                     icon: Ext.MessageBox.QUESTION,
@@ -1569,7 +1390,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                         } else if (btn === 'no') {
                                             TransferenciaEntradaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerrÛ la ventana sin hacer clic en ning˙n botÛn');
+                                            console.log('Se cerr√≥ la ventana sin hacer clic en ning√∫n bot√≥n');
                                         }
                                     }
                                 });
@@ -1599,8 +1420,8 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                         xtype: 'pagingtoolbar',
                         store: me.storeTransferenciaEntrada,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} Ûrdenes',
-                        emptyMsg: "No hay Ûrdenes para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} √≥rdenes',
+                        emptyMsg: "No hay √≥rdenes para mostrar"
                     },
                     columns: [
                         {
@@ -1759,7 +1580,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                                     },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
-                                        TransferenciaEntradaUtils.enviarTransferReceiptConfirm(record);  // ? Implementar·s despuÈs
+                                        TransferenciaEntradaUtils.enviarTransferReceiptConfirm(record);  // ? Implementar√°s despu√©s
                                     }
                                 }
                             ]
@@ -1812,7 +1633,7 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                         },
                         afterrender: function (grid) {
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la b˙squeda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la b√∫squeda se ha ejecutado
                                 TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                             }
                         },

@@ -29,8 +29,8 @@ Ext.define('ConsignatariosUtils', {
         }
 
         Ext.MessageBox.confirm(
-                'Confirmar SincronizaciÛn',
-                'øDesea procesar los ' + totalRegistros + ' registros totales? (Se enviar·n en lotes para mayor seguridad)',
+                'Confirmar Sincronizaci√≥n',
+                '¬øDesea procesar los ' + totalRegistros + ' registros totales? (Se enviar√°n en lotes para mayor seguridad)',
                 function (btn) {
                     if (btn === 'yes') {
                         // Store temporal para bajar todo el universo de datos
@@ -53,7 +53,7 @@ Ext.define('ConsignatariosUtils', {
                                 if (success) {
                                     ConsignatariosUtils.iniciarEnvioPorLotes(records);
                                 } else {
-                                    Ext.MessageBox.alert('Error', 'No se pudo obtener la informaciÛn de origen.');
+                                    Ext.MessageBox.alert('Error', 'No se pudo obtener la informaci√≥n de origen.');
                                 }
                             }
                         });
@@ -64,7 +64,7 @@ Ext.define('ConsignatariosUtils', {
 
     iniciarEnvioPorLotes: function (allRecords) {
         var me = this,
-                loteSize = 50, // TamaÒo seguro para evitar que el JSON se corte
+                loteSize = 50, // Tama√±o seguro para evitar que el JSON se corte
                 totalRecords = allRecords.length,
                 confirmadosGlobal = [],
                 erroresGlobal = [],
@@ -131,7 +131,7 @@ Ext.define('ConsignatariosUtils', {
                     try {
                         result = Ext.decode(response.responseText);
                     } catch (e) {
-                        console.error("JSON inv·lido:", response.responseText);
+                        console.error("JSON inv√°lido:", response.responseText);
                         return;
                     }
 
@@ -162,7 +162,7 @@ Ext.define('ConsignatariosUtils', {
                             }
                         });
 
-                        // Enviar confirmaciÛn a VectorDelta si el lote tuvo Èxitos
+                        // Enviar confirmaci√≥n a VectorDelta si el lote tuvo √©xitos
                         if (listaParaConfirmarVector.length > 0) {
                             me.confirmarAVectorDelta(listaParaConfirmarVector);
                         }
@@ -178,7 +178,7 @@ Ext.define('ConsignatariosUtils', {
                 },
                 failure: function () {
                     progressWin.close();
-                    Ext.Msg.alert('Error', 'Fallo crÌtico de conexiÛn en lote ' + index);
+                    Ext.Msg.alert('Error', 'Fallo cr√≠tico de conexi√≥n en lote ' + index);
                 }
             });
         }
@@ -190,13 +190,13 @@ Ext.define('ConsignatariosUtils', {
         // 1?? Mostrar progress bar
         var progressMsg = Ext.Msg.show({
             title: 'Confirmando consignatarios',
-            message: 'Enviando confirmaciÛn a VectorDelta...',
+            message: 'Enviando confirmaci√≥n a VectorDelta...',
             progress: true,
             closable: false,
             buttons: false
         });
 
-        // AnimaciÛn simple (indeterminada)
+        // Animaci√≥n simple (indeterminada)
         progressMsg.wait('Procesando...');
 
         Ext.Ajax.request({
@@ -214,7 +214,7 @@ Ext.define('ConsignatariosUtils', {
                     resp = Ext.decode(response.responseText);
                 } catch (e) {
                     progressMsg.close();
-                    Ext.Msg.alert('Error', 'Respuesta inv·lida del servidor');
+                    Ext.Msg.alert('Error', 'Respuesta inv√°lida del servidor');
                     return;
                 }
 
@@ -224,13 +224,13 @@ Ext.define('ConsignatariosUtils', {
                     var totalConfirmados = resp.confirmedItems.length;
 
                     Ext.Msg.alert(
-                            'ConfirmaciÛn exitosa',
+                            'Confirmaci√≥n exitosa',
                             'Se confirmaron <b>' + totalConfirmados + '</b> consignatario(s) correctamente.'
                             );
                 } else {
                     Ext.Msg.alert(
                             'Aviso',
-                            resp.message || 'La confirmaciÛn se procesÛ sin detalle.'
+                            resp.message || 'La confirmaci√≥n se proces√≥ sin detalle.'
                             );
                 }
             },
@@ -254,7 +254,7 @@ Ext.define('ConsignatariosUtils', {
         var storeNoConfirm = Ext.create('Ext.data.Store', {model: 'ResultadoModel', data: noConfirmData});
 
         const win = Ext.create('Ext.window.Window', {
-            title: 'Resultados de SincronizaciÛn Total',
+            title: 'Resultados de Sincronizaci√≥n Total',
             width: 950,
             height: 600,
             modal: true,
@@ -270,7 +270,7 @@ Ext.define('ConsignatariosUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: '…xitos (' + confirmData.length + ')',
+                            title: '√âxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             items: [{
                                     xtype: 'grid',
@@ -366,7 +366,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
             proxy: {
                 type: "ajax",
                 url: contexto + "/Consignatarios",
-                // ExtJS envÌa autom·ticamente page, start y limit
+                // ExtJS env√≠a autom√°ticamente page, start y limit
                 reader: {
                     type: "json",
                     rootProperty: "Data", // Coincide con public ArrayList<ArrDataConsignatarios> Data
@@ -559,7 +559,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                         afterrender: function (grid) {
 
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la b˙squeda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la b√∫squeda se ha ejecutado
                                 ConsignatariosUtils.BtnBusqConsignatarios();
                             }
                         }

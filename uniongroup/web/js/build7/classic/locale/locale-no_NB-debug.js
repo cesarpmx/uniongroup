@@ -1,7 +1,7 @@
 /**
  *
- * Norwegian translation (Bokmål: no-NB)
- * By Tore Kjørsvik 21-January-2008
+ * Norwegian translation (BokmÃ¥l: no-NB)
+ * By Tore KjÃ¸rsvik 21-January-2008
  *
  */
 Ext.onReady(function() {
@@ -32,7 +32,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
+        Ext.Date.dayNames = ["SÃ¸ndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "LÃ¸rdag"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -79,13 +79,13 @@ Ext.define("Ext.locale.no_NB.view.AbstractView", {
 Ext.define("Ext.locale.no_NB.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "I dag",
-    minText: "Denne datoen er før tidligste tillatte dato",
+    minText: "Denne datoen er fÃ¸r tidligste tillatte dato",
     maxText: "Denne datoen er etter seneste tillatte dato",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Neste måned (Control+Pil Høyre)',
-    prevText: 'Forrige måned (Control+Pil Venstre)',
-    monthYearText: 'Velg en måned (Control+Pil Opp/Ned for å skifte år)',
+    nextText: 'Neste mÃ¥ned (Control+Pil HÃ¸yre)',
+    prevText: 'Forrige mÃ¥ned (Control+Pil Venstre)',
+    monthYearText: 'Velg en mÃ¥ned (Control+Pil Opp/Ned for Ã¥ skifte Ã¥r)',
     todayTip: "{0} (Mellomrom)",
     format: "d.m.y",
     startDay: 1
@@ -101,20 +101,20 @@ Ext.define("Ext.locale.no_NB.toolbar.Paging", {
     override: "Ext.PagingToolbar",
     beforePageText: "Side",
     afterPageText: "av {0}",
-    firstText: "Første side",
+    firstText: "FÃ¸rste side",
     prevText: "Forrige side",
     nextText: "Neste side",
     lastText: "Siste side",
     refreshText: "Oppdater",
     displayMsg: "Viser {0} - {1} av {2}",
-    emptyMsg: 'Ingen data å vise'
+    emptyMsg: 'Ingen data Ã¥ vise'
 });
 
 Ext.define("Ext.locale.no_NB.form.field.Text", {
     override: "Ext.form.field.Text",
     minLengthText: "Den minste lengden for dette feltet er {0}",
-    maxLengthText: "Den største lengden for dette feltet er {0}",
-    blankText: "Dette feltet er påkrevd",
+    maxLengthText: "Den stÃ¸rste lengden for dette feltet er {0}",
+    blankText: "Dette feltet er pÃ¥krevd",
     regexText: "",
     emptyText: null
 });
@@ -122,7 +122,7 @@ Ext.define("Ext.locale.no_NB.form.field.Text", {
 Ext.define("Ext.locale.no_NB.form.field.Number", {
     override: "Ext.form.field.Number",
     minText: "Den minste verdien for dette feltet er {0}",
-    maxText: "Den største verdien for dette feltet er {0}",
+    maxText: "Den stÃ¸rste verdien for dette feltet er {0}",
     nanText: "{0} er ikke et gyldig nummer"
 });
 
@@ -130,9 +130,9 @@ Ext.define("Ext.locale.no_NB.form.field.Date", {
     override: "Ext.form.field.Date",
     disabledDaysText: "Deaktivert",
     disabledDatesText: "Deaktivert",
-    minText: "Datoen i dette feltet må være etter {0}",
-    maxText: "Datoen i dette feltet må være før {0}",
-    invalidText: "{0} er ikke en gyldig dato - den må være på formatet {1}",
+    minText: "Datoen i dette feltet mÃ¥ vÃ¦re etter {0}",
+    maxText: "Datoen i dette feltet mÃ¥ vÃ¦re fÃ¸r {0}",
+    invalidText: "{0} er ikke en gyldig dato - den mÃ¥ vÃ¦re pÃ¥ formatet {1}",
     format: "d.m.y",
     altFormats: "d.m.Y|d/m/y|d/m/Y|d-m-y|d-m-Y|d.m|d/m|d-m|dm|dmy|dmY|Y-m-d|d"
 });
@@ -148,8 +148,8 @@ Ext.define("Ext.locale.no_NB.form.field.ComboBox", {
 
 Ext.define("Ext.locale.no.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Dette feltet skal være en epost adresse på formatet "bruker@domene.no"',
-    urlText: 'Dette feltet skal være en link (URL) på formatet "http:/' + '/www.domene.no"',
+    emailText: 'Dette feltet skal vÃ¦re en epost adresse pÃ¥ formatet "bruker@domene.no"',
+    urlText: 'Dette feltet skal vÃ¦re en link (URL) pÃ¥ formatet "http:/' + '/www.domene.no"',
     alphaText: 'Dette feltet skal kun inneholde bokstaver og _',
     alphanumText: 'Dette feltet skal kun inneholde bokstaver, tall og _'
 });
@@ -162,12 +162,12 @@ Ext.define("Ext.locale.no_NB.form.field.HtmlEditor", {
         buttonTips: {
             bold: {
                 title: 'Fet (Ctrl+B)',
-                text: 'Gjør den valgte teksten fet.',
+                text: 'GjÃ¸r den valgte teksten fet.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
                 title: 'Kursiv (Ctrl+I)',
-                text: 'Gjør den valgte teksten kursiv.',
+                text: 'GjÃ¸r den valgte teksten kursiv.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
@@ -176,13 +176,13 @@ Ext.define("Ext.locale.no_NB.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Forstørr tekst',
-                text: 'Gjør fontstørrelse større.',
+                title: 'ForstÃ¸rr tekst',
+                text: 'GjÃ¸r fontstÃ¸rrelse stÃ¸rre.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
                 title: 'Forminsk tekst',
-                text: 'Gjør fontstørrelse mindre.',
+                text: 'GjÃ¸r fontstÃ¸rrelse mindre.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
@@ -192,7 +192,7 @@ Ext.define("Ext.locale.no_NB.form.field.HtmlEditor", {
             },
             forecolor: {
                 title: 'Font farge',
-                text: 'Endre farge på den valgte teksten.',
+                text: 'Endre farge pÃ¥ den valgte teksten.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
@@ -206,8 +206,8 @@ Ext.define("Ext.locale.no_NB.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: 'Høyrejuster tekst',
-                text: 'Høyrejuster teksten.',
+                title: 'HÃ¸yrejuster tekst',
+                text: 'HÃ¸yrejuster teksten.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
@@ -222,7 +222,7 @@ Ext.define("Ext.locale.no_NB.form.field.HtmlEditor", {
             },
             createlink: {
                 title: 'Lenke',
-                text: 'Gjør den valgte teksten til en lenke.',
+                text: 'GjÃ¸r den valgte teksten til en lenke.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
@@ -238,8 +238,8 @@ Ext.define("Ext.locale.no_NB.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Sorter stigende",
     sortDescText: "Sorter synkende",
-    lockText: "Lås kolonne",
-    unlockText: "Lås opp kolonne",
+    lockText: "LÃ¥s kolonne",
+    unlockText: "LÃ¥s opp kolonne",
     columnsText: "Kolonner"
 });
 

@@ -4747,12 +4747,12 @@ Ext.String = (function() {
          * with the value being the textual representation of the entity.
          *
          *      Ext.String.addCharacterEntities({
-         *          '&amp;Uuml;':'Ü',
-         *          '&amp;ccedil;':'ç',
-         *          '&amp;ntilde;':'ñ',
-         *          '&amp;egrave;':'è'
+         *          '&amp;Uuml;':'Ã',
+         *          '&amp;ccedil;':'Ã§',
+         *          '&amp;ntilde;':'Ã±',
+         *          '&amp;egrave;':'Ã¨'
          *      });
-         *      var s = Ext.String.htmlEncode("A string with entities: èÜçñ");
+         *      var s = Ext.String.htmlEncode("A string with entities: Ã¨ÃÃ§Ã±");
          *
          * __Note:__ the values of the character entities defined on this object are expected
          * to be single character values.  As such, the actual values represented by the
@@ -36034,36 +36034,36 @@ Ext.define('Ext.event.Event', {
             META: 'metaKey'
         },
         modifierGlyphs: {
-            ctrlKey: '⌃',
-            altKey: '⌥',
-            metaKey: Ext.isMac ? '⌘' : '⊞',
-            shiftKey: '⇧'
+            ctrlKey: 'â',
+            altKey: 'â¥',
+            metaKey: Ext.isMac ? 'â' : 'â',
+            shiftKey: 'â§'
         },
         specialKeyGlyphs: {
-            BACKSPACE: '⌫',
-            TAB: '⇥',
-            ENTER: '⏎',
-            RETURN: '⏎',
-            SPACE: '␣',
-            PAGE_UP: '⇞',
-            PAGE_DOWN: '⇟',
-            END: '⇲',
-            HOME: '⌂',
-            LEFT: '←',
-            UP: '↑',
-            RIGHT: '→',
-            DOWN: '↓',
-            PRINT_SCREEN: '⎙',
-            INSERT: '⎀',
-            DELETE: '⌦',
-            CONTEXT_MENU: '☰'
+            BACKSPACE: 'â«',
+            TAB: 'â¥',
+            ENTER: 'â',
+            RETURN: 'â',
+            SPACE: 'â£',
+            PAGE_UP: 'â',
+            PAGE_DOWN: 'â',
+            END: 'â²',
+            HOME: 'â',
+            LEFT: 'â',
+            UP: 'â',
+            RIGHT: 'â',
+            DOWN: 'â',
+            PRINT_SCREEN: 'â',
+            INSERT: 'â',
+            DELETE: 'â¦',
+            CONTEXT_MENU: 'â°'
         },
         // eslint-disable-next-line no-useless-escape
         _hyphenRe: /^[a-z]+\-/i,
         // eg "Ctrl-" (instead of "Ctrl+")
         /**
          * Convert a key specification in the form eg: "CTRL+ALT+DELETE" to the glyph sequence
-         * for use in menu items, eg "⌃⌥⌦".
+         * for use in menu items, eg "ââ¥â¦".
          * @private
          */
         getKeyId: function(keyName) {
@@ -57315,7 +57315,7 @@ Ext.define('Ext.overrides.GlobalEvents', {
         // size changes. See this: https://msdn.microsoft.com/en-us/library/ms536959(v=vs.85).aspx
         // and this: http://stackoverflow.com/questions/1852751/window-resize-event-firing-in-internet-explorer
         // The amount of these events firing all at once can be entirely staggering, and they
-        // often happen during layouts so we have to be über careful to execute as few JavaScript
+        // often happen during layouts so we have to be Ã¼ber careful to execute as few JavaScript
         // statements as possible to improve overall framework performance.
         if (Ext.isIE8) {
             docElement = Ext.getDoc().dom.documentElement;
@@ -126337,15 +126337,15 @@ Ext.define('Ext.data.TreeStore', {
      * and TreeStore.indexOfNextVisibleNode(poot) must also return return indexOf(belch)
      *
      *      foo
-     *      ├ bar
-     *      ├ bletch
-     *      │ ├ zarg
-     *      │ └ blivit
-     *      │   ├ ik
-     *      │   └ screeble
-     *      │     ├ raz
-     *      │     └ poot
-     *      ├ belch
+     *      â bar
+     *      â bletch
+     *      â â zarg
+     *      â â blivit
+     *      â   â ik
+     *      â   â screeble
+     *      â     â raz
+     *      â     â poot
+     *      â belch
      *      apresfoo
      *
      * This is so that removal of nodes at full depth can be optimized into one 
@@ -126380,15 +126380,15 @@ Ext.define('Ext.data.TreeStore', {
      * poot is filtered out of visibility.
      *
      *      foo
-     *      ├ bar
-     *      ├ bletch
-     *      │ ├ zarg
-     *      │ └ blivit
-     *      │   ├ ik
-     *      │   │ ├screeble
-     *      │   │ └ raz
-     *      │   └ poot<filtered out>
-     *      ├ belch
+     *      â bar
+     *      â bletch
+     *      â â zarg
+     *      â â blivit
+     *      â   â ik
+     *      â   â âscreeble
+     *      â   â â raz
+     *      â   â poot<filtered out>
+     *      â belch
      *      apresfoo
      *
      */
@@ -126446,15 +126446,15 @@ Ext.define('Ext.data.TreeStore', {
     // remove bletch, zarg, blivit, ik, screeble, razz and poot.
     //
     //      foo
-    //      ├ bar
-    //      ├ bletch
-    //      │ ├ zarg
-    //      │ └ blivit
-    //      │   ├ ik
-    //      │   └ screeble
-    //      │     ├ raz
-    //      │     └ poot
-    //      ├ belch
+    //      â bar
+    //      â bletch
+    //      â â zarg
+    //      â â blivit
+    //      â   â ik
+    //      â   â screeble
+    //      â     â raz
+    //      â     â poot
+    //      â belch
     //      apresfoo
     //
     // If there are expanded nodes, descendants will be in this store and need removing too.
@@ -126503,15 +126503,15 @@ Ext.define('Ext.data.TreeStore', {
         // of visibility and the "blivit" node is collasped.
         //
         //  foo
-        //  ├ bar
-        //  ├ bletch
-        //  │ ├ zarg   <- this is filtered out and therefore not visible
-        //  │ └ blivit <- this is collapsed. ik, screeble, raz and poot are NOT in the Collection
-        //  │   ├ ik
-        //  │   └ screeble
-        //  │     ├ raz
-        //  │     └ poot
-        //  ├ belch
+        //  â bar
+        //  â bletch
+        //  â â zarg   <- this is filtered out and therefore not visible
+        //  â â blivit <- this is collapsed. ik, screeble, raz and poot are NOT in the Collection
+        //  â   â ik
+        //  â   â screeble
+        //  â     â raz
+        //  â     â poot
+        //  â belch
         //  apresfoo
         //
         // the above code would only collect "bletch" and "blivit".
@@ -272096,11 +272096,11 @@ Ext.define('Ext.tree.View', {
  *             root: {
  *                 expanded: true,
  *                 children: [{
- *                     text: 'SFO  &nbsp;✈&nbsp; DFW',
+ *                     text: 'SFO  &nbsp;â&nbsp; DFW',
  *                     duration: '6h 55m',
  *                     expanded: true,
  *                     children: [{
- *                         text: 'SFO &nbsp;✈&nbsp; PHX',
+ *                         text: 'SFO &nbsp;â&nbsp; PHX',
  *                         duration: '2h 04m',
  *                         leaf: true
  *                     }, {
@@ -272109,7 +272109,7 @@ Ext.define('Ext.tree.View', {
  *                         isLayover: true,
  *                         leaf: true
  *                     }, {
- *                         text: 'PHX &nbsp;✈&nbsp; DFW',
+ *                         text: 'PHX &nbsp;â&nbsp; DFW',
  *                         duration: '2h 15m',
  *                         leaf: true
  *                     }]
@@ -274210,7 +274210,7 @@ Ext.define('Ext.view.MultiSelector', {
      * "X" looking glyph.
      * @since 5.0.0
      */
-    removeRowText: '✖',
+    removeRowText: 'â',
     /**
      * @cfg {String} removeRowTip
      * The tooltip to display when the user hovers over the remove cell.

@@ -3904,7 +3904,7 @@ Ext.define('Ext.ux.rating.Picker', {
          *      Ext.create({
          *          xtype: 'rating',
          *          renderTo: Ext.getBody(),
-         *          glyphs: [ 9671, 9670 ], // '◇◆',
+         *          glyphs: [ 9671, 9670 ], // 'ââ',
          *          listeners: {
          *              change: function (picker, value) {
          *                 console.log('Rating ' + value);
@@ -3912,7 +3912,7 @@ Ext.define('Ext.ux.rating.Picker', {
          *          }
          *      });
          */
-        glyphs: '☆★',
+        glyphs: 'ââ',
         /**
          * @cfg {Number} [minimum=1]
          * The minimum allowed `{@link #value}` (rating).

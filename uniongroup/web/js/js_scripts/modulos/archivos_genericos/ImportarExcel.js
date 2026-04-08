@@ -42,8 +42,8 @@ com.cia.ImportarExcel = function addFormImportarExcel(argumentos) {
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO,
                     fn: function (btn) {
-                        // Aquí puedes agregar la lógica que deseas ejecutar
-                        // 'btn' es el identificador del botón que fue presionado
+                        // AquÃ­ puedes agregar la lÃ³gica que deseas ejecutar
+                        // 'btn' es el identificador del botÃ³n que fue presionado
                         if (btn === 'ok') {
                             var w = Ext.getCmp(ventana);
                             w.close();
@@ -117,7 +117,7 @@ com.cia.ImportarExcel = function addFormImportarExcel(argumentos) {
                                 var json = to_json(workbook);
                                 // Si json es null, significa que falta una columna
                                 if (json === null) {
-                                    //  Ext.Msg.alert('Error', 'Falta una o más columnas obligatorias en el archivo.');
+                                    //  Ext.Msg.alert('Error', 'Falta una o mÃ¡s columnas obligatorias en el archivo.');
                                 } else {
                                     var valores = Ext.JSON.encode(json);
                                     guardarExcel(valores);
@@ -175,8 +175,8 @@ function to_json(workbook) {
             }
 
             if (headersPresent && repeatedHeaders.length === 0) {
-                // Procesar los datos desde la fila 2 si los encabezados están en la primera fila,
-                // o desde la fila 7 si los encabezados están en la sexta fila
+                // Procesar los datos desde la fila 2 si los encabezados estÃ¡n en la primera fila,
+                // o desde la fila 7 si los encabezados estÃ¡n en la sexta fila
                 var startRow = isHeadersInFirstRow ? 1 : 6;
                 for (let i = startRow; i < roa.length; i++) {
                     let row = roa[i];
@@ -253,20 +253,20 @@ function to_json(workbook) {
         }
 
         if (repeatedHeaders.length > 0) {
-            console.log('Las siguientes columnas están repetidas:', repeatedHeaders.join(', '));
-            Ext.Msg.alert('Error', 'Las siguientes columnas están repetidas: ' + repeatedHeaders.join(', '));
+            console.log('Las siguientes columnas estÃ¡n repetidas:', repeatedHeaders.join(', '));
+            Ext.Msg.alert('Error', 'Las siguientes columnas estÃ¡n repetidas: ' + repeatedHeaders.join(', '));
         }
 
         if (validationErrors.length > 0) {
-            console.log('Errores de validación:', validationErrors.join('\n'));
+            console.log('Errores de validaciÃ³n:', validationErrors.join('\n'));
             if (validationErrors.length > 6) {
-                Ext.Msg.confirm('Errores de validación', 'Hay más de 6 errores de validación. ¿Desea ver todos los errores?', function (choice) {
+                Ext.Msg.confirm('Errores de validaciÃ³n', 'Hay mÃ¡s de 6 errores de validaciÃ³n. Â¿Desea ver todos los errores?', function (choice) {
                     if (choice === 'yes') {
-                        Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+                        Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
                     }
                 });
             } else {
-                Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+                Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
             }
         }
 
@@ -291,7 +291,7 @@ function to_json(workbook) {
 //        var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header: 1});
 //
 //        if (roa.length) {
-//            // Ajusta la búsqueda de encabezados a la fila 6 (índice 5)
+//            // Ajusta la bÃºsqueda de encabezados a la fila 6 (Ã­ndice 5)
 //            const headers = roa[5].map(header => header.toString()); // Convertir encabezados a cadenas
 //
 //            console.log('Encabezados del archivo:', headers);
@@ -390,20 +390,20 @@ function to_json(workbook) {
 //        }
 //
 //        if (repeatedHeaders.length > 0) {
-//            console.log('Las siguientes columnas están repetidas:', repeatedHeaders.join(', '));
-//            Ext.Msg.alert('Error', 'Las siguientes columnas están repetidas: ' + repeatedHeaders.join(', '));
+//            console.log('Las siguientes columnas estÃ¡n repetidas:', repeatedHeaders.join(', '));
+//            Ext.Msg.alert('Error', 'Las siguientes columnas estÃ¡n repetidas: ' + repeatedHeaders.join(', '));
 //        }
 //
 //        if (validationErrors.length > 0) {
-//            console.log('Errores de validación:', validationErrors.join('\n'));
+//            console.log('Errores de validaciÃ³n:', validationErrors.join('\n'));
 //            if (validationErrors.length > 6) {
-//                Ext.Msg.confirm('Errores de validación', 'Hay más de 6 errores de validación. ¿Desea ver todos los errores?', function (choice) {
+//                Ext.Msg.confirm('Errores de validaciÃ³n', 'Hay mÃ¡s de 6 errores de validaciÃ³n. Â¿Desea ver todos los errores?', function (choice) {
 //                    if (choice === 'yes') {
-//                        Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+//                        Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
 //                    }
 //                });
 //            } else {
-//                Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+//                Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
 //            }
 //        }
 //
@@ -525,20 +525,20 @@ function to_json(workbook) {
 //            }
 //
 //            if (repeatedHeaders.length > 0) {
-//                console.log('Las siguientes columnas están repetidas:', repeatedHeaders.join(', '));
-//                Ext.Msg.alert('Error', 'Las siguientes columnas están repetidas: ' + repeatedHeaders.join(', '));
+//                console.log('Las siguientes columnas estÃ¡n repetidas:', repeatedHeaders.join(', '));
+//                Ext.Msg.alert('Error', 'Las siguientes columnas estÃ¡n repetidas: ' + repeatedHeaders.join(', '));
 //            }
 //
 //            if (validationErrors.length > 0) {
-//                console.log('Errores de validación:', validationErrors.join('\n'));
+//                console.log('Errores de validaciÃ³n:', validationErrors.join('\n'));
 //                if (validationErrors.length > 6) {
-//                    Ext.Msg.confirm('Errores de validación', 'Hay más de 6 errores de validación. ¿Desea ver todos los errores?', function (choice) {
+//                    Ext.Msg.confirm('Errores de validaciÃ³n', 'Hay mÃ¡s de 6 errores de validaciÃ³n. Â¿Desea ver todos los errores?', function (choice) {
 //                        if (choice === 'yes') {
-//                            Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+//                            Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
 //                        }
 //                    });
 //                } else {
-//                    Ext.Msg.alert('Errores de validación', validationErrors.join('\n'));
+//                    Ext.Msg.alert('Errores de validaciÃ³n', validationErrors.join('\n'));
 //                }
 //            }
 //

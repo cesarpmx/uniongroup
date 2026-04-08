@@ -51,7 +51,7 @@ Ext.define('OrdenesVentaUtils', {
             });
         }
 
-        // Store para las líneas LOCALES
+        // Store para las lÃ­neas LOCALES
         var storeLineasVentas = Ext.create('Ext.data.Store', {
             model: 'modelLineasOrdenVentaLocal',
             autoLoad: true,
@@ -76,10 +76,10 @@ Ext.define('OrdenesVentaUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
+//                        console.log('? Cargadas ' + records.length + ' lÃ­neas locales para orden #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            html: 'Se cargaron ' + records.length + ' lÃ­neas',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -90,7 +90,7 @@ Ext.define('OrdenesVentaUtils', {
         });
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrdenVentaLocal',
-            title: 'Líneas de Orden #' + docNum + ' - Cliente: ' + cardCode,
+            title: 'LÃ­neas de Orden #' + docNum + ' - Cliente: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -139,7 +139,7 @@ Ext.define('OrdenesVentaUtils', {
                             align: "center"
                         },
                         {
-                            text: "Línea",
+                            text: "LÃ­nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -149,14 +149,14 @@ Ext.define('OrdenesVentaUtils', {
                             }
                         },
                         {
-                            text: "Código",
+                            text: "CÃ³digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Código de Barras",
+                            text: "CÃ³digo de Barras",
                             dataIndex: "BarCode",
                             width: 250,
                             flex: 1,
@@ -184,8 +184,8 @@ Ext.define('OrdenesVentaUtils', {
                         xtype: 'pagingtoolbar',
                         store: storeLineasVentas,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} líneas',
-                        emptyMsg: "No hay líneas para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} lÃ­neas',
+                        emptyMsg: "No hay lÃ­neas para mostrar"
                     },
                     viewConfig: {
                         stripeRows: true,
@@ -200,7 +200,7 @@ Ext.define('OrdenesVentaUtils', {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
-        // Modelo para las líneas
+        // Modelo para las lÃ­neas
         if (!Ext.ClassManager.get('modelLineasOrdenVenta')) {
             Ext.define('modelLineasOrdenVenta', {
                 extend: 'Ext.data.Model',
@@ -213,7 +213,7 @@ Ext.define('OrdenesVentaUtils', {
             });
         }
 
-        // Store para las líneas
+        // Store para las lÃ­neas
         var storeLineas = Ext.create('Ext.data.Store', {
             model: 'modelLineasOrdenVenta',
             autoLoad: true,
@@ -232,10 +232,10 @@ Ext.define('OrdenesVentaUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
+//                        console.log('? Cargadas ' + records.length + ' lÃ­neas para orden #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            html: 'Se cargaron ' + records.length + ' lÃ­neas',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -246,7 +246,7 @@ Ext.define('OrdenesVentaUtils', {
         });
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrdenVenta',
-            title: 'Líneas de Orden #' + docNum + ' - Cliente: ' + cardCode,
+            title: 'LÃ­neas de Orden #' + docNum + ' - Cliente: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -295,7 +295,7 @@ Ext.define('OrdenesVentaUtils', {
                             align: "center"
                         },
                         {
-                            text: "Línea",
+                            text: "LÃ­nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -305,14 +305,14 @@ Ext.define('OrdenesVentaUtils', {
                             }
                         },
                         {
-                            text: "Código",
+                            text: "CÃ³digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Código de Barras",
+                            text: "CÃ³digo de Barras",
                             dataIndex: "BarCode",
                             width: 250,
                             flex: 1,
@@ -338,17 +338,17 @@ Ext.define('OrdenesVentaUtils', {
         });
         win.show();
     },
-    // ? MODIFICAR PARA ACEPTAR ÓRDENES SELECCIONADAS
+    // ? MODIFICAR PARA ACEPTAR Ã“RDENES SELECCIONADAS
     guardarNuevasOrdenes: function (selectedRecords) {
         var ordenesAGuardar = selectedRecords || [];
         var totalSeleccionadas = ordenesAGuardar.length;
         Ext.MessageBox.confirm(
                 'Confirmar',
-                '¿Está seguro de cargar ' + totalSeleccionadas + ' orden(es) de venta seleccionada(s)?',
+                'Â¿EstÃ¡ seguro de cargar ' + totalSeleccionadas + ' orden(es) de venta seleccionada(s)?',
                 function (btn) {
                     if (btn === 'yes') {
 
-                        Ext.getBody().mask('Obteniendo órdenes de venta...');
+                        Ext.getBody().mask('Obteniendo Ã³rdenes de venta...');
                         // ? Convertir records a array de objetos planos
                         var ordenesHeader = [];
                         Ext.Array.each(ordenesAGuardar, function (record) {
@@ -363,14 +363,14 @@ Ext.define('OrdenesVentaUtils', {
                                 Memo: record.get('Memo')
                             });
                         });
-                        console.log('? Órdenes de venta seleccionadas para guardar:', ordenesHeader.length);
+//                        console.log('? Ã“rdenes de venta seleccionadas para guardar:', ordenesHeader.length);
                         if (ordenesHeader.length === 0) {
                             Ext.getBody().unmask();
-                            Ext.Msg.alert('Información', 'No hay órdenes de venta para procesar');
+                            Ext.Msg.alert('InformaciÃ³n', 'No hay Ã³rdenes de venta para procesar');
                             return;
                         }
 
-                        // PASO 2: Obtener las líneas de cada orden
+                        // PASO 2: Obtener las lÃ­neas de cada orden
                         var promises = [];
                         var ordenesCompletas = [];
                         ordenesHeader.forEach(function (orden) {
@@ -407,14 +407,14 @@ Ext.define('OrdenesVentaUtils', {
                                     })
                                     );
                         });
-                        // PASO 3: Cuando todas las líneas estén cargadas, enviar por lotes
+                        // PASO 3: Cuando todas las lÃ­neas estÃ©n cargadas, enviar por lotes
                         Promise.all(promises).then(function () {
                             Ext.getBody().unmask();
                             OrdenesVentaUtils.iniciarEnvioPorLotes(ordenesCompletas);
                         }).catch(function (error) {
                             Ext.getBody().unmask();
-                            console.error('? Error al obtener líneas:', error);
-                            Ext.Msg.alert('Error', 'Error al obtener las líneas de las órdenes');
+                            console.error('? Error al obtener lÃ­neas:', error);
+                            Ext.Msg.alert('Error', 'Error al obtener las lÃ­neas de las Ã³rdenes');
                         });
                     }
                 }
@@ -429,7 +429,7 @@ Ext.define('OrdenesVentaUtils', {
                 clienteResponseGlobal = [],
                 index = 0;
         var progressWin = Ext.create('Ext.window.Window', {
-            title: 'Guardando Órdenes de Venta',
+            title: 'Guardando Ã“rdenes de Venta',
             width: 400,
             height: 160,
             modal: true,
@@ -464,7 +464,7 @@ Ext.define('OrdenesVentaUtils', {
                     try {
                         resultado = Ext.decode(response.responseText);
                     } catch (e) {
-                        console.error("JSON inválido:", response.responseText);
+                        console.error("JSON invÃ¡lido:", response.responseText);
                         index += loteSize;
                         if (index < totalOrders) {
                             enviarSiguienteLote();
@@ -497,7 +497,7 @@ Ext.define('OrdenesVentaUtils', {
                                 erroresGlobal.push(row);
                             }
                         });
-                        // ? CAPTURAR respuesta del cliente (solo se envía en el último lote)
+                        // ? CAPTURAR respuesta del cliente (solo se envÃ­a en el Ãºltimo lote)
                         if (resultado.clienteResponse) {
                             clienteResponseGlobal = resultado.clienteResponse;
                         }
@@ -508,7 +508,7 @@ Ext.define('OrdenesVentaUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-                        console.log('? Órdenes de Venta Confirmadas:', confirmadosGlobal);
+//                        console.log('? Ã“rdenes de Venta Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);
                     }
                 },
@@ -518,7 +518,7 @@ Ext.define('OrdenesVentaUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-                        console.log('? Órdenes de Venta Confirmadas:', confirmadosGlobal);
+//                        console.log('? Ã“rdenes de Venta Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);
                     }
                 }
@@ -546,7 +546,7 @@ Ext.define('OrdenesVentaUtils', {
         var storeNoConfirm = Ext.create('Ext.data.Store', {model: 'ResultadoOrdenesVentaModel', data: noConfirmData});
         var storeCliente = Ext.create('Ext.data.Store', {model: 'ClienteResponseVentaModel', data: clienteData || []});
         const win = Ext.create('Ext.window.Window', {
-            title: 'Resultados de Sincronización - Órdenes de Venta',
+            title: 'Resultados de SincronizaciÃ³n - Ã“rdenes de Venta',
             width: 1000,
             height: 600,
             modal: true,
@@ -555,7 +555,7 @@ Ext.define('OrdenesVentaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Éxitos (' + confirmData.length + ')',
+                            title: 'Ã‰xitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -569,7 +569,7 @@ Ext.define('OrdenesVentaUtils', {
                                         {text: 'Cliente', dataIndex: 'NumAtCard', width: 150, flex: 1},
                                         {text: 'CardCode', dataIndex: 'CardCode', width: 120},
                                         {
-                                            text: 'Líneas OK',
+                                            text: 'LÃ­neas OK',
                                             dataIndex: 'linesInserted',
                                             width: 100,
                                             align: 'center',
@@ -578,7 +578,7 @@ Ext.define('OrdenesVentaUtils', {
                                             }
                                         },
                                         {
-                                            text: 'Líneas Error',
+                                            text: 'LÃ­neas Error',
                                             dataIndex: 'linesFailed',
                                             width: 100,
                                             align: 'center',
@@ -613,9 +613,9 @@ Ext.define('OrdenesVentaUtils', {
                                     viewConfig: {stripeRows: true}
                                 }]
                         },
-                        // ? TAB: Confirmación Cliente
+                        // ? TAB: ConfirmaciÃ³n Cliente
                         {
-                            title: 'Confirmación Cliente (' + (clienteData ? clienteData.length : 0) + ')',
+                            title: 'ConfirmaciÃ³n Cliente (' + (clienteData ? clienteData.length : 0) + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check',
                             items: [{
@@ -667,7 +667,7 @@ Ext.define('OrdenesVentaUtils', {
         win.show();
     },
     verNuevasOrdenes: function () {
-        // Modelo para las órdenes
+        // Modelo para las Ã³rdenes
         if (!Ext.ClassManager.get('modelOrdenesVentaHeader')) {
             Ext.define('modelOrdenesVentaHeader', {
                 extend: 'Ext.data.Model',
@@ -687,7 +687,7 @@ Ext.define('OrdenesVentaUtils', {
             });
         }
 
-        // Store para las órdenes
+        // Store para las Ã³rdenes
         var storeOrdenesGlob = Ext.create('Ext.data.Store', {
             model: 'modelOrdenesVentaHeader',
             autoLoad: true,
@@ -705,7 +705,7 @@ Ext.define('OrdenesVentaUtils', {
         });
         const win = Ext.create('Ext.window.Window', {
             id: 'winOrdenesVenta',
-            title: 'Órdenes de Venta Nuevas',
+            title: 'Ã“rdenes de Venta Nuevas',
             width: 1000,
             height: 600,
             scrollable: true,
@@ -738,7 +738,7 @@ Ext.define('OrdenesVentaUtils', {
                                 var grid = this.up('grid');
                                 var selected = grid.getSelection();
                                 if (selected.length === 0) {
-                                    Ext.Msg.alert('Atención', 'Debe seleccionar al menos una orden de venta');
+                                    Ext.Msg.alert('AtenciÃ³n', 'Debe seleccionar al menos una orden de venta');
                                     return;
                                 }
 
@@ -957,7 +957,7 @@ Ext.define('OrdenesVentaUtils', {
         var totalPedido = 0;
         var totalSurtido = 0;
         var productosSurtidos = [];
-        // Obtener líneas originales
+        // Obtener lÃ­neas originales
         Ext.Ajax.request({
             url: contexto + '/OrdenesVenta',
             method: 'POST',
@@ -989,7 +989,7 @@ Ext.define('OrdenesVentaUtils', {
                         Ext.Array.each(productosSurtidos, function (producto) {
                             totalSurtido += producto.unidades || 0;
                         });
-                        // ? CALCULAR ESTATUS AUTOMÁTICO
+                        // ? CALCULAR ESTATUS AUTOMÃTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -999,12 +999,12 @@ Ext.define('OrdenesVentaUtils', {
                             estatusCalculado = 'Parcial';
                         }
 
-                        console.log('? Total Pedido:', totalPedido);
-                        console.log('? Total Surtido:', totalSurtido);
-                        console.log('? Estatus Calculado:', estatusCalculado);
+//                        console.log('? Total Pedido:', totalPedido);
+//                        console.log('? Total Surtido:', totalSurtido);
+//                        console.log('? Estatus Calculado:', estatusCalculado);
                         // ? CREAR MODAL CON ESTATUS PRE-SELECCIONADO
                         var winConfirm = Ext.create('Ext.window.Window', {
-                            title: 'Confirmar Envío - Orden #' + docNum,
+                            title: 'Confirmar EnvÃ­o - Orden #' + docNum,
                             width: 550,
                             height: 450,
                             modal: true,
@@ -1092,20 +1092,20 @@ Ext.define('OrdenesVentaUtils', {
                                 }],
                             buttons: [
                                 {
-                                    text: 'Confirmar Envío',
+                                    text: 'Confirmar EnvÃ­o',
                                     iconCls: 'fa fa-check',
                                     handler: function () {
                                         var form = winConfirm.down('form').getForm();
                                         if (!form.isValid()) {
-                                            Ext.Msg.alert('Atención', 'Complete todos los campos obligatorios');
+                                            Ext.Msg.alert('AtenciÃ³n', 'Complete todos los campos obligatorios');
                                             return;
                                         }
 
                                         var estatus = Ext.getCmp('cmbEstatusEnvio').getValue();
                                         var memo = Ext.getCmp('txtMemoEnvio').getValue() || '';
                                         winConfirm.close();
-                                        Ext.getBody().mask('Procesando envío...');
-                                        // Construir líneas
+                                        Ext.getBody().mask('Procesando envÃ­o...');
+                                        // Construir lÃ­neas
                                         var lineas = [];
                                         var lineNum = 0;
                                         Ext.Array.each(productosSurtidos, function (producto) {
@@ -1140,7 +1140,7 @@ Ext.define('OrdenesVentaUtils', {
                                             Lines: lineas
                                         };
                                         var jsonToSend = Ext.encode(shipmentConfirm);
-                                        console.log('? ShipmentConfirm a enviar:', jsonToSend);
+//                                        console.log('? ShipmentConfirm a enviar:', jsonToSend);
                                         Ext.Ajax.request({
                                             url: contexto + '/OrdenesVenta',
                                             method: 'POST',
@@ -1154,14 +1154,14 @@ Ext.define('OrdenesVentaUtils', {
                                                     var resultado = Ext.decode(responseConfirm.responseText);
 
                                                     if (resultado.success) {
-                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
+//                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
 
                                                         // ? PRIMERO: Actualizar estatus silenciosamente
                                                         var ovid = record.get("OVID");
                                                         OrdenesVentaUtils.ConfirmarOrdenVenta(ovid, true);
 
                                                         // ? SEGUNDO: Construir mensaje
-                                                        var msg = 'Confirmación de envío procesada exitosamente<br><br>';
+                                                        var msg = 'ConfirmaciÃ³n de envÃ­o procesada exitosamente<br><br>';
                                                         msg += '<b>Orden:</b> ' + docNum + '<br>';
                                                         msg += '<b>Lista Empaque:</b> ' + preid + '<br>';
                                                         msg += '<b>Estatus:</b> ' + estatus + '<br>';
@@ -1175,7 +1175,7 @@ Ext.define('OrdenesVentaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
                                                             OrdenesVentaUtils.BtnBusqOrdenVenta();
                                                         });
                                                     } else {
@@ -1189,7 +1189,7 @@ Ext.define('OrdenesVentaUtils', {
                                             },
                                             failure: function () {
                                                 Ext.getBody().unmask();
-                                                Ext.Msg.alert('Error', 'Error al enviar la confirmación');
+                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÃ³n');
                                             }
                                         });
                                     }
@@ -1213,7 +1213,7 @@ Ext.define('OrdenesVentaUtils', {
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert('Error', 'Error al obtener líneas originales');
+                Ext.Msg.alert('Error', 'Error al obtener lÃ­neas originales');
             }
         });
     },
@@ -1503,7 +1503,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             },
                             listeners: {
                                 afterrender: function (btn) {
-                                    addTooltip(btn, 'Ver Órdenes de Venta Nuevas');
+                                    addTooltip(btn, 'Ver Ã“rdenes de Venta Nuevas');
                                 }
                             }
                         },
@@ -1530,10 +1530,10 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                 };
                                 Ext.Msg.show({
                                     title: 'Generar Excel',
-                                    message: '¿Desea exportar la página actual o todos los registros existentes?',
+                                    message: 'Â¿Desea exportar la pÃ¡gina actual o todos los registros existentes?',
                                     buttons: Ext.MessageBox.YESNO,
                                     buttonText: {
-                                        yes: 'Página actual',
+                                        yes: 'PÃ¡gina actual',
                                         no: 'Todos los registros'
                                     },
                                     icon: Ext.MessageBox.QUESTION,
@@ -1544,7 +1544,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                         } else if (btn === 'no') {
                                             OrdenesVentaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
+                                            console.log('Se cerrÃ³ la ventana sin hacer clic en ningÃºn botÃ³n');
                                         }
                                     }
                                 });
@@ -1674,7 +1674,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
                                             title: "Central de Ventas",
-                                            msg: '¿Estás seguro que deseas Crear la lista de empaque para el registro ' + record.data.OVID + ' ?',
+                                            msg: 'Â¿EstÃ¡s seguro que deseas Crear la lista de empaque para el registro ' + record.data.OVID + ' ?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,
                                             fn: function (btn) {
@@ -1732,13 +1732,13 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                         },
                         {
                             xtype: 'actioncolumn',
-                            text: 'Confirmar Envío',
+                            text: 'Confirmar EnvÃ­o',
                             width: 90,
                             align: 'center',
 //                            iconCls: 'icn-habilita',
                             items: [
                                 {
-                                    tooltip: 'Confirmar Envío',
+                                    tooltip: 'Confirmar EnvÃ­o',
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("preestatus");
                                         return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado"
@@ -1798,7 +1798,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                         },
                         afterrender: function (grid) {
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la bÃºsqueda se ha ejecutado
                                 OrdenesVentaUtils.BtnBusqOrdenVenta();
                             }
                         },
@@ -1809,8 +1809,8 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                 xtype: 'pagingtoolbar',
                 store: me.storeOrdenesVenta,
                 displayInfo: true,
-                displayMsg: 'Mostrando {0} - {1} de {2} órdenes',
-                emptyMsg: "No hay órdenes para mostrar"
+                displayMsg: 'Mostrando {0} - {1} de {2} Ã³rdenes',
+                emptyMsg: "No hay Ã³rdenes para mostrar"
             },
             features: [
                 {

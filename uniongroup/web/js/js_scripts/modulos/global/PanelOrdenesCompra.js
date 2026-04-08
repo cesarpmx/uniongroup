@@ -43,7 +43,7 @@ Ext.define('OrdenesCompraUtils', {
     },
 
     verNuevasOrdenes: function () {
-        // Modelo para las Ûrdenes
+        // Modelo para las √≥rdenes
         if (!Ext.ClassManager.get('modelOrdenesCompraHeader')) {
             Ext.define('modelOrdenesCompraHeader', {
                 extend: 'Ext.data.Model',
@@ -61,7 +61,7 @@ Ext.define('OrdenesCompraUtils', {
             });
         }
 
-        // Store para las Ûrdenes
+        // Store para las √≥rdenes
         var storeOrdenes = Ext.create('Ext.data.Store', {
             model: 'modelOrdenesCompraHeader',
             autoLoad: true,
@@ -80,7 +80,7 @@ Ext.define('OrdenesCompraUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winOrdenesCompra',
-            title: '”rdenes de Compra Nuevas',
+            title: '√ìrdenes de Compra Nuevas',
             width: 1000,
             height: 600,
             scrollable: true,
@@ -115,11 +115,11 @@ Ext.define('OrdenesCompraUtils', {
                                 var selected = grid.getSelection();
 
                                 if (selected.length === 0) {
-                                    Ext.Msg.alert('AtenciÛn', 'Debe seleccionar al menos una orden de compra');
+                                    Ext.Msg.alert('Atenci√≥n', 'Debe seleccionar al menos una orden de compra');
                                     return;
                                 }
 
-                                // ? Pasar solo las Ûrdenes seleccionadas
+                                // ? Pasar solo las √≥rdenes seleccionadas
                                 OrdenesCompraUtils.guardarNuevasOrdenes(selected);
                             }
                         },
@@ -194,7 +194,7 @@ Ext.define('OrdenesCompraUtils', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Total LÌneas",
+                            text: "Total L√≠neas",
                             dataIndex: "TotalLines",
                             width: 120,
                             align: "center",
@@ -239,18 +239,18 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-// ? MODIFICAR PARA ACEPTAR ”RDENES SELECCIONADAS
+// ? MODIFICAR PARA ACEPTAR √ìRDENES SELECCIONADAS
     guardarNuevasOrdenes: function (selectedRecords) {
         var ordenesAGuardar = selectedRecords || [];
         var totalSeleccionadas = ordenesAGuardar.length;
 
         Ext.MessageBox.confirm(
                 'Confirmar',
-                'øEst· seguro de cargar ' + totalSeleccionadas + ' orden(es) de compra seleccionada(s)?',
+                '¬øEst√° seguro de cargar ' + totalSeleccionadas + ' orden(es) de compra seleccionada(s)?',
                 function (btn) {
                     if (btn === 'yes') {
 
-                        Ext.getBody().mask('Obteniendo Ûrdenes de compra...');
+                        Ext.getBody().mask('Obteniendo √≥rdenes de compra...');
 
                         // ? Convertir records a array de objetos planos
                         var ordenesHeader = [];
@@ -267,15 +267,15 @@ Ext.define('OrdenesCompraUtils', {
                             });
                         });
 
-                        console.log('? ”rdenes seleccionadas para guardar:', ordenesHeader.length);
+//                        console.log('? √ìrdenes seleccionadas para guardar:', ordenesHeader.length);
 
                         if (ordenesHeader.length === 0) {
                             Ext.getBody().unmask();
-                            Ext.Msg.alert('InformaciÛn', 'No hay Ûrdenes de compra para procesar');
+                            Ext.Msg.alert('Informaci√≥n', 'No hay √≥rdenes de compra para procesar');
                             return;
                         }
 
-                        // PASO 2: Obtener las lÌneas de cada orden
+                        // PASO 2: Obtener las l√≠neas de cada orden
                         var promises = [];
                         var ordenesCompletas = [];
 
@@ -314,14 +314,14 @@ Ext.define('OrdenesCompraUtils', {
                                     );
                         });
 
-                        // PASO 3: Cuando todas las lÌneas estÈn cargadas, enviar por lotes
+                        // PASO 3: Cuando todas las l√≠neas est√©n cargadas, enviar por lotes
                         Promise.all(promises).then(function () {
                             Ext.getBody().unmask();
                             OrdenesCompraUtils.iniciarEnvioPorLotes(ordenesCompletas);
                         }).catch(function (error) {
                             Ext.getBody().unmask();
-                            console.error('? Error al obtener lÌneas:', error);
-                            Ext.Msg.alert('Error', 'Error al obtener las lÌneas de las Ûrdenes');
+                            console.error('? Error al obtener l√≠neas:', error);
+                            Ext.Msg.alert('Error', 'Error al obtener las l√≠neas de las √≥rdenes');
                         });
                     }
                 }
@@ -338,7 +338,7 @@ Ext.define('OrdenesCompraUtils', {
                 index = 0;
 
         var progressWin = Ext.create('Ext.window.Window', {
-            title: 'Guardando ”rdenes de Compra',
+            title: 'Guardando √ìrdenes de Compra',
             width: 400,
             height: 160,
             modal: true,
@@ -378,7 +378,7 @@ Ext.define('OrdenesCompraUtils', {
                     try {
                         resultado = Ext.decode(response.responseText);
                     } catch (e) {
-                        console.error("JSON inv·lido:", response.responseText);
+                        console.error("JSON inv√°lido:", response.responseText);
                         index += loteSize;
                         if (index < totalOrders) {
                             enviarSiguienteLote();
@@ -414,7 +414,7 @@ Ext.define('OrdenesCompraUtils', {
                             }
                         });
 
-                        // ? CAPTURAR respuesta del cliente (solo se envÌa en el ˙ltimo lote)
+                        // ? CAPTURAR respuesta del cliente (solo se env√≠a en el √∫ltimo lote)
                         if (resultado.clienteResponse) {
                             clienteResponseGlobal = resultado.clienteResponse;
                         }
@@ -425,7 +425,7 @@ Ext.define('OrdenesCompraUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-                        console.log('? ”rdenes Confirmadas:', confirmadosGlobal);
+//                        console.log('? √ìrdenes Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);  // ? PASAR clienteResponse
                     }
                 },
@@ -435,7 +435,7 @@ Ext.define('OrdenesCompraUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-                        console.log('? ”rdenes Confirmadas:', confirmadosGlobal);
+//                        console.log('? √ìrdenes Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);
                     }
                 }
@@ -444,7 +444,7 @@ Ext.define('OrdenesCompraUtils', {
         enviarSiguienteLote();
     },
 
-    mostrarResultados: function (confirmData, noConfirmData, clienteData) {  // ? NUEVO par·metro
+    mostrarResultados: function (confirmData, noConfirmData, clienteData) {  // ? NUEVO par√°metro
         if (!Ext.ClassManager.get('ResultadoOrdenesModel')) {
             Ext.define('ResultadoOrdenesModel', {
                 extend: 'Ext.data.Model',
@@ -465,7 +465,7 @@ Ext.define('OrdenesCompraUtils', {
         var storeCliente = Ext.create('Ext.data.Store', {model: 'ClienteResponseModel', data: clienteData || []});  // ? NUEVO
 
         const win = Ext.create('Ext.window.Window', {
-            title: 'Resultados de SincronizaciÛn - ”rdenes de Compra',
+            title: 'Resultados de Sincronizaci√≥n - √ìrdenes de Compra',
             width: 1000,
             height: 600,
             modal: true,
@@ -474,7 +474,7 @@ Ext.define('OrdenesCompraUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: '…xitos (' + confirmData.length + ')',
+                            title: '√âxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -488,7 +488,7 @@ Ext.define('OrdenesCompraUtils', {
                                         {text: 'Cliente', dataIndex: 'NumAtCard', width: 150, flex: 1},
                                         {text: 'Proveedor', dataIndex: 'CardCode', width: 120},
                                         {
-                                            text: 'LÌneas OK',
+                                            text: 'L√≠neas OK',
                                             dataIndex: 'linesInserted',
                                             width: 100,
                                             align: 'center',
@@ -497,7 +497,7 @@ Ext.define('OrdenesCompraUtils', {
                                             }
                                         },
                                         {
-                                            text: 'LÌneas Error',
+                                            text: 'L√≠neas Error',
                                             dataIndex: 'linesFailed',
                                             width: 100,
                                             align: 'center',
@@ -532,9 +532,9 @@ Ext.define('OrdenesCompraUtils', {
                                     viewConfig: {stripeRows: true}
                                 }]
                         },
-                        // ? NUEVO TAB: ConfirmaciÛn Cliente
+                        // ? NUEVO TAB: Confirmaci√≥n Cliente
                         {
-                            title: 'ConfirmaciÛn Cliente (' + (clienteData ? clienteData.length : 0) + ')',
+                            title: 'Confirmaci√≥n Cliente (' + (clienteData ? clienteData.length : 0) + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check',
                             items: [{
@@ -586,14 +586,14 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-    // ? FunciÛn para abrir modal de LÕNEAS (API externo)
+    // ? Funci√≥n para abrir modal de L√çNEAS (API externo)
     verLineasOrden: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
         var cardCode = record.get('CardCode');
         var totalLines = record.get('TotalLines');
 
-        // Modelo para las lÌneas
+        // Modelo para las l√≠neas
         if (!Ext.ClassManager.get('modelLineasOrden')) {
             Ext.define('modelLineasOrden', {
                 extend: 'Ext.data.Model',
@@ -606,7 +606,7 @@ Ext.define('OrdenesCompraUtils', {
             });
         }
 
-        // Store para las lÌneas
+        // Store para las l√≠neas
         var storeLineas = Ext.create('Ext.data.Store', {
             model: 'modelLineasOrden',
             leadingBufferZone: 100,
@@ -629,10 +629,10 @@ Ext.define('OrdenesCompraUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' lÌneas para orden #' + docNum);
+//                        console.log('? Cargadas ' + records.length + ' l√≠neas para orden #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' lÌneas',
-                            title: '…xito',
+                            html: 'Se cargaron ' + records.length + ' l√≠neas',
+                            title: '√âxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -644,7 +644,7 @@ Ext.define('OrdenesCompraUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrden',
-            title: 'LÌneas de Orden #' + docNum + ' - Proveedor: ' + cardCode,
+            title: 'L√≠neas de Orden #' + docNum + ' - Proveedor: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -664,7 +664,7 @@ Ext.define('OrdenesCompraUtils', {
                     tbar: [
                         {
                             xtype: 'displayfield',
-                            value: '<b>Total de lÌneas: ' + totalLines + '</b>',
+                            value: '<b>Total de l√≠neas: ' + totalLines + '</b>',
                             fieldStyle: 'font-size: 14px; color: #2196F3;'
                         },
                         '->',
@@ -693,7 +693,7 @@ Ext.define('OrdenesCompraUtils', {
                             align: "center"
                         },
                         {
-                            text: "LÌnea",
+                            text: "L√≠nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -703,14 +703,14 @@ Ext.define('OrdenesCompraUtils', {
                             }
                         },
                         {
-                            text: "CÛdigo",
+                            text: "C√≥digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "CÛdigo de Barras",
+                            text: "C√≥digo de Barras",
                             dataIndex: "BarCode",
                             width: 250,
                             flex: 1,
@@ -747,7 +747,7 @@ Ext.define('OrdenesCompraUtils', {
             Ext.define('modelLineasOrdenLocal', {
                 extend: 'Ext.data.Model',
                 fields: [
-                    {name: "LineNum", type: 'int'}, // ? May˙sculas
+                    {name: "LineNum", type: 'int'}, // ? May√∫sculas
                     "ItemCode",
                     "BarCode",
                     {name: "Quantity", type: 'int'},
@@ -759,7 +759,7 @@ Ext.define('OrdenesCompraUtils', {
             });
         }
 
-        // Store para las lÌneas LOCALES
+        // Store para las l√≠neas LOCALES
         var storeLineas = Ext.create('Ext.data.Store', {
             model: 'modelLineasOrdenLocal',
             leadingBufferZone: 100,
@@ -785,10 +785,10 @@ Ext.define('OrdenesCompraUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' lÌneas locales para orden #' + docNum);
+//                        console.log('? Cargadas ' + records.length + ' l√≠neas locales para orden #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' lÌneas',
-                            title: '…xito',
+                            html: 'Se cargaron ' + records.length + ' l√≠neas',
+                            title: '√âxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -800,7 +800,7 @@ Ext.define('OrdenesCompraUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasOrdenLocal',
-            title: 'LÌneas de Orden #' + docNum + ' - Proveedor: ' + cardCode,
+            title: 'L√≠neas de Orden #' + docNum + ' - Proveedor: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -845,12 +845,12 @@ Ext.define('OrdenesCompraUtils', {
                         xtype: 'pagingtoolbar',
                         store: storeLineas,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} lÌneas',
-                        emptyMsg: "No hay Ûrdenes para mostrar",
-                        beforePageText: 'P·gina',
+                        displayMsg: 'Mostrando {0} - {1} de {2} l√≠neas',
+                        emptyMsg: "No hay √≥rdenes para mostrar",
+                        beforePageText: 'P√°gina',
                         afterPageText: 'de {0}',
-                        firstText: 'Primera p·gina',
-                        lastText: '⁄ltima p·gina',
+                        firstText: 'Primera p√°gina',
+                        lastText: '√öltima p√°gina',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -870,7 +870,7 @@ Ext.define('OrdenesCompraUtils', {
                             align: "center"
                         },
                         {
-                            text: "LÌnea",
+                            text: "L√≠nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -880,14 +880,14 @@ Ext.define('OrdenesCompraUtils', {
                             }
                         },
                         {
-                            text: "CÛdigo",
+                            text: "C√≥digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "CÛdigo de Barras",
+                            text: "C√≥digo de Barras",
                             dataIndex: "BarCode",
                             width: 250,
                             flex: 1,
@@ -931,7 +931,7 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar par·metro silent
+    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar par√°metro silent
         var payload = {
             OCID: ocid,
             OCEstatusId: "A",
@@ -962,7 +962,7 @@ Ext.define('OrdenesCompraUtils', {
                     });
                 } else {
                     // ? Si es silencioso, solo refrescar el grid
-                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
+//                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
                 }
             },
             failure: function (response, opts) {
@@ -977,223 +977,14 @@ Ext.define('OrdenesCompraUtils', {
         });
     },
 
-//    enviarReceiptConfirm: function (record) {
-//        var docEntry = record.get("DocEntry");
-//        var docNum = record.get("DocNum");
-//        var numAtCard = record.get("NumAtCard");
-//        var comid = record.get("comid");
-//
-//        console.log(comid)
-//        console.log(record)
-//
-//        var totalPedido = 0;
-//        var totalRecibido = 0;
-//
-//        // ================= VENTANA PARA SELECCIONAR ESTATUS =================
-//        var statusCombo = Ext.create('Ext.form.field.ComboBox', {
-//            fieldLabel: 'Estatus de RecepciÛn',
-//            name: 'status',
-//            store: Ext.create('Ext.data.Store', {
-//                fields: ['value', 'text'],
-//                data: [
-//                    {value: 'Completa', text: 'Completa'},
-//                    {value: 'Parcial', text: 'Parcial'},
-//                    {value: 'Cancelada', text: 'Cancelada'}
-//                ]
-//            }),
-//            queryMode: 'local',
-//            displayField: 'text',
-//            valueField: 'value',
-//            editable: false,
-//            allowBlank: false,
-//            value: 'Completa',
-//            labelWidth: 150,
-//            width: 350
-//        });
-//
-//        var memoField = Ext.create('Ext.form.field.TextArea', {
-//            fieldLabel: 'Observaciones',
-//            name: 'memo',
-//            value: 'RecepciÛn desde sistema local',
-//            labelWidth: 150,
-//            width: 350,
-//            height: 60
-//        });
-//
-//        var win = Ext.create('Ext.window.Window', {
-//            title: 'Confirmar RecepciÛn - ' + docNum,
-//            modal: true,
-//            width: 400,
-//            layout: 'fit',
-//            items: [{
-//                    xtype: 'form',
-//                    bodyPadding: 15,
-//                    items: [statusCombo, memoField],
-//                    buttons: [
-//                        {
-//                            text: 'Cancelar',
-//                            handler: function () {
-//                                win.close();
-//                            }
-//                        },
-//                        {
-//                            text: 'Confirmar RecepciÛn',
-//                            formBind: true,
-//                            handler: function () {
-//                                var selectedStatus = statusCombo.getValue();
-//                                var memoText = memoField.getValue();
-//
-//                                if (!selectedStatus) {
-//                                    Ext.Msg.alert('Error', 'Debe seleccionar un estatus');
-//                                    return;
-//                                }
-//
-//                                win.close();
-//
-//                                // ================= CONTINUAR CON EL FLUJO =================
-//                                var transactionNumber = comid;
-//                                var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
-//
-//                                Ext.getBody().mask('Procesando confirmaciÛn de recepciÛn...');
-//
-//                                // ================= OBTENER LÕNEAS DESDE TU BD =================
-//                                Ext.Ajax.request({
-//                                    url: contexto + "/OrdenesCompra",
-//                                    method: "POST",
-//                                    params: {
-//                                        busqBnd: 5,
-//                                        docEntry: docEntry,
-//                                        servicio: 'ServiceOrdenCompraDet'
-//                                    },
-//                                    success: function (resp) {
-//                                        var data = Ext.decode(resp.responseText);
-//                                        var lines = [];
-//                                        var totalQty = 0;
-//
-//                                        Ext.Array.each(data.items, function (line) {
-//                                            totalQty += line.receivedquantity;
-//                                            lines.push({
-//                                                LineNum: line.LineNum,
-//                                                ItemCode: line.ItemCode,
-//                                                BarCode: line.BarCode,
-//                                                Quantity: line.receivedquantity
-//                                            });
-//                                        });
-//
-//                                        // ================= JSON FINAL =================
-//                                        var jsonSend = {
-//                                            ReceiptConfirm: {
-//                                                DocDate: docDate,
-//                                                DocNum: docNum,
-//                                                NumAtCard: numAtCard,
-//                                                TransactionNumber: transactionNumber,
-//                                                Status: selectedStatus,
-//                                                Memo: memoText
-//                                            },
-//                                            ControlValues: {
-//                                                TotalQuantity: totalQty,
-//                                                TotalLines: lines.length
-//                                            },
-//                                            Lines: lines
-//                                        };
-//
-//                                        console.log("? JSON ReceiptConfirm:");
-//                                        console.log(JSON.stringify(jsonSend, null, 4));
-//
-//                                        // ================= ENVIAR AL SERVLET =================
-//                                        Ext.Ajax.request({
-//                                            url: contexto + "/OrdenesCompra",
-//                                            method: "POST",
-//                                            params: {
-//                                                busqBnd: 6,
-//                                                valores: Ext.encode(jsonSend)
-//                                            },
-//                                            success: function (response) {
-//                                                Ext.getBody().unmask();
-//
-//                                                try {
-//                                                    var resultado = Ext.decode(response.responseText);
-//
-//                                                    if (resultado.success) {
-//                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
-//
-//                                                        var ocid = record.get("OCID");
-//                                                        OrdenesCompraUtils.ConfirmarOrdenCompra(ocid, true);  // ? Pasar true para silencioso
-//
-//                                                        // ? EXTRAER VALORES
-//                                                        var docNum = 'N/A';
-//                                                        var systemDate = 'N/A';
-//                                                        var statusMensaje = 'N/A';
-//
-//                                                        if (resultado.clienteResponse) {
-//                                                            docNum = resultado.clienteResponse.DocNum || 'N/A';
-//                                                            systemDate = resultado.clienteResponse.SystemDate || 'N/A';
-//
-//                                                            if (resultado.clienteResponse.StatusInfo) {
-//                                                                statusMensaje = resultado.clienteResponse.StatusInfo.Mensaje || 'N/A';
-//                                                            }
-//                                                        }
-//
-//                                                        // Formatear fecha
-//                                                        var fechaFormateada = systemDate;
-//                                                        if (systemDate !== 'N/A') {
-//                                                            try {
-//                                                                fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
-//                                                            } catch (e) {
-//                                                                fechaFormateada = systemDate;
-//                                                            }
-//                                                        }
-//
-//                                                        // ? ESTE ES EL ⁄NICO MENSAJE QUE APARECER¡
-//                                                        Ext.Msg.alert(
-//                                                                '…xito',
-//                                                                '<b>Orden:</b> ' + docNum + '<br>' +
-//                                                                '<b>Fecha:</b> ' + fechaFormateada + '<br>' +
-//                                                                '<b>Estado:</b> ' + statusMensaje,
-//                                                                function () {
-//                                                                    OrdenesCompraUtils.BtnBusqOrdenCompra();
-//                                                                }
-//                                                        );
-//                                                    } else {
-//                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmaciÛn');
-//                                                    }
-//                                                } catch (e) {
-//                                                    console.error("Error al parsear respuesta:", e);
-//                                                    Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor');
-//                                                }
-//                                            },
-//                                            failure: function (response) {
-//                                                Ext.getBody().unmask();
-//                                                console.error("? Error al enviar ReceiptConfirm:", response);
-//                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÛn de recepciÛn');
-//                                            }
-//                                        });
-//                                    },
-//                                    failure: function () {
-//                                        Ext.getBody().unmask();
-//                                        Ext.Msg.alert("Error", "No se pudieron cargar lÌneas para ReceiptConfirm");
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    ]
-//                }]
-//        });
-//
-//        win.show();
-//    },
-
     enviarReceiptConfirm: function (record) {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
         var numAtCard = record.get("NumAtCard");
         var comid = record.get("comid");
 
-        console.log(comid);
-        console.log(record);
-
-        // ? PRIMERO: Obtener lÌneas y calcular estatus
-        Ext.getBody().mask('Calculando estatus de recepciÛn...');
+        // ? PRIMERO: Obtener l√≠neas y calcular estatus
+        Ext.getBody().mask('Calculando estatus de recepci√≥n...');
 
         Ext.Ajax.request({
             url: contexto + "/OrdenesCompra",
@@ -1220,7 +1011,7 @@ Ext.define('OrdenesCompraUtils', {
                     totalRecibido += parseFloat(linea.receivedquantity) || 0;
                 });
 
-                // ? CALCULAR ESTATUS AUTOM¡TICO
+                // ? CALCULAR ESTATUS AUTOM√ÅTICO
                 var estatusCalculado = '';
                 if (totalRecibido === 0) {
                     estatusCalculado = 'Cancelada';
@@ -1230,13 +1021,13 @@ Ext.define('OrdenesCompraUtils', {
                     estatusCalculado = 'Parcial';
                 }
 
-                console.log('? Total Pedido:', totalPedido);
-                console.log('? Total Recibido:', totalRecibido);
-                console.log('? Estatus Calculado:', estatusCalculado);
+//                console.log('? Total Pedido:', totalPedido);
+//                console.log('? Total Recibido:', totalRecibido);
+//                console.log('? Estatus Calculado:', estatusCalculado);
 
                 // ================= VENTANA PARA CONFIRMAR =================
                 var statusCombo = Ext.create('Ext.form.field.ComboBox', {
-                    fieldLabel: 'Estatus de RecepciÛn',
+                    fieldLabel: 'Estatus de Recepci√≥n',
                     name: 'status',
                     readOnly: true,
                     store: Ext.create('Ext.data.Store', {
@@ -1268,7 +1059,7 @@ Ext.define('OrdenesCompraUtils', {
                 });
 
                 var win = Ext.create('Ext.window.Window', {
-                    title: 'Confirmar RecepciÛn - ' + docNum,
+                    title: 'Confirmar Recepci√≥n - ' + docNum,
                     modal: true,
                     width: 450,
                     layout: 'fit',
@@ -1330,7 +1121,7 @@ Ext.define('OrdenesCompraUtils', {
                                     }
                                 },
                                 {
-                                    text: 'Confirmar RecepciÛn',
+                                    text: 'Confirmar Recepci√≥n',
                                     iconCls: 'fa fa-check',
                                     formBind: true,
                                     handler: function () {
@@ -1343,9 +1134,9 @@ Ext.define('OrdenesCompraUtils', {
                                         var transactionNumber = comid;
                                         var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
 
-                                        Ext.getBody().mask('Procesando confirmaciÛn de recepciÛn...');
+                                        Ext.getBody().mask('Procesando confirmaci√≥n de recepci√≥n...');
 
-                                        // ? CONSTRUIR LÕNEAS CON RECEIVED QUANTITY
+                                        // ? CONSTRUIR L√çNEAS CON RECEIVED QUANTITY
                                         var lines = [];
                                         var totalQty = 0;
 
@@ -1378,8 +1169,8 @@ Ext.define('OrdenesCompraUtils', {
                                             Lines: lines
                                         };
 
-                                        console.log("? JSON ReceiptConfirm:");
-                                        console.log(JSON.stringify(jsonSend, null, 4));
+//                                        console.log("? JSON ReceiptConfirm:");
+//                                        console.log(JSON.stringify(jsonSend, null, 4));
 
                                         // ================= ENVIAR AL SERVLET =================
                                         Ext.Ajax.request({
@@ -1396,7 +1187,7 @@ Ext.define('OrdenesCompraUtils', {
                                                     var resultado = Ext.decode(response.responseText);
 
                                                     if (resultado.success) {
-                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
+//                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
 
                                                         var ocid = record.get("OCID");
                                                         OrdenesCompraUtils.ConfirmarOrdenCompra(ocid, true); // ? Silencioso
@@ -1426,7 +1217,7 @@ Ext.define('OrdenesCompraUtils', {
                                                         }
 
                                                         // ? MENSAJE FINAL
-                                                        var msg = 'ConfirmaciÛn de recepciÛn procesada exitosamente<br><br>';
+                                                        var msg = 'Confirmaci√≥n de recepci√≥n procesada exitosamente<br><br>';
                                                         msg += '<b>Orden:</b> ' + docNum + '<br>';
                                                         msg += '<b>ID Compra:</b> ' + comid + '<br>';
                                                         msg += '<b>Estatus:</b> ' + selectedStatus + '<br>';
@@ -1435,11 +1226,11 @@ Ext.define('OrdenesCompraUtils', {
                                                         msg += '<b>Fecha:</b> ' + fechaFormateada + '<br>';
                                                         msg += '<b>Estado:</b> ' + statusMensaje;
 
-                                                        Ext.Msg.alert('…xito', msg, function () {
+                                                        Ext.Msg.alert('√âxito', msg, function () {
                                                             OrdenesCompraUtils.BtnBusqOrdenCompra();
                                                         });
                                                     } else {
-                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmaciÛn');
+                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmaci√≥n');
                                                     }
                                                 } catch (e) {
                                                     console.error("Error al parsear respuesta:", e);
@@ -1449,7 +1240,7 @@ Ext.define('OrdenesCompraUtils', {
                                             failure: function (response) {
                                                 Ext.getBody().unmask();
                                                 console.error("? Error al enviar ReceiptConfirm:", response);
-                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÛn de recepciÛn');
+                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaci√≥n de recepci√≥n');
                                             }
                                         });
                                     }
@@ -1462,7 +1253,7 @@ Ext.define('OrdenesCompraUtils', {
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert("Error", "No se pudieron cargar lÌneas para calcular recepciÛn");
+                Ext.Msg.alert("Error", "No se pudieron cargar l√≠neas para calcular recepci√≥n");
             }
         });
     },
@@ -1534,7 +1325,7 @@ Ext.define('OrdenesCompraUtils', {
 
 });
 
-// ? Panel principal - UNA SOLA DEFINICI”N
+// ? Panel principal - UNA SOLA DEFINICI√ìN
 Ext.define('Modulos.global.PanelOrdenesCompra', {
     extend: 'Ext.form.Panel',
     requires: [
@@ -1731,7 +1522,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             },
                             listeners: {
                                 afterrender: function (btn) {
-                                    addTooltip(btn, 'Ver ”rdenes de Compra Nuevas');
+                                    addTooltip(btn, 'Ver √ìrdenes de Compra Nuevas');
                                 }
                             }
                         },
@@ -1760,10 +1551,10 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                 };
                                 Ext.Msg.show({
                                     title: 'Generar Excel',
-                                    message: 'øDesea exportar la p·gina actual o todos los registros existentes?',
+                                    message: '¬øDesea exportar la p√°gina actual o todos los registros existentes?',
                                     buttons: Ext.MessageBox.YESNO,
                                     buttonText: {
-                                        yes: 'P·gina actual',
+                                        yes: 'P√°gina actual',
                                         no: 'Todos los registros'
                                     },
                                     icon: Ext.MessageBox.QUESTION,
@@ -1774,7 +1565,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                         } else if (btn === 'no') {
                                             OrdenesCompraUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerrÛ la ventana sin hacer clic en ning˙n botÛn');
+                                            console.log('Se cerr√≥ la ventana sin hacer clic en ning√∫n bot√≥n');
                                         }
                                     }
                                 });
@@ -1804,8 +1595,8 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         xtype: 'pagingtoolbar',
                         store: me.storeOrdenesCompra,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} Ûrdenes',
-                        emptyMsg: "No hay Ûrdenes para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} √≥rdenes',
+                        emptyMsg: "No hay √≥rdenes para mostrar"
                     },
                     columns: [
                         {
@@ -1828,7 +1619,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             width: 150,
                             filter: {type: 'string'},
                             renderer: function (value) {
-                                // ? Mapeo de cÛdigos a nombres
+                                // ? Mapeo de c√≥digos a nombres
                                 var estatusMap = {
                                     'A': 'Activo',
                                     'C': 'Confirmado',
@@ -1838,7 +1629,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
 
                                 var nombre = estatusMap[value] || value;
 
-                                // ? Opcional: Agregar colores seg˙n estatus
+                                // ? Opcional: Agregar colores seg√∫n estatus
                                 var color = '';
                                 switch (value) {
                                     case 'A':
@@ -2005,7 +1796,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                         },
                         afterrender: function (grid) {
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la b˙squeda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la b√∫squeda se ha ejecutado
                                 OrdenesCompraUtils.BtnBusqOrdenCompra();
                             }
                         },

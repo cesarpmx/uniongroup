@@ -15,9 +15,9 @@ import java.util.GregorianCalendar;
 public class StringUtilities {
 
     /**
-     *Toma un string y convierte a mayúscula la primera letra y 
-     * las demás letras las convierte a minúscula.
-     * (Método para nombres y apellidos)
+     *Toma un string y convierte a mayÃºscula la primera letra y 
+     * las demÃ¡s letras las convierte a minÃºscula.
+     * (MÃ©todo para nombres y apellidos)
      *@params String palabra La palabra a convertir
      *@return String palabara_nueva La palabra convertida.
      **/
@@ -79,10 +79,10 @@ public class StringUtilities {
         str_dia[0] = " Domingo, ";
         str_dia[1] = " Lunes, ";
         str_dia[2] = " Martes, ";
-        str_dia[3] = " Miércoles, ";
+        str_dia[3] = " MiÃ©rcoles, ";
         str_dia[4] = " Jueves, ";
         str_dia[5] = " Viernes, ";
-        str_dia[6] = " Sábado, ";
+        str_dia[6] = " SÃ¡bado, ";
         return str_dia[int_dia] + str_dat.substring(8, 10) + str_mes[Integer.parseInt(str_dat.substring(5, 7)) - 1] + str_dat.substring(0, 4);
     }
     static String[] letras = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",};

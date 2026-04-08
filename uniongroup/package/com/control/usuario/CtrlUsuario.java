@@ -208,7 +208,7 @@ public class CtrlUsuario extends HttpServlet {
         } catch (Exception e) {
             String originalMessage = e.getMessage();
 
-            // Aqu� puedes usar una expresi�n regular para extraer el mensaje que te interesa
+            // Aquí puedes usar una expresión regular para extraer el mensaje que te interesa
             String extractedMessage = null;
             Pattern pattern = Pattern.compile("\"message\":\"(.*?)\"");
             Matcher matcher = pattern.matcher(originalMessage);
@@ -219,9 +219,9 @@ public class CtrlUsuario extends HttpServlet {
                 extractedMessage = "Error del sistema."; // Mensaje por defecto
             }
 
-            // Crear el objeto de error con el mensaje extra�do
+            // Crear el objeto de error con el mensaje extraído
             _error.success = false;
-            _error.message = extractedMessage; // Aqu� usas el mensaje espec�fico
+            _error.message = extractedMessage; // Aquí usas el mensaje específico
             strJson = new ObjectMapper().writeValueAsString(_error);
 
             e.printStackTrace();
@@ -323,7 +323,7 @@ public class CtrlUsuario extends HttpServlet {
           HttpSession session = request.getSession(true);
           if (session.getAttribute("Menu") != null) {
               ArrayList<Item> modulos = (ArrayList<Item>) session.getAttribute("Menu");
-              // Construir �rbol completo desde la ra�z (modpadre = 0)
+              // Construir árbol completo desde la raíz (modpadre = 0)
               ArrayList<Child> raiz = construirArbolModulos(modulos, 0);
               Menu menu = new Menu();
               menu.id = 0;
@@ -341,19 +341,19 @@ public class CtrlUsuario extends HttpServlet {
     private ArrayList<Child> construirArbolModulos(ArrayList<Item> modulos, int padreId) {
       ArrayList<Child> children = new ArrayList<Child>();
       for (Item item : modulos) {
-          // Convertir null a 0 para comparaci�n
+          // Convertir null a 0 para comparación
           int modPadre = (item.modpadre == null) ? 0 : item.modpadre;
           if (modPadre == padreId) {
               Child child = new Child();
               child.id = item.umomodid;
               child.text = item.modnombre;
-              // Si el icono est� vac�o, usar icono por defecto
+              // Si el icono está vacío, usar icono por defecto
               if (item.modicono == null || item.modicono.trim().isEmpty()) {
                   child.iconCls = "icn-box";
               } else {
                   child.iconCls = item.modicono;
               }
-              // Recursi�n: buscar hijos de este nodo
+              // Recursión: buscar hijos de este nodo
               ArrayList<Child> hijos = construirArbolModulos(modulos, item.umomodid);
               if (hijos.isEmpty()) {
                   child.leaf = true;
@@ -570,7 +570,7 @@ public class CtrlUsuario extends HttpServlet {
                 em.persist(uhv2);
                 UsuarioHorarioVariable uhv3 = new UsuarioHorarioVariable();
                 uhv3.setUhvIdUsuario(u);
-                uhv3.setUhvNomDiaSemana("Mi�rcoles");
+                uhv3.setUhvNomDiaSemana("Miï¿½rcoles");
                 uhv3.setUhvNumDiaSemana(3);
                 em.persist(uhv3);
                 uhv3.setUhvIdHorario(em.getReference(UsuarioHorario.class, 1));
@@ -588,7 +588,7 @@ public class CtrlUsuario extends HttpServlet {
                 em.persist(uhv5);
                 UsuarioHorarioVariable uhv6 = new UsuarioHorarioVariable();
                 uhv6.setUhvIdUsuario(u);
-                uhv6.setUhvNomDiaSemana("S�bado");
+                uhv6.setUhvNomDiaSemana("Sï¿½bado");
                 uhv6.setUhvNumDiaSemana(6);
                 uhv6.setUhvIdHorario(em.getReference(UsuarioHorario.class, 4));
                 em.persist(uhv6);
@@ -607,7 +607,7 @@ public class CtrlUsuario extends HttpServlet {
                 em.persist(uhv2);
                 UsuarioHorarioVariable uhv3 = new UsuarioHorarioVariable();
                 uhv3.setUhvIdUsuario(u);
-                uhv3.setUhvNomDiaSemana("Mi�rcoles");
+                uhv3.setUhvNomDiaSemana("Miï¿½rcoles");
                 uhv3.setUhvNumDiaSemana(3);
                 em.persist(uhv3);
                 uhv3.setUhvIdHorario(em.getReference(UsuarioHorario.class, 3));
@@ -625,19 +625,19 @@ public class CtrlUsuario extends HttpServlet {
                 em.persist(uhv5);
                 UsuarioHorarioVariable uhv6 = new UsuarioHorarioVariable();
                 uhv6.setUhvIdUsuario(u);
-                uhv6.setUhvNomDiaSemana("S�bado");
+                uhv6.setUhvNomDiaSemana("Sï¿½bado");
                 uhv6.setUhvNumDiaSemana(6);
                 uhv6.setUhvIdHorario(em.getReference(UsuarioHorario.class, 3));//3
                 em.persist(uhv6);
                 }*/
                 em.getTransaction().commit();
-                strUsr = "{success:true,msg:'El usuario se registr� con Exito',funcion:IniciarAccion('pnlTreeAccionesADM',false,false,'pnlCenter',new com.punto.pen.PanelBienvenida({msg:'Administrador'}))}";
+                strUsr = "{success:true,msg:'El usuario se registrï¿½ con Exito',funcion:IniciarAccion('pnlTreeAccionesADM',false,false,'pnlCenter',new com.punto.pen.PanelBienvenida({msg:'Administrador'}))}";
             }
 
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-            strUsr = "{success:false,msg:'Hubo un error en el servidor, int�ntelo de nuevo.'}";
+            strUsr = "{success:false,msg:'Hubo un error en el servidor, intï¿½ntelo de nuevo.'}";
         } finally {
             HibernateUtil.closeSession();
         }
@@ -690,7 +690,7 @@ public class CtrlUsuario extends HttpServlet {
     }
 
     public String setModificaUsuario(HttpServletRequest request) {
-        String json = "{success:false,msg:'Hubo un error en el servidor, int�ntelo de nuevo.'}";
+        String json = "{success:false,msg:'Hubo un error en el servidor, intï¿½ntelo de nuevo.'}";
         EntityManager em = (EntityManager) HibernateUtil.getEntityManager();
         String id_usr = "";
         try {
@@ -745,12 +745,12 @@ public class CtrlUsuario extends HttpServlet {
 
                     em.getTransaction().commit();
                 }
-                json = "{" + "success:true,msg:'Se actualiz� la informaci�n con Exito'," + "wnd:'" + Utilities.obtenParametro(request, "wnd") + "'," + "funcion:" + Utilities.obtenParametro(request, "fnc") + "" + "}";
+                json = "{" + "success:true,msg:'Se actualizï¿½ la informaciï¿½n con Exito'," + "wnd:'" + Utilities.obtenParametro(request, "wnd") + "'," + "funcion:" + Utilities.obtenParametro(request, "fnc") + "" + "}";
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-            json = "{success:false,msg:'Hubo un error en el servidor, int�ntelo de nuevo.'}";
+            json = "{success:false,msg:'Hubo un error en el servidor, intï¿½ntelo de nuevo.'}";
         } finally {
             HibernateUtil.closeSession();
         }
@@ -790,17 +790,17 @@ public class CtrlUsuario extends HttpServlet {
     }
 
     public String recuperarUsuarioValido(HttpServletRequest request, HttpServletResponse response) {
-        String strJson = "{success: false,msg: 'El usuario no existe o la informaci�n es incorrecta.'}";
+        String strJson = "{success: false,msg: 'El usuario no existe o la informaciï¿½n es incorrecta.'}";
         try {
             HttpSession session = request.getSession(true);
             Integer idUsuario = this.obtenUsuario(request);
             if (idUsuario != null) {
                 session.setAttribute("usuario", idUsuario);
 //                session.setAttribute("modulos", this.obtenModulosUsuario(request));
-                strJson = "{success: true,msg: 'Se recupero la Sesi�n con Exito.'}";
+                strJson = "{success: true,msg: 'Se recupero la Sesiï¿½n con Exito.'}";
             }
         } catch (Exception e) {
-            strJson = "{success: false,msg: 'El usuario no existe o la informaci�n es incorrecta.'}";
+            strJson = "{success: false,msg: 'El usuario no existe o la informaciï¿½n es incorrecta.'}";
             e.printStackTrace();
         } finally {
             HibernateUtil.closeSession();

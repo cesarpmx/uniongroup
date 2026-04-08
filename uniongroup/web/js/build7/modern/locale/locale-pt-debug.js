@@ -46,7 +46,7 @@ Ext.define('Ext.locale.pt.Panel', {
                 text: 'Sim'
             },
             no: {
-                text: 'Não'
+                text: 'NÃ£o'
             },
             cancel: {
                 text: 'Cancelar'
@@ -75,8 +75,8 @@ Ext.define('Ext.locale.pt.picker.Date', {
     override: 'Ext.picker.Date',
 
     config: {
-        doneButton: 'Disponível',
-        monthText: 'Mês',
+        doneButton: 'DisponÃ­vel',
+        monthText: 'MÃªs',
         dayText: 'Dia',
         yearText: 'Ano'
     }
@@ -95,8 +95,8 @@ Ext.define('Ext.locale.pt.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Proximo Mês (Control+Direita)',
-        prevText: 'Mês Anterior (Control+Esquerda)',
+        nextText: 'Proximo MÃªs (Control+Direita)',
+        prevText: 'MÃªs Anterior (Control+Esquerda)',
         buttons: {
             footerTodayButton: {
                 text: "Hoje"
@@ -118,27 +118,27 @@ Ext.define('Ext.locale.pt.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Este campo é necessário',
-        validationMessage: 'Está com formato errado'
+        requiredMessage: 'Este campo Ã© necessÃ¡rio',
+        validationMessage: 'EstÃ¡ com formato errado'
     }
 });
 
 Ext.define('Ext.locale.pt.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'O valor máximo de decimais é {0}',
-    minValueText: 'O valor mínimo para esse campo é {0}',
-    maxValueText: 'O valor máximo para esse campo é {0}',
-    badFormatMessage: 'Valor não é um número válido'
+    decimalsText: 'O valor mÃ¡ximo de decimais Ã© {0}',
+    minValueText: 'O valor mÃ­nimo para esse campo Ã© {0}',
+    maxValueText: 'O valor mÃ¡ximo para esse campo Ã© {0}',
+    badFormatMessage: 'Valor nÃ£o Ã© um nÃºmero vÃ¡lido'
 });
 
 Ext.define('Ext.locale.pt.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Valor não está no formato desejado',
+    badFormatMessage: 'Valor nÃ£o estÃ¡ no formato desejado',
     config: {
-        requiredMessage: 'Este campo é necessário',
-        validationMessage: 'Está com formato errado'
+        requiredMessage: 'Este campo Ã© necessÃ¡rio',
+        validationMessage: 'EstÃ¡ com formato errado'
     }
 });
 
@@ -215,8 +215,8 @@ Ext.define("Ext.locale.pt.dataview.DataView", {
 Ext.define('Ext.locale.pt.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'A data neste campo deve ser igual ou posterior à {0}',
-    maxDateMessage: 'A data neste campo deve ser igual ou anterior à {0}'
+    minDateMessage: 'A data neste campo deve ser igual ou posterior Ã  {0}',
+    maxDateMessage: 'A data neste campo deve ser igual ou anterior Ã  {0}'
 });
 
 Ext.define("Ext.locale.pt.grid.menu.SortAsc", {
@@ -271,7 +271,7 @@ Ext.define('Ext.locale.pt.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'Está com formato errado'
+        message: 'EstÃ¡ com formato errado'
     }
 });
 
@@ -279,7 +279,7 @@ Ext.define('Ext.locale.pt.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'Não é um e-mail válido'
+        message: 'NÃ£o Ã© um e-mail vÃ¡lido'
     }
 });
 
@@ -287,7 +287,7 @@ Ext.define('Ext.locale.pt.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'Não é um telefone válido'
+        message: 'NÃ£o Ã© um telefone vÃ¡lido'
     }
 });
 
@@ -295,7 +295,7 @@ Ext.define('Ext.locale.pt.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: 'Não é um número válido'
+        message: 'NÃ£o Ã© um nÃºmero vÃ¡lido'
     }
 });
 
@@ -303,7 +303,7 @@ Ext.define('Ext.locale.pt.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'Não é uma URL válida'
+        message: 'NÃ£o Ã© uma URL vÃ¡lida'
     }
 });
 
@@ -311,9 +311,9 @@ Ext.define('Ext.locale.pt.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Deve ser numérico',
+        nanMessage: 'Deve ser numÃ©rico',
         minOnlyMessage: 'Deve ser pelo menos {0}',
-        maxOnlyMessage: 'Não deve ser mais que {0}',
+        maxOnlyMessage: 'NÃ£o deve ser mais que {0}',
         bothMessage: 'Deve estar entre {0} e {1}'
     }
 });
@@ -333,7 +333,7 @@ Ext.define('Ext.locale.pt.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'Não é um bloco CIDR válido'
+        message: 'NÃ£o Ã© um bloco CIDR vÃ¡lido'
     }
 });
 
@@ -341,7 +341,7 @@ Ext.define('Ext.locale.pt.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'Não é um bloco CIDR válido'
+        message: 'NÃ£o Ã© um bloco CIDR vÃ¡lido'
     }
 });
 
@@ -349,7 +349,7 @@ Ext.define('Ext.locale.pt.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Não é um valor monetário válido'
+        message: 'NÃ£o Ã© um valor monetÃ¡rio vÃ¡lido'
     }
 
 });
@@ -358,7 +358,7 @@ Ext.define('Ext.locale.pt.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'Não é uma data e hora válida'
+        message: 'NÃ£o Ã© uma data e hora vÃ¡lida'
     }
 });
 
@@ -366,7 +366,7 @@ Ext.define('Ext.locale.pt.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'É um valor que foi excluído'
+        message: 'Ã um valor que foi excluÃ­do'
     }
 });
 
@@ -374,7 +374,7 @@ Ext.define('Ext.locale.pt.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'Não é um endereço IP válido'
+        message: 'NÃ£o Ã© um endereÃ§o IP vÃ¡lido'
     }
 });
 
@@ -382,7 +382,7 @@ Ext.define('Ext.locale.pt.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'Não está na lista de valores válidos'
+        message: 'NÃ£o estÃ¡ na lista de valores vÃ¡lidos'
     }
 });
 
@@ -390,7 +390,7 @@ Ext.define('Ext.locale.pt.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'Não é um momento válido'
+        message: 'NÃ£o Ã© um momento vÃ¡lido'
     }
 });
 
@@ -398,7 +398,7 @@ Ext.define('Ext.locale.pt.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "Não é uma data válida"
+        message: "NÃ£o Ã© uma data vÃ¡lida"
     }
 });
 
@@ -439,7 +439,7 @@ Ext.define("Ext.locale.pt.grid.locked.Grid", {
         columnMenu: {
             items: {
                 region: {
-                    text: 'Região'
+                    text: 'RegiÃ£o'
                 }
             }
         },
