@@ -7,32 +7,32 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["รยกรร’โฌร", "ยกรรลธร’ร“ลธร‘ยนลพรฌ", "รร•ยนร’โฌร", "ร รรร’รยน", "ลธรรร€ร’โฌร", "รร”ยถรยนร’รยน", "ยกรยกยฏร’โฌร", "รร”ยงรร’โฌร", "ยกร‘ยนรร’รยน", "ยตรร…ร’โฌร", "ลธรรลกร”ยกร’รยน", "ลพร‘ยนรร’โฌร"];
+        Ext.Date.monthNames = ["à¸£Âà¸¢à¸à¸£Âà¸£âà¹Âà¸à¸£Â", "à¸¢à¸à¸£Âà¸£Âà¸¥à¸à¸£âà¸£âà¸¥à¸à¸£âà¸¢à¸à¸¥à¸à¸£à¸", "à¸£Âà¸£â¢à¸¢à¸à¸£âà¹Âà¸à¸£Â", "à¸£Â à¸£Âà¸£Âà¸£âà¸£Âà¸¢à¸", "à¸¥à¸à¸£Âà¸£Âà¸£â¬à¸£âà¹Âà¸à¸£Â", "à¸£Âà¸£âà¸¢à¸à¸£Âà¸¢à¸à¸£âà¸£Âà¸¢à¸", "à¸¢à¸à¸£Âà¸¢à¸à¸¢à¸à¸£âà¹Âà¸à¸£Â", "à¸£Âà¸£âà¸¢à¸à¸£Âà¸£âà¹Âà¸à¸£Â", "à¸¢à¸à¸£âà¸¢à¸à¸£Âà¸£âà¸£Âà¸¢à¸", "à¸¢à¸à¸£Âà¸£â¦à¸£âà¹Âà¸à¸£Â", "à¸¥à¸à¸£Âà¸£Âà¸¥à¸à¸£âà¸¢à¸à¸£âà¸£Âà¸¢à¸", "à¸¥à¸à¸£âà¸¢à¸à¸£Âà¸£âà¹Âà¸à¸£Â"];
 
         Ext.Date.getShortMonthName = function(month) {
             return Ext.Date.monthNames[month].substring(0, 3);
         };
 
         Ext.Date.monthNumbers = {
-            "รโฌ": 0,
-            "ยกลธ": 1,
-            "รร•โฌ": 2,
-            "ร รร": 3,
-            "ลธโฌ": 4,
-            "รร”ร": 5,
-            "ยกโฌ": 6,
-            "รโฌ": 7,
-            "ยกร": 8,
-            "ยตโฌ": 9,
-            "ลธร": 10,
-            "ลพโฌ": 11
+            "à¸£Âà¹Âà¸": 0,
+            "à¸¢à¸à¸¥à¸": 1,
+            "à¸£Âà¸£â¢à¹Âà¸": 2,
+            "à¸£Â à¸£Âà¸£Â": 3,
+            "à¸¥à¸à¹Âà¸": 4,
+            "à¸£Âà¸£âà¸£Â": 5,
+            "à¸¢à¸à¹Âà¸": 6,
+            "à¸£Âà¹Âà¸": 7,
+            "à¸¢à¸à¸£Â": 8,
+            "à¸¢à¸à¹Âà¸": 9,
+            "à¸¥à¸à¸£Â": 10,
+            "à¸¥à¸à¹Âà¸": 11
         };
 
         Ext.Date.getMonthNumber = function(name) {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["รร’ยทร”ยตรรฌ", "ลกร‘ยนยทรรฌ", "รร‘ยงโฌร’ร", "ลธรร—ลพ", "ลธรรร‘รยบลฝร•", "รรยกรรฌ", "ร รร’รรฌ"];
+        Ext.Date.dayNames = ["à¸£Âà¸£âà¸¢à¸à¸£âà¸¢à¸à¸£Âà¸£à¸", "à¸¥à¸à¸£âà¸¢à¸à¸¢à¸à¸£Âà¸£à¸", "à¸£Âà¸£âà¸¢à¸à¹Âà¸à¸£âà¸£Â", "à¸¥à¸à¸£Âà¸£âà¸¥à¸", "à¸¥à¸à¸£Âà¸£Âà¸£âà¸£Âà¸¢à¸à¸¥à¸à¸£â¢", "à¸£Âà¸£Âà¸¢à¸à¸£Âà¸£à¸", "à¸£Â à¸£Âà¸£âà¸£Âà¸£à¸"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -57,35 +57,35 @@ Ext.define("Ext.locale.th.view.View", {
 
 Ext.define("Ext.locale.th.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} ร ร…ร—รยกรกร…รฉรยทร‘รฉยงรรลฝรกยถร"
+    dragText: "{0} à¸£Â à¸£â¦à¸£âà¸£Âà¸¢à¸à¸£à¸à¸£â¦à¸£à¸à¸£Âà¸¢à¸à¸£âà¸£à¸à¸¢à¸à¸£Âà¸£Âà¸¥à¸à¸£à¸à¸¢à¸à¸£Â"
 });
 
 Ext.define("Ext.locale.th.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "ยปร”ลฝรกยทรงยบยนร•รฉ"
+    closeText: "à¸¢à¸à¸£âà¸¥à¸à¸£à¸à¸¢à¸à¸£à¸à¸¢à¸à¸¢à¸à¸£â¢à¸£à¸"
 });
 
 Ext.define("Ext.locale.th.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "โฌรจร’ยขรยงยชรจรยงยนร•รฉรครรจยถรยกยตรฉรยง"
+    invalidText: "à¹Âà¸à¸£à¸à¸£âà¸¢à¸à¸£Âà¸¢à¸à¸¢à¸à¸£à¸à¸£Âà¸¢à¸à¸¢à¸à¸£â¢à¸£à¸à¸£à¸à¸£Âà¸£à¸à¸¢à¸à¸£Âà¸¢à¸à¸¢à¸à¸£à¸à¸£Âà¸¢à¸"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.th.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
+    loadingText: "à¸¢à¸à¸£âà¸£â¦à¸£âà¸¢à¸à¸£à¸à¸£Âà¸£â¦à¸¥à¸..."
 });
 
 Ext.define("Ext.locale.th.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "รร‘ยนยนร•รฉ",
+    todayText: "à¸£Âà¸£âà¸¢à¸à¸¢à¸à¸£â¢à¸£à¸",
     minText: "This date is before the minimum date",
     maxText: "This date is after the maximum date",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'ร ลฝร—รยนยถร‘ลฝรคยป (Control+Right)',
-    prevText: 'ร ลฝร—รยนยกรจรยนรยนรฉร’ (Control+Left)',
-    monthYearText: 'ร ร…ร—รยกร ลฝร—รยน (Control+Up/Down to move years)',
+    nextText: 'à¸£Â à¸¥à¸à¸£âà¸£Âà¸¢à¸à¸¢à¸à¸£âà¸¥à¸à¸£à¸à¸¢à¸ (Control+Right)',
+    prevText: 'à¸£Â à¸¥à¸à¸£âà¸£Âà¸¢à¸à¸¢à¸à¸£à¸à¸£Âà¸¢à¸à¸£Âà¸¢à¸à¸£à¸à¸£â (Control+Left)',
+    monthYearText: 'à¸£Â à¸£â¦à¸£âà¸£Âà¸¢à¸à¸£Â à¸¥à¸à¸£âà¸£Âà¸¢à¸ (Control+Up/Down to move years)',
     todayTip: "{0} (Spacebar)",
     format: "m/d/y",
     startDay: 0
@@ -93,21 +93,21 @@ Ext.define("Ext.locale.th.picker.Date", {
 
 Ext.define("Ext.locale.th.picker.Month", {
     override: "Ext.picker.Month",
-    okText: "&#160;ยตยกร…ยง&#160;",
-    cancelText: "รยกร ร…ร”ยก"
+    okText: "&#160;à¸¢à¸à¸¢à¸à¸£â¦à¸¢à¸&#160;",
+    cancelText: "à¸£Âà¸¢à¸à¸£Â à¸£â¦à¸£âà¸¢à¸"
 });
 
 Ext.define("Ext.locale.th.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "รยนรฉร’",
+    beforePageText: "à¸£Âà¸¢à¸à¸£à¸à¸£â",
     afterPageText: "of {0}",
-    firstText: "รยนรฉร’รกรยก",
-    prevText: "ยกรจรยนรยนรฉร’",
-    nextText: "ยถร‘ลฝรคยป",
-    lastText: "รยนรฉร’รรลฝยทรฉร’ร",
-    refreshText: "รร•ร ยฟรยช",
-    displayMsg: "ยกร“ร…ร‘ยงรกรลฝยง {0} - {1} ลกร’ยก {2}",
-    emptyMsg: 'รครรจรร•ยขรฉรรรร…รกรลฝยง'
+    firstText: "à¸£Âà¸¢à¸à¸£à¸à¸£âà¸£à¸à¸£Âà¸¢à¸",
+    prevText: "à¸¢à¸à¸£à¸à¸£Âà¸¢à¸à¸£Âà¸¢à¸à¸£à¸à¸£â",
+    nextText: "à¸¢à¸à¸£âà¸¥à¸à¸£à¸à¸¢à¸",
+    lastText: "à¸£Âà¸¢à¸à¸£à¸à¸£âà¸£Âà¸£Âà¸¥à¸à¸¢à¸à¸£à¸à¸£âà¸£Â",
+    refreshText: "à¸£Âà¸£â¢à¸£Â à¸¢à¸à¸£Âà¸¢à¸",
+    displayMsg: "à¸¢à¸à¸£âà¸£â¦à¸£âà¸¢à¸à¸£à¸à¸£Âà¸¥à¸à¸¢à¸ {0} - {1} à¸¥à¸à¸£âà¸¢à¸ {2}",
+    emptyMsg: 'à¸£à¸à¸£Âà¸£à¸à¸£Âà¸£â¢à¸¢à¸à¸£à¸à¸£Âà¸£Âà¸£Âà¸£â¦à¸£à¸à¸£Âà¸¥à¸à¸¢à¸'
 });
 
 Ext.define("Ext.locale.th.form.field.Text", {
@@ -128,8 +128,8 @@ Ext.define("Ext.locale.th.form.field.Number", {
 
 Ext.define("Ext.locale.th.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "ยปร”ลฝ",
-    disabledDatesText: "ยปร”ลฝ",
+    disabledDaysText: "à¸¢à¸à¸£âà¸¥à¸",
+    disabledDatesText: "à¸¢à¸à¸£âà¸¥à¸",
     minText: "The date in this field must be after {0}",
     maxText: "The date in this field must be before {0}",
     invalidText: "{0} is not a valid date - it must be in the format {1}",
@@ -142,7 +142,7 @@ Ext.define("Ext.locale.th.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
+        loadingText: "à¸¢à¸à¸£âà¸£â¦à¸£âà¸¢à¸à¸£à¸à¸£Âà¸£â¦à¸¥à¸..."
     });
 });
 
@@ -260,10 +260,10 @@ Ext.define("Ext.locale.th.grid.PropertyColumnModel", {
 Ext.define("Ext.locale.th.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
-        ok: "ยตยกร…ยง",
-        cancel: "รยกร ร…ร”ยก",
-        yes: "รฃยชรจ",
-        no: "รครรจรฃยชรจ"
+        ok: "à¸¢à¸à¸¢à¸à¸£â¦à¸¢à¸",
+        cancel: "à¸£Âà¸¢à¸à¸£Â à¸£â¦à¸£âà¸¢à¸",
+        yes: "à¸£à¸à¸¢à¸à¸£à¸",
+        no: "à¸£à¸à¸£Âà¸£à¸à¸£à¸à¸¢à¸à¸£à¸"
     }
 });
 

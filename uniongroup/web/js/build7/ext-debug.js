@@ -15996,12 +15996,12 @@ Ext.String = (function() {
          * with the value being the textual representation of the entity.
          *
          *      Ext.String.addCharacterEntities({
-         *          '&amp;Uuml;':'Ü',
-         *          '&amp;ccedil;':'ç',
-         *          '&amp;ntilde;':'ñ',
-         *          '&amp;egrave;':'è'
+         *          '&amp;Uuml;':'Ã',
+         *          '&amp;ccedil;':'Ã§',
+         *          '&amp;ntilde;':'Ã±',
+         *          '&amp;egrave;':'Ã¨'
          *      });
-         *      var s = Ext.String.htmlEncode("A string with entities: èÜçñ");
+         *      var s = Ext.String.htmlEncode("A string with entities: Ã¨ÃÃ§Ã±");
          *
          * __Note:__ the values of the character entities defined on this object are expected
          * to be single character values.  As such, the actual values represented by the
@@ -37332,7 +37332,7 @@ Ext.define('Ext.overrides.GlobalEvents', {
         // size changes. See this: https://msdn.microsoft.com/en-us/library/ms536959(v=vs.85).aspx
         // and this: http://stackoverflow.com/questions/1852751/window-resize-event-firing-in-internet-explorer
         // The amount of these events firing all at once can be entirely staggering, and they
-        // often happen during layouts so we have to be über careful to execute as few JavaScript
+        // often happen during layouts so we have to be Ã¼ber careful to execute as few JavaScript
         // statements as possible to improve overall framework performance.
         if (Ext.isIE8) {
             docElement = Ext.getDoc().dom.documentElement;

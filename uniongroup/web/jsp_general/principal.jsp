@@ -6,13 +6,13 @@
 <%response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);%>
-<%@page contentType="text/html" pageEncoding="ISO-8859-1"import="com.util.manejo_Cookies" errorPage="../jsp_general/cerrar.jsp" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"import="com.util.manejo_Cookies" errorPage="../jsp_general/cerrar.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="SHORTCUT ICON" href="<%=request.getContextPath()%>/img/GL_72.jpg">
         <title>Union Group</title>
         <%//if (session.getAttribute("usuSario") == null) {%>

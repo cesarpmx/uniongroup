@@ -188,7 +188,7 @@ function loadFormulario(formulario,parametros){
                 var w = Ext.getCmp(action.result.wnd);
                 w.close();
                 Ext.MessageBox.show({
-                    title: 'Información',
+                    title: 'InformaciÃ³n',
                     msg: 'No existe la Informacion Solicitada.',
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.WARNING

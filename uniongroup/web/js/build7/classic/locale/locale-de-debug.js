@@ -8,7 +8,7 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+        Ext.Date.monthNames = ["Januar", "Februar", "MÃ¤rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
         Ext.Date.defaultFormat = 'd.m.Y';
 
@@ -72,12 +72,12 @@ Ext.define("Ext.locale.de.panel.Panel", {
 
 Ext.define("Ext.locale.de.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} Zeile(n) ausgewählt"
+    dragText: "{0} Zeile(n) ausgewÃ¤hlt"
 });
 
 Ext.define("Ext.locale.de.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Diesen Tab schließen"
+    closeText: "Diesen Tab schlieÃen"
 });
 
 Ext.define("Ext.locale.de.form.Basic", {
@@ -103,13 +103,13 @@ Ext.define("Ext.locale.de.view.AbstractView", {
 Ext.define("Ext.locale.de.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Heute",
-    minText: "Dieses Datum liegt von dem erstmöglichen Datum",
-    maxText: "Dieses Datum liegt nach dem letztmöglichen Datum",
+    minText: "Dieses Datum liegt von dem erstmÃ¶glichen Datum",
+    maxText: "Dieses Datum liegt nach dem letztmÃ¶glichen Datum",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: "Nächster Monat (Strg/Control + Rechts)",
+    nextText: "NÃ¤chster Monat (Strg/Control + Rechts)",
     prevText: "Vorheriger Monat (Strg/Control + Links)",
-    monthYearText: "Monat auswählen (Strg/Control + Hoch/Runter, um ein Jahr auszuwählen)",
+    monthYearText: "Monat auswÃ¤hlen (Strg/Control + Hoch/Runter, um ein Jahr auszuwÃ¤hlen)",
     todayTip: "Heute ({0}) (Leertaste)",
     format: "d.m.Y",
     startDay: 1
@@ -127,7 +127,7 @@ Ext.define("Ext.locale.de.toolbar.Paging", {
     afterPageText: "von {0}",
     firstText: "Erste Seite",
     prevText: "vorherige Seite",
-    nextText: "nächste Seite",
+    nextText: "nÃ¤chste Seite",
     lastText: "letzte Seite",
     refreshText: "Aktualisieren",
     displayMsg: "Anzeige Eintrag {0} - {1} von {2}",
@@ -145,8 +145,8 @@ Ext.define("Ext.locale.de.form.field.Text", {
 
 Ext.define("Ext.locale.de.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "Der Mindestwert für dieses Feld ist {0}",
-    maxText: "Der Maximalwert für dieses Feld ist {0}",
+    minText: "Der Mindestwert fÃ¼r dieses Feld ist {0}",
+    maxText: "Der Maximalwert fÃ¼r dieses Feld ist {0}",
     nanText: "{0} ist keine Zahl"
 });
 
@@ -156,7 +156,7 @@ Ext.define("Ext.locale.de.form.field.Date", {
     disabledDatesText: "nicht erlaubt",
     minText: "Das Datum in diesem Feld muss nach dem {0} liegen",
     maxText: "Das Datum in diesem Feld muss vor dem {0} liegen",
-    invalidText: "{0} ist kein gültiges Datum - es muss im Format {1} eingegeben werden",
+    invalidText: "{0} ist kein gÃ¼ltiges Datum - es muss im Format {1} eingegeben werden",
     format: "d.m.Y",
     altFormats: "j.n.Y|j.n.y|j.n.|j.|j/n/Y|j/n/y|j-n-y|j-n-Y|j/n|j-n|dm|dmy|dmY|j|Y-n-j|Y-m-d",
     startDay: 1
@@ -181,48 +181,48 @@ Ext.define("Ext.locale.de.form.field.VTypes", {
 
 Ext.define("Ext.locale.de.form.field.HtmlEditor", {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: 'Bitte geben Sie die URL für den Link ein:'
+    createLinkText: 'Bitte geben Sie die URL fÃ¼r den Link ein:'
 }, function() {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
         buttonTips: {
             bold: {
                 title: 'Fett (Ctrl+B)',
-                text: 'Erstellt den ausgewählten Text in Fettschrift.',
+                text: 'Erstellt den ausgewÃ¤hlten Text in Fettschrift.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
                 title: 'Kursiv (Ctrl+I)',
-                text: 'Erstellt den ausgewählten Text in Schrägschrift.',
+                text: 'Erstellt den ausgewÃ¤hlten Text in SchrÃ¤gschrift.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
                 title: 'Unterstrichen (Ctrl+U)',
-                text: 'Unterstreicht den ausgewählten Text.',
+                text: 'Unterstreicht den ausgewÃ¤hlten Text.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Text vergößern',
-                text: 'Erhöht die Schriftgröße.',
+                title: 'Text vergÃ¶Ãern',
+                text: 'ErhÃ¶ht die SchriftgrÃ¶Ãe.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
                 title: 'Text verkleinern',
-                text: 'Verringert die Schriftgröße.',
+                text: 'Verringert die SchriftgrÃ¶Ãe.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
                 title: 'Text farblich hervorheben',
-                text: 'Hintergrundfarbe des ausgewählten Textes ändern.',
+                text: 'Hintergrundfarbe des ausgewÃ¤hlten Textes Ã¤ndern.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
                 title: 'Schriftfarbe',
-                text: 'Farbe des ausgewählten Textes ändern.',
+                text: 'Farbe des ausgewÃ¤hlten Textes Ã¤ndern.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
-                title: 'Linksbündig',
-                text: 'Setzt den Text linksbündig.',
+                title: 'LinksbÃ¼ndig',
+                text: 'Setzt den Text linksbÃ¼ndig.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
@@ -231,13 +231,13 @@ Ext.define("Ext.locale.de.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: 'Rechtsbündig',
-                text: 'Setzt den Text rechtsbündig.',
+                title: 'RechtsbÃ¼ndig',
+                text: 'Setzt den Text rechtsbÃ¼ndig.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'Aufzählungsliste',
-                text: 'Beginnt eine Aufzählungsliste mit Spiegelstrichen.',
+                title: 'AufzÃ¤hlungsliste',
+                text: 'Beginnt eine AufzÃ¤hlungsliste mit Spiegelstrichen.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
@@ -247,7 +247,7 @@ Ext.define("Ext.locale.de.form.field.HtmlEditor", {
             },
             createlink: {
                 title: 'Hyperlink',
-                text: 'Erstellt einen Hyperlink aus dem ausgewählten text.',
+                text: 'Erstellt einen Hyperlink aus dem ausgewÃ¤hlten text.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
@@ -302,18 +302,18 @@ Ext.define("Ext.locale.de.form.field.Time", {
     override: "Ext.form.field.Time",
     minText: "Die Zeit muss gleich oder nach {0} liegen",
     maxText: "Die Zeit muss gleich oder vor {0} liegen",
-    invalidText: "{0} ist keine gültige Zeit",
+    invalidText: "{0} ist keine gÃ¼ltige Zeit",
     format: "H:i"
 });
 
 Ext.define("Ext.locale.de.form.CheckboxGroup", {
     override: "Ext.form.CheckboxGroup",
-    blankText: "Du mußt mindestens einen Eintrag aus der Gruppe auswählen"
+    blankText: "Du muÃt mindestens einen Eintrag aus der Gruppe auswÃ¤hlen"
 });
 
 Ext.define("Ext.locale.de.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
-    blankText: "Du mußt einen Eintrag aus der Gruppe auswählen"
+    blankText: "Du muÃt einen Eintrag aus der Gruppe auswÃ¤hlen"
 });
 
 Ext.define("Ext.locale.de.window.MessageBox", {
@@ -333,9 +333,9 @@ Ext.define("Ext.locale.de.view.MultiSelectorSearch", {
 
 Ext.define("Ext.locale.de.view.MultiSelector", {
     override: "Ext.view.MultiSelector",
-    emptyText: "Nichts ausgewählt",
+    emptyText: "Nichts ausgewÃ¤hlt",
     removeRowTip: "Dieses Element entfernen",
-    addToolText: "Suche Elemente zum Hinzufügen"
+    addToolText: "Suche Elemente zum HinzufÃ¼gen"
 });
 
 // This is needed until we can refactor all of the locales into individual files

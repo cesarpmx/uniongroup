@@ -47,17 +47,17 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        Ext.Date.dayNames = ["Domingo", "Lunes", "Martes", "MiÃ©rcoles", "Jueves", "Viernes", "SÃ¡bado"];
 
         Ext.Date.getShortDayName = function(day) {
             // eslint-disable-next-line eqeqeq
             if (day == 3) {
-                return "Mié";
+                return "MiÃ©";
             }
 
             // eslint-disable-next-line eqeqeq
             if (day == 6) {
-                return "Sáb";
+                return "SÃ¡b";
             }
 
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -91,15 +91,15 @@ Ext.onReady(function() {
 });
 Ext.define("Ext.locale.es.form.CheckboxGroup", {
     override: "Ext.form.CheckboxGroup",
-    blankText: "Debe seleccionar al menos un étem de este grupo"
+    blankText: "Debe seleccionar al menos un Ã©tem de este grupo"
 });
 Ext.define("Ext.locale.es.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
-    blankText: "Debe seleccionar un étem de este grupo"
+    blankText: "Debe seleccionar un Ã©tem de este grupo"
 });
 Ext.define("Ext.locale.es.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "El valor en este campo es inválido"
+    invalidText: "El valor en este campo es invÃ¡lido"
 });
 Ext.define("Ext.locale.es.form.field.ComboBox", {
     override: "Ext.form.field.ComboBox",
@@ -115,7 +115,7 @@ Ext.define("Ext.locale.es.form.field.Date", {
     disabledDatesText: "Deshabilitado",
     minText: "La fecha para este campo debe ser posterior a {0}",
     maxText: "La fecha para este campo debe ser anterior a {0}",
-    invalidText: "{0} no es una fecha válida - debe tener el formato {1}",
+    invalidText: "{0} no es una fecha vÃ¡lida - debe tener el formato {1}",
     format: "d/m/Y",
     altFormats: "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
@@ -135,8 +135,8 @@ Ext.define("Ext.locale.es.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: 'Itálica (Ctrl+I)',
-                text: 'Transforma el texto seleccionado en Itálicas.',
+                title: 'ItÃ¡lica (Ctrl+I)',
+                text: 'Transforma el texto seleccionado en ItÃ¡licas.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
@@ -146,12 +146,12 @@ Ext.define("Ext.locale.es.form.field.HtmlEditor", {
             },
             increasefontsize: {
                 title: 'Aumentar la fuente',
-                text: 'Aumenta el tamaño de la fuente',
+                text: 'Aumenta el tamaÃ±o de la fuente',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
                 title: 'Reducir la fuente',
-                text: 'Reduce el tamaño de la fuente.',
+                text: 'Reduce el tamaÃ±o de la fuente.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
@@ -180,8 +180,8 @@ Ext.define("Ext.locale.es.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'Lista de viñetas',
-                text: 'Inicia una lista con viñetas.',
+                title: 'Lista de viÃ±etas',
+                text: 'Inicia una lista con viÃ±etas.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
@@ -195,8 +195,8 @@ Ext.define("Ext.locale.es.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Código Fuente',
-                text: 'Pasar al modo de edición de código fuente.',
+                title: 'CÃ³digo Fuente',
+                text: 'Pasar al modo de ediciÃ³n de cÃ³digo fuente.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -205,14 +205,14 @@ Ext.define("Ext.locale.es.form.field.HtmlEditor", {
 Ext.define("Ext.locale.es.form.field.Number", {
     override: "Ext.form.field.Number",
     decimalPrecision: 2,
-    minText: "El valor mínimo para este campo es de {0}",
-    maxText: "El valor máximo para este campo es de {0}",
-    nanText: "{0} no es un número válido"
+    minText: "El valor mÃ­nimo para este campo es de {0}",
+    maxText: "El valor mÃ¡ximo para este campo es de {0}",
+    nanText: "{0} no es un nÃºmero vÃ¡lido"
 });
 Ext.define("Ext.locale.es.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "El tamaño mínimo para este campo es de {0}",
-    maxLengthText: "El tamaño máximo para este campo es de {0}",
+    minLengthText: "El tamaÃ±o mÃ­nimo para este campo es de {0}",
+    maxLengthText: "El tamaÃ±o mÃ¡ximo para este campo es de {0}",
     blankText: "Este campo es obligatorio",
     regexText: "",
     emptyText: null
@@ -221,16 +221,16 @@ Ext.define("Ext.locale.es.form.field.Time", {
     override: "Ext.form.field.Time",
     minText: "La hora en este campo debe ser igual o posterior a {0}",
     maxText: "La hora en este campo debe ser igual o anterior a {0}",
-    invalidText: "{0} no es una hora válida",
+    invalidText: "{0} no es una hora vÃ¡lida",
     format: "g:i A",
     altFormats: "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H"
 });
 Ext.define("Ext.locale.es.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Este campo debe ser una dirección de correo electrónico con el formato "usuario@dominio.com"',
+    emailText: 'Este campo debe ser una direcciÃ³n de correo electrÃ³nico con el formato "usuario@dominio.com"',
     urlText: 'Este campo debe ser una URL con el formato "http:/' + '/www.dominio.com"',
-    alphaText: 'Este campo sólo debe contener letras y _',
-    alphanumText: 'Este campo sólo debe contener letras, números y _'
+    alphaText: 'Este campo sÃ³lo debe contener letras y _',
+    alphanumText: 'Este campo sÃ³lo debe contener letras, nÃºmeros y _'
 });
 Ext.define("Ext.locale.es.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
@@ -246,7 +246,7 @@ Ext.define("Ext.locale.es.grid.feature.Grouping", {
 });
 Ext.define('Ext.locale.es.grid.filters.filter.Boolean', {
     override: 'Ext.grid.filters.filter.Boolean',
-    yesText: 'Sí',
+    yesText: 'SÃ­',
     noText: 'No'
 });
 Ext.define('Ext.locale.es.grid.filters.filter.List', {
@@ -266,13 +266,13 @@ Ext.define("Ext.locale.es.grid.plugin.DragDrop", {
 Ext.define("Ext.locale.es.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Hoy",
-    minText: "Esta fecha es anterior a la fecha mínima",
-    maxText: "Esta fecha es posterior a la fecha máxima",
+    minText: "Esta fecha es anterior a la fecha mÃ­nima",
+    maxText: "Esta fecha es posterior a la fecha mÃ¡xima",
     disabledDaysText: "",
     disabledDatesText: "",
     nextText: 'Mes Siguiente (Control+Right)',
     prevText: 'Mes Anterior (Control+Left)',
-    monthYearText: 'Seleccione un mes (Control+Up/Down para desplazar el año)',
+    monthYearText: 'Seleccione un mes (Control+Up/Down para desplazar el aÃ±o)',
     todayTip: "{0} (Barra espaciadora)",
     format: "d/m/Y",
     startDay: 1
@@ -284,12 +284,12 @@ Ext.define("Ext.locale.es.picker.Month", {
 });
 Ext.define("Ext.locale.es.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "Página",
+    beforePageText: "PÃ¡gina",
     afterPageText: "de {0}",
-    firstText: "Primera página",
-    prevText: "Página anterior",
-    nextText: "Página siguiente",
-    lastText: "Última página",
+    firstText: "Primera pÃ¡gina",
+    prevText: "PÃ¡gina anterior",
+    nextText: "PÃ¡gina siguiente",
+    lastText: "Ãltima pÃ¡gina",
     refreshText: "Actualizar",
     displayMsg: "Mostrando {0} - {1} de {2}",
     emptyMsg: 'Sin datos para mostrar'
@@ -308,7 +308,7 @@ Ext.define("Ext.locale.es.window.MessageBox", {
     buttonText: {
         ok: "Aceptar",
         cancel: "Cancelar",
-        yes: "Sí",
+        yes: "SÃ­",
         no: "No"
     }
 });

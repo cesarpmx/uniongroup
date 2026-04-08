@@ -142,8 +142,8 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                 xtype: 'pagingtoolbar',
                 store: me.storeRetornoDet,
                 displayInfo: true,
-                displayMsg: 'Mostrando líneas {0} - {1} de {2}',
-                emptyMsg: 'No hay líneas'
+                displayMsg: 'Mostrando lÃ­neas {0} - {1} de {2}',
+                emptyMsg: 'No hay lÃ­neas'
             }
         });
 

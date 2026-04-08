@@ -150,12 +150,12 @@ public class CtrlOrdenesCompra extends HttpServlet {
             for (CentralOrdenCompraGlobal orden : ordenes) {
                 if (orden.PurchaseOrder.DocEntry.equals(docEntry)) {
                     String jsonResult = mapper.writeValueAsString(orden.Lines);
-                    System.out.println("? Se encontraron " + orden.Lines.size() + " líneas para DocEntry: " + docEntry);
+                    System.out.println("? Se encontraron " + orden.Lines.size() + " lÃ­neas para DocEntry: " + docEntry);
                     return jsonResult;
                 }
             }
 
-            System.out.println("?? No se encontró orden con DocEntry: " + docEntry);
+            System.out.println("?? No se encontrÃ³ orden con DocEntry: " + docEntry);
             return "[]";
 
         } catch (Exception e) {
@@ -198,7 +198,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
                     }
                 }
 
-                // Solo enviar al cliente si hay órdenes exitosas
+                // Solo enviar al cliente si hay Ã³rdenes exitosas
                 if (!confirmDataArray.isEmpty()) {
                     Map<String, Object> confirmDataJSON = new HashMap<>();
                     confirmDataJSON.put("ConfirmData", confirmDataArray);
@@ -230,7 +230,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
                         JSONVal = mapper.writeValueAsString(respuesta);
                     }
                 } else {
-                    System.out.println("?? No hay órdenes exitosas para confirmar al cliente");
+                    System.out.println("?? No hay Ã³rdenes exitosas para confirmar al cliente");
                 }
             }
 
@@ -264,14 +264,14 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);      // ? Ignora campos desconocidos (links, etc)
-            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);        // ? Ignora mayúsculas/minúsculas
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);        // ? Ignora mayÃºsculas/minÃºsculas
 
             CentralOrdenCompra centralOrdenCompra = mapper.readValue(respuesta, CentralOrdenCompra.class);
             JSONVal = mapper.writeValueAsString(centralOrdenCompra);
 
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "{\"error\": \"Ocurrió un error al procesar la solicitud.\"}";
+            JSONVal = "{\"error\": \"OcurriÃ³ un error al procesar la solicitud.\"}";
         }
         return JSONVal;
     }
@@ -337,7 +337,7 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
             String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
 
-            // 3. DOBLE DESERIALIZACIÓN
+            // 3. DOBLE DESERIALIZACIÃ“N
             String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
             Map<String, Object> clienteResponse = mapper.readValue(jsonLimpio, Map.class);
 
@@ -378,14 +378,14 @@ public class CtrlOrdenesCompra extends HttpServlet {
 
             } catch (Exception logEx) {
                 // ?? Si falla el log, solo lo registramos pero NO afectamos la respuesta al usuario
-                System.out.println("? Error al guardar en Confirmation Log (no crítico):");
+                System.out.println("? Error al guardar en Confirmation Log (no crÃ­tico):");
                 logEx.printStackTrace();
             }
 
             // 6. Construir respuesta (sin mencionar el log interno)
             Map<String, Object> resultado = new HashMap<>();
             resultado.put("success", true);
-            resultado.put("message", "Confirmación de recepción enviada exitosamente");
+            resultado.put("message", "ConfirmaciÃ³n de recepciÃ³n enviada exitosamente");
             resultado.put("clienteResponse", clienteResponse);
 
             JSONVal = mapper.writeValueAsString(resultado);

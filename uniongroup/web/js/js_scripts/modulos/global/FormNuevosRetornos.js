@@ -13,7 +13,7 @@ Ext.define('NuevosRetornosUtils', {
 
         Ext.MessageBox.confirm(
                 'Confirmar',
-                'øEst· seguro de cargar ' + totalSeleccionados + ' retorno(s)?',
+                '¬øEst√° seguro de cargar ' + totalSeleccionados + ' retorno(s)?',
                 function (btn) {
 
                     if (btn !== 'yes')
@@ -36,7 +36,7 @@ Ext.define('NuevosRetornosUtils', {
 
                     if (retornosHeader.length === 0) {
                         Ext.getBody().unmask();
-                        Ext.Msg.alert('InformaciÛn', 'No hay retornos para procesar');
+                        Ext.Msg.alert('Informaci√≥n', 'No hay retornos para procesar');
                         return;
                     }
 
@@ -93,7 +93,7 @@ Ext.define('NuevosRetornosUtils', {
                         NuevosRetornosUtils.iniciarEnvioPorLotes(retornosCompletos);
                     }).catch(function () {
                         Ext.getBody().unmask();
-                        Ext.Msg.alert('Error', 'Error al obtener las lÌneas de los retornos');
+                        Ext.Msg.alert('Error', 'Error al obtener las l√≠neas de los retornos');
                     });
 
                 }
@@ -251,7 +251,7 @@ Ext.define('NuevosRetornosUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: '…xitos (' + confirmData.length + ')',
+                            title: '√âxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             items: [{
                                     xtype: 'grid',
@@ -261,13 +261,13 @@ Ext.define('NuevosRetornosUtils', {
                                         {text: 'RTNID', dataIndex: 'RTNID', width: 80},
                                         {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
                                         {
-                                            text: 'LÌneas OK',
+                                            text: 'L√≠neas OK',
                                             dataIndex: 'linesInserted',
                                             width: 100,
                                             renderer: v => '<b style="color:green;">' + v + '</b>'
                                         },
                                         {
-                                            text: 'LÌneas Error',
+                                            text: 'L√≠neas Error',
                                             dataIndex: 'linesFailed',
                                             width: 120,
                                             renderer: v => v > 0
@@ -443,7 +443,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                                 var selected = grid.getSelection();
 
                                 if (selected.length === 0) {
-                                    Ext.Msg.alert('AtenciÛn', 'Debe seleccionar al menos un retorno');
+                                    Ext.Msg.alert('Atenci√≥n', 'Debe seleccionar al menos un retorno');
                                     return;
                                 }
 
@@ -502,7 +502,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: 'Total LÌneas',
+                            text: 'Total L√≠neas',
                             dataIndex: 'TotalLines',
                             width: 120,
                             align: 'center',
@@ -527,7 +527,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
 
                     listeners: {
 
-                        // ? CONTADOR DIN¡MICO
+                        // ? CONTADOR DIN√ÅMICO
                         selectionchange: function (selModel, selected) {
                             var lbl = Ext.getCmp('lblSeleccionadasRetornos');
                             if (lbl) {

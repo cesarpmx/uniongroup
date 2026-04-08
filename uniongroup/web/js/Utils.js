@@ -1,5 +1,5 @@
 function calcular_edad(fecha){ 
-    //actualmente la funcion esta diseÒada para recibir una fecha en formato : 1981-06-25 00 00 00
+    //actualmente la funcion esta dise√±ada para recibir una fecha en formato : 1981-06-25 00 00 00
     var date=fecha.substring(0,10);
     var edad;
     //calculo la fecha de hoy
@@ -28,13 +28,13 @@ function calcular_edad(fecha){
     if (isNaN(dia)) {
         edad='Fecha de Nacimiento No Valida';
     }    
-    //si el aÒo de la fecha que recibo solo tiene 2 cifras hay que cambiarlo a 4
+    //si el a√±o de la fecha que recibo solo tiene 2 cifras hay que cambiarlo a 4
     if (ano<=99) {
         ano +=1900
     }        
-    //resto los aÒos de las dos fechas
-    edad=hoy.getYear()- ano - 1; //-1 porque no se si ha cumplido aÒos ya este aÒo
-    //si resto los meses y me da menor que 0 entonces no ha cumplido aÒos. Si da mayor si ha cumplido
+    //resto los a√±os de las dos fechas
+    edad=hoy.getYear()- ano - 1; //-1 porque no se si ha cumplido a√±os ya este a√±o
+    //si resto los meses y me da menor que 0 entonces no ha cumplido a√±os. Si da mayor si ha cumplido
     if (hoy.getMonth() + 1 - mes < 0) //+ 1 porque los meses empiezan en 0
     {
         return edad
@@ -44,7 +44,7 @@ function calcular_edad(fecha){
         return edad+1
     }
     //entonces es que eran iguales. miro los dias
-    //si resto los dias y me da menor que 0 entonces no ha cumplido aÒos. Si da mayor o igual si ha cumplido
+    //si resto los dias y me da menor que 0 entonces no ha cumplido a√±os. Si da mayor o igual si ha cumplido
     if (hoy.getUTCDate() - dia >= 0) {
         return edad + 1
     }
@@ -76,7 +76,7 @@ function canalizarLlamada(params){
         mode: 'local',
         forceSelection:true,
         triggerAction: 'all',
-        emptyText:'Selecciona una opciÛn...'
+        emptyText:'Selecciona una opci√≥n...'
     });
     if(cmbCanEsp.isValid()){
         combo.store.load({
@@ -101,7 +101,7 @@ function canalizarLlamada(params){
                 name:'LmdObservaciones',
                 width:338,
                 height:200,
-                fieldLabel:'Haga una breve descripciÛn',
+                fieldLabel:'Haga una breve descripci√≥n',
                 allowBlank:false
             }],
             buttons     : [ {
@@ -207,78 +207,78 @@ function doSeleccionRadioChecks(arrayFunc){
     }
 }
 function replaceCode(texto){
-    texto = texto.replace(/·/g,"&aacute;");
-    texto = texto.replace(/È/g,"&eacute;");
-    texto = texto.replace(/Ì/g,"&iacute;");
-    texto = texto.replace(/Û/g,"&oacute;");
-    texto = texto.replace(/˙/g,"&uacute;");
-    texto = texto.replace(/Ò/g,"&ntilde;");
-    texto = texto.replace(/¡/g,"&Aacute;");
-    texto = texto.replace(/…/g,"&Eacute;");
-    texto = texto.replace(/Õ/g,"&Iacute;");
-    texto = texto.replace(/”/g,"&Oacute;");
-    texto = texto.replace(/⁄/g,"&Uacute;");
-    texto = texto.replace(/—/g,"&Ntilde;");
-    texto = texto.replace(/¿/g, "&Aacute;");
-    texto = texto.replace(/»/g, "&Eacute;");
-    texto = texto.replace(/Ã/g, "&Iacute;");
-    texto = texto.replace(/“/g, "&Oacute;");
-    texto = texto.replace(/Ÿ/g, "&Uacute;");
-    texto = texto.replace(/‡/g,"&aacute;");
-    texto = texto.replace(/Ë/g,"&eacute;");
-    texto = texto.replace(/Ï/g,"&iacute;");
-    texto = texto.replace(/Ú/g,"&oacute;");
-    texto = texto.replace(/˘/g,"&uacute;");
+    texto = texto.replace(/√°/g,"&aacute;");
+    texto = texto.replace(/√©/g,"&eacute;");
+    texto = texto.replace(/√≠/g,"&iacute;");
+    texto = texto.replace(/√≥/g,"&oacute;");
+    texto = texto.replace(/√∫/g,"&uacute;");
+    texto = texto.replace(/√±/g,"&ntilde;");
+    texto = texto.replace(/√Å/g,"&Aacute;");
+    texto = texto.replace(/√â/g,"&Eacute;");
+    texto = texto.replace(/√ç/g,"&Iacute;");
+    texto = texto.replace(/√ì/g,"&Oacute;");
+    texto = texto.replace(/√ö/g,"&Uacute;");
+    texto = texto.replace(/√ë/g,"&Ntilde;");
+    texto = texto.replace(/√Ä/g, "&Aacute;");
+    texto = texto.replace(/√à/g, "&Eacute;");
+    texto = texto.replace(/√å/g, "&Iacute;");
+    texto = texto.replace(/√í/g, "&Oacute;");
+    texto = texto.replace(/√ô/g, "&Uacute;");
+    texto = texto.replace(/√†/g,"&aacute;");
+    texto = texto.replace(/√®/g,"&eacute;");
+    texto = texto.replace(/√¨/g,"&iacute;");
+    texto = texto.replace(/√≤/g,"&oacute;");
+    texto = texto.replace(/√π/g,"&uacute;");
     return texto;
 }
 function replaceAcentosCode(texto){
-    texto = texto.replace(/·/g,"a");
-    texto = texto.replace(/È/g,"e");
-    texto = texto.replace(/Ì/g,"i");
-    texto = texto.replace(/Û/g,"o");
-    texto = texto.replace(/˙/g,"u");
-    texto = texto.replace(/Ò/g,"n");
-    texto = texto.replace(/¡/g,"A");
-    texto = texto.replace(/…/g,"E");
-    texto = texto.replace(/Õ/g,"I");
-    texto = texto.replace(/”/g,"O");
-    texto = texto.replace(/⁄/g,"U");
-    texto = texto.replace(/—/g,"N");
-    texto = texto.replace(/¿/g, "A");
-    texto = texto.replace(/»/g, "E");
-    texto = texto.replace(/Ã/g, "I");
-    texto = texto.replace(/“/g, "O");
-    texto = texto.replace(/Ÿ/g, "U");
-    texto = texto.replace(/‡/g,"a");
-    texto = texto.replace(/Ë/g,"e");
-    texto = texto.replace(/Ï/g,"i");
-    texto = texto.replace(/Ú/g,"o");
-    texto = texto.replace(/˘/g,"u");
+    texto = texto.replace(/√°/g,"a");
+    texto = texto.replace(/√©/g,"e");
+    texto = texto.replace(/√≠/g,"i");
+    texto = texto.replace(/√≥/g,"o");
+    texto = texto.replace(/√∫/g,"u");
+    texto = texto.replace(/√±/g,"n");
+    texto = texto.replace(/√Å/g,"A");
+    texto = texto.replace(/√â/g,"E");
+    texto = texto.replace(/√ç/g,"I");
+    texto = texto.replace(/√ì/g,"O");
+    texto = texto.replace(/√ö/g,"U");
+    texto = texto.replace(/√ë/g,"N");
+    texto = texto.replace(/√Ä/g, "A");
+    texto = texto.replace(/√à/g, "E");
+    texto = texto.replace(/√å/g, "I");
+    texto = texto.replace(/√í/g, "O");
+    texto = texto.replace(/√ô/g, "U");
+    texto = texto.replace(/√†/g,"a");
+    texto = texto.replace(/√®/g,"e");
+    texto = texto.replace(/√¨/g,"i");
+    texto = texto.replace(/√≤/g,"o");
+    texto = texto.replace(/√π/g,"u");
     return texto;
 }
 function replaceUnCode(texto){
-    texto = texto.replace("&aacute;","·");
-    texto = texto.replace("&eacute;","È");
-    texto = texto.replace("&eacute;","Ì");
-    texto = texto.replace("&oacute;","Û");
-    texto = texto.replace("&uacute;","˙");
-    texto = texto.replace("&ntilde;","Ò");
-    texto = texto.replace("&Aacute;","¡");
-    texto = texto.replace("&Eacute;","…");
-    texto = texto.replace("&Iacute;","Õ");
-    texto = texto.replace("&Oacute;","”");
-    texto = texto.replace("&Uacute;","⁄");
-    texto = texto.replace("&Ntilde;","—");
-    texto = texto.replace("&Aacute;","¿");
-    texto = texto.replace("&Eacute;","»");
-    texto = texto.replace("&Iacute;","Ã");
-    texto = texto.replace("&Oacute;","“");
-    texto = texto.replace("&Uacute;","Ÿ");
-    texto = texto.replace("&aacute;","‡");
-    texto = texto.replace("&eacute;","Ë");
-    texto = texto.replace("&iacute;","Ï");
-    texto = texto.replace("&oacute;","Ú");
-    texto = texto.replace("&uacute;","˘");
+    texto = texto.replace("&aacute;","√°");
+    texto = texto.replace("&eacute;","√©");
+    texto = texto.replace("&eacute;","√≠");
+    texto = texto.replace("&oacute;","√≥");
+    texto = texto.replace("&uacute;","√∫");
+    texto = texto.replace("&ntilde;","√±");
+    texto = texto.replace("&Aacute;","√Å");
+    texto = texto.replace("&Eacute;","√â");
+    texto = texto.replace("&Iacute;","√ç");
+    texto = texto.replace("&Oacute;","√ì");
+    texto = texto.replace("&Uacute;","√ö");
+    texto = texto.replace("&Ntilde;","√ë");
+    texto = texto.replace("&Aacute;","√Ä");
+    texto = texto.replace("&Eacute;","√à");
+    texto = texto.replace("&Iacute;","√å");
+    texto = texto.replace("&Oacute;","√í");
+    texto = texto.replace("&Uacute;","√ô");
+    texto = texto.replace("&aacute;","√†");
+    texto = texto.replace("&eacute;","√®");
+    texto = texto.replace("&iacute;","√¨");
+    texto = texto.replace("&oacute;","√≤");
+    texto = texto.replace("&uacute;","√π");
     return texto;
 }
 function trim(s){  /////////////de la aouroria de moreno

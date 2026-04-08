@@ -25,7 +25,7 @@ public class STDRUEAPGenerator {
     try {
         long valor = Long.parseLong(cantidad.trim()); // ej: 1, 10, 100
         long valorFormateado = valor * 1000;          // agrega 3 ceros a la derecha
-        return String.format("%011d", valorFormateado); // 11 dígitos con ceros a la izquierda
+        return String.format("%011d", valorFormateado); // 11 dÃ­gitos con ceros a la izquierda
     } catch (NumberFormatException e) {
         return "00000000000";
     }
@@ -42,7 +42,7 @@ public class STDRUEAPGenerator {
             throw new IllegalArgumentException("Header ArrEcommerce es null");
         }
         if (lines == null || lines.isEmpty()) {
-            throw new IllegalArgumentException("No hay líneas ArrEcommerceDet para generar STDRUEAP");
+            throw new IllegalArgumentException("No hay lÃ­neas ArrEcommerceDet para generar STDRUEAP");
         }
 
         List<String> out = new ArrayList<>();

@@ -16,7 +16,7 @@ Ext.define('Ext.locale.no_NB.Dialog', {
             tooltip: "Maksimer til fullskjerm"
         },
         restoreTool: {
-            tooltip: "Gjenopprett til originalstørrelse"
+            tooltip: "Gjenopprett til originalstÃ¸rrelse"
         }
     }
 });
@@ -39,7 +39,7 @@ Ext.define('Ext.locale.no_NB.Panel', {
                 text: 'Avbryte'
             },
             retry: {
-                text: 'Prøv på nytt'
+                text: 'PrÃ¸v pÃ¥ nytt'
             },
             ignore: {
                 text: 'Overse'
@@ -54,7 +54,7 @@ Ext.define('Ext.locale.no_NB.Panel', {
                 text: 'Avbryt'
             },
             apply: {
-                text: 'Søke om'
+                text: 'SÃ¸ke om'
             },
             save: {
                 text: 'Lagre'
@@ -76,10 +76,10 @@ Ext.define('Ext.locale.no_NB.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: 'Må være tilstede',
-        minOnlyMessage: 'Må være minst {0}',
-        maxOnlyMessage: 'Må ikke være mer enn {0}',
-        bothMessage: 'Må være mellom {0} og {1}'
+        emptyMessage: 'MÃ¥ vÃ¦re tilstede',
+        minOnlyMessage: 'MÃ¥ vÃ¦re minst {0}',
+        maxOnlyMessage: 'MÃ¥ ikke vÃ¦re mer enn {0}',
+        bothMessage: 'MÃ¥ vÃ¦re mellom {0} og {1}'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.CIDRv4', {
@@ -100,7 +100,7 @@ Ext.define('Ext.locale.no_NB.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Er ikke et gyldig valuta beløp'
+        message: 'Er ikke et gyldig valuta belÃ¸p'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.Date', {
@@ -149,16 +149,16 @@ Ext.define('Ext.locale.no_NB.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'Det er ikke på listen over akseptable verdier'
+        message: 'Det er ikke pÃ¥ listen over akseptable verdier'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: 'Lengden må være minst {0}',
-        maxOnlyMessage: 'Lengden må ikke være mer enn {0}',
-        bothMessage: 'Lengden må være mellom {0} og {1}'
+        minOnlyMessage: 'Lengden mÃ¥ vÃ¦re minst {0}',
+        maxOnlyMessage: 'Lengden mÃ¥ ikke vÃ¦re mer enn {0}',
+        bothMessage: 'Lengden mÃ¥ vÃ¦re mellom {0} og {1}'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.Number', {
@@ -179,17 +179,17 @@ Ext.define('Ext.locale.no_NB.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: 'Må være tilstede'
+        message: 'MÃ¥ vÃ¦re tilstede'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Det må være numerisk',
-        minOnlyMessage: 'Må være minst {0}',
-        maxOnlyMessage: 'Må verdien være mindre enn {0}',
-        bothMessage: 'Må være mellom {0} og {1}'
+        nanMessage: 'Det mÃ¥ vÃ¦re numerisk',
+        minOnlyMessage: 'MÃ¥ vÃ¦re minst {0}',
+        maxOnlyMessage: 'MÃ¥ verdien vÃ¦re mindre enn {0}',
+        bothMessage: 'MÃ¥ vÃ¦re mellom {0} og {1}'
     }
 });
 Ext.define('Ext.locale.no_NB.data.validator.Time', {
@@ -224,7 +224,7 @@ Ext.define('Ext.locale.no_NB.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: 'ingen data å vise'
+        html: 'ingen data Ã¥ vise'
     }
 });
 Ext.define('Ext.locale.no_NB.dataview.List', {
@@ -275,8 +275,8 @@ Ext.onReady(function() {
             .toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag",
-                             "Lørdag"];
+        Ext.Date.dayNames = ["SÃ¸ndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag",
+                             "LÃ¸rdag"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -296,14 +296,14 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.no_NB.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'Datoen i dette feltet må være etter {0}',
-    maxDateMessage: 'Datoen i dette feltet må være før {0}'
+    minDateMessage: 'Datoen i dette feltet mÃ¥ vÃ¦re etter {0}',
+    maxDateMessage: 'Datoen i dette feltet mÃ¥ vÃ¦re fÃ¸r {0}'
 });
 Ext.define('Ext.locale.no_NB.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Dette feltet er påkrevd',
+        requiredMessage: 'Dette feltet er pÃ¥krevd',
         validationMessage: 'Er i feil format'
     }
 });
@@ -319,15 +319,15 @@ Ext.define('Ext.locale.no_NB.field.Number', {
 
     decimalsText: 'Maksimal desimaltall er (0)',
     minValueText: 'Den minste verdien for dette feltet er {0}',
-    maxValueText: 'Den største verdien for dette feltet er {0}',
+    maxValueText: 'Den stÃ¸rste verdien for dette feltet er {0}',
     badFormatMessage: '{0} er ikke et gyldig nummer'
 });
 Ext.define('Ext.locale.no_NB.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Verdi stemmer ikke overens med det nødvendige formatet',
+    badFormatMessage: 'Verdi stemmer ikke overens med det nÃ¸dvendige formatet',
     config: {
-        requiredMessage: 'Dette feltet er påkrevd',
+        requiredMessage: 'Dette feltet er pÃ¥krevd',
         validationMessage: 'Er i feil format'
     }
 });
@@ -351,13 +351,13 @@ Ext.define("Ext.locale.no_NB.grid.locked.Grid", {
         },
         regions: {
             left: {
-                menuLabel: 'Låst (Venstre)'
+                menuLabel: 'LÃ¥st (Venstre)'
             },
             center: {
-                menuLabel: 'Låst'
+                menuLabel: 'LÃ¥st'
             },
             right: {
-                menuLabel: 'Låst (Høyre)'
+                menuLabel: 'LÃ¥st (HÃ¸yre)'
             }
         }
     }
@@ -413,8 +413,8 @@ Ext.define('Ext.locale.no_NB.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Neste måned (Control+Pil Høyre)',
-        prevText: 'Forrige måned (Control+Pil Venstre)',
+        nextText: 'Neste mÃ¥ned (Control+Pil HÃ¸yre)',
+        prevText: 'Forrige mÃ¥ned (Control+Pil Venstre)',
         buttons: {
             footerTodayButton: {
                 text: "I dag"
@@ -427,7 +427,7 @@ Ext.define('Ext.locale.no_NB.picker.Date', {
 
     config: {
         doneButton: 'done',
-        monthText: 'Måned',
+        monthText: 'MÃ¥ned',
         dayText: 'Dag',
         yearText: 'ar'
     }

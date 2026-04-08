@@ -10,7 +10,7 @@ Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.defaultDateFormat = "d.m.Y";
-        Ext.Date.monthNames = ["Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs", "Jūnijs", "Jūlijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"];
+        Ext.Date.monthNames = ["JanvÄris", "FebruÄris", "Marts", "AprÄ«lis", "Maijs", "JÅ«nijs", "JÅ«lijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"];
 
         Ext.Date.getShortMonthName = function(month) {
             return Ext.Date.monthNames[month].substring(0, 3);
@@ -35,7 +35,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Svētdiena", "Pirmdiena", "Otrdiena", "Trešdiena", "Ceturtdiena", "Piektdiena", "Sestdiena"];
+        Ext.Date.dayNames = ["SvÄtdiena", "Pirmdiena", "Otrdiena", "TreÅ¡diena", "Ceturtdiena", "Piektdiena", "Sestdiena"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -61,25 +61,25 @@ Ext.define("Ext.locale.lv.view.View", {
 
 Ext.define("Ext.locale.lv.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} iezīmētu rindu"
+    dragText: "{0} iezÄ«mÄtu rindu"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.lv.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "Ielādē..."
+    loadingText: "IelÄdÄ..."
 });
 
 Ext.define("Ext.locale.lv.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "Šodiena",
-    minText: "'Šis datums ir mazāks par minimālo datumu",
-    maxText: "Šis datums ir lielāks par maksimālo datumu",
+    todayText: "Å odiena",
+    minText: "'Å is datums ir mazÄks par minimÄlo datumu",
+    maxText: "Å is datums ir lielÄks par maksimÄlo datumu",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Nākamais mēnesis (Control+pa labi)',
-    prevText: 'Iepriekšējais mēnesis (Control+pa kreisi)',
-    monthYearText: 'Mēneša izvēle (Control+uz augšu/uz leju lai pārslēgtu gadus)',
+    nextText: 'NÄkamais mÄnesis (Control+pa labi)',
+    prevText: 'IepriekÅ¡Äjais mÄnesis (Control+pa kreisi)',
+    monthYearText: 'MÄneÅ¡a izvÄle (Control+uz augÅ¡u/uz leju lai pÄrslÄgtu gadus)',
     todayTip: "{0} (Atstarpe)",
     format: "d.m.Y",
     startDay: 1
@@ -95,35 +95,35 @@ Ext.define("Ext.locale.lv.toolbar.Paging", {
     override: "Ext.PagingToolbar",
     beforePageText: "Lapa",
     afterPageText: "no {0}",
-    firstText: "Pirmā lapa",
-    prevText: "iepriekšējā lapa",
-    nextText: "Nākamā lapa",
-    lastText: "Pēdējā lapa",
+    firstText: "PirmÄ lapa",
+    prevText: "iepriekÅ¡ÄjÄ lapa",
+    nextText: "NÄkamÄ lapa",
+    lastText: "PÄdÄjÄ lapa",
     refreshText: "Atjaunot",
-    displayMsg: "Kopā {2} ieraksti. Rādu ierakstus no {0} līdz {1}",
+    displayMsg: "KopÄ {2} ieraksti. RÄdu ierakstus no {0} lÄ«dz {1}",
     emptyMsg: 'Nav datu'
 });
 
 Ext.define("Ext.locale.lv.form.Basic", {
     override: "Ext.form.Basic",
-    waitTitle: "Lūdzu gaidiet..."
+    waitTitle: "LÅ«dzu gaidiet..."
 });
 
 Ext.define("Ext.locale.lv.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Aizvert šo cilni"
+    closeText: "Aizvert Å¡o cilni"
 });
 
 Ext.define("Ext.locale.lv.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "Vērtība šajā laukā nav pareiza"
+    invalidText: "VÄrtÄ«ba Å¡ajÄ laukÄ nav pareiza"
 });
 
 Ext.define("Ext.locale.lv.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Lauka minimālais garums ir {0}",
-    maxLengthText: "Lauka maksimālais garums ir {0}",
-    blankText: "Šis lauks ir obligāts",
+    minLengthText: "Lauka minimÄlais garums ir {0}",
+    maxLengthText: "Lauka maksimÄlais garums ir {0}",
+    blankText: "Å is lauks ir obligÄts",
     regexText: "",
     emptyText: null
 });
@@ -131,18 +131,18 @@ Ext.define("Ext.locale.lv.form.field.Text", {
 Ext.define("Ext.locale.lv.form.field.Number", {
     override: "Ext.form.field.Number",
     decimalPrecision: 2,
-    minText: "Lauka minimālā vērtība ir {0}",
-    maxText: "Lauka maksimālā vērtība ir{0}",
+    minText: "Lauka minimÄlÄ vÄrtÄ«ba ir {0}",
+    maxText: "Lauka maksimÄlÄ vÄrtÄ«ba ir{0}",
     nanText: "{0} nav skaitlis"
 });
 
 Ext.define("Ext.locale.lv.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "Atspējots",
-    disabledDatesText: "Atspējots",
-    minText: "Datumam šajā laukā jābūt lielākam kā {0}",
-    maxText: "Datumam šajā laukā jābūt mazākam kā {0}",
-    invalidText: "{0} ir nepareizi noformēts datums. Datuma formāts: {1}",
+    disabledDaysText: "AtspÄjots",
+    disabledDatesText: "AtspÄjots",
+    minText: "Datumam Å¡ajÄ laukÄ jÄbÅ«t lielÄkam kÄ {0}",
+    maxText: "Datumam Å¡ajÄ laukÄ jÄbÅ«t mazÄkam kÄ {0}",
+    invalidText: "{0} ir nepareizi noformÄts datums. Datuma formÄts: {1}",
     format: "d.m.Y",
     altFormats: "d/m/Y|d/m/y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
@@ -152,16 +152,16 @@ Ext.define("Ext.locale.lv.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "Ielādē..."
+        loadingText: "IelÄdÄ..."
     });
 });
 
 Ext.define("Ext.locale.lv.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Šis lauks paredzēts e-pasta adresei formātā "lietotājs@domēns.lv"',
-    urlText: ' Šis lauks paredžets URL formātā "http:/' + '/www.paraugs.lv"',
-    alphaText: 'Šis lauks drīkst saturēt tikai burtus un _ zīmi',
-    alphanumText: 'Šis lauks drīkst saturēt tikai burtus, ciparus un _ zīmi'
+    emailText: 'Å is lauks paredzÄts e-pasta adresei formÄtÄ "lietotÄjs@domÄns.lv"',
+    urlText: ' Å is lauks paredÅ¾ets URL formÄtÄ "http:/' + '/www.paraugs.lv"',
+    alphaText: 'Å is lauks drÄ«kst saturÄt tikai burtus un _ zÄ«mi',
+    alphanumText: 'Å is lauks drÄ«kst saturÄt tikai burtus, ciparus un _ zÄ«mi'
 });
 
 Ext.define("Ext.locale.lv.form.field.HtmlEditor", {
@@ -172,72 +172,72 @@ Ext.define("Ext.locale.lv.form.field.HtmlEditor", {
         buttonTips: {
             bold: {
                 title: 'Trekns (Ctrl+B)',
-                text: 'Pārveidot iezīmēto tekstu treknrakstā.',
+                text: 'PÄrveidot iezÄ«mÄto tekstu treknrakstÄ.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: 'Kursīvs (Ctrl+I)',
-                text: 'Pārveidot iezīmēto tekstu slīprakstā.',
+                title: 'KursÄ«vs (Ctrl+I)',
+                text: 'PÄrveidot iezÄ«mÄto tekstu slÄ«prakstÄ.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
-                title: 'Pasvītrot (Ctrl+U)',
-                text: 'Pasvītrot iezīmēto tekstu.',
+                title: 'PasvÄ«trot (Ctrl+U)',
+                text: 'PasvÄ«trot iezÄ«mÄto tekstu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Palielināt tekstu',
-                text: 'Palielināt rakstzīmju izmēru.',
+                title: 'PalielinÄt tekstu',
+                text: 'PalielinÄt rakstzÄ«mju izmÄru.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: 'Samazināt tekstu',
-                text: 'Samazināt rakstzīmju izmēru.',
+                title: 'SamazinÄt tekstu',
+                text: 'SamazinÄt rakstzÄ«mju izmÄru.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'Fona krāsa',
-                text: 'Mainīt iezīmētā teskta fona krāsu.',
+                title: 'Fona krÄsa',
+                text: 'MainÄ«t iezÄ«mÄtÄ teskta fona krÄsu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: 'Rakstzīmju krāsa',
-                text: 'Mainīt iezīmētā teskta krāsu.',
+                title: 'RakstzÄ«mju krÄsa',
+                text: 'MainÄ«t iezÄ«mÄtÄ teskta krÄsu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
-                title: 'Centrēt pa kreisi',
-                text: 'Centrēt tekstu pa kreisi.',
+                title: 'CentrÄt pa kreisi',
+                text: 'CentrÄt tekstu pa kreisi.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: 'Centrēt pa vidu',
-                text: 'Centrēt pa vidu',
+                title: 'CentrÄt pa vidu',
+                text: 'CentrÄt pa vidu',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: 'Centrēt pa labi',
-                text: 'Centrēt tekstu pa labi.',
+                title: 'CentrÄt pa labi',
+                text: 'CentrÄt tekstu pa labi.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
                 title: 'Saraksts',
-                text: 'Sākt sarakstu.',
+                text: 'SÄkt sarakstu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
-                title: 'Numurēts saraksts',
-                text: 'Sākt numurētu sarakstu.',
+                title: 'NumurÄts saraksts',
+                text: 'SÄkt numurÄtu sarakstu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
                 title: 'Hipersaite',
-                text: 'Pārveidot iezīmēto tekstu par hipersaiti',
+                text: 'PÄrveidot iezÄ«mÄto tekstu par hipersaiti',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Rediģēt pirmkodu',
-                text: 'Pārslēgt uz pirmkoda rediģēšanas režīmu.',
+                title: 'RediÄ£Ät pirmkodu',
+                text: 'PÄrslÄgt uz pirmkoda rediÄ£ÄÅ¡anas reÅ¾Ä«mu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -246,10 +246,10 @@ Ext.define("Ext.locale.lv.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.lv.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Kārtot pieaugošā secībā",
-    sortDescText: "Kārtot dilstošā secībā",
-    lockText: "Noslēgt kolonnu",
-    unlockText: "Atslēgt kolonnu",
+    sortAscText: "KÄrtot pieaugoÅ¡Ä secÄ«bÄ",
+    sortDescText: "KÄrtot dilstoÅ¡Ä secÄ«bÄ",
+    lockText: "NoslÄgt kolonnu",
+    unlockText: "AtslÄgt kolonnu",
     columnsText: "Kolonnas"
 });
 
@@ -260,15 +260,15 @@ Ext.define("Ext.locale.lv.grid.DateColumn", {
 
 Ext.define("Ext.locale.lv.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
-    emptyGroupText: '(Tukšs)',
-    groupByText: 'Grupēt izmantojot šo lauku',
-    showGroupsText: 'Rādīt grupās'
+    emptyGroupText: '(TukÅ¡s)',
+    groupByText: 'GrupÄt izmantojot Å¡o lauku',
+    showGroupsText: 'RÄdÄ«t grupÄs'
 });
 
 Ext.define("Ext.locale.lv.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
     nameText: "Nosaukums",
-    valueText: "Vērtība",
+    valueText: "VÄrtÄ«ba",
     dateFormat: "j.m.Y",
     trueText: "true",
     falseText: "false"
@@ -276,8 +276,8 @@ Ext.define("Ext.locale.lv.grid.PropertyColumnModel", {
 
 Ext.define("Ext.locale.lv.form.field.Time", {
     override: "Ext.form.field.Time",
-    minText: "Vērtībai šajā laukā jabūt pēc pl. {0}",
-    maxText: "Vērtībai šajā laukā jabūt vienādai vai mazākai par pl. {0}",
+    minText: "VÄrtÄ«bai Å¡ajÄ laukÄ jabÅ«t pÄc pl. {0}",
+    maxText: "VÄrtÄ«bai Å¡ajÄ laukÄ jabÅ«t vienÄdai vai mazÄkai par pl. {0}",
     invalidText: "{0} ir nekorekts laiks",
     format: "H:i",
     altFormats: "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H"
@@ -285,12 +285,12 @@ Ext.define("Ext.locale.lv.form.field.Time", {
 
 Ext.define("Ext.locale.lv.form.CheckboxGroup", {
     override: "Ext.form.CheckboxGroup",
-    blankText: "Iezvēlaties vismaz vienu variantu no šis grupas"
+    blankText: "IezvÄlaties vismaz vienu variantu no Å¡is grupas"
 });
 
 Ext.define("Ext.locale.lv.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
-    blankText: "Iezvēlaties vienu variantu no šis grupas"
+    blankText: "IezvÄlaties vienu variantu no Å¡is grupas"
 });
 
 Ext.define("Ext.locale.lv.window.MessageBox", {
@@ -298,8 +298,8 @@ Ext.define("Ext.locale.lv.window.MessageBox", {
     buttonText: {
         ok: "Labi",
         cancel: "Atcelt",
-        yes: "Jā",
-        no: "Nē"
+        yes: "JÄ",
+        no: "NÄ"
     }
 });
 

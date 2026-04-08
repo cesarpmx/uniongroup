@@ -4,7 +4,7 @@
     Author     : marco
 --%>
 
-<%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -13,11 +13,11 @@
     	<meta name="description" content="Argomex." >
 		<meta name="keywords" content="Argomex." >
 		<META name="Geography" CONTENT="Mexico">
-		<META name="Language" CONTENT="Español">
+		<META name="Language" CONTENT="EspaÃ±ol">
  	   <META name="Revisit-After" CONTENT="30">
 		<META name="distribution" CONTENT="Global">
 		<META name="Robots" CONTENT="ALL, FOLLOW">
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="SHORTCUT ICON" href="<%=request.getContextPath()%>/img/favico.ico">
         <title>:: Bienvenido a Argomex ::</title>
     </head>

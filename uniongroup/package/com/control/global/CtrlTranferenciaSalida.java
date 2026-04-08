@@ -162,12 +162,12 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 if (transferencia.OutboundTransferRequest.DocEntry.equals(docEntry)) {
                     String jsonResult = mapper.writeValueAsString(transferencia.Lines);
                     System.out.println("? Se encontraron " + transferencia.Lines.size()
-                            + " lÌneas para DocEntry: " + docEntry);
+                            + " l√≠neas para DocEntry: " + docEntry);
                     return jsonResult;
                 }
             }
 
-            System.out.println("?? No se encontrÛ transferencia con DocEntry: " + docEntry);
+            System.out.println("?? No se encontr√≥ transferencia con DocEntry: " + docEntry);
             return "[]";
 
         } catch (Exception e) {
@@ -213,7 +213,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                     }
                 }
 
-                // 4. Enviar confirmaciÛn al cliente si hay transferencias exitosas
+                // 4. Enviar confirmaci√≥n al cliente si hay transferencias exitosas
                 if (!confirmDataArray.isEmpty()) {
                     Map<String, Object> confirmDataJSON = new HashMap<>();
                     confirmDataJSON.put("ConfirmData", confirmDataArray);
@@ -226,7 +226,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
 
                         String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
 
-                        // 5. Parsear respuesta del cliente (doble deserializaciÛn)
+                        // 5. Parsear respuesta del cliente (doble deserializaci√≥n)
                         String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
 
                         List<Map<String, Object>> clienteResponse = mapper.readValue(
@@ -286,7 +286,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "{\"error\": \"OcurriÛ un error al procesar la solicitud.\"}";
+            JSONVal = "{\"error\": \"Ocurri√≥ un error al procesar la solicitud.\"}";
         }
         return JSONVal;
     }
@@ -345,7 +345,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            // Verificar si la respuesta est· vacÌa
+            // Verificar si la respuesta est√° vac√≠a
             if (respuestaCliente == null || respuestaCliente.trim().isEmpty() || respuestaCliente.equals("\"\"")) {
 
                 // Extraer datos del JSON enviado para crear respuesta simulada
@@ -354,12 +354,12 @@ public class CtrlTranferenciaSalida extends HttpServlet {
 
                 Map<String, Object> respuestaSimulada = new HashMap<>();
                 respuestaSimulada.put("success", true);
-                respuestaSimulada.put("message", "ConfirmaciÛn de embarque enviada (respuesta vacÌa del cliente)");
+                respuestaSimulada.put("message", "Confirmaci√≥n de embarque enviada (respuesta vac√≠a del cliente)");
                 respuestaSimulada.put("DocNum", transferShip.get("DocNum"));
                 respuestaSimulada.put("NumAtCard", transferShip.get("NumAtCard"));
                 respuestaSimulada.put("Status", transferShip.get("Status"));
 
-                // Guardar en log de confirmaciÛn
+                // Guardar en log de confirmaci√≥n
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 String fechaActual = sdf.format(new Date());
 
@@ -385,7 +385,7 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 return mapper.writeValueAsString(respuestaSimulada);
             }
 
-            // Si hay respuesta, parsearla normalmente (doble deserializaciÛn)
+            // Si hay respuesta, parsearla normalmente (doble deserializaci√≥n)
             String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
 
             List<Map<String, Object>> clienteResponse = mapper.readValue(

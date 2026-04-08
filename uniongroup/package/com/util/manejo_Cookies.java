@@ -12,7 +12,7 @@ import jakarta.servlet.http.*;
  */
 public class manejo_Cookies {
                
-    /** Esta funci髇 busca el valor de una Cookie
+    /** Esta funci贸n busca el valor de una Cookie
      * @Param  String              str_busq nombre del valor a buscar
      * @Param  HttpServletRequest  request del servlet que lo llama
      * @Return String              str_res  regresa el valor
@@ -31,10 +31,10 @@ public class manejo_Cookies {
         return str_res; 
     }
     
-    /** Esta funci髇 crea una cookie
+    /** Esta funci贸n crea una cookie
      * @Param  String              str_nom nombre del valor a insertar
      * @Param  String              str_val valor a insertar
-     * @Param  int                 int_age duraci髇 de la cookie en segundos, 0 para eliminar, -1 para cookie de sesi髇
+     * @Param  int                 int_age duraci贸n de la cookie en segundos, 0 para eliminar, -1 para cookie de sesi贸n
      * @Param  HttpServletResponse response del servlet que lo llama
      */
     public static void set_Cookie(String str_nom,String str_val,int int_age,HttpServletResponse response){

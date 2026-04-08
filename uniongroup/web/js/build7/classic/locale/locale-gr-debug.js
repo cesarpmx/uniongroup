@@ -5,9 +5,9 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["ÉáíïõÜñéïò", "ÖåâñïõÜñéïò", "ÌÜñôéïò", "Áðñßëéïò", "ÌÜéïò", "Éïýíéïò", "Éïýëéïò", "Áýãïõóôïò", "ÓåðôÝìâñéïò", "Ïêôþâñéïò", "ÍïÝìâñéïò", "ÄåêÝìâñéïò"];
+        Ext.Date.monthNames = ["ÃÃ¡Ã­Ã¯ÃµÃÃ±Ã©Ã¯Ã²", "ÃÃ¥Ã¢Ã±Ã¯ÃµÃÃ±Ã©Ã¯Ã²", "ÃÃÃ±Ã´Ã©Ã¯Ã²", "ÃÃ°Ã±ÃÃ«Ã©Ã¯Ã²", "ÃÃÃ©Ã¯Ã²", "ÃÃ¯Ã½Ã­Ã©Ã¯Ã²", "ÃÃ¯Ã½Ã«Ã©Ã¯Ã²", "ÃÃ½Ã£Ã¯ÃµÃ³Ã´Ã¯Ã²", "ÃÃ¥Ã°Ã´ÃÃ¬Ã¢Ã±Ã©Ã¯Ã²", "ÃÃªÃ´Ã¾Ã¢Ã±Ã©Ã¯Ã²", "ÃÃ¯ÃÃ¬Ã¢Ã±Ã©Ã¯Ã²", "ÃÃ¥ÃªÃÃ¬Ã¢Ã±Ã©Ã¯Ã²"];
 
-        Ext.Date.dayNames = ["ÊõñéáêÞ", "ÄåõôÝñá", "Ôñßôç", "ÔåôÜñôç", "ÐÝìðôç", "ÐáñáóêåõÞ", "ÓÜââáôï"];
+        Ext.Date.dayNames = ["ÃÃµÃ±Ã©Ã¡ÃªÃ", "ÃÃ¥ÃµÃ´ÃÃ±Ã¡", "ÃÃ±ÃÃ´Ã§", "ÃÃ¥Ã´ÃÃ±Ã´Ã§", "ÃÃÃ¬Ã°Ã´Ã§", "ÃÃ¡Ã±Ã¡Ã³ÃªÃ¥ÃµÃ", "ÃÃÃ¢Ã¢Ã¡Ã´Ã¯"];
     }
 
     if (Ext.util && Ext.util.Format) {
@@ -16,7 +16,7 @@ Ext.onReady(function() {
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Greek Euro
-            dateFormat: 'ì/ç/Å'
+            dateFormat: 'Ã¬/Ã§/Ã'
         });
     }
 });
@@ -28,76 +28,76 @@ Ext.define("Ext.locale.gr.view.View", {
 
 Ext.define("Ext.locale.gr.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} åðéëåãìÝíç(åò) ãñáììÞ(Ýò)"
+    dragText: "{0} Ã¥Ã°Ã©Ã«Ã¥Ã£Ã¬ÃÃ­Ã§(Ã¥Ã²) Ã£Ã±Ã¡Ã¬Ã¬Ã(ÃÃ²)"
 });
 
 Ext.define("Ext.locale.gr.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Êëåßóôå áõôÞ ôçí êáñôÝëá"
+    closeText: "ÃÃ«Ã¥ÃÃ³Ã´Ã¥ Ã¡ÃµÃ´Ã Ã´Ã§Ã­ ÃªÃ¡Ã±Ã´ÃÃ«Ã¡"
 });
 
 Ext.define("Ext.locale.gr.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "Ç ôéìÞ óôï ðåäßï äåí åßíáé Ýãêõñç"
+    invalidText: "Ã Ã´Ã©Ã¬Ã Ã³Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¤Ã¥Ã­ Ã¥ÃÃ­Ã¡Ã© ÃÃ£ÃªÃµÃ±Ã§"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.gr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "Öüñôùóç..."
+    loadingText: "ÃÃ¼Ã±Ã´Ã¹Ã³Ã§..."
 });
 
 Ext.define("Ext.locale.gr.picker.Date", {
     override: "Ext.picker.Date",
-    todayText: "ÓÞìåñá",
-    minText: "Ç çìåñïìçíßá áõôÞ åßíáé ðñéí ôçí ìéêñüôåñç çìåñïìçíßá",
-    maxText: "Ç çìåñïìçíßá áõôÞ åßíáé ìåôÜ ôçí ìåãáëýôåñç çìåñïìçíßá",
+    todayText: "ÃÃÃ¬Ã¥Ã±Ã¡",
+    minText: "Ã Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡ Ã¡ÃµÃ´Ã Ã¥ÃÃ­Ã¡Ã© Ã°Ã±Ã©Ã­ Ã´Ã§Ã­ Ã¬Ã©ÃªÃ±Ã¼Ã´Ã¥Ã±Ã§ Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡",
+    maxText: "Ã Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡ Ã¡ÃµÃ´Ã Ã¥ÃÃ­Ã¡Ã© Ã¬Ã¥Ã´Ã Ã´Ã§Ã­ Ã¬Ã¥Ã£Ã¡Ã«Ã½Ã´Ã¥Ã±Ã§ Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Åðüìåíïò ÌÞíáò (Control+Right)',
-    prevText: 'Ðñïçãïýìåíïò ÌÞíáò (Control+Left)',
-    monthYearText: 'ÅðéëÝîôå ÌÞíá (Control+Up/Down ãéá ìåôáêßíçóç óôá Ýôç)',
+    nextText: 'ÃÃ°Ã¼Ã¬Ã¥Ã­Ã¯Ã² ÃÃÃ­Ã¡Ã² (Control+Right)',
+    prevText: 'ÃÃ±Ã¯Ã§Ã£Ã¯Ã½Ã¬Ã¥Ã­Ã¯Ã² ÃÃÃ­Ã¡Ã² (Control+Left)',
+    monthYearText: 'ÃÃ°Ã©Ã«ÃÃ®Ã´Ã¥ ÃÃÃ­Ã¡ (Control+Up/Down Ã£Ã©Ã¡ Ã¬Ã¥Ã´Ã¡ÃªÃÃ­Ã§Ã³Ã§ Ã³Ã´Ã¡ ÃÃ´Ã§)',
     todayTip: "{0} (Spacebar)",
-    format: "ì/ç/Å"
+    format: "Ã¬/Ã§/Ã"
 });
 
 Ext.define("Ext.locale.gr.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "Óåëßäá",
-    afterPageText: "áðü {0}",
-    firstText: "Ðñþôç óåëßäá",
-    prevText: "Ðñïçãïýìåíç óåëßäá",
-    nextText: "Åðüìåíç óåëßäá",
-    lastText: "Ôåëåõôáßá óåëßäá",
-    refreshText: "ÁíáíÝùóç",
-    displayMsg: "ÅìöÜíéóç {0} - {1} áðü {2}",
-    emptyMsg: 'Äåí âñÝèçêáí åããñáöÝò ãéá åìöÜíéóç'
+    beforePageText: "ÃÃ¥Ã«ÃÃ¤Ã¡",
+    afterPageText: "Ã¡Ã°Ã¼ {0}",
+    firstText: "ÃÃ±Ã¾Ã´Ã§ Ã³Ã¥Ã«ÃÃ¤Ã¡",
+    prevText: "ÃÃ±Ã¯Ã§Ã£Ã¯Ã½Ã¬Ã¥Ã­Ã§ Ã³Ã¥Ã«ÃÃ¤Ã¡",
+    nextText: "ÃÃ°Ã¼Ã¬Ã¥Ã­Ã§ Ã³Ã¥Ã«ÃÃ¤Ã¡",
+    lastText: "ÃÃ¥Ã«Ã¥ÃµÃ´Ã¡ÃÃ¡ Ã³Ã¥Ã«ÃÃ¤Ã¡",
+    refreshText: "ÃÃ­Ã¡Ã­ÃÃ¹Ã³Ã§",
+    displayMsg: "ÃÃ¬Ã¶ÃÃ­Ã©Ã³Ã§ {0} - {1} Ã¡Ã°Ã¼ {2}",
+    emptyMsg: 'ÃÃ¥Ã­ Ã¢Ã±ÃÃ¨Ã§ÃªÃ¡Ã­ Ã¥Ã£Ã£Ã±Ã¡Ã¶ÃÃ² Ã£Ã©Ã¡ Ã¥Ã¬Ã¶ÃÃ­Ã©Ã³Ã§'
 });
 
 Ext.define("Ext.locale.gr.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Ôï åëÜ÷éóôï ìÝãåèïò ãéá áõôü ôï ðåäßï åßíáé {0}",
-    maxLengthText: "Ôï ìÝãéóôï ìÝãåèïò ãéá áõôü ôï ðåäßï åßíáé {0}",
-    blankText: "Ôï ðåäßï áõôü åßíáé õðï÷ñåùôïêü",
+    minLengthText: "ÃÃ¯ Ã¥Ã«ÃÃ·Ã©Ã³Ã´Ã¯ Ã¬ÃÃ£Ã¥Ã¨Ã¯Ã² Ã£Ã©Ã¡ Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¥ÃÃ­Ã¡Ã© {0}",
+    maxLengthText: "ÃÃ¯ Ã¬ÃÃ£Ã©Ã³Ã´Ã¯ Ã¬ÃÃ£Ã¥Ã¨Ã¯Ã² Ã£Ã©Ã¡ Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¥ÃÃ­Ã¡Ã© {0}",
+    blankText: "ÃÃ¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¡ÃµÃ´Ã¼ Ã¥ÃÃ­Ã¡Ã© ÃµÃ°Ã¯Ã·Ã±Ã¥Ã¹Ã´Ã¯ÃªÃ¼",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.gr.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "Ç åëÜ÷éóôç ôéìÞ ãéá áõôü ôï ðåäßï åßíáé {0}",
-    maxText: "Ç ìÝãéóôç ôéìÞ ãéá áõôü ôï ðåäßï åßíáé {0}",
-    nanText: "{0} äåí åßíáé Ýãêõñïò áñéèìüò"
+    minText: "Ã Ã¥Ã«ÃÃ·Ã©Ã³Ã´Ã§ Ã´Ã©Ã¬Ã Ã£Ã©Ã¡ Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¥ÃÃ­Ã¡Ã© {0}",
+    maxText: "Ã Ã¬ÃÃ£Ã©Ã³Ã´Ã§ Ã´Ã©Ã¬Ã Ã£Ã©Ã¡ Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã¥ÃÃ­Ã¡Ã© {0}",
+    nanText: "{0} Ã¤Ã¥Ã­ Ã¥ÃÃ­Ã¡Ã© ÃÃ£ÃªÃµÃ±Ã¯Ã² Ã¡Ã±Ã©Ã¨Ã¬Ã¼Ã²"
 });
 
 Ext.define("Ext.locale.gr.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "ÁðåíåñãïðïéçìÝíï",
-    disabledDatesText: "ÁðåíåñãïðïéçìÝíï",
-    minText: "Ç çìåñïìçíßá ó' áõôü ôï ðåäßï ðñÝðåé íá åßíáé ìåôÜ áðü {0}",
-    maxText: "Ç çìåñïìçíßá ó' áõôü ôï ðåäßï ðñÝðåé íá åßíáé ðñéí áðü {0}",
-    invalidText: "{0} äåí åßíáé Ýãêõñç çìåñïìçíßá - ðñÝðåé íá åßíáé ôçò ìïñöÞò {1}",
-    format: "ì/ç/Å"
+    disabledDaysText: "ÃÃ°Ã¥Ã­Ã¥Ã±Ã£Ã¯Ã°Ã¯Ã©Ã§Ã¬ÃÃ­Ã¯",
+    disabledDatesText: "ÃÃ°Ã¥Ã­Ã¥Ã±Ã£Ã¯Ã°Ã¯Ã©Ã§Ã¬ÃÃ­Ã¯",
+    minText: "Ã Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡ Ã³' Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã¥ÃÃ­Ã¡Ã© Ã¬Ã¥Ã´Ã Ã¡Ã°Ã¼ {0}",
+    maxText: "Ã Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡ Ã³' Ã¡ÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã¥ÃÃ­Ã¡Ã© Ã°Ã±Ã©Ã­ Ã¡Ã°Ã¼ {0}",
+    invalidText: "{0} Ã¤Ã¥Ã­ Ã¥ÃÃ­Ã¡Ã© ÃÃ£ÃªÃµÃ±Ã§ Ã§Ã¬Ã¥Ã±Ã¯Ã¬Ã§Ã­ÃÃ¡ - Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã¥ÃÃ­Ã¡Ã© Ã´Ã§Ã² Ã¬Ã¯Ã±Ã¶ÃÃ² {1}",
+    format: "Ã¬/Ã§/Ã"
 });
 
 Ext.define("Ext.locale.gr.form.field.ComboBox", {
@@ -105,41 +105,41 @@ Ext.define("Ext.locale.gr.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "Öüñôùóç..."
+        loadingText: "ÃÃ¼Ã±Ã´Ã¹Ã³Ã§..."
     });
 });
 
 Ext.define("Ext.locale.gr.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé e-mail address ôçò ìïñöÞò "user@example.com"',
-    urlText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé ìéá äéåýèõíóç URL ôçò ìïñöÞò "http:/' + '/www.example.com"',
-    alphaText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá êáé _',
-    alphanumText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá, áñéèìïýò êáé _'
+    emailText: 'ÃÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã¥ÃÃ­Ã¡Ã© e-mail address Ã´Ã§Ã² Ã¬Ã¯Ã±Ã¶ÃÃ² "user@example.com"',
+    urlText: 'ÃÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã¥ÃÃ­Ã¡Ã© Ã¬Ã©Ã¡ Ã¤Ã©Ã¥Ã½Ã¨ÃµÃ­Ã³Ã§ URL Ã´Ã§Ã² Ã¬Ã¯Ã±Ã¶ÃÃ² "http:/' + '/www.example.com"',
+    alphaText: 'ÃÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã°Ã¥Ã±Ã©ÃÃ·Ã¥Ã© Ã£Ã±ÃÃ¬Ã¬Ã¡Ã´Ã¡ ÃªÃ¡Ã© _',
+    alphanumText: 'ÃÃµÃ´Ã¼ Ã´Ã¯ Ã°Ã¥Ã¤ÃÃ¯ Ã°Ã±ÃÃ°Ã¥Ã© Ã­Ã¡ Ã°Ã¥Ã±Ã©ÃÃ·Ã¥Ã© Ã£Ã±ÃÃ¬Ã¬Ã¡Ã´Ã¡, Ã¡Ã±Ã©Ã¨Ã¬Ã¯Ã½Ã² ÃªÃ¡Ã© _'
 });
 
 Ext.define("Ext.locale.gr.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Áýîïõóá Ôáîéíüìçóç",
-    sortDescText: "Öèßíïõóá Ôáîéíüìçóç",
-    lockText: "Êëåßäùìá óôÞëçò",
-    unlockText: "Îåêëåßäùìá óôÞëçò",
-    columnsText: "ÓôÞëåò"
+    sortAscText: "ÃÃ½Ã®Ã¯ÃµÃ³Ã¡ ÃÃ¡Ã®Ã©Ã­Ã¼Ã¬Ã§Ã³Ã§",
+    sortDescText: "ÃÃ¨ÃÃ­Ã¯ÃµÃ³Ã¡ ÃÃ¡Ã®Ã©Ã­Ã¼Ã¬Ã§Ã³Ã§",
+    lockText: "ÃÃ«Ã¥ÃÃ¤Ã¹Ã¬Ã¡ Ã³Ã´ÃÃ«Ã§Ã²",
+    unlockText: "ÃÃ¥ÃªÃ«Ã¥ÃÃ¤Ã¹Ã¬Ã¡ Ã³Ã´ÃÃ«Ã§Ã²",
+    columnsText: "ÃÃ´ÃÃ«Ã¥Ã²"
 });
 
 Ext.define("Ext.locale.gr.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
-    nameText: "¼íïìá",
-    valueText: "ÔéìÞ",
-    dateFormat: "ì/ç/Å"
+    nameText: "Â¼Ã­Ã¯Ã¬Ã¡",
+    valueText: "ÃÃ©Ã¬Ã",
+    dateFormat: "Ã¬/Ã§/Ã"
 });
 
 Ext.define("Ext.locale.gr.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
-        ok: "ÅíôÜîåé",
-        cancel: "Áêýñùóç",
-        yes: "Íáé",
-        no: "¼÷é"
+        ok: "ÃÃ­Ã´ÃÃ®Ã¥Ã©",
+        cancel: "ÃÃªÃ½Ã±Ã¹Ã³Ã§",
+        yes: "ÃÃ¡Ã©",
+        no: "Â¼Ã·Ã©"
     }
 });
 

@@ -70,15 +70,15 @@ public class CtrlProductos extends HttpServlet {
     
       public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
     try {
-        // 1. Obtener par·metros de paginaciÛn de ExtJS
-        // ExtJS envÌa 'page' (1, 2, 3...) y 'limit' (registros por p·gina)
+        // 1. Obtener par√°metros de paginaci√≥n de ExtJS
+        // ExtJS env√≠a 'page' (1, 2, 3...) y 'limit' (registros por p√°gina)
         String page = Utilities.obtenParametro(request, "page");
         String limit = Utilities.obtenParametro(request, "limit");
         
         if (page == null) page = "1";
         if (limit == null) limit = "5";
 
-        // 2. Construir la URL din·mica con los par·metros de la p·gina
+        // 2. Construir la URL din√°mica con los par√°metros de la p√°gina
         // Asumiendo que ServiceAdressGlobal termina en .../AddressGLOBAL/
         String serviceConsignatarios = props.getValueProp("HostItems")
                 + props.getValueProp("ServiceItemsGlobal") 
@@ -94,7 +94,7 @@ public class CtrlProductos extends HttpServlet {
         CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
 
         // 4. RETORNAR EL OBJETO COMPLETO, NO SOLO DATA
-        // Esto devolver· {"Meta": {...}, "Data": [...]}
+        // Esto devolver√° {"Meta": {...}, "Data": [...]}
         return mapper.writeValueAsString(CItems);
 
     } catch (Exception e) {
@@ -190,7 +190,7 @@ public class CtrlProductos extends HttpServlet {
                 mapper.writeValueAsString(confirmationLogRequest);
 
         /* =========================================================
-           5. GUARDAR LOG MASIVO (NO CRÕTICO)
+           5. GUARDAR LOG MASIVO (NO CR√çTICO)
         ========================================================= */
         try {
             String serviceLog =
@@ -211,7 +211,7 @@ public class CtrlProductos extends HttpServlet {
             }
 
         } catch (Exception logEx) {
-            System.out.println("? Error al guardar Confirmation Log (no crÌtico)");
+            System.out.println("? Error al guardar Confirmation Log (no cr√≠tico)");
             logEx.printStackTrace();
         }
 
@@ -220,7 +220,7 @@ public class CtrlProductos extends HttpServlet {
         ========================================================= */
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("success", true);
-        resultado.put("message", "ConfirmaciÛn de recepciÛn enviada exitosamente");
+        resultado.put("message", "Confirmaci√≥n de recepci√≥n enviada exitosamente");
         resultado.put("confirmedItems", globalResponse);
 
         JSONVal = mapper.writeValueAsString(resultado);

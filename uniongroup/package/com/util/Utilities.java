@@ -110,8 +110,8 @@ public class Utilities {
      * @param lstAct - Lista que contiene todas las actividades
      * @param arrayOpt - Lista que contiene las actividades a borrar
      * @param clase - La clase a Utilizar
-     * @param metodo - Método a utilizar para obtener el dato de la clase.
-     * @param tpoDato - Tipo de dato a recibir por el método.
+     * @param metodo - MÃ©todo a utilizar para obtener el dato de la clase.
+     * @param tpoDato - Tipo de dato a recibir por el mÃ©todo.
      * @return lstAct - Regresa la lista de todas las actividades ya con las actividades borradas y las actividas que se borraron.
      */
     /* public static ArrayList borrarActividadDeLista(List lstAct, ArrayList arrayOpt, Class clase, String metodo, Class tpoDato) {
@@ -272,69 +272,69 @@ public class Utilities {
     public static String getIDEspecialidad(String esp) {
         String id = "0";
 
-        if (esp.toUpperCase().equals("PSIQUIATRÍA")) {
+        if (esp.toUpperCase().equals("PSIQUIATRÃA")) {
             id = "1";
-        } else if (esp.toUpperCase().equals("MÉDICO GENERAL")) {
+        } else if (esp.toUpperCase().equals("MÃ‰DICO GENERAL")) {
             id = "2";
-        } else if (esp.toUpperCase().equals("ONCOLOGÍA MÉDICA")) {
+        } else if (esp.toUpperCase().equals("ONCOLOGÃA MÃ‰DICA")) {
             id = "3";
         } else if (esp.toUpperCase().equals("RADIOTERAPIA ONCO.")) {
             id = "4";
         } else if (esp.toUpperCase().equals("RADIOTERAPIA")) {
             id = "5";
-        } else if (esp.toUpperCase().equals("CIRUGÍA ONCOLÓGICA")) {
+        } else if (esp.toUpperCase().equals("CIRUGÃA ONCOLÃ“GICA")) {
             id = "6";
         } else if (esp.toUpperCase().equals("HEMATO-ONCOLOGICA")) {
             id = "7";
-        } else if (esp.toUpperCase().equals("GINECOLOGÍA ONCO.")) {
+        } else if (esp.toUpperCase().equals("GINECOLOGÃA ONCO.")) {
             id = "8";
-        } else if (esp.toUpperCase().equals("ONCOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("ONCOLOGÃA")) {
             id = "9";
-        } else if (esp.toUpperCase().equals("HEMATOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("HEMATOLOGÃA")) {
             id = "10";
-        } else if (esp.toUpperCase().equals("GINECOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("GINECOLOGÃA")) {
             id = "11";
         } else if (esp.toUpperCase().equals("MEDICINA INTERNA")) {
             id = "12";
-        } else if (esp.toUpperCase().equals("ENDOCRINOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("ENDOCRINOLOGÃA")) {
             id = "13";
-        } else if (esp.toUpperCase().equals("DIABETOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("DIABETOLOGÃA")) {
             id = "14";
         } else if (esp.toUpperCase().equals("PEDIATRA ONCO.")) {
             id = "15";
-        } else if (esp.toUpperCase().equals("GERIATRÍA")) {
+        } else if (esp.toUpperCase().equals("GERIATRÃA")) {
             id = "16";
-        } else if (esp.toUpperCase().equals("CARDIOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("CARDIOLOGÃA")) {
             id = "17";
-        } else if (esp.toUpperCase().equals("NEUROLOGÍA")) {
+        } else if (esp.toUpperCase().equals("NEUROLOGÃA")) {
             id = "18";
         } else if (esp.toUpperCase().equals("NUTRICION")) {
             id = "19";
-        } else if (esp.toUpperCase().equals("NEUROCIRUGÍA")) {
+        } else if (esp.toUpperCase().equals("NEUROCIRUGÃA")) {
             id = "20";
         } else if (esp.toUpperCase().equals("INTENSIVISTA")) {
             id = "21";
-        } else if (esp.toUpperCase().equals("TRAUMATOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("TRAUMATOLOGÃA")) {
             id = "22";
         } else if (esp.toUpperCase().equals("REUMATOLOGO")) {
             id = "23";
         } else if (esp.toUpperCase().equals("ANESTESIOLOGO")) {
             id = "24";
-        } else if (esp.toUpperCase().equals("DERMATOLOGÍA")) {
+        } else if (esp.toUpperCase().equals("DERMATOLOGÃA")) {
             id = "25";
         } else if (esp.toUpperCase().equals("ENDOCRINO-PEDIATRA")) {
             id = "26";
-        } else if (esp.toUpperCase().equals("GASTROENTERÓLOGO")) {
+        } else if (esp.toUpperCase().equals("GASTROENTERÃ“LOGO")) {
             id = "27";
-        } else if (esp.toUpperCase().equals("MÉDICO CIRUJANO")) {
+        } else if (esp.toUpperCase().equals("MÃ‰DICO CIRUJANO")) {
             id = "28";
-        } else if (esp.toUpperCase().equals("ODONTÓLOGO")) {
+        } else if (esp.toUpperCase().equals("ODONTÃ“LOGO")) {
             id = "29";
         } else if (esp.toUpperCase().equals("ORTOPEDISTA")) {
             id = "30";
         } else if (esp.toUpperCase().equals("OTORRINOLARINGOLOGO")) {
             id = "31";
-        } else if (esp.toUpperCase().equals("UROLOGÍA")) {
+        } else if (esp.toUpperCase().equals("UROLOGÃA")) {
             id = "32";
         } else {
             id = "0";

@@ -157,7 +157,7 @@ public class RequestGetApi {
                 totalRecs = currentTotal;
                 itemsArray.remove(0);
 
-                // ??? AGREGAR ESTA LÕNEA - Actualizar el count despuÈs de eliminar
+                // ??? AGREGAR ESTA L√çNEA - Actualizar el count despu√©s de eliminar
                 jsonResponse.put("count", itemsArray.length());
 
             } else {

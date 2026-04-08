@@ -7,9 +7,9 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["Januar", "Februar", "Mart", "April", "Мај", "Jun", "Јul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
+        Ext.Date.monthNames = ["Januar", "Februar", "Mart", "April", "ÐÐ°Ñ", "Jun", "Ðul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
 
-        Ext.Date.dayNames = ["Nedelja", "Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota"];
+        Ext.Date.dayNames = ["Nedelja", "Ponedeljak", "Utorak", "Sreda", "Äetvrtak", "Petak", "Subota"];
     }
 
     if (Ext.util && Ext.util.Format) {
@@ -35,28 +35,28 @@ Ext.define("Ext.locale.sr.grid.plugin.DragDrop", {
 
 Ext.define("Ext.locale.sr.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Zatvori оvu »karticu«"
+    closeText: "Zatvori Ð¾vu Â»karticuÂ«"
 });
 
 Ext.define("Ext.locale.sr.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "Unešena vrednost nije pravilna"
+    invalidText: "UneÅ¡ena vrednost nije pravilna"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "Učitavam..."
+    loadingText: "UÄitavam..."
 });
 
 Ext.define("Ext.locale.sr.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Danas",
-    minText: "Datum је ispred najmanjeg dozvoljenog datuma",
-    maxText: "Datum је nakon najvećeg dozvoljenog datuma",
+    minText: "Datum ÑÐµ ispred najmanjeg dozvoljenog datuma",
+    maxText: "Datum ÑÐµ nakon najveÄeg dozvoljenog datuma",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Sledeći mesec (Control+Desno)',
+    nextText: 'SledeÄi mesec (Control+Desno)',
     prevText: 'Prethodni mesec (Control+Levo)',
     monthYearText: 'Izaberite mesec (Control+Gore/Dole za izbor godine)',
     todayTip: "{0} (Razmaknica)",
@@ -70,26 +70,26 @@ Ext.define("Ext.locale.sr.toolbar.Paging", {
     afterPageText: "od {0}",
     firstText: "Prva strana",
     prevText: "Prethodna strana",
-    nextText: "Sledeća strana",
+    nextText: "SledeÄa strana",
     lastText: "Poslednja strana",
-    refreshText: "Osveži",
+    refreshText: "OsveÅ¾i",
     displayMsg: "Prikazana {0} - {1} od {2}",
-    emptyMsg: 'Nemam šta prikazati'
+    emptyMsg: 'Nemam Å¡ta prikazati'
 });
 
 Ext.define("Ext.locale.sr.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Minimalna dužina ovog polja је {0}",
-    maxLengthText: "Maksimalna dužina ovog polja је {0}",
-    blankText: "Polje је obavezno",
+    minLengthText: "Minimalna duÅ¾ina ovog polja ÑÐµ {0}",
+    maxLengthText: "Maksimalna duÅ¾ina ovog polja ÑÐµ {0}",
+    blankText: "Polje ÑÐµ obavezno",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.sr.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "Minimalna vrednost u polju је {0}",
-    maxText: "Maksimalna vrednost u polju је {0}",
+    minText: "Minimalna vrednost u polju ÑÐµ {0}",
+    maxText: "Maksimalna vrednost u polju ÑÐµ {0}",
     nanText: "{0} nije pravilan broj"
 });
 
@@ -109,24 +109,24 @@ Ext.define("Ext.locale.sr.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "Učitavam..."
+        loadingText: "UÄitavam..."
     });
 });
 
 Ext.define("Ext.locale.sr.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Ovo polje prihavata e-mail adresu isključivo u obliku "korisnik@domen.com"',
-    urlText: 'Ovo polje prihavata URL adresu isključivo u obliku "http:/' + '/www.domen.com"',
-    alphaText: 'Ovo polje može sadržati isključivo slova i znak _',
-    alphanumText: 'Ovo polje može sadržati само slova, brojeve i znak _'
+    emailText: 'Ovo polje prihavata e-mail adresu iskljuÄivo u obliku "korisnik@domen.com"',
+    urlText: 'Ovo polje prihavata URL adresu iskljuÄivo u obliku "http:/' + '/www.domen.com"',
+    alphaText: 'Ovo polje moÅ¾e sadrÅ¾ati iskljuÄivo slova i znak _',
+    alphanumText: 'Ovo polje moÅ¾e sadrÅ¾ati ÑÐ°Ð¼Ð¾ slova, brojeve i znak _'
 });
 
 Ext.define("Ext.locale.sr.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Rastući redosled",
-    sortDescText: "Opadajući redosled",
-    lockText: "Zaključaj kolonu",
-    unlockText: "Otključaj kolonu",
+    sortAscText: "RastuÄi redosled",
+    sortDescText: "OpadajuÄi redosled",
+    lockText: "ZakljuÄaj kolonu",
+    unlockText: "OtkljuÄaj kolonu",
     columnsText: "Kolone"
 });
 

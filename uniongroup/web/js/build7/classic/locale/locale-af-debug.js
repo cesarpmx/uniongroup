@@ -53,7 +53,7 @@ Ext.define("Ext.locale.af.view.AbstractView", {
 Ext.define("Ext.locale.af.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Vandag",
-    minText: "Hierdie datum is vroër as die minimum datum",
+    minText: "Hierdie datum is vroÃ«r as die minimum datum",
     maxText: "Hierdie dataum is later as die maximum datum",
     disabledDaysText: "",
     disabledDatesText: "",

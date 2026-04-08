@@ -82,7 +82,7 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
         try {
             switch (bnd) {
                 case "1":
-                    out.print(RecuperarContraseÒa(request, response));
+                    out.print(RecuperarContrase√±a(request, response));
                     break;
             }
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
         }
     }
 
-    public String RecuperarContraseÒa(HttpServletRequest request, HttpServletResponse response) {
+    public String RecuperarContrase√±a(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "";
 
         String jsonLineaNegocio = Utilities.obtenParametro(request, "valores");
@@ -102,12 +102,12 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
         String correoSoporte= "";
         
         String cuerpoMensaje = "<h3>Hola: " + correoUsuario + "</h3>"
-                    + "<p>Su contraseÒa se ha restablecido con Èxito.</p>"
-                    + "<p>Su nueva contraseÒa es: <b>" + _cve + "</b></p>"
-                    + "<p>Cualquier duda, comunÌquese con: soporte@concir.com</p>";
+                    + "<p>Su contrase√±a se ha restablecido con √©xito.</p>"
+                    + "<p>Su nueva contrase√±a es: <b>" + _cve + "</b></p>"
+                    + "<p>Cualquier duda, comun√≠quese con: soporte@concir.com</p>";
         
         JSONObject jsonInformacionCorreo = new JSONObject();
-        jsonInformacionCorreo.put("asunto", "ConfirmaciÛn cambio de contraseÒa");
+        jsonInformacionCorreo.put("asunto", "Confirmaci√≥n cambio de contrase√±a");
         jsonInformacionCorreo.put("agente",correoSoporte );
         jsonInformacionCorreo.put("usuario",correoUsuario );
         jsonInformacionCorreo.put("cuerpoMensaje", cuerpoMensaje);
@@ -116,7 +116,7 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
         RequestPostApi requetPost = new RequestPostApi();
         
         try {
-            String service = props.getValueProp("Host") + props.getValueProp("ServiceRecuperarContraseÒa");
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceRecuperarContrase√±a");
             JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
             
             // Convertir la respuesta JSON a un objeto JSONObject
@@ -147,10 +147,10 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
         byte[] imageBytes = imageStream.readAllBytes();
         String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
-        // Verificar si los par·metros son nulos
+        // Verificar si los par√°metros son nulos
         String detalle_Bitacora = "";
         if (jsonLineaNegocio == null || correoUsuario == null) {
-            return "{\"success\": false, \"message\": \"Alguno de los par·metros es nulo.\"}";
+            return "{\"success\": false, \"message\": \"Alguno de los par√°metros es nulo.\"}";
         }
 
         try {
@@ -176,7 +176,7 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
                 final String username = jsonObjectServidor.getString("emauser");
                 final String password = jsonObjectServidor.getString("emapassword");
 
-                // Configurar las propiedades para la conexiÛn SMTP
+                // Configurar las propiedades para la conexi√≥n SMTP
                 Properties props = new Properties();
                 props.put("mail.smtp.host", host);
                 props.put("mail.smtp.port", port);
@@ -184,7 +184,7 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
                 props.put("mail.smtp.starttls.enable", "true");
                 props.put("mail.smtp.ssl.trust", "*");
 
-                // Crear la sesiÛn con la autenticaciÛn
+                // Crear la sesi√≥n con la autenticaci√≥n
                 Session session = Session.getInstance(props, new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
@@ -201,13 +201,13 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
                  
                 // Crear el cuerpo del mensaje en HTML
                 String cuerpoMensaje = "<h3>Hola: " + correo + "</h3>"
-                    + "<p>Su contraseÒa se ha restablecido con Èxito.</p>"
-                    + "<p>Su nueva contraseÒa es: <b>" + _cve + "</b></p>"
-                    + "<p>Cualquier duda, comunÌquese con: soporte@concir.com</p>"
+                    + "<p>Su contrase√±a se ha restablecido con √©xito.</p>"
+                    + "<p>Su nueva contrase√±a es: <b>" + _cve + "</b></p>"
+                    + "<p>Cualquier duda, comun√≠quese con: soporte@concir.com</p>"
                 
                 + "<br><br>"
                 + "<img src='data:image/png;base64," + base64Image + "' width='350' height='95' alt='Logo' />"
-                + "<p>Confidenciality Note: Este mensaje y cualquiera de sus anexos, contienen informaciÛn confidencial y est· dirigido ˙nicamente al destinatario designado en la parte superior de este correo. Cualquier uso por parte de otro destinatario estar· estrictamente prohibido. Si usted recibiÛ este correo por error, favor de contactar al remitente y eliminar este mensaje de su buzÛn. This e-mail and any attachment to it, contains confidential information that is intended only for the addressee(s) named above. Any use by an unintended recipient is strictly prohibited. If you have received this e-mail in error, please contact the sender and delete this e-mail from your system.\n"
+                + "<p>Confidenciality Note: Este mensaje y cualquiera de sus anexos, contienen informaci√≥n confidencial y est√° dirigido √∫nicamente al destinatario designado en la parte superior de este correo. Cualquier uso por parte de otro destinatario estar√° estrictamente prohibido. Si usted recibi√≥ este correo por error, favor de contactar al remitente y eliminar este mensaje de su buz√≥n. This e-mail and any attachment to it, contains confidential information that is intended only for the addressee(s) named above. Any use by an unintended recipient is strictly prohibited. If you have received this e-mail in error, please contact the sender and delete this e-mail from your system.\n"
                         + "No imprima este correo si no es necesario. Ahorrar papel protege el medio ambiente.</p>";
 
                 MimeBodyPart textoParte = new MimeBodyPart();
@@ -221,16 +221,16 @@ public class CtrlConfiguracionUsuario extends HttpServlet {
                 // Enviar el correo
                 Transport.send(message);
             } else {
-                System.out.println("El JSON de configServer est· vacÌo o no tiene elementos.");
-                return "El JSON de configServer est· vacÌo o no tiene elementos.";
+                System.out.println("El JSON de configServer est√° vac√≠o o no tiene elementos.");
+                return "El JSON de configServer est√° vac√≠o o no tiene elementos.";
             }
 
-            System.out.println("Correo electrÛnico enviado con Èxito.");
+            System.out.println("Correo electr√≥nico enviado con √©xito.");
             return "{\"success\": true, \"message\": \"Su solicitud ha sido exitosa, se ha enviado un mensaje al siguiente(s) correo(s) " + correoUsuario + "\"}";
 
         } catch (MessagingException | JSONException e) {
             e.printStackTrace();
-            return "{\"success\": false, \"message\": \"La bitacora se guardo correctamente pero hubo un error en la autenticaciÛn para el envio del correo.\"}";
+            return "{\"success\": false, \"message\": \"La bitacora se guardo correctamente pero hubo un error en la autenticaci√≥n para el envio del correo.\"}";
         }
     }
 

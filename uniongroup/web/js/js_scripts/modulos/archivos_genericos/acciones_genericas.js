@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 
-/*** Función general para hacer submit a los formularios y realizar acciones ***/
+/*** FunciÃ³n general para hacer submit a los formularios y realizar acciones ***/
 
 function submitFormulario(formPanel,parametros){ 
     var prm = (parametros==null ? {} : parametros);
     var prm2 = (parametros==null ? {} : parametros);
     var url = (prm.url==null ? '' : prm.url);
-    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la información' : prm.msg);
+    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la informaciÃ³n' : prm.msg);
     var form = formPanel.getForm();
     var nDir = (prm.nDir==null ? '' : prm.nDir);
     var idc = (prm.idCnt == null ? 0 : prm.idCnt);
@@ -58,24 +58,24 @@ function submitFormulario(formPanel,parametros){
                 }
 				
                 if(action.result.accion == null){
-                    var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                    //Ext.Msg.alert("Éxito", m);
+                    var m = (action.result.msg==null ? 'Se realizÃ³ la operaciÃ³n con Ã©xito' : action.result.msg);
+                    //Ext.Msg.alert("Ã‰xito", m);
                     if(action.result.rtn!=null){
                         if(action.result.exit!=null){
                             if(action.result.exit==0){
 								
-                                Ext.Msg.alert("Éxito", m);
+                                Ext.Msg.alert("Ã‰xito", m);
                                 leerDatos(action.result.rtn);
 								
 								
                             }else if(action.result.exit==2){
-                                Ext.Msg.alert("Éxito", m);
+                                Ext.Msg.alert("Ã‰xito", m);
                             }
                         }else{
-                            Ext.Msg.alert("Éxito", m);
+                            Ext.Msg.alert("Ã‰xito", m);
                         }
                     }else{
-                        Ext.Msg.alert("Éxito", m);
+                        Ext.Msg.alert("Ã‰xito", m);
                     }
 					
 					
@@ -113,7 +113,7 @@ function submitFormulario(formPanel,parametros){
                     
                             },
                             failure:function(rsp){
-                                Ext.MessageBox.alert('¡¡Alerta!!',"Problemas de conexión");
+                                Ext.MessageBox.alert('Â¡Â¡Alerta!!',"Problemas de conexiÃ³n");
                             }
                         });
                     
@@ -133,7 +133,7 @@ function submitFormulario(formPanel,parametros){
                     var p = Ext.getCmp(action.result.idPnl);
                     p.load(action.result.prm);
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
 						
                     }
                 }else if (action.result.accion=='loadHTMLPanelDobles'){
@@ -144,7 +144,7 @@ function submitFormulario(formPanel,parametros){
                     not.load(action.result.prm2);
                     e.getStore().load();
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }
                 else if (action.result.accion=='loadMultiples'){
@@ -160,7 +160,7 @@ function submitFormulario(formPanel,parametros){
                         }
                     }
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }else if (action.result.accion=='setModuloSeg'){
                     
@@ -209,12 +209,12 @@ function submitFormulario(formPanel,parametros){
                                     modal:true
                                 }));
                                 if(action.result.msg!=null){
-                                    Ext.Msg.alert("Éxito ", action.result.msg);
+                                    Ext.Msg.alert("Ã‰xito ", action.result.msg);
                                 }
                     
                             },
                             failure:function(rsp){
-                                Ext.MessageBox.alert('¡¡Alerta!!',"Problemas de conexión");
+                                Ext.MessageBox.alert('Â¡Â¡Alerta!!',"Problemas de conexiÃ³n");
                             }
                         });
                     
@@ -248,7 +248,7 @@ function submitFormulario(formPanel,parametros){
                             modal:true
                         }));
                         if(action.result.msg!=null){
-                            Ext.Msg.alert("Éxito ", action.result.msg);
+                            Ext.Msg.alert("Ã‰xito ", action.result.msg);
                         }
                     }
                 }
@@ -258,7 +258,7 @@ function submitFormulario(formPanel,parametros){
                         msg:'Farmacovigilancia'
                     }));
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }else if (action.result.accion=='setModuloArchivo'){
                     /*var wnd = new  Ext.Window({
@@ -347,7 +347,7 @@ function submitFormulario(formPanel,parametros){
 	
 }
 
-/*** Método que realiza una carga a un formulario ***/
+/*** MÃ©todo que realiza una carga a un formulario ***/
 
 function loadFormulario(formulario,parametros){
     var prm = (parametros==null ? {} : parametros);
@@ -372,7 +372,7 @@ function loadFormulario(formulario,parametros){
                 var w = Ext.getCmp(action.result.wnd);
                 w.close();
                 Ext.MessageBox.show({
-                    title: 'Información',
+                    title: 'InformaciÃ³n',
                     msg: 'No existe la factura verifique.',
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.WARNING
@@ -384,7 +384,7 @@ function loadFormulario(formulario,parametros){
         }
     });
 }
-/*** Método que devuelve un pánel de acuerdo a el índice pasado y sus parámetros ***/
+/*** MÃ©todo que devuelve un pÃ¡nel de acuerdo a el Ã­ndice pasado y sus parÃ¡metros ***/
 
 function getModulo(i,params){
     var frm = null;
@@ -411,7 +411,7 @@ function enviaValores(contenedores,valores,ventana){
 }
 
 
-/*** Método para limpiar componentes y hacer un load a un combo ***/
+/*** MÃ©todo para limpiar componentes y hacer un load a un combo ***/
 
 function accionCmbUbicacion(cmb,cmpToClean,prm, borrar){
     if(borrar==true){
@@ -436,12 +436,12 @@ function accionCmbUbicacion(cmb,cmpToClean,prm, borrar){
 }
 
 function VentEmergenteConsulta(idCnt,bnd,mnsTitulo){
-    var msg = (mnsTitulo==null ? 'Ver Información' : mnsTitulo);
+    var msg = (mnsTitulo==null ? 'Ver InformaciÃ³n' : mnsTitulo);
     var vBnd = (bnd==null ? '0' : bnd);
     var vIdCnt = (idCnt==null ? '0' : idCnt);
 
     var wnd = new Ext.Window({
-        title:msg,//'Información del Paciente',
+        title:msg,//'InformaciÃ³n del Paciente',
         id:'idWndConsulta',
         constrainHeader :true,
         modal:true,
@@ -456,7 +456,7 @@ function VentEmergenteConsulta(idCnt,bnd,mnsTitulo){
                 'bnd':vBnd,
                 'idCnt':vIdCnt
             },
-            text:'Cargando información...'
+            text:'Cargando informaciÃ³n...'
         },
         buttons:[
         {
@@ -525,7 +525,7 @@ function submitFormulario2(formPanel,parametros){
     var prm = (parametros==null ? {} : parametros);
     var prm2 = (parametros==null ? {} : parametros);
     var url = (prm.url==null ? '' : prm.url);
-    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la información' : prm.msg);
+    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la informaciÃ³n' : prm.msg);
     var form = formPanel.getForm();
     var nDir = (prm.nDir==null ? "no" : prm.nDir);
     var idc = (prm.idCnt == null ? 0 : prm.idCnt);
@@ -539,8 +539,8 @@ function submitFormulario2(formPanel,parametros){
             timeout:150000,
             success:function(form,action){
                 if(action.result.accion == null){
-                    var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                    Ext.Msg.alert("Éxito", m);//
+                    var m = (action.result.msg==null ? 'Se realizÃ³ la operaciÃ³n con Ã©xito' : action.result.msg);
+                    Ext.Msg.alert("Ã‰xito", m);//
                 }else if(action.result.accion=='setModulo'){
                     if(action.result.ProsNutCampo!=null){
                         if(action.result.ProsNutCampo==1){
@@ -601,7 +601,7 @@ function submitFormulario2(formPanel,parametros){
                         }
                     }
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                     if(action.result.idReceta != null){
                         SubirReceta(action.result.idReceta,action.result.idCnt);
@@ -635,7 +635,7 @@ function submitFormularioSubir(formPanel,parametros){
     var prm = (parametros==null ? {} : parametros);
     var prm2 = (parametros==null ? {} : parametros);
     var url = (prm.url==null ? '' : prm.url);
-    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la información' : prm.msg);
+    var msg = (prm.msg==null ? 'Espere un segundo, estamos procesando la informaciÃ³n' : prm.msg);
     var form = formPanel.getForm();
     var nDir = (prm.nDir==null ? "no" : prm.nDir);
     var idc = (prm.idCnt == null ? 0 : prm.idCnt);
@@ -668,7 +668,7 @@ function submitFormularioSubir(formPanel,parametros){
         });
     }
 }
-//Menor al día de hoy
+//Menor al dÃ­a de hoy
 function Validafecha(idfecha){
     var valid=true;
     var fec=new Date;
@@ -681,7 +681,7 @@ function Validafecha(idfecha){
     }
     return valid;
 }
-//Mayor al día de hoy
+//Mayor al dÃ­a de hoy
 function ValidarfechaMayor(idfecha){
     var valid=true;
     var fec=new Date;
@@ -744,8 +744,8 @@ function FunItemBlur(cmp){
 
 function getSession(){
     var MnsA=Ext.Msg.show({
-        title:'¡¡Alerta!!',
-        msg: 'Se termino la Sesión. Favor de ingresar su Usuario y Contraseña',        
+        title:'Â¡Â¡Alerta!!',
+        msg: 'Se termino la SesiÃ³n. Favor de ingresar su Usuario y ContraseÃ±a',        
         animEl: 'elId',
         buttons:{
             yes:'Recuperar',
@@ -770,7 +770,7 @@ function getSession(){
                     draggable:true,
                     resizable:false,
                     bodyStyle: 'padding:5px;',
-                    title:'Recuperar Sesión',
+                    title:'Recuperar SesiÃ³n',
                     items:[
                     new Ext.form.FormPanel({
                         frame  : true,
@@ -796,7 +796,7 @@ function getSession(){
                         },
                         {
                             xtype:'textfield',
-                            fieldLabel: '&nbsp; &nbsp;Contraseña',
+                            fieldLabel: '&nbsp; &nbsp;ContraseÃ±a',
                             id:'pssw',
                             inputType:'password',
                             width:150,
@@ -846,14 +846,14 @@ function Acces(){
     if(frm.getForm().isValid()){
         Ext.getCmp('btnAcces').disable();
         frm.getForm().getEl().dom.action=frm.url;
-        var msg = 'Espere un segundo, estamos procesando la información';
+        var msg = 'Espere un segundo, estamos procesando la informaciÃ³n';
         frm.getForm().submit({
             waitMsg: msg,
             clientValidation: true,
             timeout:150000,
             success:function(form,action){
-                var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                Ext.Msg.alert("Éxito", m);
+                var m = (action.result.msg==null ? 'Se realizÃ³ la operaciÃ³n con Ã©xito' : action.result.msg);
+                Ext.Msg.alert("Ã‰xito", m);
                 var w = Ext.getCmp('idRecuperarSesion');
                 w.close();
             },

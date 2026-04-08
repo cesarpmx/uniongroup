@@ -123,12 +123,12 @@ public class CtrlEcommerce extends HttpServlet {
     try {
         ObjectMapper mapper = new ObjectMapper();
 
-        // 1 y 2. (Mantenemos igual la obtención de datos...)
+        // 1 y 2. (Mantenemos igual la obtenciÃ³n de datos...)
         String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
         String respH = requetGet.getGet(serviceH);
         CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
         if (centralHeader.items == null || centralHeader.items.isEmpty()) {
-            return "{\"ok\":false, \"error\":\"No se encontró header\"}";
+            return "{\"ok\":false, \"error\":\"No se encontrÃ³ header\"}";
         }
         ArrEcommerce header = centralHeader.items.get(0);
 
@@ -145,7 +145,7 @@ public class CtrlEcommerce extends HttpServlet {
         STDRUEAPGenerator.generate(header, det.items, tempFile);
 
         // 4. Subir a FTP
-        // Estas variables deberías leerlas de tu AppConfig o Properties
+        // Estas variables deberÃ­as leerlas de tu AppConfig o Properties
         String ftpHost = "globalmx.dyndns.org";
         String ftpUser = "ftpglobal";
         String ftpPass = "Gl0b4l25=";
@@ -153,7 +153,7 @@ public class CtrlEcommerce extends HttpServlet {
 
         boolean uploaded = uploadToFTP(tempFile, fileName, ftpHost, ftpUser, ftpPass, remoteDir);
 
-        // Borrar archivo temporal después de subir
+        // Borrar archivo temporal despuÃ©s de subir
         Files.deleteIfExists(tempFile);
 
         if (uploaded) {
@@ -168,7 +168,7 @@ public class CtrlEcommerce extends HttpServlet {
     }
 }
 
-// Método auxiliar para la conexión FTP
+// MÃ©todo auxiliar para la conexiÃ³n FTP
 private boolean uploadToFTP(Path localFilePath, String remoteFileName, String host, String user, String pass, String remoteDir) {
     FTPClient ftpClient = new FTPClient();
     try {
@@ -213,7 +213,7 @@ private boolean uploadToFTP(Path localFilePath, String remoteFileName, String ho
 //        CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
 //
 //        if (centralHeader.items == null || centralHeader.items.isEmpty()) {
-//            return "{\"ok\":false, \"error\":\"No se encontró header para ecomid " + ecomid + "\"}";
+//            return "{\"ok\":false, \"error\":\"No se encontrÃ³ header para ecomid " + ecomid + "\"}";
 //        }
 //
 //        ArrEcommerce header = centralHeader.items.get(0);
@@ -225,7 +225,7 @@ private boolean uploadToFTP(Path localFilePath, String remoteFileName, String ho
 //        CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
 //
 //        if (det.items == null || det.items.isEmpty()) {
-//            return "{\"ok\":false, \"error\":\"No hay líneas de detalle para ecomid " + ecomid + "\"}";
+//            return "{\"ok\":false, \"error\":\"No hay lÃ­neas de detalle para ecomid " + ecomid + "\"}";
 //        }
 //
 //        // 3. Generar archivo

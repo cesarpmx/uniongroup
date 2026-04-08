@@ -113,7 +113,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                 var selected = grid.getSelection();
 
                                 if (selected.length === 0) {
-                                    Ext.Msg.alert('AtenciÛn', 'Debe seleccionar al menos una transferencia');
+                                    Ext.Msg.alert('Atenci√≥n', 'Debe seleccionar al menos una transferencia');
                                     return;
                                 }
 
@@ -191,13 +191,13 @@ Ext.define('TransferenciaSalidaUtils', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: "DirecciÛn",
+                            text: "Direcci√≥n",
                             dataIndex: "AddressCode",
                             width: 150,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Total LÌneas",
+                            text: "Total L√≠neas",
                             dataIndex: "TotalLines",
                             width: 120,
                             align: "center",
@@ -253,7 +253,7 @@ Ext.define('TransferenciaSalidaUtils', {
 
         Ext.MessageBox.confirm(
                 'Confirmar',
-                'øEst· seguro de cargar ' + totalSeleccionadas + ' transferencia(s) de salida seleccionada(s)?',
+                '¬øEst√° seguro de cargar ' + totalSeleccionadas + ' transferencia(s) de salida seleccionada(s)?',
                 function (btn) {
                     if (btn === 'yes') {
 
@@ -280,11 +280,11 @@ Ext.define('TransferenciaSalidaUtils', {
 
                         if (transferenciasHeader.length === 0) {
                             Ext.getBody().unmask();
-                            Ext.Msg.alert('InformaciÛn', 'No hay transferencias para procesar');
+                            Ext.Msg.alert('Informaci√≥n', 'No hay transferencias para procesar');
                             return;
                         }
 
-                        // Obtener las lÌneas de cada transferencia
+                        // Obtener las l√≠neas de cada transferencia
                         var promises = [];
                         var transferenciasCompletas = [];
 
@@ -325,14 +325,14 @@ Ext.define('TransferenciaSalidaUtils', {
                                     );
                         });
 
-                        // Cuando todas las lÌneas estÈn cargadas, enviar por lotes
+                        // Cuando todas las l√≠neas est√©n cargadas, enviar por lotes
                         Promise.all(promises).then(function () {
                             Ext.getBody().unmask();
                             TransferenciaSalidaUtils.iniciarEnvioPorLotes(transferenciasCompletas);
                         }).catch(function (error) {
                             Ext.getBody().unmask();
-                            console.error('? Error al obtener lÌneas:', error);
-                            Ext.Msg.alert('Error', 'Error al obtener las lÌneas de las transferencias');
+                            console.error('? Error al obtener l√≠neas:', error);
+                            Ext.Msg.alert('Error', 'Error al obtener las l√≠neas de las transferencias');
                         });
                     }
                 }
@@ -393,7 +393,7 @@ Ext.define('TransferenciaSalidaUtils', {
                     try {
                         resultado = Ext.decode(response.responseText);
                     } catch (e) {
-                        console.error("JSON inv·lido:", response.responseText);
+                        console.error("JSON inv√°lido:", response.responseText);
                         index += loteSize;
                         if (index < totalTransfers) {
                             enviarSiguienteLote();
@@ -479,7 +479,7 @@ Ext.define('TransferenciaSalidaUtils', {
         var storeCliente = Ext.create('Ext.data.Store', {model: 'ClienteResponseSalidaModel', data: clienteData || []});
 
         const win = Ext.create('Ext.window.Window', {
-            title: 'Resultados de SincronizaciÛn - Transferencias de Salida',
+            title: 'Resultados de Sincronizaci√≥n - Transferencias de Salida',
             width: 1000,
             height: 600,
             modal: true,
@@ -488,7 +488,7 @@ Ext.define('TransferenciaSalidaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: '…xitos (' + confirmData.length + ')',
+                            title: '√âxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -502,7 +502,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                         {text: 'Cliente', dataIndex: 'NumAtCard', width: 150, flex: 1},
                                         {text: 'CardCode', dataIndex: 'CardCode', width: 120},
                                         {
-                                            text: 'LÌneas OK',
+                                            text: 'L√≠neas OK',
                                             dataIndex: 'linesInserted',
                                             width: 100,
                                             align: 'center',
@@ -511,7 +511,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                             }
                                         },
                                         {
-                                            text: 'LÌneas Error',
+                                            text: 'L√≠neas Error',
                                             dataIndex: 'linesFailed',
                                             width: 100,
                                             align: 'center',
@@ -547,7 +547,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                 }]
                         },
                         {
-                            title: 'ConfirmaciÛn Cliente (' + (clienteData ? clienteData.length : 0) + ')',
+                            title: 'Confirmaci√≥n Cliente (' + (clienteData ? clienteData.length : 0) + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check',
                             items: [{
@@ -600,7 +600,7 @@ Ext.define('TransferenciaSalidaUtils', {
     },
 
 // ========================================
-// ?? VER LÕNEAS DE TRANSFERENCIA (Desde GLOBAL)
+// ?? VER L√çNEAS DE TRANSFERENCIA (Desde GLOBAL)
 // ========================================
     verLineasTransferencia: function (record) {
         var docEntry = record.get('DocEntry');
@@ -638,10 +638,10 @@ Ext.define('TransferenciaSalidaUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' lÌneas para transferencia #' + docNum);
+                        console.log('? Cargadas ' + records.length + ' l√≠neas para transferencia #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' lÌneas',
-                            title: '…xito',
+                            html: 'Se cargaron ' + records.length + ' l√≠neas',
+                            title: '√âxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -653,7 +653,7 @@ Ext.define('TransferenciaSalidaUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasTransferenciaSalida',
-            title: 'LÌneas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
+            title: 'L√≠neas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -673,7 +673,7 @@ Ext.define('TransferenciaSalidaUtils', {
                     tbar: [
                         {
                             xtype: 'displayfield',
-                            value: '<b>Total de lÌneas: ' + totalLines + '</b>',
+                            value: '<b>Total de l√≠neas: ' + totalLines + '</b>',
                             fieldStyle: 'font-size: 14px; color: #2196F3;'
                         },
                         '->',
@@ -702,7 +702,7 @@ Ext.define('TransferenciaSalidaUtils', {
                             align: "center"
                         },
                         {
-                            text: "LÌnea",
+                            text: "L√≠nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -712,14 +712,14 @@ Ext.define('TransferenciaSalidaUtils', {
                             }
                         },
                         {
-                            text: "CÛdigo",
+                            text: "C√≥digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "CÛdigo de Barras",
+                            text: "C√≥digo de Barras",
                             dataIndex: "Barcode",
                             width: 250,
                             flex: 1,
@@ -790,10 +790,10 @@ Ext.define('TransferenciaSalidaUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-                        console.log('? Cargadas ' + records.length + ' lÌneas locales para transferencia #' + docNum);
+                        console.log('? Cargadas ' + records.length + ' l√≠neas locales para transferencia #' + docNum);
                         Ext.toast({
-                            html: 'Se cargaron ' + records.length + ' lÌneas',
-                            title: '…xito',
+                            html: 'Se cargaron ' + records.length + ' l√≠neas',
+                            title: '√âxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -805,7 +805,7 @@ Ext.define('TransferenciaSalidaUtils', {
 
         const win = Ext.create('Ext.window.Window', {
             id: 'winLineasTransferenciaSalidaLocal',
-            title: 'LÌneas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
+            title: 'L√≠neas de Transferencia #' + docNum + ' - CardCode: ' + cardCode,
             width: 900,
             height: 500,
             scrollable: true,
@@ -850,12 +850,12 @@ Ext.define('TransferenciaSalidaUtils', {
                         xtype: 'pagingtoolbar',
                         store: storeLineas,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} lÌneas',
-                        emptyMsg: "No hay lÌneas para mostrar",
-                        beforePageText: 'P·gina',
+                        displayMsg: 'Mostrando {0} - {1} de {2} l√≠neas',
+                        emptyMsg: "No hay l√≠neas para mostrar",
+                        beforePageText: 'P√°gina',
                         afterPageText: 'de {0}',
-                        firstText: 'Primera p·gina',
-                        lastText: '⁄ltima p·gina',
+                        firstText: 'Primera p√°gina',
+                        lastText: '√öltima p√°gina',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -868,7 +868,7 @@ Ext.define('TransferenciaSalidaUtils', {
                             align: "center"
                         },
                         {
-                            text: "LÌnea",
+                            text: "L√≠nea",
                             dataIndex: "LineNum",
                             width: 100,
                             align: "center",
@@ -878,14 +878,14 @@ Ext.define('TransferenciaSalidaUtils', {
                             }
                         },
                         {
-                            text: "CÛdigo",
+                            text: "C√≥digo",
                             dataIndex: "ItemCode",
                             width: 200,
                             flex: 1,
                             filter: {type: 'string'}
                         },
                         {
-                            text: "CÛdigo de Barras",
+                            text: "C√≥digo de Barras",
                             dataIndex: "Barcode",
                             width: 250,
                             flex: 1,
@@ -930,7 +930,7 @@ Ext.define('TransferenciaSalidaUtils', {
             url: contexto + '/TransferenciasSalida',
             timeout: 60000,
             params: {
-                busqBnd: 9, // Ajusta el n˙mero seg˙n tu servlet
+                busqBnd: 9, // Ajusta el n√∫mero seg√∫n tu servlet
                 centralTransferenciaSalida: Ext.JSON.encode(payload)
             },
             success: function (response) {
@@ -976,7 +976,7 @@ Ext.define('TransferenciaSalidaUtils', {
         var totalSurtido = 0;
         var productosSurtidos = [];
 
-        // Obtener lÌneas originales
+        // Obtener l√≠neas originales
         Ext.Ajax.request({
             url: contexto + '/TransferenciasSalida',
             method: 'POST',
@@ -1012,7 +1012,7 @@ Ext.define('TransferenciaSalidaUtils', {
                             totalSurtido += parseFloat(producto.unidades) || 0;
                         });
 
-                        // ? CALCULAR ESTATUS AUTOM¡TICO
+                        // ? CALCULAR ESTATUS AUTOM√ÅTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -1116,12 +1116,12 @@ Ext.define('TransferenciaSalidaUtils', {
                                 }],
                             buttons: [
                                 {
-                                    text: 'Confirmar EnvÌo',
+                                    text: 'Confirmar Env√≠o',
                                     iconCls: 'fa fa-check',
                                     handler: function () {
                                         var form = winConfirm.down('form').getForm();
                                         if (!form.isValid()) {
-                                            Ext.Msg.alert('AtenciÛn', 'Complete todos los campos obligatorios');
+                                            Ext.Msg.alert('Atenci√≥n', 'Complete todos los campos obligatorios');
                                             return;
                                         }
 
@@ -1129,9 +1129,9 @@ Ext.define('TransferenciaSalidaUtils', {
                                         var memo = Ext.getCmp('txtMemoEnvioTS').getValue() || '';
 
                                         winConfirm.close();
-                                        Ext.getBody().mask('Procesando envÌo...');
+                                        Ext.getBody().mask('Procesando env√≠o...');
 
-                                        // Construir lÌneas
+                                        // Construir l√≠neas
                                         var lineas = [];
                                         var lineNum = 0;
 
@@ -1192,7 +1192,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                                         TransferenciaSalidaUtils.ConfirmarTransferenciaSalida(tsid, true);
 
                                                         // ? SEGUNDO: Construir mensaje
-                                                        var msg = 'ConfirmaciÛn de embarque procesada exitosamente<br><br>';
+                                                        var msg = 'Confirmaci√≥n de embarque procesada exitosamente<br><br>';
                                                         msg += '<b>Transferencia:</b> ' + docNum + '<br>';
                                                         msg += '<b>Lista Empaque:</b> ' + preid + '<br>';
                                                         msg += '<b>Estatus:</b> ' + estatus + '<br>';
@@ -1206,7 +1206,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('…xito', msg, function () {
+                                                        Ext.Msg.alert('√âxito', msg, function () {
                                                             TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                                                         });
                                                     } else {
@@ -1220,7 +1220,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                             },
                                             failure: function () {
                                                 Ext.getBody().unmask();
-                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaciÛn');
+                                                Ext.Msg.alert('Error', 'Error al enviar la confirmaci√≥n');
                                             }
                                         });
                                     }
@@ -1245,7 +1245,7 @@ Ext.define('TransferenciaSalidaUtils', {
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert('Error', 'Error al obtener lÌneas originales');
+                Ext.Msg.alert('Error', 'Error al obtener l√≠neas originales');
             }
         });
     },
@@ -1352,7 +1352,7 @@ Ext.define('TransferenciaSalidaUtils', {
 
 });
 
-// ? Panel principal - UNA SOLA DEFINICI”N
+// ? Panel principal - UNA SOLA DEFINICI√ìN
 Ext.define('Modulos.global.PanelTransferenciasSalida', {
     extend: 'Ext.form.Panel',
     requires: [
@@ -1580,10 +1580,10 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                 };
                                 Ext.Msg.show({
                                     title: 'Generar Excel',
-                                    message: 'øDesea exportar la p·gina actual o todos los registros existentes?',
+                                    message: '¬øDesea exportar la p√°gina actual o todos los registros existentes?',
                                     buttons: Ext.MessageBox.YESNO,
                                     buttonText: {
-                                        yes: 'P·gina actual',
+                                        yes: 'P√°gina actual',
                                         no: 'Todos los registros'
                                     },
                                     icon: Ext.MessageBox.QUESTION,
@@ -1594,7 +1594,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                         } else if (btn === 'no') {
                                             TransferenciaSalidaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerrÛ la ventana sin hacer clic en ning˙n botÛn');
+                                            console.log('Se cerr√≥ la ventana sin hacer clic en ning√∫n bot√≥n');
                                         }
                                     }
                                 });
@@ -1624,8 +1624,8 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         xtype: 'pagingtoolbar',
                         store: me.storeTransferenciaSalida,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} Ûrdenes',
-                        emptyMsg: "No hay Ûrdenes para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} √≥rdenes',
+                        emptyMsg: "No hay √≥rdenes para mostrar"
                     },
                     columns: [
                         {
@@ -1746,7 +1746,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
                                             title: "Central de Ventas",
-                                            msg: 'øEst·s seguro que deseas Crear la lista de empaque para el registro ' + record.data.TSID + ' ?',
+                                            msg: '¬øEst√°s seguro que deseas Crear la lista de empaque para el registro ' + record.data.TSID + ' ?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,
                                             fn: function (btn) {
@@ -1804,13 +1804,13 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         },
                         {
                             xtype: 'actioncolumn',
-                            text: 'Confirmar EnvÌo',
+                            text: 'Confirmar Env√≠o',
                             width: 90,
                             align: 'center',
 //                            iconCls: 'icn-habilita',
                             items: [
                                 {
-                                    tooltip: 'Confirmar EnvÌo',
+                                    tooltip: 'Confirmar Env√≠o',
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("preestatus");
                                         return estatus === "Surtido" || estatus === "Recibido" || estatus === "Confirmado"
@@ -1870,7 +1870,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         },
                         afterrender: function (grid) {
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la b˙squeda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la b√∫squeda se ha ejecutado
                                 TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                             }
                         },

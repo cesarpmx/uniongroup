@@ -154,14 +154,14 @@ Ext.define('EcommerceUtils', {
                     if (obj.success === "true" || obj.success === true) {
                         Ext.Msg.alert(
                                 'OK',
-                                'Pedido confirmado. Se cre� la lista de empaque con ID: ' + obj.preid
+                                'Pedido confirmado. Se creó la lista de empaque con ID: ' + obj.preid
                                 );
                         EcommerceUtils.BtnBusqEcommerce();
                     } else {
-                        Ext.Msg.alert('Error', obj.message || 'Ocurri� un error al generar la lista de empaque');
+                        Ext.Msg.alert('Error', obj.message || 'Ocurrió un error al generar la lista de empaque');
                     }
                 } catch (e) {
-                    Ext.Msg.alert('Error', 'Respuesta inv�lida del servidor');
+                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
                 }
             },
             failure: function () {
@@ -429,7 +429,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                 };
                                 Ext.Msg.show({
                                     title: 'Generar Excel',
-                                    message: '�Desea exportar la pagina actual o todos los registros existentes?',
+                                    message: '¿Desea exportar la pagina actual o todos los registros existentes?',
                                     buttons: Ext.MessageBox.YESNO,
                                     buttonText: {
                                         yes: 'Pagina actual',
@@ -438,12 +438,12 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // C�digo a ejecutar si se presiona el bot�n "P�gina actual"
+                                            // Cï¿½digo a ejecutar si se presiona el botï¿½n "Pï¿½gina actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             EcommerceUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerr� la ventana sin hacer clic en ning�n bot�n');
+                                            console.log('Se cerrï¿½ la ventana sin hacer clic en ningï¿½n botï¿½n');
                                         }
                                     }
                                 });
@@ -589,7 +589,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                         width: 100,
                                         items: [
                                             {
-                                                tooltip: 'Acci�n Pedido',
+                                                tooltip: 'Acción Pedido',
                                                 getClass: function (v, meta, record) {
                                                     var estatus = record.get("estatusecom");
 
@@ -604,7 +604,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                                     const ecomid = rec.get('ecomid');
                                                     const estatus = rec.get('estatusecom');
 
-                                                    // Si est� Surtido o Cancelado, no hace nada
+                                                    // Si está Surtido o Cancelado, no hace nada
                                                     if (estatus === 'S' || estatus === 'X') {
                                                         return;
                                                     }
@@ -613,7 +613,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                                     if (estatus === 'P') {
                                                         Ext.MessageBox.show({
                                                             title: 'Ecommerce',
-                                                            msg: '�Estas seguro que deseas confirmar el pedido ' + ecomid + ' ?',
+                                                            msg: '¿Estas seguro que deseas confirmar el pedido ' + ecomid + ' ?',
                                                             buttons: Ext.MessageBox.OKCANCEL,
                                                             icon: Ext.MessageBox.QUESTION,
                                                             fn: function (btn) {
@@ -627,11 +627,11 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                                         return;
                                                     }
 
-                                                    // Confirmado -> Generar archivo de confirmaci�n
+                                                    // Confirmado -> Generar archivo de confirmación
 //                                            if (estatus === 'C') {
 //                                                Ext.MessageBox.show({
 //                                                    title: 'Ecommerce',
-//                                                    msg: '�Deseas generar el archivo de confirmaci�n para el pedido ' + ecomid + ' ?',
+//                                                    msg: '¿Deseas generar el archivo de confirmación para el pedido ' + ecomid + ' ?',
 //                                                    buttons: Ext.MessageBox.OKCANCEL,
 //                                                    icon: Ext.MessageBox.QUESTION,
 //                                                    fn: function (btn) {
@@ -653,7 +653,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                 width: 100,
                                 items: [
                                     {
-                                        tooltip: 'Acci�n Pedido',
+                                        tooltip: 'Acción Pedido',
                                         getClass: function (v, meta, record) {
                                             var estatus = record.get("preestatus");
 
@@ -667,7 +667,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
 
                                             Ext.MessageBox.show({
                                                 title: 'Ecommerce',
-                                                msg: '�Deseas generar el archivo de confirmaci�n para el pedido ' + ecomid + ' ?',
+                                                msg: '¿Deseas generar el archivo de confirmación para el pedido ' + ecomid + ' ?',
                                                 buttons: Ext.MessageBox.OKCANCEL,
                                                 icon: Ext.MessageBox.QUESTION,
                                                 fn: function (btn) {
@@ -712,7 +712,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
 
                                             Ext.MessageBox.show({
                                                 title: 'Ecommerce',
-                                                msg: '�Estas seguro que deseas eliminar el pedido ' + record.data.ecomid + ' ?',
+                                                msg: '¿Estas seguro que deseas eliminar el pedido ' + record.data.ecomid + ' ?',
                                                 buttons: Ext.MessageBox.OKCANCEL,
                                                 icon: Ext.MessageBox.QUESTION,
                                                 fn: function (btn) {
@@ -759,7 +759,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                         afterrender: function (grid) {
 
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la b�squeda se ha ejecutado
+                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
                                 EcommerceUtils.BtnBusqEcommerce();
                             }
                         }

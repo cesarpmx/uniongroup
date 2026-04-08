@@ -1,24 +1,24 @@
 /**
  * Czech Translations
- * Translated by Tomáš Korčák (72)
+ * Translated by TomÃ¡Å¡ KorÄÃ¡k (72)
  * 2008/02/08 18:02, Ext-2.0.1
  */
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"];
+        Ext.Date.monthNames = ["Leden", "Ãnor", "BÅezen", "Duben", "KvÄten", "Äerven", "Äervenec", "Srpen", "ZÃ¡ÅÃ­", "ÅÃ­jen", "Listopad", "Prosinec"];
 
         Ext.Date.shortMonthNames = {
             "Leden": "Led",
-            "Únor": "Úno",
-            "Březen": "Bře",
+            "Ãnor": "Ãno",
+            "BÅezen": "BÅe",
             "Duben": "Dub",
-            "Květen": "Kvě",
-            "Červen": "Čer",
-            "Červenec": "Čvc",
+            "KvÄten": "KvÄ",
+            "Äerven": "Äer",
+            "Äervenec": "Ävc",
             "Srpen": "Srp",
-            "Září": "Zář",
-            "Říjen": "Říj",
+            "ZÃ¡ÅÃ­": "ZÃ¡Å",
+            "ÅÃ­jen": "ÅÃ­j",
             "Listopad": "Lis",
             "Prosinec": "Pro"
         };
@@ -29,15 +29,15 @@ Ext.onReady(function() {
 
         Ext.Date.monthNumbers = {
             "Leden": 0,
-            "Únor": 1,
-            "Březen": 2,
+            "Ãnor": 1,
+            "BÅezen": 2,
             "Duben": 3,
-            "Květen": 4,
-            "Červen": 5,
-            "Červenec": 6,
+            "KvÄten": 4,
+            "Äerven": 5,
+            "Äervenec": 6,
             "Srpen": 7,
-            "Září": 8,
-            "Říjen": 9,
+            "ZÃ¡ÅÃ­": 8,
+            "ÅÃ­jen": 9,
             "Listopad": 10,
             "Prosinec": 11
         };
@@ -46,7 +46,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
+        Ext.Date.dayNames = ["NedÄle", "PondÄlÃ­", "ÃterÃ½", "StÅeda", "Ätvrtek", "PÃ¡tek", "Sobota"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -71,35 +71,35 @@ Ext.define("Ext.locale.cs.view.View", {
 
 Ext.define("Ext.locale.cs.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} vybraných řádků"
+    dragText: "{0} vybranÃ½ch ÅÃ¡dkÅ¯"
 });
 
 Ext.define("Ext.locale.cs.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "Zavřít záložku"
+    closeText: "ZavÅÃ­t zÃ¡loÅ¾ku"
 });
 
 Ext.define("Ext.locale.cs.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "Hodnota v tomto poli je neplatná"
+    invalidText: "Hodnota v tomto poli je neplatnÃ¡"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.cs.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "Prosím čekejte..."
+    loadingText: "ProsÃ­m Äekejte..."
 });
 
 Ext.define("Ext.locale.cs.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Dnes",
-    minText: "Datum nesmí být starší než je minimální",
-    maxText: "Datum nesmí být dřívější než je maximální",
+    minText: "Datum nesmÃ­ bÃ½t starÅ¡Ã­ neÅ¾ je minimÃ¡lnÃ­",
+    maxText: "Datum nesmÃ­ bÃ½t dÅÃ­vÄjÅ¡Ã­ neÅ¾ je maximÃ¡lnÃ­",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Následující měsíc (Control+Right)',
-    prevText: 'Předcházející měsíc (Control+Left)',
-    monthYearText: 'Zvolte měsíc (ke změně let použijte Control+Up/Down)',
+    nextText: 'NÃ¡sledujÃ­cÃ­ mÄsÃ­c (Control+Right)',
+    prevText: 'PÅedchÃ¡zejÃ­cÃ­ mÄsÃ­c (Control+Left)',
+    monthYearText: 'Zvolte mÄsÃ­c (ke zmÄnÄ let pouÅ¾ijte Control+Up/Down)',
     todayTip: "{0} (Spacebar)",
     format: "d.m.Y",
     startDay: 1
@@ -115,38 +115,38 @@ Ext.define("Ext.locale.cs.toolbar.Paging", {
     override: "Ext.PagingToolbar",
     beforePageText: "Strana",
     afterPageText: "z {0}",
-    firstText: "První strana",
-    prevText: "Přecházející strana",
-    nextText: "Následující strana",
-    lastText: "Poslední strana",
+    firstText: "PrvnÃ­ strana",
+    prevText: "PÅechÃ¡zejÃ­cÃ­ strana",
+    nextText: "NÃ¡sledujÃ­cÃ­ strana",
+    lastText: "PoslednÃ­ strana",
     refreshText: "Aktualizovat",
-    displayMsg: "Zobrazeno {0} - {1} z celkových {2}",
-    emptyMsg: 'Žádné záznamy nebyly nalezeny'
+    displayMsg: "Zobrazeno {0} - {1} z celkovÃ½ch {2}",
+    emptyMsg: 'Å½Ã¡dnÃ© zÃ¡znamy nebyly nalezeny'
 });
 
 Ext.define("Ext.locale.cs.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Pole nesmí mít méně {0} znaků",
-    maxLengthText: "Pole nesmí být delší než {0} znaků",
-    blankText: "Povinné pole",
+    minLengthText: "Pole nesmÃ­ mÃ­t mÃ©nÄ {0} znakÅ¯",
+    maxLengthText: "Pole nesmÃ­ bÃ½t delÅ¡Ã­ neÅ¾ {0} znakÅ¯",
+    blankText: "PovinnÃ© pole",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.cs.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "Hodnota v tomto poli nesmí být menší než {0}",
-    maxText: "Hodnota v tomto poli nesmí být větší než {0}",
-    nanText: "{0} není platné číslo"
+    minText: "Hodnota v tomto poli nesmÃ­ bÃ½t menÅ¡Ã­ neÅ¾ {0}",
+    maxText: "Hodnota v tomto poli nesmÃ­ bÃ½t vÄtÅ¡Ã­ neÅ¾ {0}",
+    nanText: "{0} nenÃ­ platnÃ© ÄÃ­slo"
 });
 
 Ext.define("Ext.locale.cs.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "Neaktivní",
-    disabledDatesText: "Neaktivní",
-    minText: "Datum v tomto poli nesmí být starší než {0}",
-    maxText: "Datum v tomto poli nesmí být novější než {0}",
-    invalidText: "{0} není platným datem - zkontrolujte zda-li je ve formátu {1}",
+    disabledDaysText: "NeaktivnÃ­",
+    disabledDatesText: "NeaktivnÃ­",
+    minText: "Datum v tomto poli nesmÃ­ bÃ½t starÅ¡Ã­ neÅ¾ {0}",
+    maxText: "Datum v tomto poli nesmÃ­ bÃ½t novÄjÅ¡Ã­ neÅ¾ {0}",
+    invalidText: "{0} nenÃ­ platnÃ½m datem - zkontrolujte zda-li je ve formÃ¡tu {1}",
     format: "d.m.Y",
     altFormats: "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
@@ -156,16 +156,16 @@ Ext.define("Ext.locale.cs.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "Prosím čekejte..."
+        loadingText: "ProsÃ­m Äekejte..."
     });
 });
 
 Ext.define("Ext.locale.cs.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'V tomto poli může být vyplněna pouze emailová adresa ve formátu "uživatel@doména.cz"',
-    urlText: 'V tomto poli může být vyplněna pouze URL (adresa internetové stránky) ve formátu "http:/' + '/www.doména.cz"',
-    alphaText: 'Toto pole může obsahovat pouze písmena abecedy a znak _',
-    alphanumText: 'Toto pole může obsahovat pouze písmena abecedy, čísla a znak _'
+    emailText: 'V tomto poli mÅ¯Å¾e bÃ½t vyplnÄna pouze emailovÃ¡ adresa ve formÃ¡tu "uÅ¾ivatel@domÃ©na.cz"',
+    urlText: 'V tomto poli mÅ¯Å¾e bÃ½t vyplnÄna pouze URL (adresa internetovÃ© strÃ¡nky) ve formÃ¡tu "http:/' + '/www.domÃ©na.cz"',
+    alphaText: 'Toto pole mÅ¯Å¾e obsahovat pouze pÃ­smena abecedy a znak _',
+    alphanumText: 'Toto pole mÅ¯Å¾e obsahovat pouze pÃ­smena abecedy, ÄÃ­sla a znak _'
 });
 
 Ext.define("Ext.locale.cs.form.field.HtmlEditor", {
@@ -175,73 +175,73 @@ Ext.define("Ext.locale.cs.form.field.HtmlEditor", {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
         buttonTips: {
             bold: {
-                title: 'Tučné (Ctrl+B)',
-                text: 'Označí vybraný text tučně.',
+                title: 'TuÄnÃ© (Ctrl+B)',
+                text: 'OznaÄÃ­ vybranÃ½ text tuÄnÄ.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: 'Kurzíva (Ctrl+I)',
-                text: 'Označí vybraný text kurzívou.',
+                title: 'KurzÃ­va (Ctrl+I)',
+                text: 'OznaÄÃ­ vybranÃ½ text kurzÃ­vou.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
-                title: 'Podtržení (Ctrl+U)',
-                text: 'Podtrhne vybraný text.',
+                title: 'PodtrÅ¾enÃ­ (Ctrl+U)',
+                text: 'Podtrhne vybranÃ½ text.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Zvětšit písmo',
-                text: 'Zvětší velikost písma.',
+                title: 'ZvÄtÅ¡it pÃ­smo',
+                text: 'ZvÄtÅ¡Ã­ velikost pÃ­sma.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: 'Zúžit písmo',
-                text: 'Zmenší velikost písma.',
+                title: 'ZÃºÅ¾it pÃ­smo',
+                text: 'ZmenÅ¡Ã­ velikost pÃ­sma.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'Barva zvýraznění textu',
-                text: 'Označí vybraný text tak, aby vypadal jako označený zvýrazňovačem.',
+                title: 'Barva zvÃ½raznÄnÃ­ textu',
+                text: 'OznaÄÃ­ vybranÃ½ text tak, aby vypadal jako oznaÄenÃ½ zvÃ½razÅovaÄem.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: 'Barva písma',
-                text: 'Změní barvu textu.',
+                title: 'Barva pÃ­sma',
+                text: 'ZmÄnÃ­ barvu textu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
                 title: 'Zarovnat text vlevo',
-                text: 'Zarovná text doleva.',
+                text: 'ZarovnÃ¡ text doleva.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: 'Zarovnat na střed',
-                text: 'Zarovná text na střed.',
+                title: 'Zarovnat na stÅed',
+                text: 'ZarovnÃ¡ text na stÅed.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
                 title: 'Zarovnat text vpravo',
-                text: 'Zarovná text doprava.',
+                text: 'ZarovnÃ¡ text doprava.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'Odrážky',
-                text: 'Začne seznam s odrážkami.',
+                title: 'OdrÃ¡Å¾ky',
+                text: 'ZaÄne seznam s odrÃ¡Å¾kami.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
-                title: 'Číslování',
-                text: 'Začne číslovaný seznam.',
+                title: 'ÄÃ­slovÃ¡nÃ­',
+                text: 'ZaÄne ÄÃ­slovanÃ½ seznam.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
-                title: 'Internetový odkaz',
-                text: 'Z vybraného textu vytvoří internetový odkaz.',
+                title: 'InternetovÃ½ odkaz',
+                text: 'Z vybranÃ©ho textu vytvoÅÃ­ internetovÃ½ odkaz.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Zdrojový kód',
-                text: 'Přepne do módu úpravy zdrojového kódu.',
+                title: 'ZdrojovÃ½ kÃ³d',
+                text: 'PÅepne do mÃ³du Ãºpravy zdrojovÃ©ho kÃ³du.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -250,8 +250,8 @@ Ext.define("Ext.locale.cs.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.cs.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Řadit vzestupně",
-    sortDescText: "Řadit sestupně",
+    sortAscText: "Åadit vzestupnÄ",
+    sortDescText: "Åadit sestupnÄ",
     lockText: "Ukotvit sloupec",
     unlockText: "Uvolnit sloupec",
     columnsText: "Sloupce"
@@ -259,21 +259,21 @@ Ext.define("Ext.locale.cs.grid.header.Container", {
 
 Ext.define("Ext.locale.cs.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
-    emptyGroupText: '(Žádná data)',
+    emptyGroupText: '(Å½Ã¡dnÃ¡ data)',
     groupByText: 'Seskupit dle tohoto pole',
-    showGroupsText: 'Zobrazit ve skupině'
+    showGroupsText: 'Zobrazit ve skupinÄ'
 });
 
 Ext.define("Ext.locale.cs.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
-    nameText: "Název",
+    nameText: "NÃ¡zev",
     valueText: "Hodnota",
     dateFormat: "j.m.Y"
 });
 
 Ext.define("Ext.locale.cs.form.field.File", {
     override: "Ext.form.field.File",
-    buttonText: "Procházet..."
+    buttonText: "ProchÃ¡zet..."
 });
 
 Ext.define("Ext.locale.cs.window.MessageBox", {

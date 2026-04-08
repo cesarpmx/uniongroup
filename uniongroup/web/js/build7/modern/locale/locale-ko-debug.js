@@ -1,8 +1,8 @@
 Ext.define('Ext.locale.ko.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
-    okButtonText: '확인',
-    cancelButtonText: '취소'
+    okButtonText: 'íì¸',
+    cancelButtonText: 'ì·¨ì'
 });
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ko.Component", {
@@ -13,10 +13,10 @@ Ext.define('Ext.locale.ko.Dialog', {
 
     config: {
         maximizeTool: {
-            tooltip: "전체 화면으로 최대화"
+            tooltip: "ì ì²´ íë©´ì¼ë¡ ìµëí"
         },
         restoreTool: {
-            tooltip: "원래 크기로 복원 "
+            tooltip: "ìë í¬ê¸°ë¡ ë³µì "
         }
     }
 });
@@ -24,7 +24,7 @@ Ext.define("Ext.locale.ko.LoadMask", {
     override: "Ext.LoadMask",
 
     config: {
-        message: '로딩중...'
+        message: 'ë¡ë©ì¤...'
     }
 });
 Ext.define('Ext.locale.ko.Panel', {
@@ -36,210 +36,210 @@ Ext.define('Ext.locale.ko.Panel', {
                 text: 'OK'
             },
             abort: {
-                text: '중단'
+                text: 'ì¤ë¨'
             },
             retry: {
-                text: '다시 해 보다'
+                text: 'ë¤ì í´ ë³´ë¤'
             },
             ignore: {
-                text: '무시'
+                text: 'ë¬´ì'
             },
             yes: {
-                text: '예'
+                text: 'ì'
             },
             no: {
-                text: '아니오'
+                text: 'ìëì¤'
             },
             cancel: {
-                text: '취소'
+                text: 'ì·¨ì'
             },
             apply: {
-                text: '적용'
+                text: 'ì ì©'
             },
             save: {
-                text: '저장'
+                text: 'ì ì¥'
             },
             submit: {
-                text: '제출'
+                text: 'ì ì¶'
             },
             help: {
-                text: '도와'
+                text: 'ëì'
             },
             close: {
-                text: '閉じる'
+                text: 'éãã'
             }
         },
-        closeToolText: 'Panel 閉じる'
+        closeToolText: 'Panel éãã'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: '存在する必要があります',
-        minOnlyMessage: '적어도 {0} 이상이어야합니다.',
-        maxOnlyMessage: '{0}보다 크지 않아야합니다.',
-        bothMessage: '값은 {0}에서 {1} 사이에 해야 합니다 '
+        emptyMessage: 'å­å¨ããå¿è¦ãããã¾ã',
+        minOnlyMessage: 'ì ì´ë {0} ì´ìì´ì´ì¼í©ëë¤.',
+        maxOnlyMessage: '{0}ë³´ë¤ í¬ì§ ììì¼í©ëë¤.',
+        bothMessage: 'ê°ì {0}ìì {1} ì¬ì´ì í´ì¼ í©ëë¤ '
     }
 });
 Ext.define('Ext.locale.ko.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: '유효한 CIDR 블록이 아닙니다.'
+        message: 'ì í¨í CIDR ë¸ë¡ì´ ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: '유효한 CIDR 블록이 아닙니다.'
+        message: 'ì í¨í CIDR ë¸ë¡ì´ ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: '유효한 통화 금액이 아닙니다.'
+        message: 'ì í¨í íµí ê¸ì¡ì´ ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "유효한 날짜가 아닙니다."
+        message: "ì í¨í ë ì§ê° ìëëë¤."
     }
 });
 Ext.define('Ext.locale.ko.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: '유효한 날짜 및 시간이 아닙니다.'
+        message: 'ì í¨í ë ì§ ë° ìê°ì´ ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: '유효한 이메일 주소가 아닙니다.'
+        message: 'ì í¨í ì´ë©ì¼ ì£¼ìê° ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: '제외 된 가치인가요?'
+        message: 'ì ì¸ ë ê°ì¹ì¸ê°ì?'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: '형식이 다릅니다'
+        message: 'íìì´ ë¤ë¦ëë¤'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: '유효한 IP 주소가 아닙니다.'
+        message: 'ì í¨í IP ì£¼ìê° ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: '허용 되는 값 목록에 포함 되어 있지 않습니다. '
+        message: 'íì© ëë ê° ëª©ë¡ì í¬í¨ ëì´ ìì§ ììµëë¤. '
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: '길이는 적어도 {0} 이상이어야합니다.',
-        maxOnlyMessage: '길이는 {0}보다 커야합니다.',
-        bothMessage: '길이는 {0}에서 {1} 사이 여야합니다.'
+        minOnlyMessage: 'ê¸¸ì´ë ì ì´ë {0} ì´ìì´ì´ì¼í©ëë¤.',
+        maxOnlyMessage: 'ê¸¸ì´ë {0}ë³´ë¤ ì»¤ì¼í©ëë¤.',
+        bothMessage: 'ê¸¸ì´ë {0}ìì {1} ì¬ì´ ì¬ì¼í©ëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: '숫자가 아닙니다'
+        message: 'ì«ìê° ìëëë¤'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: '올바른 전화 번호가 아닙니다.'
+        message: 'ì¬ë°ë¥¸ ì í ë²í¸ê° ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: '반드시 존재해야합니다'
+        message: 'ë°ëì ì¡´ì¬í´ì¼í©ëë¤'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: '숫자로 해야 합니다 ',
-        minOnlyMessage: '적어도 {0} 이상이어야합니다.',
-        maxOnlyMessage: '{0}보다 크지 않아야합니다.',
-        bothMessage: '값은 {0}에서 {1} 사이에 해야 합니다 '
+        nanMessage: 'ì«ìë¡ í´ì¼ í©ëë¤ ',
+        minOnlyMessage: 'ì ì´ë {0} ì´ìì´ì´ì¼í©ëë¤.',
+        maxOnlyMessage: '{0}ë³´ë¤ í¬ì§ ììì¼í©ëë¤.',
+        bothMessage: 'ê°ì {0}ìì {1} ì¬ì´ì í´ì¼ í©ëë¤ '
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: '유효한 시간이 아닙니다'
+        message: 'ì í¨í ìê°ì´ ìëëë¤'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: '유효한 URL이 아닙니다.'
+        message: 'ì í¨í URLì´ ìëëë¤.'
     }
 });
 Ext.define('Ext.locale.ko.dataview.Abstract', {
     override: 'Ext.dataview.Abstract',
 
     config: {
-        loadingText: '로딩중...'
+        loadingText: 'ë¡ë©ì¤...'
     }
 });
 Ext.define("Ext.locale.ko.dataview.DataView", {
     override: "Ext.dataview.DataView",
 
     config: {
-        emptyText: "표시 할 데이터가 없습니다"
+        emptyText: "íì í  ë°ì´í°ê° ììµëë¤"
     }
 });
 Ext.define('Ext.locale.ko.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: '표시 할 내용이 없습니다'
+        html: 'íì í  ë´ì©ì´ ììµëë¤'
     }
 });
 Ext.define('Ext.locale.ko.dataview.List', {
     override: 'Ext.dataview.List',
 
     config: {
-        loadingText: '로딩중...'
+        loadingText: 'ë¡ë©ì¤...'
     }
 });
 Ext.define('Ext.locale.ko.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: '추가로드 ...',
-        noMoreRecordsText: '더 이상 레코드 없음'
+        loadMoreText: 'ì¶ê°ë¡ë ...',
+        noMoreRecordsText: 'ë ì´ì ë ì½ë ìì'
     }
 });
 /**
@@ -248,10 +248,10 @@ Ext.define('Ext.locale.ko.dataview.plugin.ListPaging', {
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월",
-                               "10월", "11월", "12월"];
+        Ext.Date.monthNames = ["1ì", "2ì", "3ì", "4ì", "5ì", "6ì", "7ì", "8ì", "9ì",
+                               "10ì", "11ì", "12ì"];
 
-        Ext.Date.dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+        Ext.Date.dayNames = ["ì¼", "ì", "í", "ì", "ëª©", "ê¸", "í "];
     }
 
     if (Ext.util && Ext.util.Format) {
@@ -267,46 +267,46 @@ Ext.onReady(function() {
 Ext.define('Ext.locale.ko.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: '이 필드의 날짜는 {0} 이후 날짜로 설정하십시오.',
-    maxDateMessage: '이 필드의 날짜는 {0} 이전 날짜로 설정하십시오.'
+    minDateMessage: 'ì´ íëì ë ì§ë {0} ì´í ë ì§ë¡ ì¤ì íì­ìì¤.',
+    maxDateMessage: 'ì´ íëì ë ì§ë {0} ì´ì  ë ì§ë¡ ì¤ì íì­ìì¤.'
 });
 Ext.define('Ext.locale.ko.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: '이 필드는 필수입니다',
-        validationMessage: '형식이 잘못되었습니다'
+        requiredMessage: 'ì´ íëë íììëë¤',
+        validationMessage: 'íìì´ ìëª»ëììµëë¤'
     }
 });
 Ext.define('Ext.locale.ko.field.FileButton', {
     override: 'Ext.field.FileButton',
 
     config: {
-        text: '리뷰 ...'
+        text: 'ë¦¬ë·° ...'
     }
 });
 Ext.define('Ext.locale.ko.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: '이 필드의 최소값은 {0}입니다.',
-    minValueText: '최소값은 {0}입니다.',
-    maxValueText: '최대값은 {0}입니다.',
-    badFormatMessage: '{0}는 올바른 숫자가 아닙니다.'
+    decimalsText: 'ì´ íëì ìµìê°ì {0}ìëë¤.',
+    minValueText: 'ìµìê°ì {0}ìëë¤.',
+    maxValueText: 'ìµëê°ì {0}ìëë¤.',
+    badFormatMessage: '{0}ë ì¬ë°ë¥¸ ì«ìê° ìëëë¤.'
 });
 Ext.define('Ext.locale.ko.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: '값이 필요한 형식과 일치하지 않습니다',
+    badFormatMessage: 'ê°ì´ íìí íìê³¼ ì¼ì¹íì§ ììµëë¤',
     config: {
-        requiredMessage: '이 필드는 필수입니다',
-        validationMessage: '형식이 잘못되었습니다'
+        requiredMessage: 'ì´ íëë íììëë¤',
+        validationMessage: 'íìì´ ìëª»ëììµëë¤'
     }
 });
 Ext.define("Ext.locale.ko.grid.filters.menu.Base", {
     override: "Ext.grid.filters.menu.Base",
 
     config: {
-        text: "필터"
+        text: "íí°"
     }
 });
 Ext.define('Ext.locale.ko.grid.locked.Grid', {
@@ -316,19 +316,19 @@ Ext.define('Ext.locale.ko.grid.locked.Grid', {
         columnMenu: {
             items: {
                 region: {
-                    text: '부위'
+                    text: 'ë¶ì'
                 }
             }
         },
         regions: {
             left: {
-                menuLabel: '잠김 (왼쪽)'
+                menuLabel: 'ì ê¹ (ì¼ìª½)'
             },
             center: {
-                menuLabel: '잠김 해제'
+                menuLabel: 'ì ê¹ í´ì '
             },
             right: {
-                menuLabel: '잠김 (오른쪽)'
+                menuLabel: 'ì ê¹ (ì¤ë¥¸ìª½)'
             }
         }
     }
@@ -337,58 +337,58 @@ Ext.define("Ext.locale.ko.grid.menu.Columns", {
     override: "Ext.grid.menu.Columns",
 
     config: {
-        text: "칼럼 목록"
+        text: "ì¹¼ë¼ ëª©ë¡"
     }
 });
 Ext.define("Ext.locale.ko.grid.menu.GroupByThis", {
     override: "Ext.grid.menu.GroupByThis",
 
     config: {
-        text: "이 항목별로 그룹화"
+        text: "ì´ í­ëª©ë³ë¡ ê·¸ë£¹í"
     }
 });
 Ext.define("Ext.locale.ko.grid.menu.ShowInGroups", {
     override: "Ext.grid.menu.ShowInGroups",
 
     config: {
-        text: "그룹으로 표시"
+        text: "ê·¸ë£¹ì¼ë¡ íì"
     }
 });
 Ext.define("Ext.locale.ko.grid.menu.SortAsc", {
     override: "Ext.grid.menu.SortAsc",
 
     config: {
-        text: "오름차순 정렬"
+        text: "ì¤ë¦ì°¨ì ì ë ¬"
     }
 });
 Ext.define("Ext.locale.ko.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "내림차순 정렬"
+        text: "ë´ë¦¼ì°¨ì ì ë ¬"
     }
 });
 Ext.define("Ext.locale.ko.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} 개가 선택되었습니다."
+    dragText: "{0} ê°ê° ì íëììµëë¤."
 });
 Ext.define('Ext.locale.ko.panel.Collapser', {
     override: 'Ext.panel.Collapser',
 
     config: {
-        collapseToolText: "패널 닫기",
-        expandToolText: "패널 열기"
+        collapseToolText: "í¨ë ë«ê¸°",
+        expandToolText: "í¨ë ì´ê¸°"
     }
 });
 Ext.define('Ext.locale.ko.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: '다음달(컨트롤키+오른쪽 화살표)',
-        prevText: '이전달 (컨트롤키+왼족 화살표)',
+        nextText: 'ë¤ìë¬(ì»¨í¸ë¡¤í¤+ì¤ë¥¸ìª½ íì´í)',
+        prevText: 'ì´ì ë¬ (ì»¨í¸ë¡¤í¤+ì¼ì¡± íì´í)',
         buttons: {
             footerTodayButton: {
-                text: "오늘"
+                text: "ì¤ë"
             }
         }
     }
@@ -398,9 +398,9 @@ Ext.define('Ext.locale.ko.picker.Date', {
 
     config: {
         doneButton: 'done',
-        monthText: '월',
-        dayText: '일',
-        yearText: '년'
+        monthText: 'ì',
+        dayText: 'ì¼',
+        yearText: 'ë'
     }
 });
 Ext.define('Ext.locale.ko.picker.Picker', {
@@ -408,6 +408,6 @@ Ext.define('Ext.locale.ko.picker.Picker', {
 
     config: {
         doneButton: 'done',
-        cancelButton: '취소'
+        cancelButton: 'ì·¨ì'
     }
 });

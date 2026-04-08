@@ -67,7 +67,7 @@ com.punto.pen.RecuperaContrasena = function(argumentos){
                                 {
                                     xtype:'radio',
                                     name:'rd_CRM01_6',
-                                    boxLabel:'He olvidado mi contraseña',
+                                    boxLabel:'He olvidado mi contraseÃ±a',
                                     inputValue:'No',
                                     inputType:'radio',
                                     id:'rd_CRM_Pen_No',
@@ -114,7 +114,7 @@ com.punto.pen.RecuperaContrasena = function(argumentos){
                                 items:[
                                     {
                                         xtype:'textfield',
-                                        fieldLabel:'Introduce tu correo electrónico',
+                                        fieldLabel:'Introduce tu correo electrÃ³nico',
                                         id:'email',
                                         name:'email',
                                         vtype:'email',

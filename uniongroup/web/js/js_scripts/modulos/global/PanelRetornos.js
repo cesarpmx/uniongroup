@@ -94,7 +94,7 @@ Ext.define('RetornosUtils', {
         });
     },
     
-    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parámetro silent
+    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parÃ¡metro silent
         var payload = {
             rtnid: ocid,
             retestatus: "C"
@@ -164,11 +164,11 @@ Ext.define('RetornosUtils', {
             var data = Ext.decode(resp.responseText);
 
             if (!data || data.length === 0) {
-                Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
+                Ext.Msg.alert("Error", "No se encontraron lÃ­neas para este retorno.");
                 return;
             }
 
-            // Variables para cálculos
+            // Variables para cÃ¡lculos
             var lines = [];
             var totalPedido = 0;
             var totalSurtido = 0;
@@ -271,7 +271,7 @@ Ext.define('RetornosUtils', {
                                             var res = resultado.clienteResponse || {};
                                             var fecha = res.SystemDate ? Ext.Date.format(new Date(res.SystemDate), 'd/m/Y H:i:s') : 'N/A';
 
-                                            Ext.Msg.alert('Éxito', 
+                                            Ext.Msg.alert('Ã‰xito', 
                                                 '<b>SAP Doc:</b> ' + (res.DocNum || 'N/A') + '<br>' +
                                                 '<b>Fecha:</b> ' + fecha + '<br>' +
                                                 '<b>Mensaje:</b> ' + (res.StatusInfo ? res.StatusInfo.Mensaje : 'OK')
@@ -282,7 +282,7 @@ Ext.define('RetornosUtils', {
                                     },
                                     failure: function () {
                                         Ext.getBody().unmask();
-                                        Ext.Msg.alert('Error', 'Fallo de conexión.');
+                                        Ext.Msg.alert('Error', 'Fallo de conexiÃ³n.');
                                     }
                                 });
                             }
@@ -704,7 +704,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
                                             title: "Cancelar Retorno",
-                                            msg: '¿Estás seguro que deseas cancelar el retorno: ' + record.data.rtnid + ' ?',
+                                            msg: 'Â¿EstÃ¡s seguro que deseas cancelar el retorno: ' + record.data.rtnid + ' ?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,
                                             fn: function (btn) {

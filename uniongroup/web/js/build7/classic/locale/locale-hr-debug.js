@@ -9,7 +9,7 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"];
+        Ext.Date.monthNames = ["SijeÄanj", "VeljaÄa", "OÅ¾ujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"];
 
         Ext.Date.getShortMonthName = function(month) {
             return Ext.Date.monthNames[month].substring(0, 3);
@@ -34,7 +34,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"];
+        Ext.Date.dayNames = ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Äetvrtak", "Petak", "Subota"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -75,17 +75,17 @@ Ext.define("Ext.locale.hr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.hr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "Učitavanje..."
+    loadingText: "UÄitavanje..."
 });
 
 Ext.define("Ext.locale.hr.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Danas",
     minText: "Taj datum je prije najmanjeg datuma",
-    maxText: "Taj datum je poslije najvećeg datuma",
+    maxText: "Taj datum je poslije najveÄeg datuma",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'Slijedeći mjesec (Control+Desno)',
+    nextText: 'SlijedeÄi mjesec (Control+Desno)',
     prevText: 'Prethodni mjesec (Control+Lijevo)',
     monthYearText: 'Odaberite mjesec (Control+Gore/Dolje za promjenu godine)',
     todayTip: "{0} (Razmaknica)",
@@ -105,7 +105,7 @@ Ext.define("Ext.locale.hr.toolbar.Paging", {
     afterPageText: "od {0}",
     firstText: "Prva stranica",
     prevText: "Prethodna stranica",
-    nextText: "Slijedeća stranica",
+    nextText: "SlijedeÄa stranica",
     lastText: "Posljednja stranica",
     refreshText: "Obnovi",
     displayMsg: "Prikazujem {0} - {1} od {2}",
@@ -114,8 +114,8 @@ Ext.define("Ext.locale.hr.toolbar.Paging", {
 
 Ext.define("Ext.locale.hr.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Minimalna dužina za ovo polje je {0}",
-    maxLengthText: "Maksimalna dužina za ovo polje je {0}",
+    minLengthText: "Minimalna duÅ¾ina za ovo polje je {0}",
+    maxLengthText: "Maksimalna duÅ¾ina za ovo polje je {0}",
     blankText: "Ovo polje je obavezno",
     regexText: "",
     emptyText: null
@@ -143,16 +143,16 @@ Ext.define("Ext.locale.hr.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "Učitavanje..."
+        loadingText: "UÄitavanje..."
     });
 });
 
 Ext.define("Ext.locale.hr.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Ovdje možete unijeti samo e-mail adresu u obliku "korisnik@domena.com"',
-    urlText: 'Ovdje možete unijeti samo URL u obliku "http:/' + '/www.domena.com"',
-    alphaText: 'Ovo polje može sadržavati samo slova i znak _',
-    alphanumText: 'Ovo polje može sadržavati samo slova, brojeve i znak _'
+    emailText: 'Ovdje moÅ¾ete unijeti samo e-mail adresu u obliku "korisnik@domena.com"',
+    urlText: 'Ovdje moÅ¾ete unijeti samo URL u obliku "http:/' + '/www.domena.com"',
+    alphaText: 'Ovo polje moÅ¾e sadrÅ¾avati samo slova i znak _',
+    alphanumText: 'Ovo polje moÅ¾e sadrÅ¾avati samo slova, brojeve i znak _'
 });
 
 Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
@@ -163,37 +163,37 @@ Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
         buttonTips: {
             bold: {
                 title: 'Podebljano (Ctrl+B)',
-                text: 'Podebljavanje označenog teksta.',
+                text: 'Podebljavanje oznaÄenog teksta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
                 title: 'Kurziv (Ctrl+I)',
-                text: 'Pretvaranje označenog tekst u kurziv',
+                text: 'Pretvaranje oznaÄenog tekst u kurziv',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
                 title: 'Podcrtano (Ctrl+U)',
-                text: 'Potcrtavanje označenog teksta',
+                text: 'Potcrtavanje oznaÄenog teksta',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'Povećanje teksta',
-                text: 'Povećavanje veličine fonta.',
+                title: 'PoveÄanje teksta',
+                text: 'PoveÄavanje veliÄine fonta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
                 title: 'Smanjivanje teksta',
-                text: 'Smanjivanje veličine fonta.',
+                text: 'Smanjivanje veliÄine fonta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'Boja označenog teksta',
-                text: 'Promjena boje pozadine označenog teksta.',
+                title: 'Boja oznaÄenog teksta',
+                text: 'Promjena boje pozadine oznaÄenog teksta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
                 title: 'Boja fonta',
-                text: 'Promjena boje označenog teksta.',
+                text: 'Promjena boje oznaÄenog teksta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
@@ -203,7 +203,7 @@ Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
             },
             justifycenter: {
                 title: 'Centriranje teksta',
-                text: 'Centriranje teksta u uređivaču teksta.',
+                text: 'Centriranje teksta u ureÄivaÄu teksta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
@@ -212,23 +212,23 @@ Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'Označena lista',
-                text: 'Započinjanje označene liste.',
+                title: 'OznaÄena lista',
+                text: 'ZapoÄinjanje oznaÄene liste.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
                 title: 'Numerirana lista',
-                text: 'Započinjanje numerirane liste.',
+                text: 'ZapoÄinjanje numerirane liste.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
                 title: 'Hiperveza',
-                text: 'Stvaranje hiperveze od označenog teksta.',
+                text: 'Stvaranje hiperveze od oznaÄenog teksta.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Uređivanje izvornog koda',
-                text: 'Prebacivanje u način rada za uređivanje izvornog koda.',
+                title: 'UreÄivanje izvornog koda',
+                text: 'Prebacivanje u naÄin rada za ureÄivanje izvornog koda.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -237,16 +237,16 @@ Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.hr.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "Sortiraj rastućim redoslijedom",
-    sortDescText: "Sortiraj padajućim redoslijedom",
-    lockText: "Zaključaj stupac",
-    unlockText: "Otključaj stupac",
+    sortAscText: "Sortiraj rastuÄim redoslijedom",
+    sortDescText: "Sortiraj padajuÄim redoslijedom",
+    lockText: "ZakljuÄaj stupac",
+    unlockText: "OtkljuÄaj stupac",
     columnsText: "Stupci"
 });
 
 Ext.define("Ext.locale.hr.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
-    emptyGroupText: '(Ništa)',
+    emptyGroupText: '(NiÅ¡ta)',
     groupByText: 'Grupiranje po ovom polju',
     showGroupsText: 'Prikaz u grupama'
 });

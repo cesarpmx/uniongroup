@@ -31,7 +31,7 @@
 //      HttpSession session = request.getSession(false);
 //        Map param = new HashMap();
 //        CompilerReport compiler = new CompilerReport();
-//        //Recuperación de parametros
+//        //RecuperaciÃ³n de parametros
 //        String tipoDespliegue = "", cveEstado = "", cveJurisdiccion = "", fechaInicio = "", fechaFin = "", pathFile = "", pathXml = "", diagonal = "";
 //        if (request.getParameter("tipoDespliegue") != null) {
 //            tipoDespliegue = (String) request.getParameter("tipoDespliegue");

@@ -1,5 +1,5 @@
 <%@page import="java.text.SimpleDateFormat;
-import java.util.*;" contentType="text/html" pageEncoding="ISO-8859-1"%>
+import java.util.*;" contentType="text/html" pageEncoding="UTF-8"%>
 <%
             SimpleDateFormat fmtmes = new SimpleDateFormat("MM");
             SimpleDateFormat fmtanio = new SimpleDateFormat("yyyy");

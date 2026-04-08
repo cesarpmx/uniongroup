@@ -51,7 +51,7 @@
 /*     */   }
 /*     */ 
 /*     */   public String obtenUsuarioValido(HttpServletRequest request, HttpServletResponse response) {
-/*  88 */     String strJson = "{success: false,msg: 'El usuario no existe o la informaci髇 es incorrecta.'}";
+/*  88 */     String strJson = "{success: false,msg: 'El usuario no existe o la informaci贸n es incorrecta.'}";
 /*     */     try {
 /*  90 */       String strTema = Utilities.obtenParametro(request, "tema");
 /*     */ 
@@ -64,7 +64,7 @@
 /*  98 */         strJson = "{success:true, msg: 'El usuario es correcto',tema:'" + (strTema.equals("") ? "default" : strTema) + "'}";
 /*     */       }
 /*     */     } catch (Exception e) {
-/* 101 */       strJson = "{success: false,msg: 'El usuario no existe o la informaci髇 es incorrecta.'}";
+/* 101 */       strJson = "{success: false,msg: 'El usuario no existe o la informaci贸n es incorrecta.'}";
 /* 102 */       e.printStackTrace();
 /*     */     } finally {
 /* 104 */       HibernateUtil.closeSession();
@@ -97,14 +97,14 @@
 /*     */   }
 /*     */ 
 /*     */   private String obtenModulosUsuario(Liusuarios u) {
-/* 134 */     String strModulos = "[{xtype:'label', text:'No tiene m骴ulos asignados',style:'color:#fea438;font-weight:bold;'}]";
+/* 134 */     String strModulos = "[{xtype:'label', text:'No tiene m贸dulos asignados',style:'color:#fea438;font-weight:bold;'}]";
 /*     */     try {
 /* 136 */       if (u != null) {
 /* 137 */         Vector vecPrm = new Vector();
 /* 138 */         vecPrm.add(u.getUsuclave());
 /* 139 */         List lstModulos = EventManager.getArrayParameter(SQLControl.obtenModulos(), vecPrm);
 /* 140 */         if (!lstModulos.isEmpty()) {
-/* 141 */           strModulos = "[{xtype:'label', text:'M骴ulos: ',style:'color:#fea438;font-weight:bold;'},";
+/* 141 */           strModulos = "[{xtype:'label', text:'M贸dulos: ',style:'color:#fea438;font-weight:bold;'},";
 /* 142 */           for (int i = 0; i < lstModulos.size(); i++) {
 /* 143 */             Object[] obj = (Object[])(Object[])lstModulos.get(i);
 /* 144 */             Liadminmodulo am = (Liadminmodulo)obj[0];
@@ -116,7 +116,7 @@
 /*     */       }
 /*     */     } catch (Exception e) {
 /* 178 */       e.printStackTrace();
-/* 179 */       strModulos = "[{xtype:'label', text:'No tiene m骴ulos asignados',style:'color:#fea438;font-weight:bold;'}]";
+/* 179 */       strModulos = "[{xtype:'label', text:'No tiene m贸dulos asignados',style:'color:#fea438;font-weight:bold;'}]";
 /*     */     } finally {
 /* 181 */       HibernateUtil.closeSession();
 /*     */     }
@@ -131,7 +131,7 @@
 /* 191 */         vecPrm.add(u.getUsuclave());
 /* 192 */         List lstModulos = EventManager.getArrayParameter(SQLControl.obtenAcciones(), vecPrm);
 /* 193 */         if (!lstModulos.isEmpty()) {
-/* 194 */           strAcciones = "[{xtype:'label', text:'M骴ulos: ',style:'color:#fea438;font-weight:bold;'},";
+/* 194 */           strAcciones = "[{xtype:'label', text:'M贸dulos: ',style:'color:#fea438;font-weight:bold;'},";
 /* 195 */           for (int i = 0; i < lstModulos.size(); i++) {
 /* 196 */             Object[] obj = (Object[])(Object[])lstModulos.get(i);
 /* 197 */             Liadminmodulo am = (Liadminmodulo)obj[0];

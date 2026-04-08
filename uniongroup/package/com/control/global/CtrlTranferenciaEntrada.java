@@ -64,7 +64,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
                 case "4":  // ? NUEVO: Buscar en BD Local
                     out.print(BuscarTransferenciasLocal(request, response));
                     break;
-                case "5":  // ? NUEVO: Ver líneas desde BD Local
+                case "5":  // ? NUEVO: Ver lÃ­neas desde BD Local
                     out.print(ObtenerLineasLocal(request, response));
                     break;
                 case "6":  // ? NUEVO
@@ -131,7 +131,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
     }
 
     // ========================================
-    // ? FUNCIÓN 2: Obtener Líneas de una Transferencia
+    // ? FUNCIÃ“N 2: Obtener LÃ­neas de una Transferencia
     // ========================================
     public String ObtenerLineasTransferencia(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -155,7 +155,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
                     CentralTransferenciaEntradaGlobal[].class
             );
 
-            // Buscar la transferencia específica
+            // Buscar la transferencia especÃ­fica
             List<Map<String, Object>> lineas = new ArrayList<>();
             for (CentralTransferenciaEntradaGlobal transfer : transferencias) {
                 if (transfer.InboundTransferRequest.DocEntry.equals(docEntry)) {
@@ -228,7 +228,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
 
             String respuestaCliente = requetPost.getPostGlobal(serviceCliente, confirmDataString);
 
-            // 5. DOBLE DESERIALIZACIÓN
+            // 5. DOBLE DESERIALIZACIÃ“N
             String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
             List<Map<String, Object>> clienteResponse = mapper.readValue(
                     jsonLimpio,
@@ -288,7 +288,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "{\"error\": \"Ocurrió un error al procesar la solicitud.\"}";
+            JSONVal = "{\"error\": \"OcurriÃ³ un error al procesar la solicitud.\"}";
         }
         return JSONVal;
     }
@@ -307,7 +307,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
             String respuesta = requetGet.getGetPaginacion(service, request);
             respuesta = normalizeJson(respuesta);
 
-            // ? IGUAL QUE EN ÓRDENES DE COMPRA
+            // ? IGUAL QUE EN Ã“RDENES DE COMPRA
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -339,7 +339,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            // Verificar si la respuesta está vacía
+            // Verificar si la respuesta estÃ¡ vacÃ­a
             if (respuestaCliente == null || respuestaCliente.trim().isEmpty() || respuestaCliente.equals("\"\"")) {
 
                 // Extraer datos del JSON enviado para crear respuesta simulada
@@ -348,12 +348,12 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
 
                 Map<String, Object> respuestaSimulada = new HashMap<>();
                 respuestaSimulada.put("success", true);
-                respuestaSimulada.put("message", "Confirmación de recepción enviada (respuesta vacía del cliente)");
+                respuestaSimulada.put("message", "ConfirmaciÃ³n de recepciÃ³n enviada (respuesta vacÃ­a del cliente)");
                 respuestaSimulada.put("DocNum", transferReceipt.get("DocNum"));
                 respuestaSimulada.put("NumAtCard", transferReceipt.get("NumAtCard"));
                 respuestaSimulada.put("Status", transferReceipt.get("Status"));
 
-                // Guardar en log de confirmación
+                // Guardar en log de confirmaciÃ³n
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 String fechaActual = sdf.format(new Date());
 
@@ -379,7 +379,7 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
                 return mapper.writeValueAsString(respuestaSimulada);
             }
 
-            // Si hay respuesta, parsearla normalmente (doble deserialización)
+            // Si hay respuesta, parsearla normalmente (doble deserializaciÃ³n)
             String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
 
             Map<String, Object> clienteResponse = mapper.readValue(

@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 
 /**
- * Clase que contiene varias funciones que pueden ser de utilidad al área.
+ * Clase que contiene varias funciones que pueden ser de utilidad al Ã¡rea.
  * <br>Por ejemplo:
  * <pre>
  *       String fecha_normal = Fecha.getFechaActual();
@@ -51,7 +51,7 @@ public class Fecha {
     }
 
     /**
-     * Constructor que inicializa la fecha con los paramétros pasados.
+     * Constructor que inicializa la fecha con los paramÃ©tros pasados.
      *
      * @param day
      * @param month 
@@ -60,11 +60,11 @@ public class Fecha {
     public Fecha(int day, int month, int year) {
         this.cal.set(year, month, day);
         //Locale.setDefault(aLocale);
-        //System.out.println("Clase Fecha(dia,mes,año): " + this.toString());
+        //System.out.println("Clase Fecha(dia,mes,aÃ±o): " + this.toString());
     }
 
     /**
-     * Constructor que inicializa la fecha con los paramétros pasados.
+     * Constructor que inicializa la fecha con los paramÃ©tros pasados.
      *
      * @param day
      * @param month
@@ -75,7 +75,7 @@ public class Fecha {
     public Fecha(int day, int month, int year, int hour, int mins) {
         cal.set(year, month, day, hour, mins);
         //Locale.setDefault(aLocale);
-        //System.out.println("Clase Fecha(dia,mes,año,hour,mins): " + this.toString());
+        //System.out.println("Clase Fecha(dia,mes,aÃ±o,hour,mins): " + this.toString());
     }
 
     /**
@@ -103,7 +103,7 @@ public class Fecha {
     }
 
     /**
-     * Método para comparar dos objetos de esta clase.
+     * MÃ©todo para comparar dos objetos de esta clase.
      * 
      * @param Fecha fecha -- Objeto de esta clase.
      * @return Un entero representando 3 tipos de valor. 0 si es igual, menor a 0 si es esta clase es menor al parametro pasado 
@@ -114,7 +114,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece una fecha específica.
+     * MÃ©todo que establece una fecha especÃ­fica.
      *
      * @param day
      * @param month
@@ -125,7 +125,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece una fecha específica.
+     * MÃ©todo que establece una fecha especÃ­fica.
      *
      * @param     fecha Fecha con el formato dd-mm-aaaa/aaaa-mm-dd.
      * @param     tipo Especifica que formato tiene la fecha.<br>-- 0  --> Formato dd-mm-aaaa<br>-- 1  --> Formato aaaa-mm-dd
@@ -150,7 +150,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece una fecha específica.
+     * MÃ©todo que establece una fecha especÃ­fica.
      *
      * @param     fecha Fecha con el formato dd-mm-aaaa/aaaa-mm-dd.
      * @param     tipo Especifica que formato tiene la fecha.<br>-- 0  --> Formato dd-mm-aaaa<br>-- 1  --> Formato aaaa-mm-dd
@@ -176,7 +176,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece una fecha específica.
+     * MÃ©todo que establece una fecha especÃ­fica.
      *
      * @param     fecha Fecha del tipo Date.
      */
@@ -190,7 +190,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece una fecha específica.
+     * MÃ©todo que establece una fecha especÃ­fica.
      *
      * @param calendario
      */
@@ -204,7 +204,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece el día.
+     * MÃ©todo que establece el dÃ­a.
      *
      * @param day
      *
@@ -214,7 +214,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece el mes.
+     * MÃ©todo que establece el mes.
      *
      * @param month
      *
@@ -224,7 +224,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece el año.
+     * MÃ©todo que establece el aÃ±o.
      *
      * @param year
      *
@@ -234,7 +234,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece la hora.
+     * MÃ©todo que establece la hora.
      *
      * @param hour
      *
@@ -244,7 +244,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece los minutos.
+     * MÃ©todo que establece los minutos.
      *
      * @param mins
      *
@@ -254,7 +254,7 @@ public class Fecha {
     }
 
     /**
-     * Método que establece el segundo.
+     * MÃ©todo que establece el segundo.
      *
      * @param mins
      *
@@ -264,7 +264,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el valor del campo (field) que le especifiques.
+     * MÃ©todo que regresa el valor del campo (field) que le especifiques.
      *
      * @return Un entero de las variables del Field Summary de la Clase Calendar que se refiera al campo Ej. Calendar.DAY_OF_MONTH.
      *
@@ -274,7 +274,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el día de la Clase.
+     * MÃ©todo que regresa el dÃ­a de la Clase.
      *
      * @return     Entero que representa el dia del mes.
      *
@@ -284,7 +284,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el calendario que contiene esta Clase.
+     * MÃ©todo que regresa el calendario que contiene esta Clase.
      *
      * @return     Calendar cal.
      *
@@ -294,7 +294,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el mes de la Clase.
+     * MÃ©todo que regresa el mes de la Clase.
      *
      * @return     Fecha en formato dd-mm-aaaa.
      *
@@ -304,7 +304,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el año de la Clase.
+     * MÃ©todo que regresa el aÃ±o de la Clase.
      *
      * @return     Fecha en formato dd-mm-aaaa.
      *
@@ -315,7 +315,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la hora de la Clase.
+     * MÃ©todo que regresa la hora de la Clase.
      *
      * @return    Entero representando la hora.
      *
@@ -326,7 +326,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa los minutos de la Clase.
+     * MÃ©todo que regresa los minutos de la Clase.
      *
      * @return     Entero representando los minutos.
      *
@@ -337,7 +337,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa los segundo de la Clase.
+     * MÃ©todo que regresa los segundo de la Clase.
      *
      * @return     Entero representando los segundos.
      *
@@ -348,7 +348,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el primer día del mes tomando en cuenta la fecha <br>
+     * MÃ©todo que regresa el primer dÃ­a del mes tomando en cuenta la fecha <br>
      * de la Clase en formato dd-mm-aaaa.
      *
      * @return     Fecha en formato dd-mm-aaaa.
@@ -369,7 +369,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el ultimo día del mes tomando en cuenta la fecha <br>
+     * MÃ©todo que regresa el ultimo dÃ­a del mes tomando en cuenta la fecha <br>
      * de la Clase en formato dd-mm-aaaa.
      *
      * @return     Fecha en formato dd-mm-aaaa.
@@ -380,7 +380,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa un tipo de dato Date representando la fecha de la clase.
+     * MÃ©todo que regresa un tipo de dato Date representando la fecha de la clase.
      *
      * @return     Un objeto DATE() representando la fecha de la clase.
      *
@@ -390,7 +390,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa un tipo de dato Date con la fecha dada.
+     * MÃ©todo que regresa un tipo de dato Date con la fecha dada.
      *
      * @param fecha
      * @return     Fecha en formato DATE().
@@ -411,7 +411,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa un tipo de dato Date con la fecha dada.
+     * MÃ©todo que regresa un tipo de dato Date con la fecha dada.
      *
      * @param fecha
      * @param charOrigen 
@@ -583,7 +583,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de la Clase en formato dd-mm-aaaa.
+     * MÃ©todo que regresa la fecha de la Clase en formato dd-mm-aaaa.
      *
      * @return     Fecha en formato dd-mm-aaaa.
      *
@@ -594,7 +594,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de la Clase en formato aaaa-mm-dd.
+     * MÃ©todo que regresa la fecha de la Clase en formato aaaa-mm-dd.
      *
      * @return     Fecha en formato aaaa-mm-dd.
      */
@@ -605,7 +605,7 @@ public class Fecha {
     }
 
     /**
-     * Método que a partir de una fecha con formato aaaa-mm-dd regresa la fecha en formato dd-mm-aaaa.
+     * MÃ©todo que a partir de una fecha con formato aaaa-mm-dd regresa la fecha en formato dd-mm-aaaa.
      * <br>En pocas palabras, convierte una fecha MySQL al formato normal.
      *
      * @param fecha_sql
@@ -621,7 +621,7 @@ public class Fecha {
     }
 
     /**
-     * Método que a partir de una fecha con formato dd-mm-aaaa regresa la fecha en formato aaaa-mm-dd.
+     * MÃ©todo que a partir de una fecha con formato dd-mm-aaaa regresa la fecha en formato aaaa-mm-dd.
      * <br>En pocas palabras, convierte una fecha normal al formato MySQL.
      *
      * @param fecha_normal
@@ -637,7 +637,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de hoy en el formato dd-mm-aaaa.
+     * MÃ©todo que regresa la fecha de hoy en el formato dd-mm-aaaa.
      *
      * @return     Fecha en formato dd-mm-aaaa.
      */
@@ -650,7 +650,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de hoy en el formato aaaa-mm-dd.
+     * MÃ©todo que regresa la fecha de hoy en el formato aaaa-mm-dd.
      *
      * @return     Fecha en formato aaaa-mm-dd.
      */
@@ -663,7 +663,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de hoy en el formato aaaa-mm-dd.
+     * MÃ©todo que regresa la fecha de hoy en el formato aaaa-mm-dd.
      *
      * @return     Fecha en formato aaaa-mm-dd hh:mm:ss.
      */
@@ -676,7 +676,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la hora actual.
+     * MÃ©todo que regresa la hora actual.
      *
      * @return     Hora en formato HH:mm:s.
      */
@@ -702,14 +702,14 @@ public class Fecha {
     }
 
     /**
-     * Método que suma un mes a la fecha actual
+     * MÃ©todo que suma un mes a la fecha actual
      */
     public void addDay() {
         this.cal.add(Calendar.DAY_OF_MONTH, 1);
     }
 
     /**
-     * Método que suma un determinado número de días a la fecha actual
+     * MÃ©todo que suma un determinado nÃºmero de dÃ­as a la fecha actual
      * @param days
      */
     public void addDay(int days) {
@@ -717,14 +717,14 @@ public class Fecha {
     }
 
     /**
-     * Método que resta un día a la fecha actual
+     * MÃ©todo que resta un dÃ­a a la fecha actual
      */
     public void sustDay() {
         this.cal.add(Calendar.DAY_OF_MONTH, -1);
     }
 
     /**
-     * Método que resta un determinado número de días a la fecha actual
+     * MÃ©todo que resta un determinado nÃºmero de dÃ­as a la fecha actual
      * @param days 
      */
     public void sustDay(int days) {
@@ -732,14 +732,14 @@ public class Fecha {
     }
 
     /**
-     * Método que suma un mes a la fecha actual
+     * MÃ©todo que suma un mes a la fecha actual
      */
     public void addMonth() {
         this.cal.add(Calendar.MONTH, 1);
     }
 
     /**
-     * Método que suma un determinado número de meses a la fecha actual
+     * MÃ©todo que suma un determinado nÃºmero de meses a la fecha actual
      * @param months
      */
     public void addMonth(int months) {
@@ -747,14 +747,14 @@ public class Fecha {
     }
 
     /**
-     * Método que resta un mes a la fecha actual
+     * MÃ©todo que resta un mes a la fecha actual
      */
     public void sustMonth() {
         this.cal.add(Calendar.MONTH, -1);
     }
 
     /**
-     * Método que resta un determinado número de meses a la fecha actual
+     * MÃ©todo que resta un determinado nÃºmero de meses a la fecha actual
      * @param months
      */
     public void sustMonth(int months) {
@@ -762,14 +762,14 @@ public class Fecha {
     }
 
     /**
-     * Método que suma un año a la fecha actual
+     * MÃ©todo que suma un aÃ±o a la fecha actual
      */
     public void addYear() {
         this.cal.add(Calendar.YEAR, 1);
     }
 
     /**
-     * Método que suma un determinado número de años a la fecha actual
+     * MÃ©todo que suma un determinado nÃºmero de aÃ±os a la fecha actual
      * @param years
      */
     public void addYear(int years) {
@@ -777,14 +777,14 @@ public class Fecha {
     }
 
     /**
-     * Método que resta un año a la fecha actual
+     * MÃ©todo que resta un aÃ±o a la fecha actual
      */
     public void sustYear() {
         this.cal.add(Calendar.YEAR, -1);
     }
 
     /**
-     * Método que resta un determinado número de años a la fecha actual
+     * MÃ©todo que resta un determinado nÃºmero de aÃ±os a la fecha actual
      * @param years
      */
     public void sustYear(int years) {
@@ -792,14 +792,14 @@ public class Fecha {
     }
 
     /**
-     * Método que suma una hora a la fecha actual
+     * MÃ©todo que suma una hora a la fecha actual
      */
     public void addHour() {
         this.cal.add(Calendar.HOUR_OF_DAY, 1);
     }
 
     /**
-     * Método que suma un determinado número de horas a la fecha actual
+     * MÃ©todo que suma un determinado nÃºmero de horas a la fecha actual
      * @param hour
      */
     public void addHours(int hour) {
@@ -807,14 +807,14 @@ public class Fecha {
     }
 
     /**
-     * Método que resta una hora a la fecha actual
+     * MÃ©todo que resta una hora a la fecha actual
      */
     public void sustHour() {
         this.cal.add(Calendar.HOUR_OF_DAY, -1);
     }
 
     /**
-     * Método que resta un determinado número de horas a la fecha actual
+     * MÃ©todo que resta un determinado nÃºmero de horas a la fecha actual
      * @param hour
      */
     public void sustHours(int hour) {
@@ -822,14 +822,14 @@ public class Fecha {
     }
 
     /**
-     * Método que suma un minuto a la fecha actual
+     * MÃ©todo que suma un minuto a la fecha actual
      */
     public void addMin() {
         this.cal.add(Calendar.MINUTE, 1);
     }
 
     /**
-     * Método que suma un determinado número de minutos a la fecha actual
+     * MÃ©todo que suma un determinado nÃºmero de minutos a la fecha actual
      * @param mins
      */
     public void addMins(int mins) {
@@ -837,14 +837,14 @@ public class Fecha {
     }
 
     /**
-     * Método que resta un minuto a la fecha actual
+     * MÃ©todo que resta un minuto a la fecha actual
      */
     public void sustMins() {
         this.cal.add(Calendar.MINUTE, -1);
     }
 
     /**
-     * Método que resta un determinado número de minuyos a la fecha actual
+     * MÃ©todo que resta un determinado nÃºmero de minuyos a la fecha actual
      * @param mins
      */
     public void sustMins(int mins) {
@@ -852,8 +852,8 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha de este calendario en letra con el siguiente formato.<br>
-     * <b><i>Nombre del Día</i>, <i>día</i> de <i>mes</i>, <i>año</i></b>
+     * MÃ©todo que regresa la fecha de este calendario en letra con el siguiente formato.<br>
+     * <b><i>Nombre del DÃ­a</i>, <i>dÃ­a</i> de <i>mes</i>, <i>aÃ±o</i></b>
      *
      * @return     Fecha en formato <b>Lunes, 01 de Enero, 1900</b>.
      */
@@ -866,8 +866,8 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha actual en letra con el siguiente formato.<br>
-     * <b><i>Nombre del Día</i>, <i>día</i> de <i>mes</i>, <i>año</i></b>
+     * MÃ©todo que regresa la fecha actual en letra con el siguiente formato.<br>
+     * <b><i>Nombre del DÃ­a</i>, <i>dÃ­a</i> de <i>mes</i>, <i>aÃ±o</i></b>
      *
      * @return     Fecha en formato <b>Lunes, 01 de Enero, 1900</b>.
      */
@@ -881,8 +881,8 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa la fecha en letra con el siguiente formato.<br>
-     * <b><i>Nombre del Día</i>, <i>día</i> de <i>mes</i>, <i>año</i></b>
+     * MÃ©todo que regresa la fecha en letra con el siguiente formato.<br>
+     * <b><i>Nombre del DÃ­a</i>, <i>dÃ­a</i> de <i>mes</i>, <i>aÃ±o</i></b>
      *
      * @param fecha_normal
      * @return     Fecha en formato <b>Lunes, 01 de Enero, 1900</b>.
@@ -901,13 +901,13 @@ public class Fecha {
                     + ", " + calendar.get(Calendar.YEAR);
             return fecha_letra;
         } else {
-            //JOptionPane.showMessageDialog(null, "<html><center>Por favor asegúrese de haber escrito correctamente la fecha<br><b>Existe un error en esta.</b></center></html>");
+            //JOptionPane.showMessageDialog(null, "<html><center>Por favor asegÃºrese de haber escrito correctamente la fecha<br><b>Existe un error en esta.</b></center></html>");
             return "Formato Incorrecto";
         }
     }
 
     /**
-     * Método que regresa el mes en letra con el siguiente formato.<br>
+     * MÃ©todo que regresa el mes en letra con el siguiente formato.<br>
      * <b><i>Mes</i></b>
      *
      * @return Mes en formato <b>Enero</b>.
@@ -917,7 +917,7 @@ public class Fecha {
     }
 
     /**
-     * Método que regresa el mes en letra con el siguiente formato.<br>
+     * MÃ©todo que regresa el mes en letra con el siguiente formato.<br>
      * <b><i>Mes</i></b>
      *
      * @return Mes en formato <b>Enero</b>.
@@ -928,7 +928,7 @@ public class Fecha {
     }
 
     /**
-     * Método toString de la clase que regresa anio - mes - dia;
+     * MÃ©todo toString de la clase que regresa anio - mes - dia;
      *
      * @return Fecha en formato aaaa-mm-dd.
      */
@@ -1115,7 +1115,7 @@ public class Fecha {
                 diaL = "Martes";
                 break;
             case 4:
-                diaL = "Miércoles";
+                diaL = "MiÃ©rcoles";
                 break;
             case 5:
                 diaL = "Jueves";
@@ -1124,7 +1124,7 @@ public class Fecha {
                 diaL = "Viernes";
                 break;
             case 7:
-                diaL = "Sábado";
+                diaL = "SÃ¡bado";
                 break;
         }
         return diaL;
@@ -1174,7 +1174,7 @@ public class Fecha {
                     }
                     //Parametros de semana y dia semama
                     String prm = "%d-" + sm + "-" + diasemana + "%";
-                    //Estilo para resaltar el día de hoy
+                    //Estilo para resaltar el dÃ­a de hoy
                     String estilo = (fecha.getDia() == dom ? "<font color=\"red\">%estilo%</font>" : "%estilo%");
                     //Remplazo de estilo por la accion
                     String rpl = estilo.replace("%estilo%", "<a onClick=gotoAgendaPSP(" + c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) + "," + dom + ") style='cursor:pointer;'>" + String.valueOf(dom) + "</a>");

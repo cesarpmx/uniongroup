@@ -4764,7 +4764,7 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *     main.renderFrame();
      * 
      * There may be times where the transformation you need to apply cannot easily be 
-     * accomplished using the sprite’s convenience transform methods.  Or, you may want 
+     * accomplished using the spriteâs convenience transform methods.  Or, you may want 
      * to pass a matrix directly to the sprite in order to set a transformation.  The 
      * `setTransform` method allows for this sort of advanced usage as well.  The 
      * following tables show each transformation matrix used when applying 
@@ -4789,16 +4789,16 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *     </tr>
      * </table>
      * 
-     * ### Rotate (θ is the angle of rotation)
+     * ### Rotate (Î¸ is the angle of rotation)
      * <table style="text-align: center;">
      *     <tr>
-     *         <td style="font-weight: normal;">cos(θ)</td>
-     *         <td style="font-weight: normal;">-sin(θ)</td>
+     *         <td style="font-weight: normal;">cos(Î¸)</td>
+     *         <td style="font-weight: normal;">-sin(Î¸)</td>
      *         <td style="font-weight: normal;">0</td>
      *     </tr>
      *     <tr>
      *         <td>0</td>
-     *         <td>cos(θ)</td>
+     *         <td>cos(Î¸)</td>
      *         <td>0</td>
      *     </tr>
      *     <tr>
@@ -4817,7 +4817,7 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *     </tr>
      *     <tr>
      *         <td>0</td>
-     *         <td>cos(θ)</td>
+     *         <td>cos(Î¸)</td>
      *         <td>0</td>
      *     </tr>
      *     <tr>
@@ -4827,49 +4827,11 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *     </tr>
      * </table>
      * 
-     * ### Shear X _(λ is the distance on the x axis to shear by)_
+     * ### Shear X _(Î» is the distance on the x axis to shear by)_
      * <table style="text-align: center;">
      *     <tr>
      *         <td style="font-weight: normal;">1</td>
-     *         <td style="font-weight: normal;">λx</td>
-     *         <td style="font-weight: normal;">0</td>
-     *     </tr>
-     *     <tr>
-     *         <td>0</td>
-     *         <td>1</td>
-     *         <td>0</td>
-     *     </tr>
-     *     <tr>
-     *         <td>0</td>
-     *         <td>0</td>
-     *         <td>1</td>
-     *     </tr>
-     * </table>
-     * 
-     * ### Shear Y (λ is the distance on the y axis to shear by)
-     * <table style="text-align: center;">
-     *     <tr>
-     *         <td style="font-weight: normal;">1</td>
-     *         <td style="font-weight: normal;">0</td>
-     *         <td style="font-weight: normal;">0</td>
-     *     </tr>
-     *     <tr>
-     *         <td>λy</td>
-     *         <td>1</td>
-     *         <td>0</td>
-     *     </tr>
-     *     <tr>
-     *         <td>0</td>
-     *         <td>0</td>
-     *         <td>1</td>
-     *     </tr>
-     * </table>
-     * 
-     * ### Skew X (θ is the angle to skew by)
-     * <table style="text-align: center;">
-     *     <tr>
-     *         <td style="font-weight: normal;">1</td>
-     *         <td style="font-weight: normal;">tan(θ)</td>
+     *         <td style="font-weight: normal;">Î»x</td>
      *         <td style="font-weight: normal;">0</td>
      *     </tr>
      *     <tr>
@@ -4884,7 +4846,7 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *     </tr>
      * </table>
      * 
-     * ### Skew Y (θ is the angle to skew by)
+     * ### Shear Y (Î» is the distance on the y axis to shear by)
      * <table style="text-align: center;">
      *     <tr>
      *         <td style="font-weight: normal;">1</td>
@@ -4892,7 +4854,45 @@ Ext.define('Ext.draw.sprite.Sprite', {
      *         <td style="font-weight: normal;">0</td>
      *     </tr>
      *     <tr>
-     *         <td>tan(θ)</td>
+     *         <td>Î»y</td>
+     *         <td>1</td>
+     *         <td>0</td>
+     *     </tr>
+     *     <tr>
+     *         <td>0</td>
+     *         <td>0</td>
+     *         <td>1</td>
+     *     </tr>
+     * </table>
+     * 
+     * ### Skew X (Î¸ is the angle to skew by)
+     * <table style="text-align: center;">
+     *     <tr>
+     *         <td style="font-weight: normal;">1</td>
+     *         <td style="font-weight: normal;">tan(Î¸)</td>
+     *         <td style="font-weight: normal;">0</td>
+     *     </tr>
+     *     <tr>
+     *         <td>0</td>
+     *         <td>1</td>
+     *         <td>0</td>
+     *     </tr>
+     *     <tr>
+     *         <td>0</td>
+     *         <td>0</td>
+     *         <td>1</td>
+     *     </tr>
+     * </table>
+     * 
+     * ### Skew Y (Î¸ is the angle to skew by)
+     * <table style="text-align: center;">
+     *     <tr>
+     *         <td style="font-weight: normal;">1</td>
+     *         <td style="font-weight: normal;">0</td>
+     *         <td style="font-weight: normal;">0</td>
+     *     </tr>
+     *     <tr>
+     *         <td>tan(Î¸)</td>
      *         <td>1</td>
      *         <td>0</td>
      *     </tr>
@@ -6405,8 +6405,8 @@ Ext.define('Ext.draw.overrides.hittest.Path', {
  * + V = vertical lineto
  * + C = curveto
  * + S = smooth curveto
- * + Q = quadratic Bézier curve
- * + T = smooth quadratic Bézier curveto
+ * + Q = quadratic BÃ©zier curve
+ * + T = smooth quadratic BÃ©zier curveto
  * + A = elliptical Arc
  * + Z = closepath
  * 
@@ -10569,7 +10569,7 @@ Ext.define('Ext.draw.engine.SvgContext', {
         this.path.element = null;
     },
     /**
-     * Adds the given point to the current subpath, connected to the previous one by a cubic Bézier
+     * Adds the given point to the current subpath, connected to the previous one by a cubic BÃ©zier
      * curve with the given control points.
      * @param {Number} x1
      * @param {Number} y1
@@ -13017,7 +13017,7 @@ Ext.define('Ext.draw.engine.Canvas', {
                 },
                 /**
                  * Adds the given point to the current subpath, connected to the previous one by a
-                 * quadratic Bézier curve with the given control point.
+                 * quadratic BÃ©zier curve with the given control point.
                  * @return {*}
                  * @ignore
                  */
@@ -13026,7 +13026,7 @@ Ext.define('Ext.draw.engine.Canvas', {
                 },
                 /**
                  * Adds the given point to the current subpath, connected to the previous one
-                 * by a cubic Bézier curve with the given control points.
+                 * by a cubic BÃ©zier curve with the given control points.
                  * @return {*}
                  * @ignore
                  */
@@ -24720,7 +24720,7 @@ Ext.define('Ext.chart.CartesianChart', {
          And the right column shows the expected (subjective) result of setting the flipXY
          config of the chart to 'true'.
 
-         As one can see, there's no single rule (e.g. position swapping, clockwise 90° chart
+         As one can see, there's no single rule (e.g. position swapping, clockwise 90Â° chart
          rotation) that will produce a universally accepted result.
          So we are letting the user decide, instead of doing it for them.
 
@@ -31481,7 +31481,7 @@ Ext.define('Ext.chart.sprite.Bar3D', {
             }
         ]);
         if (isHorizontal) {
-            // 0° angle looks like 90° angle because the chart is flipped
+            // 0Â° angle looks like 90Â° angle because the chart is flipped
             me.frontGradient.setDegrees(0);
         } else {
             me.frontGradient.setRadians(Math.atan2(top - bottom, halfWidth * 2));
@@ -33282,7 +33282,7 @@ Ext.define('Ext.chart.series.CandleStick', {
  * Polar charts accept angles in radians. You can calculate radians with the following
  * formula:
  *
- *      radians = degrees x Π/180
+ *      radians = degrees x Î /180
  */
 Ext.define('Ext.chart.series.Polar', {
     extend: 'Ext.chart.series.Series',

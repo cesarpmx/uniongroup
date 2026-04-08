@@ -5,7 +5,7 @@ Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.monthNames = [
-            "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
+            "Januar", "Februar", "MÃ¤rz", "April", "Mai", "Juni", "Juli", "August", "September",
             "Oktober", "November", "Dezember"
         ];
 
@@ -102,10 +102,10 @@ Ext.define('Ext.locale.de.Panel', {
                 text: 'Hilfe'
             },
             close: {
-                text: 'Schließen'
+                text: 'SchlieÃen'
             }
         },
-        closeToolText: 'Panel schließen'
+        closeToolText: 'Panel schlieÃen'
     }
 });
 
@@ -133,7 +133,7 @@ Ext.define('Ext.locale.de.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Nächster Monat (Strg/Control + Rechts)',
+        nextText: 'NÃ¤chster Monat (Strg/Control + Rechts)',
         prevText: 'Vorheriger Monat (Strg/Control + Links)',
         buttons: {
             footerTodayButton: {
@@ -165,15 +165,15 @@ Ext.define('Ext.locale.de.field.Number', {
     override: 'Ext.field.Number',
 
     decimalsText: 'Die maximale Dezimalstelle ist {0}',
-    minValueText: 'Der Mindestwert für dieses Feld ist {0}',
-    maxValueText: 'Der Maximalwert für dieses Feld ist {0}',
+    minValueText: 'Der Mindestwert fÃ¼r dieses Feld ist {0}',
+    maxValueText: 'Der Maximalwert fÃ¼r dieses Feld ist {0}',
     badFormatMessage: 'Der Wert ist keine Zahl'
 });
 
 Ext.define('Ext.locale.de.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Der Wert stimmt nicht mit dem erforderlichen Format überein',
+    badFormatMessage: 'Der Wert stimmt nicht mit dem erforderlichen Format Ã¼berein',
     config: {
         requiredMessage: 'Dieses Feld darf nich leer sein',
         validationMessage: 'Ist im falschen Format'
@@ -188,7 +188,7 @@ Ext.define('Ext.locale.de.Dialog', {
             tooltip: "Maximiere auf Vollbild"
         },
         restoreTool: {
-            tooltip: "Wiederherstellen auf Originalgröße"
+            tooltip: "Wiederherstellen auf OriginalgrÃ¶Ãe"
         }
     }
 });
@@ -317,7 +317,7 @@ Ext.define('Ext.locale.de.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'Ist keine gültige E-Mail-Adresse'
+        message: 'Ist keine gÃ¼ltige E-Mail-Adresse'
     }
 });
 
@@ -325,7 +325,7 @@ Ext.define('Ext.locale.de.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'Ist keine gültige Telefonnummer'
+        message: 'Ist keine gÃ¼ltige Telefonnummer'
     }
 });
 
@@ -341,7 +341,7 @@ Ext.define('Ext.locale.de.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'Ist keine gültige URL'
+        message: 'Ist keine gÃ¼ltige URL'
     }
 });
 
@@ -350,8 +350,8 @@ Ext.define('Ext.locale.de.data.validator.Range', {
 
     config: {
         nanMessage: 'Muss numerisch sein',
-        minOnlyMessage: 'Der Mindestwert für dieses Feld ist {0}',
-        maxOnlyMessage: 'Der Maximalwert für dieses Feld ist {0}',
+        minOnlyMessage: 'Der Mindestwert fÃ¼r dieses Feld ist {0}',
+        maxOnlyMessage: 'Der Maximalwert fÃ¼r dieses Feld ist {0}',
         bothMessage: 'Muss zwischen {0} und {1} liegen'
     }
 });
@@ -361,7 +361,7 @@ Ext.define('Ext.locale.de.data.validator.Bound', {
 
     config: {
         emptyMessage: 'Muss anwesend sein',
-        minOnlyMessage: 'Wert muss größer als {0} sein',
+        minOnlyMessage: 'Wert muss grÃ¶Ãer als {0} sein',
         maxOnlyMessage: 'Wert muss kleiner als {0} sein',
         bothMessage: 'Der Wert muss zwischen {0} und {1} liegen.'
     }
@@ -371,7 +371,7 @@ Ext.define('Ext.locale.de.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'Ist kein gültiger CIDR-Block'
+        message: 'Ist kein gÃ¼ltiger CIDR-Block'
     }
 });
 
@@ -379,7 +379,7 @@ Ext.define('Ext.locale.de.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'Ist kein gültiger CIDR-Block'
+        message: 'Ist kein gÃ¼ltiger CIDR-Block'
     }
 });
 
@@ -387,7 +387,7 @@ Ext.define('Ext.locale.de.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'Ist kein gültiger Währungsbetrag'
+        message: 'Ist kein gÃ¼ltiger WÃ¤hrungsbetrag'
     }
 
 });
@@ -396,7 +396,7 @@ Ext.define('Ext.locale.de.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'Ist kein gültige Datum und Uhrzeit'
+        message: 'Ist kein gÃ¼ltige Datum und Uhrzeit'
     }
 });
 
@@ -412,7 +412,7 @@ Ext.define('Ext.locale.de.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'Ist keine gültige IP-Adresse'
+        message: 'Ist keine gÃ¼ltige IP-Adresse'
     }
 });
 
@@ -420,7 +420,7 @@ Ext.define('Ext.locale.de.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'Ist nicht in der Liste der zulässigen Werte enthalten'
+        message: 'Ist nicht in der Liste der zulÃ¤ssigen Werte enthalten'
     }
 });
 
@@ -428,7 +428,7 @@ Ext.define('Ext.locale.de.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'Ist keine gültige Zeit'
+        message: 'Ist keine gÃ¼ltige Zeit'
     }
 });
 
@@ -444,9 +444,9 @@ Ext.define('Ext.locale.de.data.validator.Length', {
     override: 'Ext.data.validator.Length',
 
     config: {
-        minOnlyMessage: 'Die Länge muss mindestens {0} sein',
-        maxOnlyMessage: 'Die Länge darf nicht mehr als {0} sein',
-        bothMessage: 'Die Länge muss zwischen {0} und {1} liegen'
+        minOnlyMessage: 'Die LÃ¤nge muss mindestens {0} sein',
+        maxOnlyMessage: 'Die LÃ¤nge darf nicht mehr als {0} sein',
+        bothMessage: 'Die LÃ¤nge muss zwischen {0} und {1} liegen'
     }
 });
 
@@ -497,5 +497,5 @@ Ext.define('Ext.locale.de.grid.locked.Grid', {
 
 Ext.define("Ext.locale.de.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} Zeile(n) ausgewählt"
+    dragText: "{0} Zeile(n) ausgewÃ¤hlt"
 });
