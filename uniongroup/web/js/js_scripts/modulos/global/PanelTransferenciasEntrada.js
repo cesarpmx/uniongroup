@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -506,7 +506,7 @@ Ext.define('TransferenciaEntradaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Éxitos (' + confirmados.length + ')',
+                            title: 'Ã‰xitos (' + confirmados.length + ')',
                             xtype: 'grid',
                             store: storeExitos,
                             columns: [
@@ -626,7 +626,7 @@ Ext.define('TransferenciaEntradaUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas locales para transferencia #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -688,7 +688,7 @@ Ext.define('TransferenciaEntradaUtils', {
                         beforePageText: 'Página',
                         afterPageText: 'de {0}',
                         firstText: 'Primera página',
-                        lastText: 'Última página',
+                        lastText: 'Ãšltima página',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -840,7 +840,7 @@ Ext.define('TransferenciaEntradaUtils', {
                     totalRecibido += parseFloat(linea.receivedquantity) || 0;
                 });
 
-                // ? CALCULAR ESTATUS AUTOMÁTICO
+                // ? CALCULAR ESTATUS AUTOMÃTICO
                 var estatusCalculado = '';
                 if (totalRecibido === 0) {
                     estatusCalculado = 'Cancelada';
@@ -963,7 +963,7 @@ Ext.define('TransferenciaEntradaUtils', {
 
                                         Ext.getBody().mask('Procesando confirmación de recepción...');
 
-                                        // ? CONSTRUIR LÍNEAS CON RECEIVED QUANTITY
+                                        // ? CONSTRUIR LÃNEAS CON RECEIVED QUANTITY
                                         var lines = [];
                                         var totalQty = 0;
 
@@ -1057,7 +1057,7 @@ Ext.define('TransferenciaEntradaUtils', {
                                                         msg += '<b>Transaction #:</b> ' + transNumber + '<br>';
                                                         msg += '<b>Estado:</b> ' + statusMensaje; // ? Agregar StatusInfo
 
-                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
                                                             TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                                                         });
                                                     } else {
@@ -1319,6 +1319,8 @@ Ext.define('Modulos.global.PanelTransferenciasEntrada', {
                     id: 'gridTransferenciaEntrada',
                     store: me.storeTransferenciaEntrada,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridTranserenciaEntradaState',
                     plugins: {
                         gridfilters: true
                     },

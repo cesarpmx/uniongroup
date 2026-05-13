@@ -7,8 +7,11 @@ package com.control.global;
 import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
 import com.entity.global.ArrEcommerce;
+import com.entity.global.ArrEcommerceDet;
+import com.entity.global.ArrProductosSurtidos;
 import com.entity.global.CentralEcommerce;
 import com.entity.global.CentralEcommerceDet;
+import com.entity.global.CentralProductosSurtidos;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.util.ReadProps;
 import com.util.STDRUEAPGenerator;
@@ -119,47 +122,83 @@ public class CtrlEcommerce extends HttpServlet {
     
     public String GenerarSTDRUEAP(HttpServletRequest request, HttpServletResponse response) {
     String ecomid = Utilities.obtenParametro(request, "ecomid");
+    String le = Utilities.obtenParametro(request, "le");
 
     try {
         ObjectMapper mapper = new ObjectMapper();
 
-        // 1 y 2. (Mantenemos igual la obtención de datos...)
+        // 1. Obtener Header (necesitamos el preid)
         String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
         String respH = requetGet.getGet(serviceH);
         CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
+        
         if (centralHeader.items == null || centralHeader.items.isEmpty()) {
             return "{\"ok\":false, \"error\":\"No se encontró header\"}";
         }
         ArrEcommerce header = centralHeader.items.get(0);
 
+        // 2. Obtener Detalle Original (con las cantidades del pedido)
         String serviceD = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceDet") + "?clave=" + ecomid;
         String respD = requetGet.getGet(serviceD);
         CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
 
-        // 3. Generar archivo temporalmente
+        // 3. Obtener Unidades Surtidas usando el preid del header
+        String serviceS = props.getValueProp("Host") + "uniongroup/productosurtido/?clave=" + le;
+        String respS = requetGet.getGet(serviceS); 
+        CentralProductosSurtidos surtidoData = mapper.readValue(respS, CentralProductosSurtidos.class);
+
+        // --- LÓGICA DE ACTUALIZACIÓN DE CANTIDADES ---
+        
+        // REGLA: Solo si el servicio de surtido trae ítems, intentamos cruzar los datos.
+        if (surtidoData != null && surtidoData.items != null && !surtidoData.items.isEmpty()) {
+            
+            // Creamos un mapa para buscar rápido por itemcode
+            java.util.Map<String, Integer> mapSurtido = new java.util.HashMap<>();
+            for (ArrProductosSurtidos s : surtidoData.items) {
+                if (s.itemcode != null) {
+                    mapSurtido.put(s.itemcode, s.unidades);
+                }
+            }
+
+            // Recorremos el detalle original para actualizar
+            for (ArrEcommerceDet itemDet : det.items) {
+                if (mapSurtido.containsKey(itemDet.itemnumber)) {
+                    // Si existe en el surtido, ponemos esa cantidad
+                    itemDet.quantity = String.valueOf(mapSurtido.get(itemDet.itemnumber));
+                } else {
+                    // Si el servicio de surtido trajo datos, pero ESTE item no está,
+                    // significa que no se surtió nada -> ponemos 0.
+                    itemDet.quantity = "0";
+                }
+            }
+            System.out.println("LOG: Cantidades actualizadas con datos de SURTIDO.");
+        } else {
+            // Si el servicio de surtido viene vacío, NO HACEMOS NADA.
+            // Los objetos de 'det.items' conservan el 'quantity' que traían por defecto.
+            System.out.println("LOG: Surtido vacío o nulo. Se mantiene el pedido ORIGINAL.");
+        }
+
+        // --- GENERACIÓN Y ENVÍO ---
+
         String ts = new java.text.SimpleDateFormat("yyMMdd_HHmmss").format(new java.util.Date());
         String fileName = "STDRUEAP_" + ts + ".txt";
         
-        // Creamos un archivo temporal en el sistema antes de subirlo
         Path tempFile = Files.createTempFile("stdrueap_", ".txt");
+        // Mandamos el objeto 'det.items' que ya fue (o no) procesado arriba
         STDRUEAPGenerator.generate(header, det.items, tempFile);
 
-        // 4. Subir a FTP
-        // Estas variables deberías leerlas de tu AppConfig o Properties
-        String ftpHost = "globalmx.dyndns.org";
-        String ftpUser = "ftpglobal";
-        String ftpPass = "Gl0b4l25=";
-        String remoteDir = "/Ecommerce/ECOM-OUT"; 
+        String ftpHost = "ftp.concir.mx";
+        String ftpUser = "global.ug@seyl.mx";
+        String ftpPass = "A}5%p.KrRh#i";
+        String remoteDir = "/ECOMMERCE/ECOM-OUT"; 
 
         boolean uploaded = uploadToFTP(tempFile, fileName, ftpHost, ftpUser, ftpPass, remoteDir);
-
-        // Borrar archivo temporal después de subir
         Files.deleteIfExists(tempFile);
 
         if (uploaded) {
             return "{\"ok\":true, \"file\":\"" + remoteDir + "/" + fileName + "\"}";
         } else {
-            return "{\"ok\":false, \"error\":\"Error al subir el archivo al servidor FTP\"}";
+            return "{\"ok\":false, \"error\":\"Error al subir al FTP\"}";
         }
 
     } catch (Exception e) {

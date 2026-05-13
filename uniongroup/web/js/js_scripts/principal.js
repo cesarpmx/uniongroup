@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * author: m@rco.@ndrade
@@ -38,6 +38,14 @@ Ext.onReady(function () {
     localStorage.setItem('diasAtras', 90);
     Ext.util.Format.thousandSeparator = ',';
     Ext.util.Format.decimalSeparator = '.';
+    
+    if (Ext.MessageBox) {
+        // Usamos \u00ed para representar la 'í' con acento de forma segura
+        Ext.MessageBox.buttonText.yes = "S\u00ed"; 
+        Ext.MessageBox.buttonText.no = "No";
+        Ext.MessageBox.buttonText.ok = "Aceptar";
+        Ext.MessageBox.buttonText.cancel = "Cancelar";
+    }
 
     // Crear el viewport principal
     Ext.create('Ext.container.Viewport', {

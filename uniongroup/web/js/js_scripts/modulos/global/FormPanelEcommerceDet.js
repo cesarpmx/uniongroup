@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
@@ -86,7 +86,8 @@ Ext.define('Modulos.global.FormPanelEcommerceDet', {
                     'user',
                     'requestedquantity',
                     'ean',
-                    'coms'
+                    'coms',
+                    'receivedquantity'
                 ]
             });
         }
@@ -152,6 +153,7 @@ Ext.define('Modulos.global.FormPanelEcommerceDet', {
                 { text: 'processingtime', dataIndex: 'processingtime', flex: 1 },
                 { text: 'user', dataIndex: 'user', flex: 1 },
                 { text: 'requestedquantity', dataIndex: 'requestedquantity', flex: 1 },
+                { text: 'receivedquantity', dataIndex: 'receivedquantity', flex: 1 },
                 { text: 'ean', dataIndex: 'ean', flex: 1 },
                 { text: 'coms', dataIndex: 'coms', flex: 1,
                 renderer: function (value, metaData) {

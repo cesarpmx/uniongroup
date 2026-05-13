@@ -1,4 +1,4 @@
-Ext.define('ConsignatariosUtils', {
+﻿Ext.define('ConsignatariosUtils', {
     singleton: true,
 
     BtnBusqConsignatarios: function () {
@@ -21,7 +21,7 @@ Ext.define('ConsignatariosUtils', {
         var grid = Ext.getCmp('gridDirecciones'),
                 mainStore = grid.getStore(),
                 //totalRegistros = mainStore.getTotalCount();
-                totalRegistros = 50;
+                totalRegistros = 3000;
 
         if (totalRegistros === 0) {
             Ext.MessageBox.alert('Sin datos', 'No hay registros para enviar');
@@ -29,7 +29,7 @@ Ext.define('ConsignatariosUtils', {
         }
 
         Ext.MessageBox.confirm(
-                'Confirmar Sincronización',
+                'Confirmar Sincronizaci\u00f3n',
                 '¿Desea procesar los ' + totalRegistros + ' registros totales? (Se enviarán en lotes para mayor seguridad)',
                 function (btn) {
                     if (btn === 'yes') {
@@ -64,7 +64,7 @@ Ext.define('ConsignatariosUtils', {
 
     iniciarEnvioPorLotes: function (allRecords) {
         var me = this,
-                loteSize = 50, // Tamaño seguro para evitar que el JSON se corte
+                loteSize = 100, // Tamaño seguro para evitar que el JSON se corte
                 totalRecords = allRecords.length,
                 confirmadosGlobal = [],
                 erroresGlobal = [],

@@ -1,4 +1,4 @@
-/* 
+ï»¿/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * author: m@rco.@ndrade
@@ -82,7 +82,7 @@ Ext.onReady(function(){
             },Scriptjs[0],'-',
             '<label id="ext-comp-1008" style="color: rgb(45, 139, 255); font-weight: bold; font-size: 12px;">Bienvenid@:</label>',
             '-',Scriptjs[1],'-',
-            '<label id="ext-comp-1011" style="color: rgb(45, 139, 255); font-weight: normal;">Tus Módulos:</label>',
+            '<label id="ext-comp-1011" style="color: rgb(45, 139, 255); font-weight: normal;">Tus MÃ³dulos:</label>',
             '-',Scriptjs[2],Scriptjs[3],Scriptjs[4],Scriptjs[5],
             Scriptjs[6],Scriptjs[7],Scriptjs[8],Scriptjs[9],Scriptjs[10],
             Scriptjs[11],Scriptjs[12],Scriptjs[13],Scriptjs[14],Scriptjs[15],
@@ -92,7 +92,7 @@ Ext.onReady(function(){
             Scriptjs[31],Scriptjs[32],Scriptjs[33],Scriptjs[34],Scriptjs[35],
             Scriptjs[36],Scriptjs[37],Scriptjs[38],Scriptjs[39],Scriptjs[40],'->',
             {
-                text:'Cerrar Sesión',
+                text:'Cerrar SesiÃ³n',
                 iconCls:'icn-cerrarSession',
                 scale:'small',
                 handler:function(){
@@ -130,7 +130,7 @@ Ext.onReady(function(){
             },
             items: [ '->',{
                 xtype:'label',
-                html:'Copyright © 2012. Todos los derechos reservados por Argomex.',
+                html:'Copyright Â© 2012. Todos los derechos reservados por Argomex.',
                 style:'color: black;'
             },'-','<a href="http://www.argomex.com" target="_blank"><img  src="'+contexto+'/img/logo_argomex.png"></a>','-']
         })],
@@ -162,15 +162,15 @@ function LoadMenu(modulo){
 }
 function closeSession(){
     Ext.MessageBox.show({
-        title:'Terminar Sesión?',
-        msg: '¿Desea terminar la sesión?',
+        title:'Terminar SesiÃ³n?',
+        msg: 'Â¿Desea terminar la sesiÃ³n?',
         buttons: Ext.MessageBox.YESNO,
         fn: function(btn){
             if(btn == 'no'){
             }
             if(btn == 'yes'){
                 Ext.MessageBox.show({
-                    msg: 'Cerrando la sesión, espere por favor...',
+                    msg: 'Cerrando la sesiÃ³n, espere por favor...',
                     progressText: 'Guardando...',
                     width:300,
                     wait:true,

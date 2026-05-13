@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -59,23 +59,23 @@ function submitFormulario(formPanel,parametros){
 				
                 if(action.result.accion == null){
                     var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                    //Ext.Msg.alert("Éxito", m);
+                    //Ext.Msg.alert("Ã‰xito", m);
                     if(action.result.rtn!=null){
                         if(action.result.exit!=null){
                             if(action.result.exit==0){
 								
-                                Ext.Msg.alert("Éxito", m);
+                                Ext.Msg.alert("Ã‰xito", m);
                                 leerDatos(action.result.rtn);
 								
 								
                             }else if(action.result.exit==2){
-                                Ext.Msg.alert("Éxito", m);
+                                Ext.Msg.alert("Ã‰xito", m);
                             }
                         }else{
-                            Ext.Msg.alert("Éxito", m);
+                            Ext.Msg.alert("Ã‰xito", m);
                         }
                     }else{
-                        Ext.Msg.alert("Éxito", m);
+                        Ext.Msg.alert("Ã‰xito", m);
                     }
 					
 					
@@ -133,7 +133,7 @@ function submitFormulario(formPanel,parametros){
                     var p = Ext.getCmp(action.result.idPnl);
                     p.load(action.result.prm);
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
 						
                     }
                 }else if (action.result.accion=='loadHTMLPanelDobles'){
@@ -144,7 +144,7 @@ function submitFormulario(formPanel,parametros){
                     not.load(action.result.prm2);
                     e.getStore().load();
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }
                 else if (action.result.accion=='loadMultiples'){
@@ -160,7 +160,7 @@ function submitFormulario(formPanel,parametros){
                         }
                     }
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }else if (action.result.accion=='setModuloSeg'){
                     
@@ -209,7 +209,7 @@ function submitFormulario(formPanel,parametros){
                                     modal:true
                                 }));
                                 if(action.result.msg!=null){
-                                    Ext.Msg.alert("Éxito ", action.result.msg);
+                                    Ext.Msg.alert("Ã‰xito ", action.result.msg);
                                 }
                     
                             },
@@ -248,7 +248,7 @@ function submitFormulario(formPanel,parametros){
                             modal:true
                         }));
                         if(action.result.msg!=null){
-                            Ext.Msg.alert("Éxito ", action.result.msg);
+                            Ext.Msg.alert("Ã‰xito ", action.result.msg);
                         }
                     }
                 }
@@ -258,7 +258,7 @@ function submitFormulario(formPanel,parametros){
                         msg:'Farmacovigilancia'
                     }));
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                 }else if (action.result.accion=='setModuloArchivo'){
                     /*var wnd = new  Ext.Window({
@@ -540,7 +540,7 @@ function submitFormulario2(formPanel,parametros){
             success:function(form,action){
                 if(action.result.accion == null){
                     var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                    Ext.Msg.alert("Éxito", m);//
+                    Ext.Msg.alert("Ã‰xito", m);//
                 }else if(action.result.accion=='setModulo'){
                     if(action.result.ProsNutCampo!=null){
                         if(action.result.ProsNutCampo==1){
@@ -601,7 +601,7 @@ function submitFormulario2(formPanel,parametros){
                         }
                     }
                     if(action.result.msg!=null){
-                        Ext.Msg.alert("Éxito ", action.result.msg);
+                        Ext.Msg.alert("Ã‰xito ", action.result.msg);
                     }
                     if(action.result.idReceta != null){
                         SubirReceta(action.result.idReceta,action.result.idCnt);
@@ -853,7 +853,7 @@ function Acces(){
             timeout:150000,
             success:function(form,action){
                 var m = (action.result.msg==null ? 'Se realizó la operación con éxito' : action.result.msg);
-                Ext.Msg.alert("Éxito", m);
+                Ext.Msg.alert("Ã‰xito", m);
                 var w = Ext.getCmp('idRecuperarSesion');
                 w.close();
             },

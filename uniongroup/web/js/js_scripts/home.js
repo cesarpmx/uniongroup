@@ -1,4 +1,4 @@
-Ext.define('Modulos.home', {
+﻿Ext.define('Modulos.home', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.home',
     bodyPadding: '10 10 10 10',

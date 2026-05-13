@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * autor: m@rco.@ndr@de
@@ -200,7 +200,7 @@ function formRecuperar() {
                                     success: function (response) {
                                         var jsonResponse = Ext.decode(response.responseText);
                                         if (jsonResponse.success) {
-                                            Ext.Msg.alert('Éxito', jsonResponse.message);
+                                            Ext.Msg.alert('Ã‰xito', jsonResponse.message);
                                             btn.up('window').close();
                                         } else {
                                             Ext.Msg.alert('Error', jsonResponse.message);
