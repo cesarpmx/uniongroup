@@ -71,13 +71,13 @@ public class STDRUEAPGenerator {
                 FixedWidthUtils.padRight(lineDet.deliveryline, 5) +//deliveryLine
                 FixedWidthUtils.padRight(lineDet.itemnumber, 18) +
                 FixedWidthUtils.padRight(fechaActual, 8)+//Date
-                FixedWidthUtils.padRight("9000908262", 32)+//shipping number
+                FixedWidthUtils.padRight(String.valueOf(header.preid), 32)+//shipping number
                 FixedWidthUtils.padRight(lineDet.unit, 3) +
                 qty +//quantity    
                 FixedWidthUtils.padRight(header.receivername1, 4) +//carrier
                 FixedWidthUtils.padRight("", 4) +//tour
                 FixedWidthUtils.padRight("", 10) +//freight load number
-                FixedWidthUtils.padRight("guianues", 9)+//TrackingNumber
+                FixedWidthUtils.padRight(String.valueOf(header.preid), 9)+//TrackingNumber
                 FixedWidthUtils.padRight("", 5) +//storage location
                 FixedWidthUtils.padRight("", 15) +//batch / lot number
                 FixedWidthUtils.padRight("", 15) +//variant
@@ -91,7 +91,7 @@ public class STDRUEAPGenerator {
                 FixedWidthUtils.padRight("", 1) +//
                 FixedWidthUtils.padRight(fechaActual, 8)+//Date
                 FixedWidthUtils.padRight(horaActual, 6)+//time
-                FixedWidthUtils.padRight("SHOPIFY", 10)+//user
+                FixedWidthUtils.padRight(lineDet.user, 10)+//user
                 FixedWidthUtils.padRight(lineDet.ean, 13);//EAN/Barcode
                     
                     

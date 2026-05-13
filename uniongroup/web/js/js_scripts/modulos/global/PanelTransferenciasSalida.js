@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -488,7 +488,7 @@ Ext.define('TransferenciaSalidaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Éxitos (' + confirmData.length + ')',
+                            title: 'Ã‰xitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -600,7 +600,7 @@ Ext.define('TransferenciaSalidaUtils', {
     },
 
 // ========================================
-// ?? VER LÍNEAS DE TRANSFERENCIA (Desde GLOBAL)
+// ?? VER LÃNEAS DE TRANSFERENCIA (Desde GLOBAL)
 // ========================================
     verLineasTransferencia: function (record) {
         var docEntry = record.get('DocEntry');
@@ -641,7 +641,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         console.log('? Cargadas ' + records.length + ' líneas para transferencia #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -793,7 +793,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         console.log('? Cargadas ' + records.length + ' líneas locales para transferencia #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -855,7 +855,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         beforePageText: 'Página',
                         afterPageText: 'de {0}',
                         firstText: 'Primera página',
-                        lastText: 'Última página',
+                        lastText: 'Ãšltima página',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -1012,7 +1012,7 @@ Ext.define('TransferenciaSalidaUtils', {
                             totalSurtido += parseFloat(producto.unidades) || 0;
                         });
 
-                        // ? CALCULAR ESTATUS AUTOMÁTICO
+                        // ? CALCULAR ESTATUS AUTOMÃTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -1206,7 +1206,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
                                                             TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                                                         });
                                                     } else {
@@ -1523,6 +1523,8 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                     id: 'gridTransferenciaSalida',
                     store: me.storeTransferenciaSalida,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridTransferenciaSalidaState',
                     plugins: {
                         gridfilters: true
                     },

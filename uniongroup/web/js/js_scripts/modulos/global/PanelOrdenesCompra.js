@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -474,7 +474,7 @@ Ext.define('OrdenesCompraUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Éxitos (' + confirmData.length + ')',
+                            title: 'Ã‰xitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -586,7 +586,7 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-    // ? Función para abrir modal de LÍNEAS (API externo)
+    // ? Función para abrir modal de LÃNEAS (API externo)
     verLineasOrden: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
@@ -632,7 +632,7 @@ Ext.define('OrdenesCompraUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -788,7 +788,7 @@ Ext.define('OrdenesCompraUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -850,7 +850,7 @@ Ext.define('OrdenesCompraUtils', {
                         beforePageText: 'Página',
                         afterPageText: 'de {0}',
                         firstText: 'Primera página',
-                        lastText: 'Última página',
+                        lastText: 'Ãšltima página',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -1011,7 +1011,7 @@ Ext.define('OrdenesCompraUtils', {
                     totalRecibido += parseFloat(linea.receivedquantity) || 0;
                 });
 
-                // ? CALCULAR ESTATUS AUTOMÁTICO
+                // ? CALCULAR ESTATUS AUTOMÃTICO
                 var estatusCalculado = '';
                 if (totalRecibido === 0) {
                     estatusCalculado = 'Cancelada';
@@ -1136,7 +1136,7 @@ Ext.define('OrdenesCompraUtils', {
 
                                         Ext.getBody().mask('Procesando confirmación de recepción...');
 
-                                        // ? CONSTRUIR LÍNEAS CON RECEIVED QUANTITY
+                                        // ? CONSTRUIR LÃNEAS CON RECEIVED QUANTITY
                                         var lines = [];
                                         var totalQty = 0;
 
@@ -1226,7 +1226,7 @@ Ext.define('OrdenesCompraUtils', {
                                                         msg += '<b>Fecha:</b> ' + fechaFormateada + '<br>';
                                                         msg += '<b>Estado:</b> ' + statusMensaje;
 
-                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
                                                             OrdenesCompraUtils.BtnBusqOrdenCompra();
                                                         });
                                                     } else {
@@ -1494,6 +1494,8 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                     id: 'gridOrdenesCompra',
                     store: me.storeOrdenesCompra,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridOrdenesCompraState',
                     plugins: {
                         gridfilters: true
                     },

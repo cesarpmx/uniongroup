@@ -42,6 +42,7 @@ public String customer;
 
     public String user;
     public String ean;
+    public int receivedquantity;
     public String coms;
 
 

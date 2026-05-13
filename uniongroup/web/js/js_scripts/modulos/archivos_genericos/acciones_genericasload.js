@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -36,7 +36,7 @@ function submitFormularioload(formPanel, parametros) {
 //Producto032023
                 if (action.result.accion == null) {
                     var m = (action.result.message == null ? 'Se realizó la operación con éxito' : action.result.message);
-                    Ext.Msg.alert("Éxito", m);
+                    Ext.Msg.alert("Ã‰xito", m);
 
                     if (namewindow != '') {
                         var w = Ext.getCmp(namewindow);
@@ -59,9 +59,9 @@ function submitFormularioload(formPanel, parametros) {
 
                 //Descomentar para mostrar el msj excepto en el formEmpresas
                 // if (action.result.accion == null) {
-                //  var m = (action.result.message == null ? 'Se realizÃÂ³ la operaciÃÂ³n con ÃÂ©xito' : action.result.message);
+                //  var m = (action.result.message == null ? 'Se realizÃƒÂƒÃ‚Â³ la operaciÃƒÂƒÃ‚Â³n con ÃƒÂƒÃ‚Â©xito' : action.result.message);
                 //var m=(form);
-                //  Ext.Msg.alert("Ã?xito"/*, m*/);
+                //  Ext.Msg.alert("ÃƒÂƒ?xito"/*, m*/);
                 //var w = Ext.getCmp(idForm);
                 //    w.close();
                 // }
@@ -153,7 +153,7 @@ function loadFormularioload(formPanel, parametros) {
          var w = Ext.getCmp(parametros.window);
          w.close();
          Ext.MessageBox.show({
-         title: 'InformaciÃÂ³n',
+         title: 'InformaciÃƒÂƒÃ‚Â³n',
          msg: 'No existe la Informacion Solicitada.',
          buttons: Ext.MessageBox.OK,
          icon: Ext.MessageBox.WARNING
@@ -207,9 +207,9 @@ function submitSubirArchivos(formPanel, parametros) {
             success: function (form1, action) {
                 //Descomentar para mostrar el msj excepto en el formEmpresas
                 // if (action.result.accion == null) {
-                //  var m = (action.result.message == null ? 'Se realizÃ³ la operaciÃ³n con éxito' : action.result.message);
+                //  var m = (action.result.message == null ? 'Se realizÃƒÂ³ la operaciÃƒÂ³n con éxito' : action.result.message);
                 var m = (form);
-                Ext.Msg.alert("Ãxito"/*, m*/);
+                Ext.Msg.alert("ÃƒÂ‰xito"/*, m*/);
                 var w = Ext.getCmp(idForm);
                 w.close();
                 // }

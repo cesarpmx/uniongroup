@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -27,16 +27,18 @@ Ext.define('ProductosUtils', {
         var grid = Ext.getCmp('gridProductos'),
             mainStore = grid.getStore(),
             //totalRegistros = mainStore.getTotalCount();
-            totalRegistros = 10000;
+            totalRegistros = 3000;
 
         if (totalRegistros === 0) {
             Ext.Msg.alert('Sin datos', 'No hay productos para enviar');
             return;
         }
 
+// Agrega esto al inicio de tu aplicación o antes del Msg.confirm
+
         Ext.Msg.confirm(
-            'Confirmar sincronizaci?n',
-            '?Desea procesar los ' + totalRegistros + ' productos? (Se enviar?n en lotes)',
+            'Confirmar sincronización',
+            '¿Desea procesar los ' + totalRegistros + ' productos? (Se enviaran en lotes)',
             function (btn) {
                 if (btn === 'yes') {
 

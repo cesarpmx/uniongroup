@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -79,7 +79,7 @@ Ext.define('OrdenesVentaUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -235,7 +235,7 @@ Ext.define('OrdenesVentaUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Éxito',
+                            title: 'Ã‰xito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -555,7 +555,7 @@ Ext.define('OrdenesVentaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Éxitos (' + confirmData.length + ')',
+                            title: 'Ã‰xitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -989,7 +989,7 @@ Ext.define('OrdenesVentaUtils', {
                         Ext.Array.each(productosSurtidos, function (producto) {
                             totalSurtido += producto.unidades || 0;
                         });
-                        // ? CALCULAR ESTATUS AUTOMÁTICO
+                        // ? CALCULAR ESTATUS AUTOMÃTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -1175,7 +1175,7 @@ Ext.define('OrdenesVentaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('Éxito', msg, function () {
+                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
                                                             OrdenesVentaUtils.BtnBusqOrdenVenta();
                                                         });
                                                     } else {
@@ -1475,6 +1475,8 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                     id: 'gridOrdenesVenta',
                     store: me.storeOrdenesVenta,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridOrdenesVentaState',
                     plugins: {
                         gridfilters: true
                     },

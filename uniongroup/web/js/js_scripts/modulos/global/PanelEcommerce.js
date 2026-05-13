@@ -1,4 +1,4 @@
-Ext.define('EcommerceUtils', {
+﻿Ext.define('EcommerceUtils', {
     singleton: true,
     dias: localStorage.getItem('diasAtras'),
 
@@ -169,13 +169,14 @@ Ext.define('EcommerceUtils', {
             }
         });
     },
-    GenerarArchivoConfirmacion: function (ecomid) {
+    GenerarArchivoConfirmacion: function (ecomid, le) {
         Ext.Ajax.request({
             url: contexto + '/Ecommerce',
             method: 'POST',
             params: {
                 busqBnd: 3,
-                ecomid: ecomid
+                ecomid: ecomid,
+                le:le
             },
             success: function (resp) {
                 Ext.Msg.alert('OK', 'Archivo STDRUEAP generado correctamente');
@@ -390,6 +391,8 @@ Ext.define('Modulos.global.PanelEcommerce', {
                     id: 'gridEcommerce',
                     store: me.storeEcommerce,
                     flex: 1,
+                    stateful: true,
+                    stateId: 'gridEcommerceState',
                     plugins: {
                         gridfilters: true
                     },
@@ -438,12 +441,12 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // Cï¿½digo a ejecutar si se presiona el botï¿½n "Pï¿½gina actual"
+                                            // CÃ¯¿Â½digo a ejecutar si se presiona el botÃ¯¿Â½n "PÃ¯¿Â½gina actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             EcommerceUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerrï¿½ la ventana sin hacer clic en ningï¿½n botï¿½n');
+                                            console.log('Se cerrÃ¯¿Â½ la ventana sin hacer clic en ningÃ¯¿Â½n botÃ¯¿Â½n');
                                         }
                                     }
                                 });
@@ -663,6 +666,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                             const rec = grid.getStore().getAt(rowIndex);
                                             const ecomid = rec.get('ecomid');
                                             const estatus = rec.get('preestatus');
+                                            const le = rec.get('preid');
 
 
                                             Ext.MessageBox.show({
@@ -672,7 +676,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                                 icon: Ext.MessageBox.QUESTION,
                                                 fn: function (btn) {
                                                     if (btn === 'ok') {
-                                                        EcommerceUtils.GenerarArchivoConfirmacion(ecomid);
+                                                        EcommerceUtils.GenerarArchivoConfirmacion(ecomid, le);
                                                     }
                                                 }
                                             });

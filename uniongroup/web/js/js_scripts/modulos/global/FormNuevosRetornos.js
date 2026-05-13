@@ -1,369 +1,369 @@
-/* 
+﻿/* 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
-Ext.define('NuevosRetornosUtils', {
-    singleton: true,
+        Ext.define('NuevosRetornosUtils', {
+            singleton: true,
 
-    guardarNuevosRetornos: function (selectedRecords) {
+            guardarNuevosRetornos: function (selectedRecords) {
 
-        var retornosAGuardar = selectedRecords || [];
-        var totalSeleccionados = retornosAGuardar.length;
+                var retornosAGuardar = selectedRecords || [];
+                var totalSeleccionados = retornosAGuardar.length;
 
-        Ext.MessageBox.confirm(
-                'Confirmar',
-                '¿Está seguro de cargar ' + totalSeleccionados + ' retorno(s)?',
-                function (btn) {
+                Ext.MessageBox.confirm(
+                        'Confirmar',
+                        '¿Está seguro de cargar ' + totalSeleccionados + ' retorno(s)?',
+                        function (btn) {
 
-                    if (btn !== 'yes')
-                        return;
+                            if (btn !== 'yes')
+                                return;
 
-                    Ext.getBody().mask('Obteniendo retornos...');
+                            Ext.getBody().mask('Obteniendo retornos...');
 
-                    var retornosHeader = [];
+                            var retornosHeader = [];
 
-                    Ext.Array.each(retornosAGuardar, function (record) {
-                        retornosHeader.push({
-                            DocEntry: record.get('DocEntry'),
-                            DocNum: record.get('DocNum'),
-                            DocDate: record.get('DocDate'),
-                            CardCode: record.get('CardCode'),
-                            Memo: record.get('Memo'),
-                            Warehouse: record.get('Warehouse')
-                        });
-                    });
+                            Ext.Array.each(retornosAGuardar, function (record) {
+                                retornosHeader.push({
+                                    DocEntry: record.get('DocEntry'),
+                                    DocNum: record.get('DocNum'),
+                                    DocDate: record.get('DocDate'),
+                                    CardCode: record.get('CardCode'),
+                                    Memo: record.get('Memo'),
+                                    Warehouse: record.get('Warehouse')
+                                });
+                            });
 
-                    if (retornosHeader.length === 0) {
-                        Ext.getBody().unmask();
-                        Ext.Msg.alert('Información', 'No hay retornos para procesar');
-                        return;
-                    }
+                            if (retornosHeader.length === 0) {
+                                Ext.getBody().unmask();
+                                Ext.Msg.alert('Información', 'No hay retornos para procesar');
+                                return;
+                            }
 
-                    var promises = [];
-                    var retornosCompletos = [];
+                            var promises = [];
+                            var retornosCompletos = [];
 
-                    retornosHeader.forEach(function (retorno) {
+                            retornosHeader.forEach(function (retorno) {
 
-                        promises.push(
-                                new Promise(function (resolve, reject) {
+                                promises.push(
+                                        new Promise(function (resolve, reject) {
 
-                                    Ext.Ajax.request({
-                                        url: contexto + '/Retornos',
-                                        method: 'POST',
-                                        params: {
-                                            busqBnd: 2,
-                                            docEntry: retorno.DocEntry
-                                        },
-                                        success: function (responseLineas) {
-
-                                            var lineas = Ext.decode(responseLineas.responseText) || [];
-
-
-                                            retornosCompletos.push({
-                                                ReturnRequest: {
-                                                    DocEntry: retorno.DocEntry,
-                                                    DocNum: retorno.DocNum,
-                                                    DocDate: Ext.Date.format(
-                                                            new Date(retorno.DocDate),
-                                                            'Y-m-d\\TH:i:s'
-                                                            ),
-                                                    CardCode: retorno.CardCode,
-                                                    Status: retorno.Status,
-                                                    Memo: retorno.Memo,
-                                                    Warehouse:retorno.Warehouse
+                                            Ext.Ajax.request({
+                                                url: contexto + '/Retornos',
+                                                method: 'POST',
+                                                params: {
+                                                    busqBnd: 2,
+                                                    docEntry: retorno.DocEntry
                                                 },
-                                                ReturnLines: lineas
+                                                success: function (responseLineas) {
+
+                                                    var lineas = Ext.decode(responseLineas.responseText) || [];
+
+
+                                                    retornosCompletos.push({
+                                                        ReturnRequest: {
+                                                            DocEntry: retorno.DocEntry,
+                                                            DocNum: retorno.DocNum,
+                                                            DocDate: Ext.Date.format(
+                                                                    new Date(retorno.DocDate),
+                                                                    'Y-m-d\\TH:i:s'
+                                                                    ),
+                                                            CardCode: retorno.CardCode,
+                                                            Status: retorno.Status,
+                                                            Memo: retorno.Memo,
+                                                            Warehouse: retorno.Warehouse
+                                                        },
+                                                        ReturnLines: lineas
+                                                    });
+
+                                                    resolve();
+                                                },
+                                                failure: function () {
+                                                    reject();
+                                                }
                                             });
 
-                                            resolve();
-                                        },
-                                        failure: function () {
-                                            reject();
-                                        }
-                                    });
+                                        })
+                                        );
 
-                                })
-                                );
+                            });
 
-                    });
+                            Promise.all(promises).then(function () {
+                                Ext.getBody().unmask();
+                                NuevosRetornosUtils.iniciarEnvioPorLotes(retornosCompletos);
+                            }).catch(function () {
+                                Ext.getBody().unmask();
+                                Ext.Msg.alert('Error', 'Error al obtener las líneas de los retornos');
+                            });
 
-                    Promise.all(promises).then(function () {
-                        Ext.getBody().unmask();
-                        NuevosRetornosUtils.iniciarEnvioPorLotes(retornosCompletos);
-                    }).catch(function () {
-                        Ext.getBody().unmask();
-                        Ext.Msg.alert('Error', 'Error al obtener las líneas de los retornos');
-                    });
-
-                }
-        );
-    },
-
-    iniciarEnvioPorLotes: function (allReturns) {
-
-        var me = this,
-                loteSize = 10,
-                totalReturns = allReturns.length,
-                confirmadosGlobal = [],
-                erroresGlobal = [],
-                index = 0;
-
-        var progressWin = Ext.create('Ext.window.Window', {
-            title: 'Guardando Retornos',
-            width: 400,
-            height: 160,
-            modal: true,
-            closable: false,
-            layout: 'vbox',
-            bodyPadding: 20,
-            items: [
-                {xtype: 'label', id: 'lblProgresoRetornos', text: 'Iniciando...', margin: '0 0 10 0'},
-                {xtype: 'progressbar', id: 'barProgresoRetornos', width: '100%'}
-            ]
-        });
-
-        progressWin.show();
-
-        function enviarSiguienteLote() {
-
-            var fin = Math.min(index + loteSize, totalReturns),
-                    loteActual = allReturns.slice(index, fin);
-
-            var payload = {
-                returns: loteActual
-            };
-
-            var jsonToSend = Ext.encode(payload);
-
-            var pct = index / totalReturns;
-
-            Ext.getCmp('lblProgresoRetornos')
-                    .setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalReturns);
-
-            Ext.getCmp('barProgresoRetornos').updateProgress(pct);
-
-            Ext.Ajax.request({
-                url: contexto + '/Retornos',
-                method: 'POST',
-                params: {
-                    busqBnd: 3,
-                    valores: jsonToSend
-                },
-                success: function (response) {
-
-                    var resultado;
-
-                    try {
-                        resultado = Ext.decode(response.responseText);
-                    } catch (e) {
-                        index += loteSize;
-                        if (index < totalReturns) {
-                            enviarSiguienteLote();
-                        } else {
-                            progressWin.close();
-                            me.mostrarResultados(confirmadosGlobal, erroresGlobal);
                         }
-                        return;
-                    }
+                );
+            },
 
-                    if (resultado.success && resultado.results) {
+            iniciarEnvioPorLotes: function (allReturns) {
 
-                        Ext.Array.each(resultado.results, function (item) {
+                var me = this,
+                        loteSize = 10,
+                        totalReturns = allReturns.length,
+                        confirmadosGlobal = [],
+                        erroresGlobal = [],
+                        index = 0;
 
-                            var row = {
-                                DocEntry: item.DocEntry,
-                                RTNID: item.RTNID || '',
-                                fecha: item.RecordDate,
-                                linesInserted: item.linesInserted || 0,
-                                linesFailed: item.linesFailed || 0,
-                                mensaje: item.status === 'inserted'
-                                        ? 'OK'
-                                        : item.message
-                            };
+                var progressWin = Ext.create('Ext.window.Window', {
+                    title: 'Guardando Retornos',
+                    width: 400,
+                    height: 160,
+                    modal: true,
+                    closable: false,
+                    layout: 'vbox',
+                    bodyPadding: 20,
+                    items: [
+                        {xtype: 'label', id: 'lblProgresoRetornos', text: 'Iniciando...', margin: '0 0 10 0'},
+                        {xtype: 'progressbar', id: 'barProgresoRetornos', width: '100%'}
+                    ]
+                });
 
-                            if (item.status === 'inserted') {
-                                confirmadosGlobal.push(row);
-                            } else {
-                                erroresGlobal.push(row);
+                progressWin.show();
+
+                function enviarSiguienteLote() {
+
+                    var fin = Math.min(index + loteSize, totalReturns),
+                            loteActual = allReturns.slice(index, fin);
+
+                    var payload = {
+                        returns: loteActual
+                    };
+
+                    var jsonToSend = Ext.encode(payload);
+
+                    var pct = index / totalReturns;
+
+                    Ext.getCmp('lblProgresoRetornos')
+                            .setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalReturns);
+
+                    Ext.getCmp('barProgresoRetornos').updateProgress(pct);
+
+                    Ext.Ajax.request({
+                        url: contexto + '/Retornos',
+                        method: 'POST',
+                        params: {
+                            busqBnd: 3,
+                            valores: jsonToSend
+                        },
+                        success: function (response) {
+
+                            var resultado;
+
+                            try {
+                                resultado = Ext.decode(response.responseText);
+                            } catch (e) {
+                                index += loteSize;
+                                if (index < totalReturns) {
+                                    enviarSiguienteLote();
+                                } else {
+                                    progressWin.close();
+                                    me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+                                }
+                                return;
                             }
 
-                        });
-                    }
+                            if (resultado.success && resultado.results) {
 
-                    index += loteSize;
+                                Ext.Array.each(resultado.results, function (item) {
 
-                    if (index < totalReturns) {
-                        enviarSiguienteLote();
-                    } else {
-                        progressWin.close();
-                        me.mostrarResultados(confirmadosGlobal, erroresGlobal);
-                    }
-                },
-                failure: function () {
-                    index += loteSize;
-                    if (index < totalReturns) {
-                        enviarSiguienteLote();
-                    } else {
-                        progressWin.close();
-                        me.mostrarResultados(confirmadosGlobal, erroresGlobal);
-                    }
-                }
-            });
-        }
+                                    var row = {
+                                        DocEntry: item.DocEntry,
+                                        RTNID: item.RTNID || '',
+                                        fecha: item.RecordDate,
+                                        linesInserted: item.linesInserted || 0,
+                                        linesFailed: item.linesFailed || 0,
+                                        mensaje: item.status === 'inserted'
+                                                ? 'OK'
+                                                : item.message
+                                    };
 
-        enviarSiguienteLote();
-    },
+                                    if (item.status === 'inserted') {
+                                        confirmadosGlobal.push(row);
+                                    } else {
+                                        erroresGlobal.push(row);
+                                    }
 
-    mostrarResultados: function (confirmData, noConfirmData) {
+                                });
+                            }
 
-        if (!Ext.ClassManager.get('ResultadoRetornosModel')) {
-            Ext.define('ResultadoRetornosModel', {
-                extend: 'Ext.data.Model',
-                fields: [
-                    'DocEntry',
-                    'RTNID',
-                    'fecha',
-                    'linesInserted',
-                    'linesFailed',
-                    'mensaje'
-                ]
-            });
-        }
+                            index += loteSize;
 
-        var storeConfirm = Ext.create('Ext.data.Store', {
-            model: 'ResultadoRetornosModel',
-            data: confirmData
-        });
-
-        var storeNoConfirm = Ext.create('Ext.data.Store', {
-            model: 'ResultadoRetornosModel',
-            data: noConfirmData
-        });
-
-        Ext.create('Ext.window.Window', {
-            title: 'Resultados - Retornos',
-            width: 900,
-            height: 500,
-            modal: true,
-            layout: 'fit',
-            items: [{
-                    xtype: 'tabpanel',
-                    items: [
-                        {
-                            title: 'Éxitos (' + confirmData.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeConfirm,
-                                    columns: [
-                                        {xtype: 'rownumberer', width: 50},
-                                        {text: 'RTNID', dataIndex: 'RTNID', width: 80},
-                                        {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
-                                        {
-                                            text: 'Líneas OK',
-                                            dataIndex: 'linesInserted',
-                                            width: 100,
-                                            renderer: v => '<b style="color:green;">' + v + '</b>'
-                                        },
-                                        {
-                                            text: 'Líneas Error',
-                                            dataIndex: 'linesFailed',
-                                            width: 120,
-                                            renderer: v => v > 0
-                                                        ? '<b style="color:red;">' + v + '</b>'
-                                                        : v
-                                        },
-                                        {text: 'Fecha', dataIndex: 'fecha', flex: 1}
-                                    ]
-                                }]
+                            if (index < totalReturns) {
+                                enviarSiguienteLote();
+                            } else {
+                                progressWin.close();
+                                me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+                            }
                         },
-                        {
-                            title: 'Errores (' + noConfirmData.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeNoConfirm,
-                                    columns: [
-                                        {xtype: 'rownumberer', width: 50},
-                                        {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
-                                        {
-                                            text: 'Error',
-                                            dataIndex: 'mensaje',
-                                            flex: 1,
-                                            renderer: v => '<span style="color:red;">' + v + '</span>'
-                                        }
-                                    ]
-                                }]
+                        failure: function () {
+                            index += loteSize;
+                            if (index < totalReturns) {
+                                enviarSiguienteLote();
+                            } else {
+                                progressWin.close();
+                                me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+                            }
                         }
-                    ]
-                }]
-        }).show();
-    },
-
-    verLineasRetorno: function (record) {
-
-        var docEntry = record.get('DocEntry');
-        var docNum = record.get('DocNum');
-
-        if (!Ext.ClassManager.get('modelLineasRetorno')) {
-            Ext.define('modelLineasRetorno', {
-                extend: 'Ext.data.Model',
-                fields: [
-                    {name: 'LineNum', type: 'int'},
-                    'ItemCode','BarCode',
-                    {name: 'Quantity', type: 'number'}
-                ]
-            });
-        }
-
-        var storeLineas = Ext.create('Ext.data.Store', {
-            model: 'modelLineasRetorno',
-            autoLoad: true,
-            proxy: {
-                type: 'ajax',
-                url: contexto + '/Retornos',
-                extraParams: {
-                    busqBnd: 2,
-                    docEntry: docEntry
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'items'
+                    });
                 }
+
+                enviarSiguienteLote();
+            },
+
+            mostrarResultados: function (confirmData, noConfirmData) {
+
+                if (!Ext.ClassManager.get('ResultadoRetornosModel')) {
+                    Ext.define('ResultadoRetornosModel', {
+                        extend: 'Ext.data.Model',
+                        fields: [
+                            'DocEntry',
+                            'RTNID',
+                            'fecha',
+                            'linesInserted',
+                            'linesFailed',
+                            'mensaje'
+                        ]
+                    });
+                }
+
+                var storeConfirm = Ext.create('Ext.data.Store', {
+                    model: 'ResultadoRetornosModel',
+                    data: confirmData
+                });
+
+                var storeNoConfirm = Ext.create('Ext.data.Store', {
+                    model: 'ResultadoRetornosModel',
+                    data: noConfirmData
+                });
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Resultados - Retornos',
+                    width: 900,
+                    height: 500,
+                    modal: true,
+                    layout: 'fit',
+                    items: [{
+                            xtype: 'tabpanel',
+                            items: [
+                                {
+                                    title: 'Ã‰xitos (' + confirmData.length + ')',
+                                    layout: 'fit',
+                                    items: [{
+                                            xtype: 'grid',
+                                            store: storeConfirm,
+                                            columns: [
+                                                {xtype: 'rownumberer', width: 50},
+                                                {text: 'RTNID', dataIndex: 'RTNID', width: 80},
+                                                {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
+                                                {
+                                                    text: 'Líneas OK',
+                                                    dataIndex: 'linesInserted',
+                                                    width: 100,
+                                                    renderer: v => '<b style="color:green;">' + v + '</b>'
+                                                },
+                                                {
+                                                    text: 'Líneas Error',
+                                                    dataIndex: 'linesFailed',
+                                                    width: 120,
+                                                    renderer: v => v > 0
+                                                                ? '<b style="color:red;">' + v + '</b>'
+                                                                : v
+                                                },
+                                                {text: 'Fecha', dataIndex: 'fecha', flex: 1}
+                                            ]
+                                        }]
+                                },
+                                {
+                                    title: 'Errores (' + noConfirmData.length + ')',
+                                    layout: 'fit',
+                                    items: [{
+                                            xtype: 'grid',
+                                            store: storeNoConfirm,
+                                            columns: [
+                                                {xtype: 'rownumberer', width: 50},
+                                                {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
+                                                {
+                                                    text: 'Error',
+                                                    dataIndex: 'mensaje',
+                                                    flex: 1,
+                                                    renderer: v => '<span style="color:red;">' + v + '</span>'
+                                                }
+                                            ]
+                                        }]
+                                }
+                            ]
+                        }]
+                }).show();
+            },
+
+            verLineasRetorno: function (record) {
+
+                var docEntry = record.get('DocEntry');
+                var docNum = record.get('DocNum');
+
+                if (!Ext.ClassManager.get('modelLineasRetorno')) {
+                    Ext.define('modelLineasRetorno', {
+                        extend: 'Ext.data.Model',
+                        fields: [
+                            {name: 'LineNum', type: 'int'},
+                            'ItemCode', 'BarCode',
+                            {name: 'Quantity', type: 'number'}
+                        ]
+                    });
+                }
+
+                var storeLineas = Ext.create('Ext.data.Store', {
+                    model: 'modelLineasRetorno',
+                    autoLoad: true,
+                    proxy: {
+                        type: 'ajax',
+                        url: contexto + '/Retornos',
+                        extraParams: {
+                            busqBnd: 2,
+                            docEntry: docEntry
+                        },
+                        reader: {
+                            type: 'json',
+                            rootProperty: 'items'
+                        }
+                    }
+                });
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Lineas Retorno #' + docNum,
+                    width: 800,
+                    height: 450,
+                    modal: true,
+                    layout: 'fit',
+                    items: [{
+                            xtype: 'grid',
+                            store: storeLineas,
+                            columns: [
+                                {xtype: 'rownumberer', width: 50},
+                                {text: 'LineNum', dataIndex: 'LineNum', width: 100},
+                                {text: 'ItemCode', dataIndex: 'ItemCode', flex: 1},
+                                {text: 'BarCode', dataIndex: 'BarCode', flex: 1},
+                                {
+                                    text: 'Quantity',
+                                    dataIndex: 'Quantity',
+                                    width: 120,
+                                    align: 'right',
+                                    renderer: function (v) {
+                                        return '<b style="color:#4CAF50;">' +
+                                                Ext.util.Format.number(v, '0,000') +
+                                                '</b>';
+                                    }
+                                }
+                            ]
+                        }]
+                }).show();
             }
         });
-
-        Ext.create('Ext.window.Window', {
-            title: 'Lineas Retorno #' + docNum,
-            width: 800,
-            height: 450,
-            modal: true,
-            layout: 'fit',
-            items: [{
-                    xtype: 'grid',
-                    store: storeLineas,
-                    columns: [
-                        {xtype: 'rownumberer', width: 50},
-                        {text: 'LineNum', dataIndex: 'LineNum', width: 100},
-                        {text: 'ItemCode', dataIndex: 'ItemCode', flex: 1},
-                        {text: 'BarCode', dataIndex: 'BarCode', flex: 1},
-                        {
-                            text: 'Quantity',
-                            dataIndex: 'Quantity',
-                            width: 120,
-                            align: 'right',
-                            renderer: function (v) {
-                                return '<b style="color:#4CAF50;">' +
-                                        Ext.util.Format.number(v, '0,000') +
-                                        '</b>';
-                            }
-                        }
-                    ]
-                }]
-        }).show();
-    }
-});
 
 
 
@@ -464,6 +464,19 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                             handler: function () {
                                 me.storeNuevosRetornos.reload();
                             }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Cerrar',
+                            iconCls: 'icn-back',
+                            handler: function () {
+                                // 1. Buscamos el dueño de este componente que sea una ventana
+                                var win = this.up('window');
+
+                                if (win) {
+                                    win.close(); // Esto cierra y destruye por el closeAction: 'destroy'
+                                }
+                            }
                         }
                     ],
 
@@ -527,7 +540,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
 
                     listeners: {
 
-                        // ? CONTADOR DINÁMICO
+                        // ? CONTADOR DINÃMICO
                         selectionchange: function (selModel, selected) {
                             var lbl = Ext.getCmp('lblSeleccionadasRetornos');
                             if (lbl) {
