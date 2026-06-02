@@ -120,123 +120,118 @@ public class CtrlEcommerce extends HttpServlet {
     }
     
     
-    public String GenerarSTDRUEAP(HttpServletRequest request, HttpServletResponse response) {
-    String ecomid = Utilities.obtenParametro(request, "ecomid");
-    String le = Utilities.obtenParametro(request, "le");
+   public String GenerarSTDRUEAP(HttpServletRequest request, HttpServletResponse response) {
+        String ecomid = Utilities.obtenParametro(request, "ecomid");
+        String le = Utilities.obtenParametro(request, "le");
 
-    try {
-        ObjectMapper mapper = new ObjectMapper();
-
-        // 1. Obtener Header (necesitamos el preid)
-        String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
-        String respH = requetGet.getGet(serviceH);
-        CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
-        
-        if (centralHeader.items == null || centralHeader.items.isEmpty()) {
-            return "{\"ok\":false, \"error\":\"No se encontró header\"}";
-        }
-        ArrEcommerce header = centralHeader.items.get(0);
-
-        // 2. Obtener Detalle Original (con las cantidades del pedido)
-        String serviceD = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceDet") + "?clave=" + ecomid;
-        String respD = requetGet.getGet(serviceD);
-        CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
-
-        // 3. Obtener Unidades Surtidas usando el preid del header
-        String serviceS = props.getValueProp("Host") + "uniongroup/productosurtido/?clave=" + le;
-        String respS = requetGet.getGet(serviceS); 
-        CentralProductosSurtidos surtidoData = mapper.readValue(respS, CentralProductosSurtidos.class);
-
-        // --- LÓGICA DE ACTUALIZACIÓN DE CANTIDADES ---
-        
-        // REGLA: Solo si el servicio de surtido trae ítems, intentamos cruzar los datos.
-        if (surtidoData != null && surtidoData.items != null && !surtidoData.items.isEmpty()) {
-            
-            // Creamos un mapa para buscar rápido por itemcode
-            java.util.Map<String, Integer> mapSurtido = new java.util.HashMap<>();
-            for (ArrProductosSurtidos s : surtidoData.items) {
-                if (s.itemcode != null) {
-                    mapSurtido.put(s.itemcode, s.unidades);
-                }
-            }
-
-            // Recorremos el detalle original para actualizar
-            for (ArrEcommerceDet itemDet : det.items) {
-                if (mapSurtido.containsKey(itemDet.itemnumber)) {
-                    // Si existe en el surtido, ponemos esa cantidad
-                    itemDet.quantity = String.valueOf(mapSurtido.get(itemDet.itemnumber));
-                } else {
-                    // Si el servicio de surtido trajo datos, pero ESTE item no está,
-                    // significa que no se surtió nada -> ponemos 0.
-                    itemDet.quantity = "0";
-                }
-            }
-            System.out.println("LOG: Cantidades actualizadas con datos de SURTIDO.");
-        } else {
-            // Si el servicio de surtido viene vacío, NO HACEMOS NADA.
-            // Los objetos de 'det.items' conservan el 'quantity' que traían por defecto.
-            System.out.println("LOG: Surtido vacío o nulo. Se mantiene el pedido ORIGINAL.");
-        }
-
-        // --- GENERACIÓN Y ENVÍO ---
-
-        String ts = new java.text.SimpleDateFormat("yyMMdd_HHmmss").format(new java.util.Date());
-        String fileName = "STDRUEAP_" + ts + ".txt";
-        
-        Path tempFile = Files.createTempFile("stdrueap_", ".txt");
-        // Mandamos el objeto 'det.items' que ya fue (o no) procesado arriba
-        STDRUEAPGenerator.generate(header, det.items, tempFile);
-
-        String ftpHost = "ftp.concir.mx";
-        String ftpUser = "global.ug@seyl.mx";
-        String ftpPass = "A}5%p.KrRh#i";
-        String remoteDir = "/ECOMMERCE/ECOM-OUT"; 
-
-        boolean uploaded = uploadToFTP(tempFile, fileName, ftpHost, ftpUser, ftpPass, remoteDir);
-        Files.deleteIfExists(tempFile);
-
-        if (uploaded) {
-            return "{\"ok\":true, \"file\":\"" + remoteDir + "/" + fileName + "\"}";
-        } else {
-            return "{\"ok\":false, \"error\":\"Error al subir al FTP\"}";
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "{\"ok\":false, \"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
-    }
-}
-
-// Método auxiliar para la conexión FTP
-private boolean uploadToFTP(Path localFilePath, String remoteFileName, String host, String user, String pass, String remoteDir) {
-    FTPClient ftpClient = new FTPClient();
-    try {
-        ftpClient.connect(host, 21);
-        ftpClient.login(user, pass);
-        
-     
-        ftpClient.enterLocalActiveMode();
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        // -----------------------------------------------------------------------
-
-        try (InputStream inputStream = Files.newInputStream(localFilePath)) {
-            boolean done = ftpClient.storeFile(remoteDir + "/" + remoteFileName, inputStream);
-            return done;
-        }
-    } catch (IOException ex) {
-        ex.printStackTrace();
-        return false;
-    } finally {
         try {
-            if (ftpClient.isConnected()) {
-                ftpClient.logout();
-                ftpClient.disconnect();
+            ObjectMapper mapper = new ObjectMapper();
+
+            // 1. Obtener Header
+            String serviceH = props.getValueProp("Host") + props.getValueProp("ServiceEcommerce") + "?ecomid=" + ecomid;
+            String respH = requetGet.getGet(serviceH);
+            CentralEcommerce centralHeader = mapper.readValue(respH, CentralEcommerce.class);
+            
+            if (centralHeader.items == null || centralHeader.items.isEmpty()) {
+                return "{\"ok\":false, \"error\":\"No se encontró el header del pedido\"}";
+            }
+            ArrEcommerce header = centralHeader.items.get(0);
+
+            // 2. Obtener Detalle Original
+            String serviceD = props.getValueProp("Host") + props.getValueProp("ServiceEcommerceDet") + "?clave=" + ecomid;
+            String respD = requetGet.getGet(serviceD);
+            CentralEcommerceDet det = mapper.readValue(respD, CentralEcommerceDet.class);
+
+            if (det.items == null || det.items.isEmpty()) {
+                return "{\"ok\":false, \"error\":\"El detalle del pedido viene vacío\"}";
+            }
+
+            // 3. Obtener Unidades Surtidas
+            String serviceS = props.getValueProp("Host") + "uniongroup/productosurtido/?clave=" + le;
+            String respS = requetGet.getGet(serviceS); 
+            CentralProductosSurtidos surtidoData = mapper.readValue(respS, CentralProductosSurtidos.class);
+
+            // Cruzar datos de surtido
+            if (surtidoData != null && surtidoData.items != null && !surtidoData.items.isEmpty()) {
+                java.util.Map<String, Integer> mapSurtido = new java.util.HashMap<>();
+                for (ArrProductosSurtidos s : surtidoData.items) {
+                    if (s.itemcode != null) {
+                        mapSurtido.put(s.itemcode.trim(), s.unidades);
+                    }
+                }
+
+                for (ArrEcommerceDet itemDet : det.items) {
+                    String itemKey = (itemDet.itemnumber != null) ? itemDet.itemnumber.trim() : "";
+                    if (mapSurtido.containsKey(itemKey)) {
+                        itemDet.quantity = String.valueOf(mapSurtido.get(itemKey));
+                    } else {
+                        itemDet.quantity = "0";
+                    }
+                }
+                System.out.println("LOG STDRUEAP: Cantidades actualizadas con Surtido.");
+            } else {
+                System.out.println("LOG STDRUEAP: Surtido vacío. Se mantiene el pedido original.");
+            }
+
+            // Generación de archivo local temporal
+            String ts = new java.text.SimpleDateFormat("yyMMdd_HHmmss").format(new java.util.Date());
+            String fileName = "STDRUEAP_" + ts + ".txt";
+            Path tempFile = Files.createTempFile("stdrueap_", ".txt");
+            
+            STDRUEAPGenerator.generate(header, det.items, tempFile);
+            
+            System.out.println("LOG STDRUEAP: Archivo temporal creado con un tamaño de " + Files.size(tempFile) + " bytes.");
+
+            // Configuración FTP
+            String ftpHost = "ftp.concir.mx";
+            String ftpUser = "global.ug@seyl.mx";
+            String ftpPass = "A}5%p.KrRh#i";
+            String remoteDir = "/ECOMMERCE/ECOM-OUT"; 
+
+            boolean uploaded = uploadToFTP(tempFile, fileName, ftpHost, ftpUser, ftpPass, remoteDir);
+            Files.deleteIfExists(tempFile);
+
+            if (uploaded) {
+                return "{\"ok\":true, \"file\":\"" + remoteDir + "/" + fileName + "\"}";
+            } else {
+                return "{\"ok\":false, \"error\":\"Error al subir el archivo al servidor FTP (Verifica logs)\"}";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"ok\":false, \"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
+        }
+    }
+
+    private boolean uploadToFTP(Path localFilePath, String remoteFileName, String host, String user, String pass, String remoteDir) {
+        FTPClient ftpClient = new FTPClient();
+        try {
+            ftpClient.connect(host, 21);
+            ftpClient.login(user, pass);
+            
+            // CAMBIO CLAVE: Usar Modo Pasivo para evitar archivos de 0 bytes debido al Firewall
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            try (InputStream inputStream = Files.newInputStream(localFilePath)) {
+                String remotePath = remoteDir + "/" + remoteFileName;
+                boolean done = ftpClient.storeFile(remotePath, inputStream);
+                return done;
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
-}
     
     
 //    public String GenerarSTDRUEAP(HttpServletRequest request, HttpServletResponse response) {
