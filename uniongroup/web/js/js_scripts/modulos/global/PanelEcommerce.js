@@ -170,18 +170,29 @@
         });
     },
     GenerarArchivoConfirmacion: function (ecomid, le) {
+        // Mostrar el mensaje de espera antes de la petición
+        Ext.Msg.wait('Generando STDRUEAP, un momento por favor...', 'Procesando');
+
         Ext.Ajax.request({
             url: contexto + '/Ecommerce',
             method: 'POST',
             params: {
                 busqBnd: 3,
                 ecomid: ecomid,
-                le:le
+                le: le
             },
             success: function (resp) {
+                // Ocultar el mensaje de espera
+                Ext.Msg.hide(); 
+                
+                // Mostrar el mensaje de éxito
                 Ext.Msg.alert('OK', 'Archivo STDRUEAP generado correctamente');
             },
             failure: function () {
+                // Ocultar el mensaje de espera
+                Ext.Msg.hide(); 
+                
+                // Mostrar el mensaje de error
                 Ext.Msg.alert('Error', 'No se pudo generar el STDRUEAP');
             }
         });
