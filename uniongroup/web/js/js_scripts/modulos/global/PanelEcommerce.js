@@ -411,7 +411,7 @@ Ext.define('Modulos.global.PanelEcommerce', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             iconCls: 'icn-busquedaDos',
                             handler: function () {
                                 EcommerceUtils.BtnBusqEcommerce();

@@ -494,9 +494,9 @@ Ext.define('Modulos.global.PanelRetornos', {
                     tbar: [
                         {
                             xtype: 'button',
-                            text: 'Buscar',
+                            text: 'Actualizar',
                             arrowAlign: 'center',
-                            iconCls: "icn-factura",
+                            iconCls: "icn-busquedaDos",
                             handler: function (btn) {
                                 RetornosUtils.BtnBusqRetornos();
                             },
@@ -508,7 +508,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                         },
                         {
                             xtype: 'button',
-                            text: 'Ver Nuevas',
+                            text: 'Cargar',
                             arrowAlign: 'center',
                             iconCls: "icn-factura",
                             handler: function (btn) {
