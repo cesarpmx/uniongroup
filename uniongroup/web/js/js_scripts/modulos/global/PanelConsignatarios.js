@@ -21,7 +21,7 @@
         var grid = Ext.getCmp('gridDirecciones'),
                 mainStore = grid.getStore(),
                 //totalRegistros = mainStore.getTotalCount();
-                totalRegistros = 3000;
+                totalRegistros = 10;
 
         if (totalRegistros === 0) {
             Ext.MessageBox.alert('Sin datos', 'No hay registros para enviar');

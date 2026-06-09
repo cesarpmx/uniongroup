@@ -27,7 +27,7 @@ Ext.define('ProductosUtils', {
         var grid = Ext.getCmp('gridProductos'),
             mainStore = grid.getStore(),
             //totalRegistros = mainStore.getTotalCount();
-            totalRegistros = 3000;
+            totalRegistros = 10;
 
         if (totalRegistros === 0) {
             Ext.Msg.alert('Sin datos', 'No hay productos para enviar');
