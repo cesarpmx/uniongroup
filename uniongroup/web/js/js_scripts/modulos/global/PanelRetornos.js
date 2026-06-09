@@ -1,348 +1,347 @@
-﻿/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
 
-        Ext.define('RetornosUtils', {
-            singleton: true,
+Ext.define('RetornosUtils', {
+    singleton: true,
 
-            BtnBusqRetornos: function () {
+    BtnBusqRetornos: function () {
 
-                var idEstatus = Ext.getCmp('idCmbEstatusRetorno').getValue();
-                const fecha = Ext.Date.format(Ext.getCmp('idFechaRetorno').getValue(), 'd-m-Y');
-                const diasAtras = Ext.getCmp('idDiasAtrasRetorno').getValue();
-
-
-                const param = {
-                    busqBnd: 4,
-                    estatus: idEstatus,
-                    dias: diasAtras,
-                    fecha: fecha
-                };
+        var idEstatus = Ext.getCmp('idCmbEstatusRetorno').getValue();
+        const fecha = Ext.Date.format(Ext.getCmp('idFechaRetorno').getValue(), 'd-m-Y');
+        const diasAtras = Ext.getCmp('idDiasAtrasRetorno').getValue();
 
 
-                RetornosUtils.BuscarRetornos(param);
-            },
+        const param = {
+            busqBnd: 4,
+            estatus: idEstatus,
+            dias: diasAtras,
+            fecha: fecha
+        };
 
-            BuscarRetornos: function (prm) {
-                var grd = Ext.getCmp('gridRetornos');
-                if (!grd)
-                    return;
 
-                var store = grd.getStore();
-                store.removeAll(true);
-                store.reload({
-                    params: prm
-                });
-            },
+        RetornosUtils.BuscarRetornos(param);
+    },
 
-            verNuevasOrdenes: function () {
-                var win = Ext.create('Ext.window.Window', {
-                    id: 'winNuevosRetornos',
-                    title: 'Nuevos Retornos',
-                    width: 1000,
-                    height: 600,
-                    modal: true,
-                    layout: 'fit',
-                    closeAction: 'destroy',
-                    items: [
-                        {
-                            xtype: 'FormNuevosRetornos'
-                        }
-                    ],
-                    // Agregamos el listener aquí
-                    listeners: {
-                        destroy: function () {
-                            // Llamada a tu función de utilidad
-                            RetornosUtils.BtnBusqRetornos();
-                        }
+    BuscarRetornos: function (prm) {
+        var grd = Ext.getCmp('gridRetornos');
+        if (!grd)
+            return;
+
+        var store = grd.getStore();
+        store.removeAll(true);
+        store.reload({
+            params: prm
+        });
+    },
+
+    verNuevasOrdenes: function () {
+        var win = Ext.create('Ext.window.Window', {
+            id: 'winNuevosRetornos',
+            title: 'Nuevos Retornos',
+            width: 1000,
+            height: 600,
+            modal: true,
+            layout: 'fit',
+            closeAction: 'destroy',
+            items: [
+                {
+                    xtype: 'FormNuevosRetornos'
+                }
+            ],
+            // Agregamos el listener aquí
+            listeners: {
+                destroy: function () {
+                    // Llamada a tu función de utilidad
+                    RetornosUtils.BtnBusqRetornos();
+                }
+            }
+        });
+
+        win.show();
+    },
+
+    detalleRetorno: function (clave) {
+
+        Ext.require('Modulos.global.FormPanelRetornosDet', function () {
+            var win = Ext.create('Ext.window.Window', {
+                id: 'winPaneldetalleRetorno',
+                title: 'Detalle Retorno',
+                scrollable: 'vertical',
+                width: 800,
+                height: 500,
+                closable: true,
+                closeAction: 'destroy',
+                modal: true,
+                constrain: true,
+                layout: 'fit',
+                resizable: true,
+                listeners: {
+                    destroy: function () {
+                        RetornosUtils.BtnBusqRetornos();
                     }
+                },
+                items: [
+                    Ext.create('Modulos.global.FormPanelRetornosDet', {
+                        cveRetorno: clave,
+                        titulo: 'Detalle',
+                        itemId: 'pnlRetornoDet',
+                        height: 200,
+                        anchor: '100%'
+                                //window: 'winPaneldetalleEcommerce',
+                    })
+                ]
+            });
+
+            // win.setSize(Ext.getBody().getViewSize());
+            win.show();
+        });
+    },
+
+    ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parámetro silent
+        var payload = {
+            rtnid: ocid,
+            retestatus: "C"
+        };
+
+        Ext.Ajax.request({
+            url: contexto + '/Retornos',
+            timeout: 60000,
+            params: {
+                busqBnd: 8,
+                valores: Ext.JSON.encode(payload)
+            },
+            success: function (response) {
+                var resultado = Ext.JSON.decode(response.responseText);
+
+                // ? Solo mostrar mensaje si NO es silencioso
+                if (!silent) {
+                    Ext.MessageBox.show({
+                        title: 'Retornos',
+                        msg: resultado.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                        fn: function (btn) {
+                            if (btn === 'ok') {
+                                RetornosUtils.BtnBusqRetornos();
+                            }
+                        }
+                    });
+                } else {
+                    // ? Si es silencioso, solo refrescar el grid
+                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
+                }
+            },
+            failure: function (response, opts) {
+                // ?? Siempre mostrar errores
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo confirmar la orden...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+    enviarReturnConfirm: function (record) {
+        var me = this;
+        var clave = record.get("rtnid");
+        var docEntry = record.get("DocEntry");
+        var docNum = record.get("DocNum");
+        var cardCode = record.get("CardCode");
+        var transaccionNum = record.get("comid");
+
+        // 1. Bloqueo preventivo mientras cargamos los datos para la ventana
+        Ext.getBody().mask('Calculando totales...');
+
+        /* ================= PASO 1: OBTENER DATOS ANTES DE MOSTRAR VENTANA ================= */
+        Ext.Ajax.request({
+            url: contexto + "/Retornos",
+            method: "POST",
+            params: {
+                busqBnd: 5,
+                clave: clave
+            },
+            success: function (resp) {
+                Ext.getBody().unmask();
+                var data = Ext.decode(resp.responseText);
+
+                if (!data || data.length === 0) {
+                    Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
+                    return;
+                }
+
+                // Variables para cálculos
+                var lines = [];
+                var totalPedido = 0;
+                var totalSurtido = 0;
+
+                Ext.Array.each(data, function (line) {
+                    var qty = line.receivedquantity || 0;
+                    var pedido = line.quantity || 0;
+
+                    totalPedido += pedido;
+                    totalSurtido += qty;
+
+                    lines.push({
+                        LineNum: line.linenum,
+                        ItemCode: line.itemcode,
+                        BarCode: line.barcode || line.itemcode,
+                        Quantity: qty
+                    });
+                });
+
+                var estatusCalculado = (totalSurtido >= totalPedido) ? 'Total' : 'Parcial';
+
+                /* ================= PASO 2: CREAR VENTANA CON DATOS CARGADOS ================= */
+
+                var memoField = Ext.create('Ext.form.field.TextArea', {
+                    fieldLabel: 'Observaciones',
+                    name: 'memo',
+                    labelAlign: 'top',
+                    anchor: '100%',
+                    height: 70
+                });
+
+                var win = Ext.create('Ext.window.Window', {
+                    title: 'Confirmar Retorno - ' + docNum,
+                    modal: true,
+                    width: 400,
+                    layout: 'fit',
+                    resizable: false,
+                    items: [{
+                            xtype: 'form',
+                            bodyPadding: 15,
+                            items: [
+                                {xtype: 'displayfield', fieldLabel: 'DocEntry', value: docEntry},
+                                {xtype: 'displayfield', fieldLabel: 'Transaccion Num', value: transaccionNum, fieldStyle: 'color:blue; font-weight:bold;'},
+                                {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido},
+                                {xtype: 'displayfield', fieldLabel: 'Total Surtido', value: totalSurtido, fieldStyle: 'color:blue; font-weight:bold;'},
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Estatus',
+                                    value: estatusCalculado,
+                                    fieldStyle: 'color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + '; font-weight:bold;'
+                                },
+                                memoField
+                            ],
+                            buttons: [
+                                {
+                                    text: 'Cancelar',
+                                    handler: function () {
+                                        win.close();
+                                    }
+                                },
+                                {
+                                    text: 'Confirmar Retorno',
+                                    //scale: 'medium',
+                                    handler: function () {
+                                        var memoText = memoField.getValue();
+                                        var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+
+                                        win.close();
+                                        Ext.getBody().mask('Procesando en SAP...');
+
+                                        /* ================= PASO 3: ENVIAR JSON FINAL ================= */
+                                        var jsonSend = {
+                                            ReturnConfirm: {
+                                                DocDate: docDate,
+                                                DocNum: docNum,
+                                                NumAtCard: cardCode,
+                                                TransactionNumber: transaccionNum,
+                                                Status: estatusCalculado,
+                                                Memo: memoText
+                                            },
+                                            ControlValues: {
+                                                TotalQuantity: totalSurtido,
+                                                TotalLines: lines.length
+                                            },
+                                            Lines: lines
+                                        };
+
+                                        Ext.Ajax.request({
+                                            url: contexto + "/Retornos",
+                                            method: "POST",
+                                            params: {
+                                                busqBnd: 6,
+                                                valores: Ext.encode(jsonSend)
+                                            },
+                                            success: function (response) {
+                                                Ext.getBody().unmask();
+                                                var resultado = Ext.decode(response.responseText);
+
+                                                if (resultado.success) {
+                                                    RetornosUtils.ConfirmarOrdenCompra(clave, true);
+
+                                                    var res = resultado.clienteResponse || {};
+                                                    var fecha = res.SystemDate ? Ext.Date.format(new Date(res.SystemDate), 'd/m/Y H:i:s') : 'N/A';
+
+                                                    Ext.Msg.alert('Éxito',
+                                                            '<b>SAP Doc:</b> ' + (res.DocNum || 'N/A') + '<br>' +
+                                                            '<b>Fecha:</b> ' + fecha + '<br>' +
+                                                            '<b>Mensaje:</b> ' + (res.StatusInfo ? res.StatusInfo.Mensaje : 'OK')
+                                                            );
+                                                } else {
+                                                    Ext.Msg.alert('Error SAP', resultado.message || 'Error en el proceso.');
+                                                }
+                                            },
+                                            failure: function () {
+                                                Ext.getBody().unmask();
+                                                Ext.Msg.alert('Error', 'Fallo de conexión.');
+                                            }
+                                        });
+                                    }
+                                }
+                            ]
+                        }]
                 });
 
                 win.show();
             },
-
-            detalleRetorno: function (clave) {
-
-                Ext.require('Modulos.global.FormPanelRetornosDet', function () {
-                    var win = Ext.create('Ext.window.Window', {
-                        id: 'winPaneldetalleRetorno',
-                        title: 'Detalle Retorno',
-                        scrollable: 'vertical',
-                        width: 800,
-                        height: 500,
-                        closable: true,
-                        closeAction: 'destroy',
-                        modal: true,
-                        constrain: true,
-                        layout: 'fit',
-                        resizable: true,
-                        listeners: {
-                            destroy: function () {
-                                RetornosUtils.BtnBusqRetornos();
-                            }
-                        },
-                        items: [
-                            Ext.create('Modulos.global.FormPanelRetornosDet', {
-                                cveRetorno: clave,
-                                titulo: 'Detalle',
-                                itemId: 'pnlRetornoDet',
-                                height: 200,
-                                anchor: '100%'
-                                        //window: 'winPaneldetalleEcommerce',
-                            })
-                        ]
-                    });
-
-                    // win.setSize(Ext.getBody().getViewSize());
-                    win.show();
-                });
-            },
-
-            ConfirmarOrdenCompra: function (ocid, silent) {  // ? Agregar parámetro silent
-                var payload = {
-                    rtnid: ocid,
-                    retestatus: "C"
-                };
-
-                Ext.Ajax.request({
-                    url: contexto + '/Retornos',
-                    timeout: 60000,
-                    params: {
-                        busqBnd: 8,
-                        valores: Ext.JSON.encode(payload)
-                    },
-                    success: function (response) {
-                        var resultado = Ext.JSON.decode(response.responseText);
-
-                        // ? Solo mostrar mensaje si NO es silencioso
-                        if (!silent) {
-                            Ext.MessageBox.show({
-                                title: 'Retornos',
-                                msg: resultado.message,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.INFO,
-                                fn: function (btn) {
-                                    if (btn === 'ok') {
-                                        RetornosUtils.BtnBusqRetornos();
-                                    }
-                                }
-                            });
-                        } else {
-                            // ? Si es silencioso, solo refrescar el grid
-                            console.log('? Estatus actualizado silenciosamente:', resultado.message);
-                        }
-                    },
-                    failure: function (response, opts) {
-                        // ?? Siempre mostrar errores
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: 'No se pudo confirmar la orden...',
-                            buttons: Ext.MessageBox.CANCEL,
-                            icon: Ext.MessageBox.ERROR
-                        });
-                    }
-                });
-            },
-
-            enviarReturnConfirm: function (record) {
-                var me = this;
-                var clave = record.get("rtnid");
-                var docEntry = record.get("DocEntry");
-                var docNum = record.get("DocNum");
-                var cardCode = record.get("CardCode");
-                var transaccionNum = record.get("comid");
-
-                // 1. Bloqueo preventivo mientras cargamos los datos para la ventana
-                Ext.getBody().mask('Calculando totales...');
-
-                /* ================= PASO 1: OBTENER DATOS ANTES DE MOSTRAR VENTANA ================= */
-                Ext.Ajax.request({
-                    url: contexto + "/Retornos",
-                    method: "POST",
-                    params: {
-                        busqBnd: 5,
-                        clave: clave
-                    },
-                    success: function (resp) {
-                        Ext.getBody().unmask();
-                        var data = Ext.decode(resp.responseText);
-
-                        if (!data || data.length === 0) {
-                            Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
-                            return;
-                        }
-
-                        // Variables para cálculos
-                        var lines = [];
-                        var totalPedido = 0;
-                        var totalSurtido = 0;
-
-                        Ext.Array.each(data, function (line) {
-                            var qty = line.receivedquantity || 0;
-                            var pedido = line.quantity || 0;
-
-                            totalPedido += pedido;
-                            totalSurtido += qty;
-
-                            lines.push({
-                                LineNum: line.linenum,
-                                ItemCode: line.itemcode,
-                                BarCode: line.barcode || line.itemcode,
-                                Quantity: qty
-                            });
-                        });
-
-                        var estatusCalculado = (totalSurtido >= totalPedido) ? 'Total' : 'Parcial';
-
-                        /* ================= PASO 2: CREAR VENTANA CON DATOS CARGADOS ================= */
-
-                        var memoField = Ext.create('Ext.form.field.TextArea', {
-                            fieldLabel: 'Observaciones',
-                            name: 'memo',
-                            labelAlign: 'top',
-                            anchor: '100%',
-                            height: 70
-                        });
-
-                        var win = Ext.create('Ext.window.Window', {
-                            title: 'Confirmar Retorno - ' + docNum,
-                            modal: true,
-                            width: 400,
-                            layout: 'fit',
-                            resizable: false,
-                            items: [{
-                                    xtype: 'form',
-                                    bodyPadding: 15,
-                                    items: [
-                                        {xtype: 'displayfield', fieldLabel: 'DocEntry', value: docEntry},
-                                        {xtype: 'displayfield', fieldLabel: 'Transaccion Num', value: transaccionNum, fieldStyle: 'color:blue; font-weight:bold;'},
-                                        {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido},
-                                        {xtype: 'displayfield', fieldLabel: 'Total Surtido', value: totalSurtido, fieldStyle: 'color:blue; font-weight:bold;'},
-                                        {
-                                            xtype: 'displayfield',
-                                            fieldLabel: 'Estatus',
-                                            value: estatusCalculado,
-                                            fieldStyle: 'color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + '; font-weight:bold;'
-                                        },
-                                        memoField
-                                    ],
-                                    buttons: [
-                                        {
-                                            text: 'Cancelar',
-                                            handler: function () {
-                                                win.close();
-                                            }
-                                        },
-                                        {
-                                            text: 'Confirmar Retorno',
-                                            //scale: 'medium',
-                                            handler: function () {
-                                                var memoText = memoField.getValue();
-                                                var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
-
-                                                win.close();
-                                                Ext.getBody().mask('Procesando en SAP...');
-
-                                                /* ================= PASO 3: ENVIAR JSON FINAL ================= */
-                                                var jsonSend = {
-                                                    ReturnConfirm: {
-                                                        DocDate: docDate,
-                                                        DocNum: docNum,
-                                                        NumAtCard: cardCode,
-                                                        TransactionNumber: transaccionNum,
-                                                        Status: estatusCalculado,
-                                                        Memo: memoText
-                                                    },
-                                                    ControlValues: {
-                                                        TotalQuantity: totalSurtido,
-                                                        TotalLines: lines.length
-                                                    },
-                                                    Lines: lines
-                                                };
-
-                                                Ext.Ajax.request({
-                                                    url: contexto + "/Retornos",
-                                                    method: "POST",
-                                                    params: {
-                                                        busqBnd: 6,
-                                                        valores: Ext.encode(jsonSend)
-                                                    },
-                                                    success: function (response) {
-                                                        Ext.getBody().unmask();
-                                                        var resultado = Ext.decode(response.responseText);
-
-                                                        if (resultado.success) {
-                                                            RetornosUtils.ConfirmarOrdenCompra(clave, true);
-
-                                                            var res = resultado.clienteResponse || {};
-                                                            var fecha = res.SystemDate ? Ext.Date.format(new Date(res.SystemDate), 'd/m/Y H:i:s') : 'N/A';
-
-                                                            Ext.Msg.alert('Ã‰xito',
-                                                                    '<b>SAP Doc:</b> ' + (res.DocNum || 'N/A') + '<br>' +
-                                                                    '<b>Fecha:</b> ' + fecha + '<br>' +
-                                                                    '<b>Mensaje:</b> ' + (res.StatusInfo ? res.StatusInfo.Mensaje : 'OK')
-                                                                    );
-                                                        } else {
-                                                            Ext.Msg.alert('Error SAP', resultado.message || 'Error en el proceso.');
-                                                        }
-                                                    },
-                                                    failure: function () {
-                                                        Ext.getBody().unmask();
-                                                        Ext.Msg.alert('Error', 'Fallo de conexión.');
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    ]
-                                }]
-                        });
-
-                        win.show();
-                    },
-                    failure: function () {
-                        Ext.getBody().unmask();
-                        Ext.Msg.alert("Error", "No se pudo conectar para obtener los totales.");
-                    }
-                });
-            },
-
-            EliminarRetorno: function (prm) {
-                Ext.Ajax.request({
-                    url: contexto + '/Retornos',
-                    timeout: 60000,
-                    params: {
-                        busqBnd: 7,
-                        valores: prm
-                    },
-                    success: function (response) {
-                        Ext.MessageBox.show({
-                            title: 'Retornos',
-                            msg: Ext.JSON.decode(response.responseText).message,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.INFO,
-                            fn: function (btn) {
-                                if (btn === 'ok') {
-                                    BtnBusqRetornos();
-
-                                }
-                            }
-                        });
-                        RetornosUtils.BtnBusqRetornos();
-                    },
-                    failure: function (response, opts) {
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: 'No se pudo guardar los datos...',
-                            buttons: Ext.MessageBox.CANCEL,
-                            icon: Ext.MessageBox.ERROR
-                        });
-                    }
-                });
-            },
-
+            failure: function () {
+                Ext.getBody().unmask();
+                Ext.Msg.alert("Error", "No se pudo conectar para obtener los totales.");
+            }
         });
+    },
+
+    EliminarRetorno: function (prm) {
+        Ext.Ajax.request({
+            url: contexto + '/Retornos',
+            timeout: 60000,
+            params: {
+                busqBnd: 7,
+                valores: prm
+            },
+            success: function (response) {
+                Ext.MessageBox.show({
+                    title: 'Retornos',
+                    msg: Ext.JSON.decode(response.responseText).message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            BtnBusqRetornos();
+
+                        }
+                    }
+                });
+                RetornosUtils.BtnBusqRetornos();
+            },
+            failure: function (response, opts) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: 'No se pudo guardar los datos...',
+                    buttons: Ext.MessageBox.CANCEL,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    },
+
+});
 
 Ext.define('Modulos.global.PanelRetornos', {
     extend: 'Ext.form.Panel',
@@ -516,7 +515,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                             },
                             listeners: {
                                 afterrender: function (btn) {
-                                    addTooltip(btn, 'Ver ?rdenes de Compra Nuevas');
+                                    addTooltip(btn, 'Ver Órdenes de Compra Nuevas');
                                 }
                             }
                         },
@@ -539,8 +538,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                         xtype: 'pagingtoolbar',
                         store: me.storeRetornos,
                         displayInfo: true,
-                        displayMsg: 'Mostrando {0} - {1} de {2} ?rdenes',
-                        emptyMsg: "No hay ?rdenes para mostrar"
+                        displayMsg: 'Mostrando {0} - {1} de {2} órdenes',
+                        emptyMsg: "No hay órdenes para mostrar"
                     },
                     columns: [
                         {
@@ -563,7 +562,7 @@ Ext.define('Modulos.global.PanelRetornos', {
                             width: 150,
                             filter: {type: 'string'},
                             renderer: function (value) {
-                                // ? Mapeo de c?digos a nombres
+                                // ? Mapeo de códigos a nombres
                                 var estatusMap = {
                                     'A': 'Activo',
                                     'C': 'Confirmado',
@@ -574,7 +573,7 @@ Ext.define('Modulos.global.PanelRetornos', {
 
                                 var nombre = estatusMap[value] || value;
 
-                                // ? Opcional: Agregar colores seg?n estatus
+                                // ? Opcional: Agregar colores según estatus
                                 var color = '';
                                 switch (value) {
                                     case 'A':
@@ -670,12 +669,13 @@ Ext.define('Modulos.global.PanelRetornos', {
                             dataIndex: "Warehouse",
                             align: "center",
                             width: 220,
-                            filter: {type: 'string'}
+                            filter: {type: 'string'},
+                            hidden: true
                         },
 
                         {
-                            xtype: "actioncolumn",
                             text: "Confirmar",
+                            xtype: "actioncolumn",
                             // dataIndex: "prrtiempo2",
                             menuDisabled: true,
                             sortable: false,
@@ -693,8 +693,8 @@ Ext.define('Modulos.global.PanelRetornos', {
                         },
 
                         {
-                            xtype: "actioncolumn",
                             text: "Cancelar",
+                            xtype: "actioncolumn",
                             width: 90,
                             menuDisabled: true,
                             sortable: false,

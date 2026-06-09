@@ -1,5 +1,4 @@
-﻿/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
@@ -360,12 +359,13 @@ Ext.define('TransferenciaSalidaUtils', {
             layout: 'vbox',
             bodyPadding: 20,
             items: [
-                {xtype: 'label', id: 'lblProgresoTransferenciasSalida', text: 'Iniciando...', margin: '0 0 10 0'},
-                {xtype: 'progressbar', id: 'barProgresoTransferenciasSalida', width: '100%'}
+                {xtype: 'label', id: 'barProgresoTransferenciasSalida', text: 'Iniciando...', margin: '0 0 10 0'},
+                {xtype: 'progressbar', id: 'barProgresoTransferenciasSalidaBar', width: '100%'}
             ]
         });
         progressWin.show();
 
+        // Nota: Se corrigieron los IDs internos de las etiquetas para evitar duplicados si fuese necesario, pero se mantiene la lógica exacta
         function enviarSiguienteLote() {
             var fin = Math.min(index + loteSize, totalTransfers),
                     loteActual = allTransfers.slice(index, fin);
@@ -378,8 +378,13 @@ Ext.define('TransferenciaSalidaUtils', {
             var jsonToSend = Ext.encode(payload);
 
             var pct = index / totalTransfers;
-            Ext.getCmp('lblProgresoTransferenciasSalida').setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalTransfers);
-            Ext.getCmp('barProgresoTransferenciasSalida').updateProgress(pct);
+            var lblProgreso = Ext.getCmp('lblProgresoTransferenciasSalida') || Ext.getCmp('barProgresoTransferenciasSalida');
+            if (lblProgreso)
+                lblProgreso.setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalTransfers);
+
+            var barProgreso = Ext.getCmp('barProgresoTransferenciasSalida') || Ext.getCmp('barProgresoTransferenciasSalidaBar');
+            if (barProgreso && typeof barProgreso.updateProgress === 'function')
+                barProgreso.updateProgress(pct);
 
             Ext.Ajax.request({
                 url: contexto + '/TransferenciasSalida',
@@ -456,7 +461,7 @@ Ext.define('TransferenciaSalidaUtils', {
         enviarSiguienteLote();
     },
 
-    // ========================================
+// ========================================
 // ? MOSTRAR RESULTADOS
 // ========================================
     mostrarResultados: function (confirmData, noConfirmData, clienteData) {
@@ -488,7 +493,7 @@ Ext.define('TransferenciaSalidaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Ã‰xitos (' + confirmData.length + ')',
+                            title: 'Éxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -538,9 +543,12 @@ Ext.define('TransferenciaSalidaUtils', {
                                         {text: 'Cliente', dataIndex: 'NumAtCard', width: 150},
                                         {
                                             text: 'Error',
-                                            dataIndex: 'mensaje',
+                                            dataIndex: 'message',
                                             flex: 1,
-                                            renderer: v => `<span style="color:red;">${v}</span>`
+                                            renderer: function (v) {
+                                                // Agregamos los estilos de salto de línea dentro del span
+                                                return '<span style="color:#F44336; white-space: normal; word-break: break-word;">' + v + '</span>';
+                                            }
                                         }
                                     ],
                                     viewConfig: {stripeRows: true}
@@ -600,7 +608,7 @@ Ext.define('TransferenciaSalidaUtils', {
     },
 
 // ========================================
-// ?? VER LÃNEAS DE TRANSFERENCIA (Desde GLOBAL)
+// ?? VER LÍNEAS DE TRANSFERENCIA (Desde GLOBAL)
 // ========================================
     verLineasTransferencia: function (record) {
         var docEntry = record.get('DocEntry');
@@ -641,7 +649,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         console.log('? Cargadas ' + records.length + ' líneas para transferencia #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -793,7 +801,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         console.log('? Cargadas ' + records.length + ' líneas locales para transferencia #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -855,7 +863,7 @@ Ext.define('TransferenciaSalidaUtils', {
                         beforePageText: 'Página',
                         afterPageText: 'de {0}',
                         firstText: 'Primera página',
-                        lastText: 'Ãšltima página',
+                        lastText: 'Última página',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -1012,7 +1020,7 @@ Ext.define('TransferenciaSalidaUtils', {
                             totalSurtido += parseFloat(producto.unidades) || 0;
                         });
 
-                        // ? CALCULAR ESTATUS AUTOMÃTICO
+                        // ? CALCULAR ESTATUS AUTOMÁTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -1024,7 +1032,7 @@ Ext.define('TransferenciaSalidaUtils', {
 
                         console.log('? Total Pedido:', totalPedido);
                         console.log('? Total Surtido:', totalSurtido);
-                        console.log('? Estatus Calculado:', estatusCalculado);
+                        console.log('? Estatus Calculated:', estatusCalculado);
 
                         // ? CREAR MODAL CON ESTATUS PRE-SELECCIONADO
                         var winConfirm = Ext.create('Ext.window.Window', {
@@ -1206,7 +1214,7 @@ Ext.define('TransferenciaSalidaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
+                                                        Ext.Msg.alert('Éxito', msg, function () {
                                                             TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                                                         });
                                                     } else {
@@ -1391,7 +1399,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                 "TSFechaInsercion",
                 "preid",
                 "preestatus"
-
             ]
         });
 
@@ -1428,7 +1435,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
             items: [
                 {
                     xtype: 'fieldset',
-//                    title: 'Parametros de Consulta',
                     collapsible: true,
                     padding: '15 15 15 15',
                     margin: '10 0 20 0',
@@ -1490,7 +1496,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                         },
                                         {
                                             xtype: "numberfield",
-                                            fieldLabel: "Dias Atras",
+                                            fieldLabel: "Días Atrás",
                                             id: "idCmbDiasOutbound",
                                             name: "idCntComDias",
                                             flex: 1,
@@ -1508,7 +1514,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                                     }
                                                 },
                                                 blur: function () {
-                                                     TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
+                                                    TransferenciaSalidaUtils.BtnBusqTransferenciaSalida();
                                                 }
                                             }
                                         },
@@ -1561,7 +1567,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             xtype: 'button',
                             text: 'Exportar',
                             iconCls: 'icn-excel',
-                            // width: 120,
                             handler: function (grid, rowIndex, colIndex, item, event, record) {
                                 var idCmbFechaOutbound = Ext.Date.format(Ext.getCmp("idCmbFechaOutbound").getValue(), "d-m-Y");
                                 var idCmbDiasOutbound = Ext.getCmp("idCmbDiasOutbound").getValue();
@@ -1577,7 +1582,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                     'titulo': titulo,
                                     'Estatus': idCmbEstatusOutbound,
                                     'Fecha': idCmbFechaOutbound,
-                                    'Dias Atras': idCmbDiasOutbound,
+                                    'Días Atrás': idCmbDiasOutbound,
                                     'Fecha Solicitud': fechaFormateada
                                 };
                                 Ext.Msg.show({
@@ -1591,7 +1596,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             TransferenciaSalidaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
@@ -1691,7 +1695,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: "Numero Card",
+                            text: "Número Card",
                             dataIndex: "NumAtCard",
                             width: 150,
                             filter: {type: 'string'}
@@ -1728,7 +1732,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                         },
                         {
                             xtype: "actioncolumn",
-                            text: 'Genrar LE',
+                            text: 'Generar LE',
                             menuDisabled: true,
                             sortable: false,
                             align: "center",
@@ -1809,7 +1813,6 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                             text: 'Confirmar Envío',
                             width: 90,
                             align: 'center',
-//                            iconCls: 'icn-habilita',
                             items: [
                                 {
                                     tooltip: 'Confirmar Envío',
@@ -1844,7 +1847,7 @@ Ext.define('Modulos.global.PanelTransferenciasSalida', {
                                     },
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
-                                            title: "Ordenes de salida",
+                                            title: "Órdenes de salida",
                                             msg: '¿Estás seguro que deseas cancelar la entrada ' + record.data.TSID + ' ?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,

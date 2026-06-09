@@ -1,5 +1,4 @@
-﻿/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
@@ -267,7 +266,7 @@ Ext.define('OrdenesCompraUtils', {
                             });
                         });
 
-//                        console.log('? Órdenes seleccionadas para guardar:', ordenesHeader.length);
+//                         console.log('? Órdenes seleccionadas para guardar:', ordenesHeader.length);
 
                         if (ordenesHeader.length === 0) {
                             Ext.getBody().unmask();
@@ -425,7 +424,7 @@ Ext.define('OrdenesCompraUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-//                        console.log('? Órdenes Confirmadas:', confirmadosGlobal);
+//                         console.log('? Órdenes Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);  // ? PASAR clienteResponse
                     }
                 },
@@ -435,7 +434,7 @@ Ext.define('OrdenesCompraUtils', {
                         enviarSiguienteLote();
                     } else {
                         progressWin.close();
-//                        console.log('? Órdenes Confirmadas:', confirmadosGlobal);
+//                         console.log('? Órdenes Confirmadas:', confirmadosGlobal);
                         me.mostrarResultados(confirmadosGlobal, erroresGlobal, clienteResponseGlobal);
                     }
                 }
@@ -474,7 +473,7 @@ Ext.define('OrdenesCompraUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Ã‰xitos (' + confirmData.length + ')',
+                            title: 'Éxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -526,7 +525,7 @@ Ext.define('OrdenesCompraUtils', {
                                             text: 'Error',
                                             dataIndex: 'mensaje',
                                             flex: 1,
-                                            renderer: v => `<span style="color:red;">${v}</span>`
+                                            renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
                                         }
                                     ],
                                     viewConfig: {stripeRows: true}
@@ -586,7 +585,7 @@ Ext.define('OrdenesCompraUtils', {
         win.show();
     },
 
-    // ? Función para abrir modal de LÃNEAS (API externo)
+    // ? Función para abrir modal de LÍNEAS (API externo)
     verLineasOrden: function (record) {
         var docEntry = record.get('DocEntry');
         var docNum = record.get('DocNum');
@@ -612,7 +611,6 @@ Ext.define('OrdenesCompraUtils', {
             leadingBufferZone: 100,
             pageSize: 100,
             autoLoad: true,
-            pageSize: 100,
             proxy: {
                 type: "ajax",
                 url: contexto + "/OrdenesCompra",
@@ -629,10 +627,10 @@ Ext.define('OrdenesCompraUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-//                        console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
+//                         console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -785,10 +783,10 @@ Ext.define('OrdenesCompraUtils', {
             listeners: {
                 load: function (store, records, successful) {
                     if (successful) {
-//                        console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
+//                         console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -850,7 +848,7 @@ Ext.define('OrdenesCompraUtils', {
                         beforePageText: 'Página',
                         afterPageText: 'de {0}',
                         firstText: 'Primera página',
-                        lastText: 'Ãšltima página',
+                        lastText: 'Última página',
                         nextText: 'Siguiente',
                         prevText: 'Anterior',
                         refreshText: 'Actualizar'
@@ -962,7 +960,7 @@ Ext.define('OrdenesCompraUtils', {
                     });
                 } else {
                     // ? Si es silencioso, solo refrescar el grid
-//                    console.log('? Estatus actualizado silenciosamente:', resultado.message);
+//                     console.log('? Estatus actualizado silenciosamente:', resultado.message);
                 }
             },
             failure: function (response, opts) {
@@ -1011,7 +1009,7 @@ Ext.define('OrdenesCompraUtils', {
                     totalRecibido += parseFloat(linea.receivedquantity) || 0;
                 });
 
-                // ? CALCULAR ESTATUS AUTOMÃTICO
+                // ? CALCULAR ESTATUS AUTOMÁTICO
                 var estatusCalculado = '';
                 if (totalRecibido === 0) {
                     estatusCalculado = 'Cancelada';
@@ -1021,30 +1019,31 @@ Ext.define('OrdenesCompraUtils', {
                     estatusCalculado = 'Parcial';
                 }
 
-//                console.log('? Total Pedido:', totalPedido);
-//                console.log('? Total Recibido:', totalRecibido);
-//                console.log('? Estatus Calculado:', estatusCalculado);
+//                 console.log('? Total Pedido:', totalPedido);
+//                 console.log('? Total Recibido:', totalRecibido);
+//                 console.log('? Estatus Calculado:', estatusCalculado);
 
                 // ================= VENTANA PARA CONFIRMAR =================
-                var statusCombo = Ext.create('Ext.form.field.ComboBox', {
+                var statusCombo = Ext.create('Ext.data.Store', {
+                    fields: ['value', 'text'],
+                    data: [
+                        {value: 'Completa', text: 'Completa'},
+                        {value: 'Parcial', text: 'Parcial'},
+                        {value: 'Cancelada', text: 'Cancelada'}
+                    ]
+                });
+
+                var statusComboField = Ext.create('Ext.form.field.ComboBox', {
                     fieldLabel: 'Estatus de Recepción',
                     name: 'status',
                     readOnly: true,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['value', 'text'],
-                        data: [
-                            {value: 'Completa', text: 'Completa'},
-                            {value: 'Parcial', text: 'Parcial'},
-                            {value: 'Cancelada', text: 'Cancelada'}
-                        ]
-                    }),
+                    store: statusCombo,
                     queryMode: 'local',
                     displayField: 'text',
                     valueField: 'value',
                     editable: false,
                     allowBlank: false,
                     value: estatusCalculado, // ? PRE-SELECCIONADO
-                    readOnly: true, // ? READ-ONLY
                     labelWidth: 150,
                     width: 400,
                     fieldStyle: 'font-weight: bold;'
@@ -1109,7 +1108,7 @@ Ext.define('OrdenesCompraUtils', {
                                     value: '<b style="color: #4CAF50;">' + totalRecibido + '</b> unidades',
                                     labelWidth: 150
                                 },
-                                statusCombo,
+                                statusComboField,
                                 memoField
                             ],
                             buttons: [
@@ -1125,7 +1124,7 @@ Ext.define('OrdenesCompraUtils', {
                                     iconCls: 'fa fa-check',
                                     formBind: true,
                                     handler: function () {
-                                        var selectedStatus = statusCombo.getValue();
+                                        var selectedStatus = statusComboField.getValue();
                                         var memoText = memoField.getValue();
 
                                         win.close();
@@ -1136,7 +1135,7 @@ Ext.define('OrdenesCompraUtils', {
 
                                         Ext.getBody().mask('Procesando confirmación de recepción...');
 
-                                        // ? CONSTRUIR LÃNEAS CON RECEIVED QUANTITY
+                                        // ? CONSTRUIR LÍNEAS CON RECEIVED QUANTITY
                                         var lines = [];
                                         var totalQty = 0;
 
@@ -1169,8 +1168,8 @@ Ext.define('OrdenesCompraUtils', {
                                             Lines: lines
                                         };
 
-//                                        console.log("? JSON ReceiptConfirm:");
-//                                        console.log(JSON.stringify(jsonSend, null, 4));
+//                                         console.log("? JSON ReceiptConfirm:");
+//                                         console.log(JSON.stringify(jsonSend, null, 4));
 
                                         // ================= ENVIAR AL SERVLET =================
                                         Ext.Ajax.request({
@@ -1187,7 +1186,7 @@ Ext.define('OrdenesCompraUtils', {
                                                     var resultado = Ext.decode(response.responseText);
 
                                                     if (resultado.success) {
-//                                                        console.log("? Respuesta del cliente:", resultado.clienteResponse);
+//                                                         console.log("? Respuesta del cliente:", resultado.clienteResponse);
 
                                                         var ocid = record.get("OCID");
                                                         OrdenesCompraUtils.ConfirmarOrdenCompra(ocid, true); // ? Silencioso
@@ -1226,11 +1225,11 @@ Ext.define('OrdenesCompraUtils', {
                                                         msg += '<b>Fecha:</b> ' + fechaFormateada + '<br>';
                                                         msg += '<b>Estado:</b> ' + statusMensaje;
 
-                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
+                                                        Ext.Msg.alert('Éxito', msg, function () {
                                                             OrdenesCompraUtils.BtnBusqOrdenCompra();
                                                         });
                                                     } else {
-                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
+                                                        Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmation');
                                                     }
                                                 } catch (e) {
                                                     console.error("Error al parsear respuesta:", e);
@@ -1387,9 +1386,9 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
         var storeEstatus = Ext.create('Ext.data.Store', {
             fields: ['codigo', 'descripcion'],
             data: [
-                {codigo: 'A', descripcion: 'Activo'},
-                {codigo: 'C', descripcion: 'Confirmado'},
-                {codigo: 'X', descripcion: 'Cancelado'}
+                {codigo: 'A', text: 'Activo', descripcion: 'Activo'},
+                {codigo: 'C', text: 'Confirmado', descripcion: 'Confirmado'},
+                {codigo: 'X', text: 'Cancelado', descripcion: 'Cancelado'}
             ]
         });
 
@@ -1398,7 +1397,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
             items: [
                 {
                     xtype: 'fieldset',
-//                    title: 'Parametros de Consulta',
+//                     title: 'Parametros de Consulta',
                     collapsible: true,
                     padding: '15 15 15 15',
                     margin: '10 0 20 0',
@@ -1562,7 +1561,7 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            // Código a ejecutar si se presiona el botón "Página actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             OrdenesCompraUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
@@ -1720,17 +1719,19 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             text: "Warehouse",
                             dataIndex: "Warehouse",
                             width: 150,
-                            filter: {type: 'string'}
+                            filter: {type: 'string'},
+                            hidden: true
                         },
                         {
                             text: "Memo",
                             dataIndex: "Memo",
                             width: 220,
-                            filter: {type: 'string'}
+                            filter: {type: 'string'},
+                            hidden: true
                         },
                         {
-                            xtype: "actioncolumn",
                             text: "Confirmar",
+                            xtype: "actioncolumn",
                             sortable: false,
                             menuDisabled: true,
                             align: "center",
@@ -1752,8 +1753,8 @@ Ext.define('Modulos.global.PanelOrdenesCompra', {
                             ]
                         },
                         {
-                            xtype: "actioncolumn",
                             text: "Cancelar",
+                            xtype: "actioncolumn",
                             width: 90,
                             menuDisabled: true,
                             sortable: false,
