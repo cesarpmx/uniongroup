@@ -1,5 +1,4 @@
-﻿/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
@@ -79,7 +78,7 @@ Ext.define('OrdenesVentaUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas locales para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -235,7 +234,7 @@ Ext.define('OrdenesVentaUtils', {
 //                        console.log('? Cargadas ' + records.length + ' líneas para orden #' + docNum);
                         Ext.toast({
                             html: 'Se cargaron ' + records.length + ' líneas',
-                            title: 'Ã‰xito',
+                            title: 'Éxito',
                             align: 'tr',
                             iconCls: 'fa fa-check',
                             timeout: 2000
@@ -555,7 +554,7 @@ Ext.define('OrdenesVentaUtils', {
                     xtype: 'tabpanel',
                     items: [
                         {
-                            title: 'Ã‰xitos (' + confirmData.length + ')',
+                            title: 'Éxitos (' + confirmData.length + ')',
                             layout: 'fit',
                             iconCls: 'fa fa-check-circle',
                             items: [{
@@ -607,7 +606,7 @@ Ext.define('OrdenesVentaUtils', {
                                             text: 'Error',
                                             dataIndex: 'mensaje',
                                             flex: 1,
-                                            renderer: v => `<span style="color:red;">${v}</span>`
+                                            renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
                                         }
                                     ],
                                     viewConfig: {stripeRows: true}
@@ -989,7 +988,7 @@ Ext.define('OrdenesVentaUtils', {
                         Ext.Array.each(productosSurtidos, function (producto) {
                             totalSurtido += producto.unidades || 0;
                         });
-                        // ? CALCULAR ESTATUS AUTOMÃTICO
+                        // ? CALCULAR ESTATUS AUTOMÁTICO
                         var estatusCalculado = '';
                         if (totalSurtido === 0) {
                             estatusCalculado = 'Cancelada';
@@ -1001,7 +1000,7 @@ Ext.define('OrdenesVentaUtils', {
 
 //                        console.log('? Total Pedido:', totalPedido);
 //                        console.log('? Total Surtido:', totalSurtido);
-//                        console.log('? Estatus Calculado:', estatusCalculado);
+//                        console.log('? Estatus Calculated:', estatusCalculado);
                         // ? CREAR MODAL CON ESTATUS PRE-SELECCIONADO
                         var winConfirm = Ext.create('Ext.window.Window', {
                             title: 'Confirmar Envío - Orden #' + docNum,
@@ -1175,7 +1174,7 @@ Ext.define('OrdenesVentaUtils', {
                                                         }
 
                                                         // ? TERCERO: Mostrar mensaje
-                                                        Ext.Msg.alert('Ã‰xito', msg, function () {
+                                                        Ext.Msg.alert('Éxito', msg, function () {
                                                             OrdenesVentaUtils.BtnBusqOrdenVenta();
                                                         });
                                                     } else {
@@ -1320,7 +1319,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
     ],
     alias: 'widget.PanelOrdenesVenta',
     id: 'idMenu504',
-    title: 'Ordenes de Venta',
+    title: 'Órdenes de Venta',
     bodyPadding: '10 10 10 10',
     layout: {
         type: 'vbox',
@@ -1371,10 +1370,10 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
         var storeEstatusVentas = Ext.create('Ext.data.Store', {
             fields: ['codigo', 'descripcion'],
             data: [
-                {codigo: 'A', descripcion: 'Activo'},
-                {codigo: 'P', descripcion: 'Pendiente'},
-                {codigo: 'C', descripcion: 'Confirmado'},
-                {codigo: 'X', descripcion: 'Cancelado'}
+                {codigo: 'A', description: 'Activo'},
+                {codigo: 'P', description: 'Pendiente'},
+                {codigo: 'C', description: 'Confirmado'},
+                {codigo: 'X', description: 'Cancelado'}
             ]
         });
         Ext.apply(me, {
@@ -1442,7 +1441,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                         },
                                         {
                                             xtype: "numberfield",
-                                            fieldLabel: "Dias Atras",
+                                            fieldLabel: "Días Atrás",
                                             id: "idCmbDiasVenta",
                                             name: "idCntComDias",
                                             flex: 1,
@@ -1541,7 +1540,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // C?digo a ejecutar si se presiona el bot?n "P?gina actual"
+                                            // Código a ejecutar si se presiona el botón "Página actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             OrdenesVentaUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
@@ -1632,7 +1631,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             filter: {type: 'string'}
                         },
                         {
-                            text: "NumeAtCard",
+                            text: "NumAtCard",
                             dataIndex: "NumAtCard",
                             width: 150,
                             filter: {type: 'string'}
@@ -1653,11 +1652,12 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             text: "Memo",
                             dataIndex: "Memo",
                             width: 200,
-                            filter: {type: 'string'}
+                            filter: {type: 'string'},
+                            hidden: true
                         },
                         {
-                            xtype: "actioncolumn",
-                            text: 'Genrar LE',
+                            text: "actioncolumn",
+                            text: 'Generar LE',
                             sortable: false,
                             align: "center",
                             width: 90,
@@ -1772,7 +1772,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                     },
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
                                         Ext.MessageBox.show({
-                                            title: "Ordenes de Venta",
+                                            title: "Órdenes de Venta",
                                             msg: '¿Estás seguro que deseas cancelar la venta ' + record.data.OVID + ' ?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,

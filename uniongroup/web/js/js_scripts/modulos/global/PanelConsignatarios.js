@@ -1,4 +1,4 @@
-﻿Ext.define('ConsignatariosUtils', {
+Ext.define('ConsignatariosUtils', {
     singleton: true,
 
     BtnBusqConsignatarios: function () {
@@ -187,7 +187,7 @@
 
     confirmarAVectorDelta: function (lista) {
 
-        // 1?? Mostrar progress bar
+        // 1. Mostrar progress bar
         var progressMsg = Ext.Msg.show({
             title: 'Confirmando consignatarios',
             message: 'Enviando confirmación a VectorDelta...',
@@ -295,7 +295,7 @@
                                             text: 'Error',
                                             dataIndex: 'mensaje',
                                             flex: 1,
-                                            renderer: v => `<span style="color:red;">${v}</span>`
+                                            renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
                                         }
                                     ]
                                 }]
@@ -322,7 +322,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
         'ConsignatariosUtils'
     ],
     alias: 'widget.PanelConsignatarios',
-    id: 'idMenu502', // ID ?nico que coincide con el del ?rbol
+    id: 'idMenu502', // ID único que coincide con el del árbol
     title: 'Consignatarios',
     bodyPadding: '10 10 10 10',
     layout: {

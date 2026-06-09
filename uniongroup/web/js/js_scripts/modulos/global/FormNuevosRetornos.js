@@ -291,7 +291,7 @@
                                                     text: 'Error',
                                                     dataIndex: 'mensaje',
                                                     flex: 1,
-                                                    renderer: v => '<span style="color:red;">' + v + '</span>'
+                                                    renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
                                                 }
                                             ]
                                         }]

@@ -1,4 +1,4 @@
-﻿Ext.define('EcommerceUtils', {
+Ext.define('EcommerceUtils', {
     singleton: true,
     dias: localStorage.getItem('diasAtras'),
 
@@ -154,7 +154,7 @@
                     if (obj.success === "true" || obj.success === true) {
                         Ext.Msg.alert(
                                 'OK',
-                                'Pedido confirmado. Se creó la lista de empaque con ID: ' + obj.preid
+                                'Pedido confirmed. Se creó la lista de empaque con ID: ' + obj.preid
                                 );
                         EcommerceUtils.BtnBusqEcommerce();
                     } else {
@@ -452,12 +452,12 @@ Ext.define('Modulos.global.PanelEcommerce', {
                                     icon: Ext.MessageBox.QUESTION,
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // CÃ¯¿Â½digo a ejecutar si se presiona el botÃ¯¿Â½n "PÃ¯¿Â½gina actual"
+                                            // Código a ejecutar si se presiona el botón "Página actual"
                                             generarExcel(storeName, archivoName, parametros);
                                         } else if (btn === 'no') {
                                             EcommerceUtils.cargarStoreYGenerarExcel(storeName, archivoName, parametros);
                                         } else {
-                                            console.log('Se cerrÃ¯¿Â½ la ventana sin hacer clic en ningÃ¯¿Â½n botÃ¯¿Â½n');
+                                            console.log('Se cerró la ventana sin hacer clic en ningún botón');
                                         }
                                     }
                                 });
@@ -821,4 +821,3 @@ Ext.define('Modulos.global.PanelEcommerce', {
         me.callParent(arguments);
     }
 });
-
