@@ -1410,7 +1410,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                                             width: 300,
                                             store: storeEstatusVentas,
                                             valueField: 'codigo',
-                                            displayField: 'descripcion',
+                                            displayField: 'description',
                                             queryMode: 'local',
                                             emptyText: 'Seleccione el Estatus',
                                             allowBlank: true,
@@ -1656,7 +1656,7 @@ Ext.define('Modulos.global.PanelOrdenesVenta', {
                             hidden: true
                         },
                         {
-                            text: "actioncolumn",
+                            xtype: "actioncolumn",
                             text: 'Generar LE',
                             sortable: false,
                             align: "center",

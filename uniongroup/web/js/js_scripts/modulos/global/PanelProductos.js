@@ -8,13 +8,13 @@ Ext.define('ProductosUtils', {
     BtnBusqProductos: function () {
         const param = {busqBnd: 1};
 
-        ProductosUtils.BuscarConsignatarios(param);
+        ProductosUtils.BuscarProductos(param);
         var storeProductos = Ext.StoreManager.lookup('storeProductos');
         storeProductos.getProxy().setExtraParams(param);
         storeProductos.loadPage(1);
     },
 
-    BuscarConsignatarios: function (param) {
+    BuscarProductos: function (param) {
         const grid = Ext.getCmp('gridProductos');
         const store = grid.getStore();
         store.removeAll(true);
@@ -23,58 +23,33 @@ Ext.define('ProductosUtils', {
 
     enviarProductos: function () {
         var grid = Ext.getCmp('gridProductos'),
-                mainStore = grid.getStore(),
-                //totalRegistros = mainStore.getTotalCount();
-                totalRegistros = 10;
+            mainStore = grid.getStore(),
+            totalRegistros = mainStore.getTotalCount(); // Obtiene el total real de registros pendientes
 
         if (totalRegistros === 0) {
             Ext.Msg.alert('Sin datos', 'No hay productos para enviar');
             return;
         }
 
-        // Agrega esto al inicio de tu aplicación o antes del Msg.confirm
         Ext.Msg.confirm(
-                'Confirmar sincronización',
-                '¿Desea procesar los ' + totalRegistros + ' productos? (Se enviarán en lotes)',
-                function (btn) {
-                    if (btn === 'yes') {
-
-                        var tempStore = Ext.create('Ext.data.Store', {
-                            model: mainStore.getModel().getName(),
-                            proxy: {
-                                type: 'ajax',
-                                url: mainStore.getProxy().url,
-                                extraParams: mainStore.getProxy().getExtraParams(),
-                                reader: {type: 'json', rootProperty: 'Data'}
-                            }
-                        });
-
-                        grid.setLoading('Descargando universo de productos...');
-
-                        tempStore.load({
-                            params: {page: 1, limit: totalRegistros},
-                            callback: function (records, op, success) {
-                                grid.setLoading(false);
-                                if (success) {
-                                    ProductosUtils.iniciarEnvioPorLotes(records);
-                                } else {
-                                    Ext.Msg.alert('Error', 'No se pudo obtener el universo de productos');
-                                }
-                            }
-                        });
-                    }
+            'Confirmar sincronización',
+            '¿Desea procesar los ' + totalRegistros + ' productos en bloques continuos de 100?',
+            function (btn) {
+                if (btn === 'yes') {
+                    ProductosUtils.procesarCiclo100en100(mainStore, totalRegistros);
                 }
+            }
         );
     },
 
-    iniciarEnvioPorLotes: function (allRecords) {
+    procesarCiclo100en100: function (mainStore, totalRecords) {
         var me = this,
-                loteSize = 100,
-                totalRecords = allRecords.length,
-                confirmadosGlobal = [],
-                erroresGlobal = [],
-                index = 0;
+            loteSize = 100,
+            confirmadosGlobal = [],
+            erroresGlobal = [],
+            procesadosCount = 0;
 
+        // Ventana única de progreso durante todo el proceso
         var progressWin = Ext.create('Ext.window.Window', {
             title: 'Sincronizando Productos',
             width: 420,
@@ -84,173 +59,175 @@ Ext.define('ProductosUtils', {
             layout: 'vbox',
             bodyPadding: 20,
             items: [
-                {xtype: 'label', id: 'lblProdLote', text: 'Iniciando...'},
-                {xtype: 'progressbar', id: 'barProdLote', width: '100%'}
+                { xtype: 'label', id: 'lblProdLote', text: 'Iniciando...', margin: '0 0 10 0' },
+                { xtype: 'progressbar', id: 'barProdLote', width: '100%' }
             ]
         });
         progressWin.show();
 
-        function enviarSiguienteLote() {
-            var fin = Math.min(index + loteSize, totalRecords),
-                    loteActual = allRecords.slice(index, fin),
-                    datosLote = [];
+        // Store temporal configurado para traer únicamente 100 por consulta
+        var tempStore = Ext.create('Ext.data.Store', {
+            model: mainStore.getModel().getName(),
+            proxy: {
+                type: 'ajax',
+                url: mainStore.getProxy().url,
+                extraParams: mainStore.getProxy().getExtraParams(),
+                reader: { type: 'json', rootProperty: 'Data' }
+            }
+        });
 
-            Ext.Array.each(loteActual, function (rec) {
-                var d = rec.data;
-                datosLote.push({
-                    DocEntry: d.DocEntry,
-                    ItemCode: d.ItemCode,
-                    ItemName: d.ItemName,
-                    ItmsGrpCod: d.ItmsGrpCod,
-                    ItmsGrpNam: d.ItmsGrpNam,
-                    CodeBars: d.CodeBars,
-                    SuppCatNum: d.SuppCatNum,
-                    UpdateDate: d.UpdateDate,
-                    frozenFor: d.frozenFor,
-                    U_ARGNS_COL: d.U_ARGNS_COL,
-                    U_ARGNS_MOD: d.U_ARGNS_MOD,
-                    U_ARGNS_SIZE: d.U_ARGNS_SIZE,
-                    U_ARGNS_YEAR: d.U_ARGNS_YEAR,
-                    U_ARGNS_M_GROUP: d.U_ARGNS_M_GROUP,
-                    TaxCodeAR: d.TaxCodeAR,
-                    U_ARGNS_SCL: d.U_ARGNS_SCL,
-                    U_ARGNS_SIZEVO: d.U_ARGNS_SIZEVO,
-                    U_ARGNS_DIV: d.U_ARGNS_DIV,
-                    U_ARGNS_SEASON: d.U_ARGNS_SEASON,
-                    U_ARGNS_LineCode: d.U_ARGNS_LineCode,
-                    U_ARGNS_Coll: d.U_ARGNS_Coll,
-                    U_ARGNS_Brand: d.U_ARGNS_Brand,
-                    U_ARGNS_GEDAD: d.U_ARGNS_GEDAD,
-                    U_ARGNS_COLORL: d.U_ARGNS_COLORL,
-                    U_ARGNS_COLORP: d.U_ARGNS_COLORP
-                });
-            });
+        // Función recursiva: Descarga 100 -> Envía 100 -> Confirma 100 -> Vuelve a pedir page: 1
+        function cargarYEnviarSiguiente() {
+            var inicioRegistro = procesadosCount + 1;
+            var finRegistro = Math.min(procesadosCount + loteSize, totalRecords);
 
-            Ext.getCmp('lblProdLote')
-                    .setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalRecords);
-            Ext.getCmp('barProdLote')
-                    .updateProgress(index / totalRecords);
+            Ext.getCmp('lblProdLote').setText(
+                'Procesando productos ' + inicioRegistro + ' a ' + finRegistro + ' de ' + totalRecords + '...'
+            );
 
-            Ext.Ajax.request({
-                url: contexto + '/Productos',
-                method: 'POST',
-                params: {
-                    busqBnd: 2,
-                    valores: Ext.encode({products: datosLote})
-                },
-
-                success: function (response) {
-                    var result;
-                    try {
-                        result = Ext.decode(response.responseText);
-                    } catch (e) {
-                        Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
-                        progressWin.close();
+            // ⚠️ CLAVE: SIEMPRE CONSULTAMOS page: 1
+            // Al confirmar en el servidor remoto, los registros procesados salen de la lista de pendientes.
+            tempStore.load({
+                params: { page: 1, limit: loteSize },
+                callback: function (records, op, success) {
+                    if (!success || !records || records.length === 0) {
+                        // Si no devuelve registros o hay error/NO DATA FOUND, finalizamos el ciclo
+                        finalizarProceso();
                         return;
                     }
 
-                    if (result.success) {
-                        var listaConfirmacion = [];
-
-                        Ext.Array.each(result.results, function (item) {
-                            var ori = allRecords.find(r =>
-                                r.get('DocEntry') == item.DocEntry
-                            );
-
-                            var row = {
-                                DocEntry: item.DocEntry,
-                                ItemCode: item.ObjectCode,
-                                ItemName: ori ? ori.get('ItemName') : '',
-                                fecha: item.RecordDate,
-                                mensaje: item.status === 'inserted' ? 'OK' : item.message
-                            };
-
-                            if (item.status === 'inserted') {
-                                confirmadosGlobal.push(row);
-                                listaConfirmacion.push({
-                                    DocEntry: item.DocEntry,
-                                    ObjectCode: item.ObjectCode,
-                                    RecordDate: item.RecordDate
-                                });
-                            } else {
-                                erroresGlobal.push(row);
-                            }
+                    // Mapear los 100 registros actuales
+                    var datosLote = [];
+                    Ext.Array.each(records, function (rec) {
+                        var d = rec.data;
+                        datosLote.push({
+                            DocEntry: d.DocEntry,
+                            ItemCode: d.ItemCode,
+                            ItemName: d.ItemName,
+                            ItmsGrpCod: d.ItmsGrpCod,
+                            ItmsGrpNam: d.ItmsGrpNam,
+                            CodeBars: d.CodeBars,
+                            SuppCatNum: d.SuppCatNum,
+                            UpdateDate: d.UpdateDate,
+                            frozenFor: d.frozenFor,
+                            U_ARGNS_COL: d.U_ARGNS_COL,
+                            U_ARGNS_MOD: d.U_ARGNS_MOD,
+                            U_ARGNS_SIZE: d.U_ARGNS_SIZE,
+                            U_ARGNS_YEAR: d.U_ARGNS_YEAR,
+                            U_ARGNS_M_GROUP: d.U_ARGNS_M_GROUP,
+                            TaxCodeAR: d.TaxCodeAR,
+                            U_ARGNS_SCL: d.U_ARGNS_SCL,
+                            U_ARGNS_SIZEVO: d.U_ARGNS_SIZEVO,
+                            U_ARGNS_DIV: d.U_ARGNS_DIV,
+                            U_ARGNS_SEASON: d.U_ARGNS_SEASON,
+                            U_ARGNS_LineCode: d.U_ARGNS_LineCode,
+                            U_ARGNS_Coll: d.U_ARGNS_Coll,
+                            U_ARGNS_Brand: d.U_ARGNS_Brand,
+                            U_ARGNS_GEDAD: d.U_ARGNS_GEDAD,
+                            U_ARGNS_COLORL: d.U_ARGNS_COLORL,
+                            U_ARGNS_COLORP: d.U_ARGNS_COLORP
                         });
+                    });
 
-                        if (listaConfirmacion.length > 0) {
-                            me.confirmarAVectorDelta(listaConfirmacion);
-                        }
+                    // 2. POST DEL LOTE DE 100
+                    Ext.Ajax.request({
+                        url: contexto + '/Productos',
+                        method: 'POST',
+                        params: {
+                            busqBnd: 2,
+                            valores: Ext.encode({ products: datosLote })
+                        },
+                        success: function (response) {
+                            var result;
+                            try {
+                                result = Ext.decode(response.responseText);
+                            } catch (e) {
+                                progressWin.close();
+                                Ext.Msg.alert('Error', 'Respuesta JSON inválida en el servidor.');
+                                return;
+                            }
 
-                        index += loteSize;
-                        if (index < totalRecords) {
-                            enviarSiguienteLote();
-                        } else {
+                            if (result.success) {
+                                var listaConfirmacion = [];
+
+                                Ext.Array.each(result.results || [], function (item) {
+                                    var ori = records.find(r => r.get('DocEntry') == item.DocEntry);
+                                    var row = {
+                                        DocEntry: item.DocEntry,
+                                        ItemCode: item.ObjectCode,
+                                        ItemName: ori ? ori.get('ItemName') : '',
+                                        fecha: item.RecordDate,
+                                        mensaje: item.status === 'inserted' ? 'OK' : item.message
+                                    };
+
+                                    if (item.status === 'inserted') {
+                                        confirmadosGlobal.push(row);
+                                        listaConfirmacion.push({
+                                            DocEntry: item.DocEntry,
+                                            ObjectCode: item.ObjectCode,
+                                            RecordDate: item.RecordDate
+                                        });
+                                    } else {
+                                        erroresGlobal.push(row);
+                                    }
+                                });
+
+                                procesadosCount += records.length;
+                                Ext.getCmp('barProdLote').updateProgress(procesadosCount / totalRecords);
+
+                                var siguientePaso = function () {
+                                    // Si el lote trajo menos de 100 o alcanzamos el total esperado, finalizamos
+                                    if (records.length < loteSize || procesadosCount >= totalRecords) {
+                                        finalizarProceso();
+                                    } else {
+                                        cargarYEnviarSiguiente(); // Vuelve a ejecutar pidiendo page: 1
+                                    }
+                                };
+
+                                // 3. CONFIRMAR LOTE (En segundo plano sin modales extra)
+                                if (listaConfirmacion.length > 0) {
+                                    me.confirmarAVectorDeltaLote(listaConfirmacion, siguientePaso);
+                                } else {
+                                    siguientePaso();
+                                }
+
+                            } else {
+                                progressWin.close();
+                                Ext.Msg.alert('Error', result.message || 'Error al procesar el lote.');
+                            }
+                        },
+                        failure: function () {
                             progressWin.close();
-                            me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+                            Ext.Msg.alert('Error', 'Fallo de red al enviar el lote.');
                         }
-                    }
-                },
-
-                failure: function () {
-                    progressWin.close();
-                    Ext.Msg.alert('Error', 'Fallo de conexión en lote ' + index);
+                    });
                 }
             });
         }
 
-        enviarSiguienteLote();
+        function finalizarProceso() {
+            progressWin.close();
+            me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+        }
+
+        // Iniciar primer ciclo
+        cargarYEnviarSiguiente();
     },
 
-    confirmarAVectorDelta: function (lista) {
-        var progressMsg = Ext.Msg.show({
-            title: 'Confirmando consignatarios',
-            message: 'Enviando confirmation a VectorDelta...',
-            progress: true,
-            closable: false,
-            buttons: false
-        });
-
-        // Animación simple (indeterminada)
-        progressMsg.wait('Procesando...');
-
+    // Confirmación silenciosa que se ejecuta por cada lote de 100
+    confirmarAVectorDeltaLote: function (lista, callback) {
         Ext.Ajax.request({
             url: contexto + '/Productos',
             method: 'POST',
             params: {
                 busqBnd: 3,
-                confirmData: Ext.encode({ConfirmData: lista})
+                confirmData: Ext.encode({ ConfirmData: lista })
             },
-            success: function (response) {
-                var resp;
-
-                try {
-                    resp = Ext.decode(response.responseText);
-                } catch (e) {
-                    progressMsg.close();
-                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
-                    return;
-                }
-
-                progressMsg.close();
-
-                if (resp.success && Ext.isArray(resp.confirmedItems)) {
-                    var totalConfirmados = resp.confirmedItems.length;
-
-                    Ext.Msg.alert(
-                            'Confirmación exitosa',
-                            'Se confirmaron <b>' + totalConfirmados + '</b> productos(s) correctamente.'
-                            );
-                } else {
-                    Ext.Msg.alert(
-                            'Aviso',
-                            resp.message || 'La confirmación se procesó sin detalle.'
-                            );
-                }
+            success: function () {
+                if (Ext.isFunction(callback)) callback();
             },
-
             failure: function () {
-                progressMsg.close();
-                Ext.Msg.alert('Error', 'No fue posible confirmar los productos');
+                if (Ext.isFunction(callback)) callback();
             }
         });
     },
@@ -285,42 +262,47 @@ Ext.define('ProductosUtils', {
                 }
             },
             items: [{
-                    xtype: 'tabpanel',
-                    items: [
-                        {
-                            title: 'Éxitos (' + confirmados.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeOk,
-                                    columns: [
-                                        {text: 'Item', dataIndex: 'ItemCode', width: 160},
-                                        {text: 'Descripción', dataIndex: 'ItemName', flex: 1},
-                                        {text: 'Fecha', dataIndex: 'fecha', width: 160}
-                                    ]
-                                }]
-                        },
-                        {
-                            title: 'Errores (' + errores.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeErr,
-                                    variableRow: true, // Permite que las filas tengan alturas diferentes según el contenido
-                                    columns: [
-                                        {text: 'Item', dataIndex: 'ItemCode', width: 160},
-                                        {
-                                            text: 'Error',
-                                            dataIndex: 'mensaje',
-                                            flex: 1,
-                                            // Agregamos estilos para forzar el salto de línea (white-space)
-                                            renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
-                                        }
-                                    ]
-                                }]
-                        }
-                    ]
-                }]
+                xtype: 'tabpanel',
+                items: [
+                    {
+                        title: 'Éxitos (' + confirmados.length + ')',
+                        layout: 'fit',
+                        items: [{
+                            xtype: 'grid',
+                            store: storeOk,
+                            columns: [
+                                {text: 'Item', dataIndex: 'ItemCode', width: 160},
+                                {text: 'Descripción', dataIndex: 'ItemName', flex: 1},
+                                {text: 'Fecha', dataIndex: 'fecha', width: 160}
+                            ]
+                        }]
+                    },
+                    {
+                        title: 'Errores (' + errores.length + ')',
+                        layout: 'fit',
+                        items: [{
+                            xtype: 'grid',
+                            store: storeErr,
+                            variableRow: true,
+                            columns: [
+                                {text: 'Item', dataIndex: 'ItemCode', width: 160},
+                                {
+                                    text: 'Error',
+                                    dataIndex: 'mensaje',
+                                    flex: 1,
+                                    renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
+                                }
+                            ]
+                        }]
+                    }
+                ]
+            }],
+            buttons: [{
+                text: 'Cerrar',
+                handler: function () {
+                    this.up('window').close();
+                }
+            }]
         }).show();
     }
 });
@@ -331,7 +313,7 @@ Ext.define('Modulos.global.PanelProductos', {
         'ProductosUtils'
     ],
     alias: 'widget.PanelProductos',
-    id: 'idMenu501', // ID único que coincide con el del árbol
+    id: 'idMenu501',
     title: 'Productos',
     bodyPadding: '10 10 10 10',
     layout: {
@@ -341,7 +323,6 @@ Ext.define('Modulos.global.PanelProductos', {
     scrollable: true,
     initComponent: function () {
         var me = this;
-        // === Modelo ===
 
         Ext.define('modelProductos', {
             extend: 'Ext.data.Model',
@@ -378,15 +359,14 @@ Ext.define('Modulos.global.PanelProductos', {
             id: 'storeProductos',
             model: 'modelProductos',
             autoLoad: false,
-            pageSize: 100, // Debe coincidir con lo que esperas
+            pageSize: 100,
             proxy: {
                 type: "ajax",
                 url: contexto + "/Productos",
-                // ExtJS envía automáticamente page, start y limit
                 reader: {
                     type: "json",
-                    rootProperty: "Data", // Coincide con public ArrayList<ArrDataConsignatarios> Data
-                    totalProperty: "Meta.TotalRecords" // Acceso anidado al total de registros
+                    rootProperty: "Data",
+                    totalProperty: "Meta.TotalRecords"
                 }
             }
         });
@@ -437,173 +417,34 @@ Ext.define('Modulos.global.PanelProductos', {
                     ],
                     columns: {
                         defaults: {
-                            filter: {
-                                type: "string"
-                            }
+                            filter: { type: "string" }
                         },
-
                         items: [
-                            {
-                                text: "#",
-                                xtype: "rownumberer",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "ItemCode",
-                                dataIndex: "ItemCode",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "ItemName",
-                                dataIndex: "ItemName",
-                                flex: 1
-                            },
-                            {
-                                text: "ItmsGrpCod",
-                                dataIndex: "ItmsGrpCod",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "ItmsGrpNam",
-                                dataIndex: "ItmsGrpNam",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "CodeBars",
-                                dataIndex: "CodeBars",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "SuppCatNum",
-                                dataIndex: "SuppCatNum",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "UpdateDate",
-                                dataIndex: "UpdateDate",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "frozenFor",
-                                dataIndex: "frozenFor",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "U_ARGNS_COL",
-                                dataIndex: "U_ARGNS_COL",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "U_ARGNS_MOD",
-                                dataIndex: "U_ARGNS_MOD",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "U_ARGNS_SIZE",
-                                dataIndex: "U_ARGNS_SIZE",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "U_ARGNS_YEAR",
-                                dataIndex: "U_ARGNS_YEAR",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "U_ARGNS_M_GROUP",
-                                dataIndex: "U_ARGNS_M_GROUP",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "TaxCodeAR",
-                                dataIndex: "TaxCodeAR",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_SCL",
-                                dataIndex: "U_ARGNS_SCL",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_SIZEVO",
-                                dataIndex: "U_ARGNS_SIZEVO",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_DIV",
-                                dataIndex: "U_ARGNS_DIV",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_SEASON",
-                                dataIndex: "U_ARGNS_SEASON",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_LineCode",
-                                dataIndex: "U_ARGNS_LineCode",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_Coll",
-                                dataIndex: "U_ARGNS_Coll",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_Brand",
-                                dataIndex: "U_ARGNS_Brand",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_GEDAD",
-                                dataIndex: "U_ARGNS_GEDAD",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_COLORL",
-                                dataIndex: "U_ARGNS_COLORL",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            },
-                            {
-                                text: "U_ARGNS_COLORP",
-                                dataIndex: "U_ARGNS_COLORP",
-                                flex: 1,
-                                align: "center",
-                                hidden: true
-                            }
+                            { text: "#", xtype: "rownumberer", flex: 1, align: "center" },
+                            { text: "ItemCode", dataIndex: "ItemCode", flex: 1, align: "center" },
+                            { text: "ItemName", dataIndex: "ItemName", flex: 1 },
+                            { text: "ItmsGrpCod", dataIndex: "ItmsGrpCod", flex: 1, align: "center" },
+                            { text: "ItmsGrpNam", dataIndex: "ItmsGrpNam", flex: 1, align: "center" },
+                            { text: "CodeBars", dataIndex: "CodeBars", flex: 1, align: "center" },
+                            { text: "SuppCatNum", dataIndex: "SuppCatNum", flex: 1, align: "center" },
+                            { text: "UpdateDate", dataIndex: "UpdateDate", flex: 1, align: "center" },
+                            { text: "frozenFor", dataIndex: "frozenFor", flex: 1, align: "center" },
+                            { text: "U_ARGNS_COL", dataIndex: "U_ARGNS_COL", flex: 1, align: "center" },
+                            { text: "U_ARGNS_MOD", dataIndex: "U_ARGNS_MOD", flex: 1, align: "center" },
+                            { text: "U_ARGNS_SIZE", dataIndex: "U_ARGNS_SIZE", flex: 1, align: "center" },
+                            { text: "U_ARGNS_YEAR", dataIndex: "U_ARGNS_YEAR", flex: 1, align: "center" },
+                            { text: "U_ARGNS_M_GROUP", dataIndex: "U_ARGNS_M_GROUP", flex: 1, align: "center", hidden: true },
+                            { text: "TaxCodeAR", dataIndex: "TaxCodeAR", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_SCL", dataIndex: "U_ARGNS_SCL", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_SIZEVO", dataIndex: "U_ARGNS_SIZEVO", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_DIV", dataIndex: "U_ARGNS_DIV", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_SEASON", dataIndex: "U_ARGNS_SEASON", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_LineCode", dataIndex: "U_ARGNS_LineCode", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_Coll", dataIndex: "U_ARGNS_Coll", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_Brand", dataIndex: "U_ARGNS_Brand", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_GEDAD", dataIndex: "U_ARGNS_GEDAD", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_COLORL", dataIndex: "U_ARGNS_COLORL", flex: 1, align: "center", hidden: true },
+                            { text: "U_ARGNS_COLORP", dataIndex: "U_ARGNS_COLORP", flex: 1, align: "center", hidden: true }
                         ]
                     },
                     bbar: {
@@ -613,18 +454,17 @@ Ext.define('Modulos.global.PanelProductos', {
                         displayMsg: 'Mostrando productos {0} - {1} de {2}',
                         emptyMsg: 'No hay productos'
                     },
-
                     listeners: {
                         edit: function (editor, e) {
                             e.record.commit();
                         },
                         afterrender: function (grid) {
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la búzqueda se ha ejecutado
+                                grid.isSearchExecuted = true;
                                 ProductosUtils.BtnBusqProductos();
                             }
                         }
-                    },
+                    }
                 }
             ],
             features: [
@@ -634,11 +474,9 @@ Ext.define('Modulos.global.PanelProductos', {
                     hideGroupedHeader: true,
                     enableGroupingMenu: false
                 },
-                {
-                    ftype: 'groupingsummary'
-                },
-            ],
+                { ftype: 'groupingsummary' }
+            ]
         });
         me.callParent(arguments);
-    },
+    }
 });

@@ -19,9 +19,8 @@ Ext.define('ConsignatariosUtils', {
 
     enviarDirecciones: function () {
         var grid = Ext.getCmp('gridDirecciones'),
-                mainStore = grid.getStore(),
-                //totalRegistros = mainStore.getTotalCount();
-                totalRegistros = 10;
+            mainStore = grid.getStore(),
+            totalRegistros = mainStore.getTotalCount(); // Obtener el total real dinámicamente
 
         if (totalRegistros === 0) {
             Ext.MessageBox.alert('Sin datos', 'No hay registros para enviar');
@@ -29,215 +28,193 @@ Ext.define('ConsignatariosUtils', {
         }
 
         Ext.MessageBox.confirm(
-                'Confirmar Sincronizaci\u00f3n',
-                '¿Desea procesar los ' + totalRegistros + ' registros totales? (Se enviarán en lotes para mayor seguridad)',
-                function (btn) {
-                    if (btn === 'yes') {
-                        // Store temporal para bajar todo el universo de datos
-                        var tempStore = Ext.create('Ext.data.Store', {
-                            model: mainStore.getModel().getName(),
-                            proxy: {
-                                type: 'ajax',
-                                url: mainStore.getProxy().url,
-                                extraParams: mainStore.getProxy().getExtraParams(),
-                                reader: {type: 'json', rootProperty: 'Data'}
-                            }
-                        });
-
-                        grid.setLoading('Descargando datos completos de VectorDelta...');
-
-                        tempStore.load({
-                            params: {page: 1, limit: totalRegistros},
-                            callback: function (records, operation, success) {
-                                grid.setLoading(false);
-                                if (success) {
-                                    ConsignatariosUtils.iniciarEnvioPorLotes(records);
-                                } else {
-                                    Ext.MessageBox.alert('Error', 'No se pudo obtener la información de origen.');
-                                }
-                            }
-                        });
-                    }
+            'Confirmar Sincronizaci\u00f3n',
+            '¿Desea procesar los ' + totalRegistros + ' registros totales? (Se enviarán continuamente en lotes de 100)',
+            function (btn) {
+                if (btn === 'yes') {
+                    ConsignatariosUtils.procesarCiclo100en100(mainStore, totalRegistros);
                 }
+            }
         );
     },
 
-    iniciarEnvioPorLotes: function (allRecords) {
+    procesarCiclo100en100: function (mainStore, totalRecords) {
         var me = this,
-                loteSize = 100, // Tamaño seguro para evitar que el JSON se corte
-                totalRecords = allRecords.length,
-                confirmadosGlobal = [],
-                erroresGlobal = [],
-                index = 0;
+            loteSize = 100,
+            confirmadosGlobal = [],
+            erroresGlobal = [],
+            procesadosCount = 0;
 
+        // Ventana de progreso
         var progressWin = Ext.create('Ext.window.Window', {
-            title: 'Sincronizando con SAP Global',
-            width: 400,
+            title: 'Sincronizando Consignatarios con SAP Global',
+            width: 420,
             height: 160,
             modal: true,
             closable: false,
             layout: 'vbox',
             bodyPadding: 20,
             items: [
-                {xtype: 'label', id: 'lblProgresoLote', text: 'Iniciando...', margin: '0 0 10 0'},
-                {xtype: 'progressbar', id: 'barProgresoLote', width: '100%'}
+                { xtype: 'label', id: 'lblProgresoLote', text: 'Iniciando...', margin: '0 0 10 0' },
+                { xtype: 'progressbar', id: 'barProgresoLote', width: '100%' }
             ]
         });
         progressWin.show();
 
-        function enviarSiguienteLote() {
-            var fin = Math.min(index + loteSize, totalRecords),
-                    loteActual = allRecords.slice(index, fin),
-                    datosLote = [];
+        // Store temporal para pedir sólo 100 registros por iteración
+        var tempStore = Ext.create('Ext.data.Store', {
+            model: mainStore.getModel().getName(),
+            proxy: {
+                type: 'ajax',
+                url: mainStore.getProxy().url,
+                extraParams: mainStore.getProxy().getExtraParams(),
+                reader: { type: 'json', rootProperty: 'Data' }
+            }
+        });
 
-            // Limpieza de datos para que coincidan con el Procedure (Case Sensitive)
-            Ext.Array.each(loteActual, function (rec) {
-                var d = rec.data;
-                datosLote.push({
-                    DocEntry: d.DocEntry,
-                    AddressCode: d.AddressCode,
-                    CardCode: d.CardCode,
-                    CardName: d.CardName,
-                    CardType: d.CardType,
-                    AdresType: d.AdresType,
-                    Address: d.Address,
-                    Address2: d.Address2,
-                    Address3: d.Address3,
-                    Street: d.Street,
-                    StreetNo: d.StreetNo,
-                    Building: d.Building,
-                    Block: d.Block,
-                    ZipCode: d.ZipCode,
-                    City: d.City,
-                    County: d.County,
-                    State: d.State,
-                    Country: d.Country
-                });
-            });
+        function cargarYEnviarSiguiente() {
+            var inicio = procesadosCount + 1;
+            var fin = Math.min(procesadosCount + loteSize, totalRecords);
 
-            var pct = index / totalRecords;
-            Ext.getCmp('lblProgresoLote').setText('Procesando: ' + (index + 1) + ' - ' + fin + ' de ' + totalRecords);
-            Ext.getCmp('barProgresoLote').updateProgress(pct);
+            Ext.getCmp('lblProgresoLote').setText(
+                'Procesando consignatarios ' + inicio + ' a ' + fin + ' de ' + totalRecords + '...'
+            );
 
-            Ext.Ajax.request({
-                url: contexto + '/Consignatarios',
-                method: 'POST',
-                params: {
-                    busqBnd: 2,
-                    valores: Ext.encode({addresses: datosLote})
-                },
-                success: function (response) {
-                    var result;
-                    try {
-                        result = Ext.decode(response.responseText);
-                    } catch (e) {
-                        console.error("JSON inválido:", response.responseText);
+            // ⚠️ CLAVE: SIEMPRE CONSULTAMOS page: 1
+            // Al confirmar en el servidor remoto, los registros procesados salen de la lista de pendientes.
+            tempStore.load({
+                params: { page: 1, limit: loteSize },
+                callback: function (records, operation, success) {
+                    if (!success || !records || records.length === 0) {
+                        finalizarProceso();
                         return;
                     }
 
-                    if (result.success) {
-                        var listaParaConfirmarVector = [];
-
-                        Ext.Array.each(result.results, function (item) {
-                            var ori = allRecords.find(r => r.get('DocEntry') == item.DocEntry);
-                            var row = {
-                                DocEntry: item.DocEntry || 'N/A',
-                                ItemCode: item.ObjectCode || '',
-                                CardName: ori ? ori.get('CardName') : '',
-                                Address: ori ? ori.get('Address') : '',
-                                fecha: item.RecordDate,
-                                mensaje: item.status === 'inserted' ? 'OK' : item.message
-                            };
-
-                            if (item.status === 'inserted') {
-                                confirmadosGlobal.push(row);
-                                // Estructura requerida por VectorDelta
-                                listaParaConfirmarVector.push({
-                                    DocEntry: item.DocEntry,
-                                    ObjectCode: item.ObjectCode,
-                                    RecordDate: item.RecordDate
-                                });
-                            } else {
-                                erroresGlobal.push(row);
-                            }
+                    // Mapeo de campos requeridos por el procedimiento
+                    var datosLote = [];
+                    Ext.Array.each(records, function (rec) {
+                        var d = rec.data;
+                        datosLote.push({
+                            DocEntry: d.DocEntry,
+                            AddressCode: d.AddressCode,
+                            CardCode: d.CardCode,
+                            CardName: d.CardName,
+                            CardType: d.CardType,
+                            AdresType: d.AdresType,
+                            Address: d.Address,
+                            Address2: d.Address2,
+                            Address3: d.Address3,
+                            Street: d.Street,
+                            StreetNo: d.StreetNo,
+                            Building: d.Building,
+                            Block: d.Block,
+                            ZipCode: d.ZipCode,
+                            City: d.City,
+                            County: d.County,
+                            State: d.State,
+                            Country: d.Country
                         });
+                    });
 
-                        // Enviar confirmación a VectorDelta si el lote tuvo éxitos
-                        if (listaParaConfirmarVector.length > 0) {
-                            me.confirmarAVectorDelta(listaParaConfirmarVector);
-                        }
+                    // Envío POST del bloque
+                    Ext.Ajax.request({
+                        url: contexto + '/Consignatarios',
+                        method: 'POST',
+                        params: {
+                            busqBnd: 2,
+                            valores: Ext.encode({ addresses: datosLote })
+                        },
+                        success: function (response) {
+                            var result;
+                            try {
+                                result = Ext.decode(response.responseText);
+                            } catch (e) {
+                                progressWin.close();
+                                Ext.MessageBox.alert('Error', 'Respuesta JSON inválida del servidor.');
+                                return;
+                            }
 
-                        index += loteSize;
-                        if (index < totalRecords) {
-                            enviarSiguienteLote();
-                        } else {
+                            if (result.success) {
+                                var listaParaConfirmarVector = [];
+
+                                Ext.Array.each(result.results || [], function (item) {
+                                    var ori = records.find(r => r.get('DocEntry') == item.DocEntry);
+                                    var row = {
+                                        DocEntry: item.DocEntry || 'N/A',
+                                        ItemCode: item.ObjectCode || '',
+                                        CardName: ori ? ori.get('CardName') : '',
+                                        Address: ori ? ori.get('Address') : '',
+                                        fecha: item.RecordDate,
+                                        mensaje: item.status === 'inserted' ? 'OK' : item.message
+                                    };
+
+                                    if (item.status === 'inserted') {
+                                        confirmadosGlobal.push(row);
+                                        listaParaConfirmarVector.push({
+                                            DocEntry: item.DocEntry,
+                                            ObjectCode: item.ObjectCode,
+                                            RecordDate: item.RecordDate
+                                        });
+                                    } else {
+                                        erroresGlobal.push(row);
+                                    }
+                                });
+
+                                procesadosCount += records.length;
+                                Ext.getCmp('barProgresoLote').updateProgress(procesadosCount / totalRecords);
+
+                                var siguientePaso = function () {
+                                    // Si devolvió menos de 100 registros o alcanzamos el total, finalizamos
+                                    if (records.length < loteSize || procesadosCount >= totalRecords) {
+                                        finalizarProceso();
+                                    } else {
+                                        cargarYEnviarSiguiente(); // Vuelve a ejecutar pidiendo page: 1
+                                    }
+                                };
+
+                                // Confirmación silenciosa del bloque a VectorDelta
+                                if (listaParaConfirmarVector.length > 0) {
+                                    me.confirmarAVectorDeltaLote(listaParaConfirmarVector, siguientePaso);
+                                } else {
+                                    siguientePaso();
+                                }
+
+                            } else {
+                                progressWin.close();
+                                Ext.MessageBox.alert('Error', result.message || 'Error al procesar el lote.');
+                            }
+                        },
+                        failure: function () {
                             progressWin.close();
-                            me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+                            Ext.MessageBox.alert('Error', 'Fallo de conexión al enviar el lote.');
                         }
-                    }
-                },
-                failure: function () {
-                    progressWin.close();
-                    Ext.Msg.alert('Error', 'Fallo crítico de conexión en lote ' + index);
+                    });
                 }
             });
         }
-        enviarSiguienteLote();
+
+        function finalizarProceso() {
+            progressWin.close();
+            me.mostrarResultados(confirmadosGlobal, erroresGlobal);
+        }
+
+        // Iniciar primer lote
+        cargarYEnviarSiguiente();
     },
 
-    confirmarAVectorDelta: function (lista) {
-
-        // 1. Mostrar progress bar
-        var progressMsg = Ext.Msg.show({
-            title: 'Confirmando consignatarios',
-            message: 'Enviando confirmación a VectorDelta...',
-            progress: true,
-            closable: false,
-            buttons: false
-        });
-
-        // Animación simple (indeterminada)
-        progressMsg.wait('Procesando...');
-
+    confirmarAVectorDeltaLote: function (lista, callback) {
         Ext.Ajax.request({
             url: contexto + '/Consignatarios',
             method: 'POST',
             params: {
                 busqBnd: 3,
-                confirmData: Ext.encode({ConfirmData: lista})
+                confirmData: Ext.encode({ ConfirmData: lista })
             },
-
-            success: function (response) {
-                var resp;
-
-                try {
-                    resp = Ext.decode(response.responseText);
-                } catch (e) {
-                    progressMsg.close();
-                    Ext.Msg.alert('Error', 'Respuesta inválida del servidor');
-                    return;
-                }
-
-                progressMsg.close();
-
-                if (resp.success && Ext.isArray(resp.confirmedItems)) {
-                    var totalConfirmados = resp.confirmedItems.length;
-
-                    Ext.Msg.alert(
-                            'Confirmación exitosa',
-                            'Se confirmaron <b>' + totalConfirmados + '</b> consignatario(s) correctamente.'
-                            );
-                } else {
-                    Ext.Msg.alert(
-                            'Aviso',
-                            resp.message || 'La confirmación se procesó sin detalle.'
-                            );
-                }
+            success: function () {
+                if (Ext.isFunction(callback)) callback();
             },
-
             failure: function () {
-                progressMsg.close();
-                Ext.Msg.alert('Error', 'No fue posible confirmar los consignatarios');
+                if (Ext.isFunction(callback)) callback();
             }
         });
     },
@@ -267,50 +244,49 @@ Ext.define('ConsignatariosUtils', {
             },
 
             items: [{
-                    xtype: 'tabpanel',
-                    items: [
-                        {
-                            title: 'Éxitos (' + confirmData.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeConfirm,
-                                    columns: [
-                                        {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
-                                        {text: 'AddressCode', dataIndex: 'ItemCode', width: 150},
-                                        {text: 'Cliente', dataIndex: 'CardName', flex: 1},
-                                        {text: 'Fecha Reg.', dataIndex: 'fecha', width: 160}
-                                    ]
-                                }]
-                        },
-                        {
-                            title: 'Errores (' + noConfirmData.length + ')',
-                            layout: 'fit',
-                            items: [{
-                                    xtype: 'grid',
-                                    store: storeNoConfirm,
-                                    columns: [
-                                        {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
-                                        {
-                                            text: 'Error',
-                                            dataIndex: 'mensaje',
-                                            flex: 1,
-                                            renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
-                                        }
-                                    ]
-                                }]
-                        }
-                    ]
-                }],
+                xtype: 'tabpanel',
+                items: [
+                    {
+                        title: 'Éxitos (' + confirmData.length + ')',
+                        layout: 'fit',
+                        items: [{
+                            xtype: 'grid',
+                            store: storeConfirm,
+                            columns: [
+                                {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
+                                {text: 'AddressCode', dataIndex: 'ItemCode', width: 150},
+                                {text: 'Cliente', dataIndex: 'CardName', flex: 1},
+                                {text: 'Fecha Reg.', dataIndex: 'fecha', width: 160}
+                            ]
+                        }]
+                    },
+                    {
+                        title: 'Errores (' + noConfirmData.length + ')',
+                        layout: 'fit',
+                        items: [{
+                            xtype: 'grid',
+                            store: storeNoConfirm,
+                            columns: [
+                                {text: 'DocEntry', dataIndex: 'DocEntry', width: 120},
+                                {
+                                    text: 'Error',
+                                    dataIndex: 'mensaje',
+                                    flex: 1,
+                                    renderer: v => `<span style="color:red; white-space: normal; word-break: break-word;">${v}</span>`
+                                }
+                            ]
+                        }]
+                    }
+                ]
+            }],
 
             buttons: [{
-                    text: 'Cerrar',
-                    handler: function () {
-                        win.close();
-                    }
-                }]
+                text: 'Cerrar',
+                handler: function () {
+                    win.close();
+                }
+            }]
         });
-
 
         win.show();
     }
@@ -322,7 +298,7 @@ Ext.define('Modulos.global.PanelConsignatarios', {
         'ConsignatariosUtils'
     ],
     alias: 'widget.PanelConsignatarios',
-    id: 'idMenu502', // ID único que coincide con el del árbol
+    id: 'idMenu502',
     title: 'Consignatarios',
     bodyPadding: '10 10 10 10',
     layout: {
@@ -332,7 +308,6 @@ Ext.define('Modulos.global.PanelConsignatarios', {
     scrollable: true,
     initComponent: function () {
         var me = this;
-        // === Modelo ===
 
         Ext.define('modelDirecciones', {
             extend: 'Ext.data.Model',
@@ -362,15 +337,14 @@ Ext.define('Modulos.global.PanelConsignatarios', {
             id: 'storeDirecciones',
             model: 'modelDirecciones',
             autoLoad: false,
-            pageSize: 100, // Debe coincidir con lo que esperas
+            pageSize: 100,
             proxy: {
                 type: "ajax",
                 url: contexto + "/Consignatarios",
-                // ExtJS envía automáticamente page, start y limit
                 reader: {
                     type: "json",
-                    rootProperty: "Data", // Coincide con public ArrayList<ArrDataConsignatarios> Data
-                    totalProperty: "Meta.TotalRecords" // Acceso anidado al total de registros
+                    rootProperty: "Data",
+                    totalProperty: "Meta.TotalRecords"
                 }
             }
         });
@@ -423,125 +397,37 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                                     addTooltip(btn, 'Regresar');
                                 }
                             }
-                        },
+                        }
                     ],
                     columns: {
                         defaults: {
-                            filter: {
-                                type: "string"
-                            }
+                            filter: { type: "string" }
                         },
                         items: [
-                            {
-                                text: "#",
-                                xtype: "rownumberer",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "DocEntry",
-                                dataIndex: "DocEntry",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "AddressCode",
-                                dataIndex: "AddressCode",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "CardCode",
-                                dataIndex: "CardCode",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "CardName",
-                                dataIndex: "CardName",
-                                flex: 1
-                            },
-                            {
-                                text: "CardType",
-                                dataIndex: "CardType",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "AdresType",
-                                dataIndex: "AdresType",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "Address",
-                                dataIndex: "Address",
-                                flex: 1
-                            },
-                            {
-                                text: "Address2",
-                                dataIndex: "Address2",
-                                flex: 1
-                            },
-                            {
-                                text: "Address3",
-                                dataIndex: "Address3",
-                                flex: 1
-                            },
-                            {
-                                text: "Street",
-                                dataIndex: "Street",
-                                flex: 1
-                            },
-                            {
-                                text: "StreetNo",
-                                dataIndex: "StreetNo",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "Building",
-                                dataIndex: "Building",
-                                flex: 1
-                            },
-                            {
-                                text: "Block",
-                                dataIndex: "Block",
-                                flex: 1
-                            },
-                            {
-                                text: "ZipCode",
-                                dataIndex: "ZipCode",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "City",
-                                dataIndex: "City",
-                                flex: 1
-                            },
-                            {
-                                text: "County",
-                                dataIndex: "County",
-                                flex: 1
-                            },
-                            {
-                                text: "State",
-                                dataIndex: "State",
-                                flex: 1,
-                                align: "center"
-                            },
-                            {
-                                text: "Country",
-                                dataIndex: "Country",
-                                flex: 1,
-                                align: "center"
-                            }
+                            { text: "#", xtype: "rownumberer", flex: 1, align: "center" },
+                            { text: "DocEntry", dataIndex: "DocEntry", flex: 1, align: "center" },
+                            { text: "AddressCode", dataIndex: "AddressCode", flex: 1, align: "center" },
+                            { text: "CardCode", dataIndex: "CardCode", flex: 1, align: "center" },
+                            { text: "CardName", dataIndex: "CardName", flex: 1 },
+                            { text: "CardType", dataIndex: "CardType", flex: 1, align: "center" },
+                            { text: "AdresType", dataIndex: "AdresType", flex: 1, align: "center" },
+                            { text: "Address", dataIndex: "Address", flex: 1 },
+                            { text: "Address2", dataIndex: "Address2", flex: 1 },
+                            { text: "Address3", dataIndex: "Address3", flex: 1 },
+                            { text: "Street", dataIndex: "Street", flex: 1 },
+                            { text: "StreetNo", dataIndex: "StreetNo", flex: 1, align: "center" },
+                            { text: "Building", dataIndex: "Building", flex: 1 },
+                            { text: "Block", dataIndex: "Block", flex: 1 },
+                            { text: "ZipCode", dataIndex: "ZipCode", flex: 1, align: "center" },
+                            { text: "City", dataIndex: "City", flex: 1 },
+                            { text: "County", dataIndex: "County", flex: 1 },
+                            { text: "State", dataIndex: "State", flex: 1, align: "center" },
+                            { text: "Country", dataIndex: "Country", flex: 1, align: "center" }
                         ]
                     },
                     bbar: {
                         xtype: 'pagingtoolbar',
-                        store: me.storeDirecciones, // El mismo store del grid
+                        store: me.storeDirecciones,
                         displayInfo: true,
                         displayMsg: 'Mostrando {0} - {1} de {2}',
                         emptyMsg: 'No hay datos'
@@ -550,20 +436,13 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                         edit: function (editor, e) {
                             e.record.commit();
                         },
-                        rowdblclick: function (editor, e, eOpts) {
-
-                        },
-                        rowclick: function (grid, record) {
-
-                        },
                         afterrender: function (grid) {
-
                             if (grid.isVisible() && !grid.isSearchExecuted) {
-                                grid.isSearchExecuted = true; // Marca que la búsqueda se ha ejecutado
+                                grid.isSearchExecuted = true;
                                 ConsignatariosUtils.BtnBusqConsignatarios();
                             }
                         }
-                    },
+                    }
                 }
             ],
             features: [
@@ -573,11 +452,9 @@ Ext.define('Modulos.global.PanelConsignatarios', {
                     hideGroupedHeader: true,
                     enableGroupingMenu: false
                 },
-                {
-                    ftype: 'groupingsummary'
-                },
-            ],
+                { ftype: 'groupingsummary' }
+            ]
         });
         me.callParent(arguments);
-    },
+    }
 });
