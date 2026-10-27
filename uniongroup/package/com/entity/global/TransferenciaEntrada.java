@@ -22,4 +22,5 @@ public class TransferenciaEntrada {
     public String TEFechaInsercion;
     public String entid;
     public String comestatus;
+    public int CONFIRMCOUNT;
 }

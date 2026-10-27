@@ -1,4 +1,4 @@
-/**
+﻿/**
  *
  * Norwegian translation (Nynorsk: no-NN)
  * By Tore KjÃ¸rsvik 21-January-2008

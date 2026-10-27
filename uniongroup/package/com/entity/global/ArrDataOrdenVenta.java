@@ -24,4 +24,5 @@ public class ArrDataOrdenVenta {
     public String OVFechaInsercion;
     public int preid;
     public String preestatus;
+    public int CONFIRMCOUNT;
 }

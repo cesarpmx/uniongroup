@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Macedonia translation
  * By PetarD petar.dimitrijevic@vorteksed.com.mk (utf8 encoding)
  * 23 April 2007

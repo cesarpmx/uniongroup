@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Portuguese/Portugal (pt_PT) Translation
  * by Nuno Franco da Costa - francodacosta.com
  * translated from ext-lang-en.js
@@ -38,7 +38,7 @@ Ext.onReady(function() {
                 .toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"];
+        Ext.Date.dayNames = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "Sábado"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -106,7 +106,7 @@ Ext.define('Ext.locale.pt_PT.picker.Date', {
     override: 'Ext.picker.Date',
 
     config: {
-        doneButton: 'DisponÃ­vel',
+        doneButton: 'Disponível',
         monthText: 'MÃªs',
         dayText: 'Dia',
         yearText: 'Ano'
@@ -149,27 +149,27 @@ Ext.define('Ext.locale.pt_PT.field.Field', {
     override: 'Ext.field.Field',
 
     config: {
-        requiredMessage: 'Este campo Ã© necessÃ¡rio',
-        validationMessage: 'EstÃ¡ com formato errado'
+        requiredMessage: 'Este campo é necessário',
+        validationMessage: 'Está com formato errado'
     }
 });
 
 Ext.define('Ext.locale.pt_PT.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'O valor mÃ¡ximo de decimais Ã© {0}',
-    minValueText: 'O valor mÃ­nimo para esse campo Ã© {0}',
-    maxValueText: 'O valor mÃ¡ximo para esse campo Ã© {0}',
-    badFormatMessage: 'Valor nÃ£o Ã© um nÃºmero vÃ¡lido'
+    decimalsText: 'O valor máximo de decimais é {0}',
+    minValueText: 'O valor mínimo para esse campo é {0}',
+    maxValueText: 'O valor máximo para esse campo é {0}',
+    badFormatMessage: 'Valor nÃ£o é um número válido'
 });
 
 Ext.define('Ext.locale.pt_PT.field.Text', {
     override: 'Ext.field.Text',
 
-    badFormatMessage: 'Valor nÃ£o estÃ¡ no formato desejado',
+    badFormatMessage: 'Valor nÃ£o está no formato desejado',
     config: {
-        requiredMessage: 'Este campo Ã© necessÃ¡rio',
-        validationMessage: 'EstÃ¡ com formato errado'
+        requiredMessage: 'Este campo é necessário',
+        validationMessage: 'Está com formato errado'
     }
 });
 
@@ -294,7 +294,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Presence', {
     override: 'Ext.data.validator.Presence',
 
     config: {
-        message: 'Este campo Ã© necessÃ¡rio'
+        message: 'Este campo é necessário'
     }
 });
 
@@ -302,7 +302,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'EstÃ¡ com formato errado'
+        message: 'Está com formato errado'
     }
 });
 
@@ -310,7 +310,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'NÃ£o Ã© um e-mail vÃ¡lido'
+        message: 'NÃ£o é um e-mail válido'
     }
 });
 
@@ -318,7 +318,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'NÃ£o Ã© um telefone vÃ¡lido'
+        message: 'NÃ£o é um telefone válido'
     }
 });
 
@@ -326,7 +326,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: 'NÃ£o Ã© um nÃºmero vÃ¡lido'
+        message: 'NÃ£o é um número válido'
     }
 });
 
@@ -334,7 +334,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'NÃ£o Ã© uma URL vÃ¡lida'
+        message: 'NÃ£o é uma URL válida'
     }
 });
 
@@ -342,7 +342,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Deve ser numÃ©rico',
+        nanMessage: 'Deve ser numérico',
         minOnlyMessage: 'Deve ser pelo menos {0}',
         maxOnlyMessage: 'NÃ£o deve ser mais que {0}',
         bothMessage: 'Deve estar entre {0} e {1}'
@@ -364,7 +364,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'NÃ£o Ã© um bloco CIDR vÃ¡lido'
+        message: 'NÃ£o é um bloco CIDR válido'
     }
 });
 
@@ -372,7 +372,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'NÃ£o Ã© um bloco CIDR vÃ¡lido'
+        message: 'NÃ£o é um bloco CIDR válido'
     }
 });
 
@@ -380,7 +380,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'NÃ£o Ã© um valor monetÃ¡rio vÃ¡lido'
+        message: 'NÃ£o é um valor monetário válido'
     }
 
 });
@@ -389,7 +389,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'NÃ£o Ã© uma data e hora vÃ¡lida'
+        message: 'NÃ£o é uma data e hora válida'
     }
 });
 
@@ -397,7 +397,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'Ã um valor que foi excluÃ­do'
+        message: 'É um valor que foi excluído'
     }
 });
 
@@ -405,7 +405,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'NÃ£o Ã© um endereÃ§o IP vÃ¡lido'
+        message: 'NÃ£o é um endereÃ§o IP válido'
     }
 });
 
@@ -413,7 +413,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'NÃ£o estÃ¡ na lista de valores vÃ¡lidos'
+        message: 'NÃ£o está na lista de valores válidos'
     }
 });
 
@@ -421,7 +421,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'NÃ£o Ã© um momento vÃ¡lido'
+        message: 'NÃ£o é um momento válido'
     }
 });
 
@@ -429,7 +429,7 @@ Ext.define('Ext.locale.pt_PT.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "NÃ£o Ã© uma data vÃ¡lida"
+        message: "NÃ£o é uma data válida"
     }
 });
 

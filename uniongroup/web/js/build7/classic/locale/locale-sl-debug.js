@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Slovenian translation by MatjaÅ¾ (UTF-8 encoding)
  * 25 April 2007
  */

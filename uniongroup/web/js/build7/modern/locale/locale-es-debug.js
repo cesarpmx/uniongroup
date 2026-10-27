@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Spanish/Latin American Translation
  */
 Ext.onReady(function() {
@@ -37,18 +37,18 @@ Ext.onReady(function() {
         };
 
         Ext.Date.dayNames = [
-            "Domingo", "Lunes", "Martes", "MiÃ©rcoles", "Jueves",
-            "Viernes", "SÃ¡bado"
+            "Domingo", "Lunes", "Martes", "Miércoles", "Jueves",
+            "Viernes", "Sábado"
         ];
 
         Ext.Date.getShortDayName = function(day) {
 
             if (day === 3) {
-                return "MiÃ©";
+                return "Mié";
             }
 
             if (day === 6) {
-                return "SÃ¡b";
+                return "Sáb";
             }
 
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -133,8 +133,8 @@ Ext.define('Ext.locale.es.picker.Date', {
     config: {
         doneButton: 'Listo',
         monthText: 'Mes',
-        dayText: 'DÃ­a',
-        yearText: 'AÃ±o'
+        dayText: 'Día',
+        yearText: 'Año'
     }
 });
 
@@ -151,7 +151,7 @@ Ext.define('Ext.locale.es.panel.Date', {
     override: 'Ext.panel.Date',
 
     config: {
-        nextText: 'Mes prÃ³ximo (Control + derecha)',
+        nextText: 'Mes próximo (Control + derecha)',
         prevText: 'Mes anterior (Control + izquierda)',
         buttons: {
             footerTodayButton: {
@@ -175,17 +175,17 @@ Ext.define('Ext.locale.es.field.Field', {
 
     config: {
         requiredMessage: 'Este campo es requerido',
-        validationMessage: 'EstÃ¡ en el formato incorrecto'
+        validationMessage: 'Está en el formato incorrecto'
     }
 });
 
 Ext.define('Ext.locale.es.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'El nÃºmero decimal mÃ¡ximo es (0)',
-    minValueText: 'El valor mÃ­nimo para este campo es (0)',
-    maxValueText: 'El valor mÃ¡ximo para este campo es {0}',
-    badFormatMessage: 'El valor no es un nÃºmero vÃ¡lido'
+    decimalsText: 'El número decimal máximo es (0)',
+    minValueText: 'El valor mínimo para este campo es (0)',
+    maxValueText: 'El valor máximo para este campo es {0}',
+    badFormatMessage: 'El valor no es un número válido'
 });
 
 Ext.define('Ext.locale.es.field.Text', {
@@ -194,7 +194,7 @@ Ext.define('Ext.locale.es.field.Text', {
     badFormatMessage: 'El valor no coincide con el formato requerido',
     config: {
         requiredMessage: 'Este campo es requerido',
-        validationMessage: 'EstÃ¡ en el formato incorrecto'
+        validationMessage: 'Está en el formato incorrecto'
     }
 });
 
@@ -206,7 +206,7 @@ Ext.define('Ext.locale.es.Dialog', {
             tooltip: "Maximizar a pantalla completa"
         },
         restoreTool: {
-            tooltip: "Restaurar al tamaÃ±o original"
+            tooltip: "Restaurar al tamaño original"
         }
     }
 });
@@ -231,7 +231,7 @@ Ext.define('Ext.locale.es.dataview.EmptyText', {
     override: 'Ext.dataview.EmptyText',
 
     config: {
-        html: 'Sin visualizaciÃ³n de datos'
+        html: 'Sin visualización de datos'
     }
 });
 
@@ -255,8 +255,8 @@ Ext.define('Ext.locale.es.dataview.plugin.ListPaging', {
     override: 'Ext.dataview.plugin.ListPaging',
 
     config: {
-        loadMoreText: 'Carga mÃ¡s',
-        noMoreRecordsText: 'No mÃ¡s registros'
+        loadMoreText: 'Carga más',
+        noMoreRecordsText: 'No más registros'
     }
 });
 
@@ -327,7 +327,7 @@ Ext.define('Ext.locale.es.data.validator.Format', {
     override: 'Ext.data.validator.Format',
 
     config: {
-        message: 'EstÃ¡ en el formato incorrecto'
+        message: 'Está en el formato incorrecto'
     }
 });
 
@@ -335,7 +335,7 @@ Ext.define('Ext.locale.es.data.validator.Email', {
     override: 'Ext.data.validator.Email',
 
     config: {
-        message: 'No es una direcciÃ³n de correo electrÃ³nico vÃ¡lida'
+        message: 'No es una dirección de correo electrónico válida'
     }
 });
 
@@ -343,7 +343,7 @@ Ext.define('Ext.locale.es.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: 'No es un nÃºmero de telÃ©fono vÃ¡lido'
+        message: 'No es un número de teléfono válido'
     }
 });
 
@@ -351,7 +351,7 @@ Ext.define('Ext.locale.es.data.validator.Number', {
     override: 'Ext.data.validator.Number',
 
     config: {
-        message: 'No es un nÃºmero vÃ¡lido'
+        message: 'No es un número válido'
     }
 });
 
@@ -359,7 +359,7 @@ Ext.define('Ext.locale.es.data.validator.Url', {
     override: 'Ext.data.validator.Url',
 
     config: {
-        message: 'No es una URL vÃ¡lida'
+        message: 'No es una URL válida'
     }
 });
 
@@ -367,9 +367,9 @@ Ext.define('Ext.locale.es.data.validator.Range', {
     override: 'Ext.data.validator.Range',
 
     config: {
-        nanMessage: 'Debe ser numÃ©rico',
+        nanMessage: 'Debe ser numérico',
         minOnlyMessage: 'Debe ser al menos {0}',
-        maxOnlyMessage: 'No debe ser mÃ¡s que {0}',
+        maxOnlyMessage: 'No debe ser más que {0}',
         bothMessage: 'Debe estar entre {0} y {1}'
     }
 });
@@ -389,7 +389,7 @@ Ext.define('Ext.locale.es.data.validator.CIDRv4', {
     override: 'Ext.data.validator.CIDRv4',
 
     config: {
-        message: 'No es un bloque CIDR vÃ¡lido'
+        message: 'No es un bloque CIDR válido'
     }
 });
 
@@ -397,7 +397,7 @@ Ext.define('Ext.locale.es.data.validator.CIDRv6', {
     override: 'Ext.data.validator.CIDRv6',
 
     config: {
-        message: 'No es un bloque CIDR vÃ¡lido'
+        message: 'No es un bloque CIDR válido'
     }
 });
 
@@ -405,7 +405,7 @@ Ext.define('Ext.locale.es.data.validator.Currency', {
     override: 'Ext.data.validator.Currency',
 
     config: {
-        message: 'No es una cantidad de moneda vÃ¡lida'
+        message: 'No es una cantidad de moneda válida'
     }
 
 });
@@ -414,7 +414,7 @@ Ext.define('Ext.locale.es.data.validator.DateTime', {
     override: 'Ext.data.validator.DateTime',
 
     config: {
-        message: 'No es una fecha y hora vÃ¡lidas'
+        message: 'No es una fecha y hora válidas'
     }
 });
 
@@ -430,7 +430,7 @@ Ext.define('Ext.locale.es.data.validator.IPAddress', {
     override: 'Ext.data.validator.IPAddress',
 
     config: {
-        message: 'No es una direcciÃ³n IP vÃ¡lida'
+        message: 'No es una dirección IP válida'
     }
 });
 
@@ -438,7 +438,7 @@ Ext.define('Ext.locale.es.data.validator.Inclusion', {
     override: 'Ext.data.validator.Inclusion',
 
     config: {
-        message: 'No estÃ¡ en la lista de valores aceptables'
+        message: 'No está en la lista de valores aceptables'
     }
 });
 
@@ -446,7 +446,7 @@ Ext.define('Ext.locale.es.data.validator.Time', {
     override: 'Ext.data.validator.Time',
 
     config: {
-        message: 'No es un momento vÃ¡lido'
+        message: 'No es un momento válido'
     }
 });
 
@@ -454,7 +454,7 @@ Ext.define('Ext.locale.es.data.validator.Date', {
     override: 'Ext.data.validator.Date',
 
     config: {
-        message: "No es una fecha vÃ¡lida"
+        message: "No es una fecha válida"
     }
 });
 
@@ -495,7 +495,7 @@ Ext.define("Ext.locale.es.grid.locked.Grid", {
         columnMenu: {
             items: {
                 region: {
-                    text: 'RegiÃ³n'
+                    text: 'Región'
                 }
             }
         },

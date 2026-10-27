@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Serbian Cyrillic Translation
  * by Äolovic Vladan (cyrillic, utf8 encoding)
  * sr_RS (ex: sr_CS, sr_YU)

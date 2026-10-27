@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Serbian Latin Translation
  * by Atila Hajnal (latin, utf8 encoding)
  * sr

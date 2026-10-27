@@ -115,6 +115,7 @@ public class CtrlRetornos extends HttpServlet {
                 item.put("CardCode", orden.ReturnRequest.CardCode);
                 item.put("Memo", orden.ReturnRequest.Memo);
                 item.put("Warehouse", orden.ReturnRequest.Warehouse);
+                item.put("NumAtCard", orden.ReturnRequest.NumAtCard);
                 item.put("Status", orden.ReturnRequest.Status);
                 item.put("OrderTotal", orden.ControlValues.OrderTotal);
                 item.put("TotalLines", orden.ControlValues.TotalLines);
@@ -177,6 +178,8 @@ public class CtrlRetornos extends HttpServlet {
             // 1. POST a nuestro backend (ORDS)
             String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornos");
             JSONVal = requetPost.getPost(service, jsonLineaNegocio, request);
+            
+            System.out.println(jsonLineaNegocio);
 
             // 2. Parsear respuesta
             ObjectMapper mapper = new ObjectMapper();
@@ -319,12 +322,13 @@ public class CtrlRetornos extends HttpServlet {
     }
     
     
-    public String EnviarReturnConfirm(HttpServletRequest request, HttpServletResponse response) {
+   public String EnviarReturnConfirm(HttpServletRequest request, HttpServletResponse response) {
     String JSONVal = "";
     String jsonReceipt = Utilities.obtenParametro(request, "valores");
+    String rtnid = Utilities.obtenParametro(request, "rtnid");
+    String esCompleta = Utilities.obtenParametro(request, "esCompleta"); // "S" o "N"
+
     RequestPostApi requetPost = new RequestPostApi();
-    
-    // El ObjectMapper se define una sola vez fuera del try para mayor eficiencia
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -332,38 +336,73 @@ public class CtrlRetornos extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // 1. Parsear el JSON recibido del frontend
-        Map<String, Object> receiptData = mapper.readValue(jsonReceipt, Map.class);
+        // 1. Extraer datos enviados por si el cliente responde sin cuerpo
+        Map<String, Object> datosEnviados = mapper.readValue(jsonReceipt, Map.class);
+        Map<String, Object> returnConfirm = (Map<String, Object>) datosEnviados.get("ReturnConfirm");
 
-        // 2. Enviar al API del cliente GLOBAL
-        String serviceCliente = props.getValueProp("HostGlobalInsert")
-                + props.getValueProp("ServiceReturnConfirm");
+        // 2. Enviar confirmación al API de Vector Delta
+        String serviceCliente = props.getValueProp("HostGlobalInsert").trim()
+                + props.getValueProp("ServiceReturnConfirm").trim();
 
         String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
 
-        // 3. DOBLE DESERIALIZACIÓN (CORRECCIÓN CRÍTICA AQUÍ)
-        // El API devuelve un String que contiene un Array JSON: "[{...}]"
-        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
-        
-        // Cambiamos Map.class por TypeReference<List<Map<String, Object>>> 
-        // para poder recibir el formato [ ] que causaba el error.
-        List<Map<String, Object>> listaRespuestas = mapper.readValue(jsonLimpio, 
-                new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {});
-
+        // 3. Manejo seguro de la respuesta de Vector Delta
         Map<String, Object> clienteResponse = new HashMap<>();
 
-        // Validamos que la lista tenga contenido antes de extraer el primer objeto
-        if (listaRespuestas != null && !listaRespuestas.isEmpty()) {
-            clienteResponse = listaRespuestas.get(0);
+        if (respuestaCliente == null || respuestaCliente.trim().isEmpty() || respuestaCliente.trim().equals("\"\"")) {
+            // Respuesta vacía con HTTP 200
+            clienteResponse.put("DocNum", returnConfirm.get("DocNum"));
+            clienteResponse.put("TransactionNumber", returnConfirm.get("TransactionNumber"));
+            clienteResponse.put("DocDate", returnConfirm.get("DocDate"));
+            clienteResponse.put("SystemDate", returnConfirm.get("DocDate"));
+
+            Map<String, Object> statusInfo = new HashMap<>();
+            statusInfo.put("Status", 200);
+            statusInfo.put("Mensaje", "200 OK: Enviado correctamente, Vector Delta no devolvió respuesta");
+            clienteResponse.put("StatusInfo", statusInfo);
+
         } else {
-            throw new Exception("La respuesta del API Global está vacía (Array vacío)");
+            try {
+                String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+
+                // Si viene como lista [ { ... } ]
+                if (jsonLimpio.trim().startsWith("[")) {
+                    List<Map<String, Object>> lista = mapper.readValue(jsonLimpio,
+                            new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {});
+                    if (!lista.isEmpty()) {
+                        clienteResponse = lista.get(0);
+                    }
+                } else if (jsonLimpio.trim().startsWith("{")) {
+                    clienteResponse = mapper.readValue(jsonLimpio, Map.class);
+                } else {
+                    // Si viene como GUID en texto plano
+                    clienteResponse.put("DocNum", returnConfirm.get("DocNum"));
+                    clienteResponse.put("TransactionNumber", returnConfirm.get("TransactionNumber"));
+                    clienteResponse.put("DocDate", returnConfirm.get("DocDate"));
+                    clienteResponse.put("SystemDate", returnConfirm.get("DocDate"));
+
+                    Map<String, Object> statusInfo = new HashMap<>();
+                    statusInfo.put("Status", 200);
+                    statusInfo.put("Mensaje", jsonLimpio.trim());
+                    clienteResponse.put("StatusInfo", statusInfo);
+                }
+            } catch (Exception exParse) {
+                clienteResponse.put("DocNum", returnConfirm.get("DocNum"));
+                clienteResponse.put("TransactionNumber", returnConfirm.get("TransactionNumber"));
+                clienteResponse.put("DocDate", returnConfirm.get("DocDate"));
+                clienteResponse.put("SystemDate", returnConfirm.get("DocDate"));
+
+                Map<String, Object> statusInfo = new HashMap<>();
+                statusInfo.put("Status", 200);
+                statusInfo.put("Mensaje", "OK - Acuse: " + respuestaCliente.trim());
+                clienteResponse.put("StatusInfo", statusInfo);
+            }
         }
 
-        // 4. CONSTRUIR JSON PARA GUARDAR EN UG_CONFIRMATION_LOG
+        // 4. Registrar bitácora en UG_CONFIRMATION_LOG
         Map<String, Object> confirmationLog = new HashMap<>();
         confirmationLog.put("CLOPROCESS", "ReturnConfirmDEV");
 
-        // Extraer Status y Mensaje del StatusInfo
         if (clienteResponse.get("StatusInfo") != null) {
             Map<String, Object> statusInfo = (Map<String, Object>) clienteResponse.get("StatusInfo");
             confirmationLog.put("CLOSTATUS", statusInfo.get("Status"));
@@ -380,38 +419,50 @@ public class CtrlRetornos extends HttpServlet {
 
         String confirmationJson = mapper.writeValueAsString(confirmationLog);
 
-        // 5. GUARDAR EN TU API LOCAL (LOG)
         try {
-            String serviceLog = "https://seyl.mx/apps/globale/uniongroup/confirmationlog/";
-            String resultadoLog = requetPost.getPost(serviceLog, confirmationJson, request);
-
-            Map<String, Object> logResponse = mapper.readValue(resultadoLog, Map.class);
-            if (logResponse.get("success") != null && (Boolean) logResponse.get("success")) {
-                System.out.println("Log guardado exitosamente con CLOID: " + logResponse.get("CLOID"));
-            } else {
-                System.out.println("Advertencia al guardar log: " + logResponse.get("message"));
-            }
+            String serviceLog = props.getValueProp("Host").trim() + props.getValueProp("ServiceConfirmationLog").trim();
+            requetPost.getPost(serviceLog, confirmationJson, request);
         } catch (Exception logEx) {
-            System.out.println("Error al guardar en Confirmation Log (no crítico):");
-            logEx.printStackTrace();
+            System.out.println("Error al guardar en Confirmation Log (no crítico): " + logEx.getMessage());
         }
 
-        // 6. Construir respuesta final para el Frontend
+        // 5. Asentar cantidades y estatus en BD Local
+        if (rtnid != null && !rtnid.isEmpty()) {
+            try {
+                Map<String, Object> payloadConfirm = new HashMap<>();
+                payloadConfirm.put("rtnid", Integer.parseInt(rtnid));
+                payloadConfirm.put("esCompleta", esCompleta);
+
+                String jsonConfirm = mapper.writeValueAsString(payloadConfirm);
+
+                String serviceConfirmLocal = props.getValueProp("Host").trim()
+                        + props.getValueProp("ServiceRetornosConfirm").trim();
+
+                String resLocal = requetPost.setPut(serviceConfirmLocal, jsonConfirm, request);
+                System.out.println("Confirmación local ejecutada: " + resLocal);
+
+            } catch (Exception exLocal) {
+                System.out.println("Error al actualizar cantidades en BD local:");
+                exLocal.printStackTrace();
+            }
+        }
+
+        // 6. Construir respuesta para ExtJS
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("success", true);
-        resultado.put("message", "Confirmación de recepción enviada exitosamente");
+        resultado.put("message", "Confirmación de retorno procesada exitosamente");
         resultado.put("clienteResponse", clienteResponse);
 
         JSONVal = mapper.writeValueAsString(resultado);
 
     } catch (Exception e) {
-        System.out.println("Error en EnviarReceiptConfirm:");
+        System.out.println("Error en EnviarReturnConfirm:");
         e.printStackTrace();
 
         try {
             Map<String, Object> error = new HashMap<>();
             error.put("success", false);
-            error.put("message", "Error al procesar ReceiptConfirm: " + e.getMessage());
+            error.put("message", "Error al procesar ReturnConfirm: " + e.getMessage());
             JSONVal = mapper.writeValueAsString(error);
         } catch (Exception ex) {
             JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";

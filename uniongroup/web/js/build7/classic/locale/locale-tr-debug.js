@@ -1,4 +1,4 @@
-Ext.onReady(function() {
+﻿Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Ocak", "Åubat", "Mart", "Nisan", "MayÄ±s", "Haziran", "Temmuz", "AÄustos", "EylÃ¼l", "Ekim", "KasÄ±m", "AralÄ±k"];

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * German translation
  * 2007-Apr-07 update by schmidetzki and humpdi
  * 2007-Oct-31 update by wm003

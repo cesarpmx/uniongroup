@@ -16,4 +16,5 @@ public class ArrOrdenesVentaLine {
     public int Quantity; 
     public int DOVOVID; 
     public String coms;
+    public int CONFIRMEDQUANTITY;
 }

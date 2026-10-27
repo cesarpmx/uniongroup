@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Romanian translations for ExtJS 2.1
  * First released by Lucian Lature on 2007-04-24
  * Changed locale for Romania (date formats) as suggested by keypoint

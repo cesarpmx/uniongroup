@@ -18,4 +18,5 @@ public class LineaTransferenciaEntrada {
     public int detid;
     public String coms;
     public int receivedquantity;
+    public int CONFIRMEDQUANTITY;
 }

@@ -1,4 +1,4 @@
-Ext.define('Ext.locale.it.ux.colorpick.Selector', {
+﻿Ext.define('Ext.locale.it.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'OK',
@@ -323,7 +323,7 @@ Ext.define("Ext.locale.it.field.FileButton", {
 Ext.define('Ext.locale.it.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'El nÃºmero mÃ¡ximo de decimales es  {0}',
+    decimalsText: 'El número máximo de decimales es  {0}',
     minValueText: 'Il valore minimo per questo campo Ã¨ {0}',
     maxValueText: 'Il valore massimo per questo campo Ã¨ {0}',
     badFormatMessage: 'Il valore non Ã¨ un numero valido'

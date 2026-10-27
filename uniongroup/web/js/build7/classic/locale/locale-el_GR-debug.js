@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Greek translation
  * By thesilentman (utf8 encoding)
  * 27 Apr 2008

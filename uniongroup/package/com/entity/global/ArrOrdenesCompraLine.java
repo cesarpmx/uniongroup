@@ -19,4 +19,5 @@ public class ArrOrdenesCompraLine {
     public int dcoid;
     public String coms;
     public int receivedquantity;
+    public int CONFIRMEDQUANTITY;
 }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Ukrainian translations for ExtJS (UTF-8 encoding)
  *
  * Original translation by zlatko

@@ -1,4 +1,4 @@
-Ext.define('Ext.theme.neptune.Component', {
+﻿Ext.define('Ext.theme.neptune.Component', {
     override: 'Ext.Component',
     initComponent: function() {
         this.callParent();

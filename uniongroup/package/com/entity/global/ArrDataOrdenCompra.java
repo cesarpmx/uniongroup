@@ -23,4 +23,5 @@ public class ArrDataOrdenCompra {
     public int comid;
     public String comestatus;
     public String Warehouse;
+    public int CONFIRMCOUNT;
 }

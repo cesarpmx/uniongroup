@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Portuguese/Brazil Translation by Weber Souza
  * 08 April 2007
  * Updated by Allan Brazute Alves (EthraZa)

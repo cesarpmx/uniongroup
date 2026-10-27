@@ -326,111 +326,142 @@ public class CtrlTranferenciaEntrada extends HttpServlet {
         }
     }
     
-    public String EnviarTransferReceiptConfirm(HttpServletRequest request, HttpServletResponse response) {
-        String jsonTransferReceipt = Utilities.obtenParametro(request, "valores");
-        RequestPostApi requetPost = new RequestPostApi();
+   public String EnviarTransferReceiptConfirm(HttpServletRequest request, HttpServletResponse response) {
+    String JSONVal = "";
+    String jsonTransferReceipt = Utilities.obtenParametro(request, "valores");
+    String teid = Utilities.obtenParametro(request, "teid");
+    String esCompleta = Utilities.obtenParametro(request, "esCompleta"); // "S" o "N"
 
-        try {
-            String serviceCliente = props.getValueProp("HostGlobalInsert")
-                    + props.getValueProp("ServiceTransferReceiptConfirmGlobal");
+    RequestPostApi requetPost = new RequestPostApi();
 
-            String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonTransferReceipt);
+    try {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            // Verificar si la respuesta está vacía
-            if (respuestaCliente == null || respuestaCliente.trim().isEmpty() || respuestaCliente.equals("\"\"")) {
+        // 1. Extraer los datos enviados para armar el acuse si no devuelven body
+        Map<String, Object> datosEnviados = mapper.readValue(jsonTransferReceipt, Map.class);
+        Map<String, Object> transferReceipt = (Map<String, Object>) datosEnviados.get("TransferReceiptConfirm");
 
-                // Extraer datos del JSON enviado para crear respuesta simulada
-                Map<String, Object> datosEnviados = mapper.readValue(jsonTransferReceipt, Map.class);
-                Map<String, Object> transferReceipt = (Map<String, Object>) datosEnviados.get("TransferReceiptConfirm");
+        // 2. Enviar confirmación a Vector Delta
+        String serviceCliente = props.getValueProp("HostGlobalInsert")
+                + props.getValueProp("ServiceTransferReceiptConfirmGlobal");
 
-                Map<String, Object> respuestaSimulada = new HashMap<>();
-                respuestaSimulada.put("success", true);
-                respuestaSimulada.put("message", "Confirmación de recepción enviada (respuesta vacía del cliente)");
-                respuestaSimulada.put("DocNum", transferReceipt.get("DocNum"));
-                respuestaSimulada.put("NumAtCard", transferReceipt.get("NumAtCard"));
-                respuestaSimulada.put("Status", transferReceipt.get("Status"));
+        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonTransferReceipt);
 
-                // Guardar en log de confirmación
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                String fechaActual = sdf.format(new Date());
+        // 3. Manejo condicional de la respuesta
+        Map<String, Object> clienteResponse = new HashMap<>();
 
-                String serviceLog = props.getValueProp("Host")
-                        + props.getValueProp("ServiceConfirmationLog");
+        if (respuestaCliente == null || respuestaCliente.trim().isEmpty() || respuestaCliente.trim().equals("\"\"")) {
+            // =========================================================================
+            // CASO A: Vector Delta respondió 200 OK pero dejó el cuerpo vacío
+            // =========================================================================
+            clienteResponse.put("DocNum", transferReceipt.get("DocNum"));
+            clienteResponse.put("TransactionNumber", transferReceipt.get("TransactionNumber"));
+            clienteResponse.put("DocDate", transferReceipt.get("DocDate"));
+            clienteResponse.put("SystemDate", transferReceipt.get("DocDate"));
 
-                Map<String, Object> logData = new HashMap<>();
-                logData.put("process", "TE_TransferReceiptConfirmDEV");
-                logData.put("request", jsonTransferReceipt);
-                logData.put("response", "");
-                logData.put("status", "success");
-                logData.put("timestamp", fechaActual);
+            Map<String, Object> statusInfo = new HashMap<>();
+            statusInfo.put("Status", 200);
+            statusInfo.put("Mensaje", "200 OK: Enviado correctamente, Vector Delta no devolvió respuesta");
+            clienteResponse.put("StatusInfo", statusInfo);
 
-                String logJson = mapper.writeValueAsString(logData);
-
-                try {
-                    requetPost.getPost(serviceLog, logJson, request);
-                    System.out.println("? Log guardado en UG_CONFIRMATION_LOG");
-                } catch (Exception e) {
-                    System.out.println("?? No se pudo guardar en log: " + e.getMessage());
-                }
-
-                return mapper.writeValueAsString(respuestaSimulada);
-            }
-
-            // Si hay respuesta, parsearla normalmente (doble deserialización)
-            String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
-
-            Map<String, Object> clienteResponse = mapper.readValue(
-                    jsonLimpio,
-                    new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
-            }
-            );
-
-            // Guardar en log
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            String fechaActual = sdf.format(new Date());
-
-            String serviceLog = props.getValueProp("Host")
-                    + props.getValueProp("ServiceConfirmationLog");
-
-            Map<String, Object> logData = new HashMap<>();
-            logData.put("process", "TE_TransferReceiptConfirmDEV");
-            logData.put("request", jsonTransferReceipt);
-            logData.put("response", respuestaCliente);
-            logData.put("status", "success");
-            logData.put("timestamp", fechaActual);
-
-            String logJson = mapper.writeValueAsString(logData);
-
+        } else {
+            // =========================================================================
+            // CASO B: Vector Delta sí devolvió contenido (se extrae su mensaje real)
+            // =========================================================================
             try {
-                requetPost.getPost(serviceLog, logJson, request);
-                System.out.println("? Log guardado en UG_CONFIRMATION_LOG");
-            } catch (Exception e) {
-                System.out.println("?? No se pudo guardar en log: " + e.getMessage());
-            }
-
-            Map<String, Object> resultado = new HashMap<>();
-            resultado.put("success", true);
-            resultado.put("clienteResponse", clienteResponse);
-
-            return mapper.writeValueAsString(resultado);
-
-        } catch (Exception e) {
-            System.out.println("? Error en EnviarTransferReceiptConfirm:");
-            e.printStackTrace();
-
-            try {
-                Map<String, Object> error = new HashMap<>();
-                error.put("success", false);
-                error.put("error", e.getMessage());
-                return new ObjectMapper().writeValueAsString(error);
+                String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+                clienteResponse = mapper.readValue(jsonLimpio, Map.class);
             } catch (Exception ex) {
-                return "{\"success\":false,\"error\":\"Error desconocido\"}";
+                // Si devuelven el GUID o texto plano según la documentación de SAP B1
+                clienteResponse.put("DocNum", transferReceipt.get("DocNum"));
+                clienteResponse.put("TransactionNumber", transferReceipt.get("TransactionNumber"));
+                clienteResponse.put("DocDate", transferReceipt.get("DocDate"));
+                clienteResponse.put("SystemDate", transferReceipt.get("DocDate"));
+
+                Map<String, Object> statusInfo = new HashMap<>();
+                statusInfo.put("Status", 200);
+                statusInfo.put("Mensaje", respuestaCliente.trim());
+                clienteResponse.put("StatusInfo", statusInfo);
             }
         }
+
+        // 4. Bitácora de confirmación en UG_CONFIRMATION_LOG
+        Map<String, Object> confirmationLog = new HashMap<>();
+        confirmationLog.put("CLOPROCESS", "TE_TransferReceiptConfirmDEV");
+
+        if (clienteResponse.get("StatusInfo") != null) {
+            Map<String, Object> statusInfo = (Map<String, Object>) clienteResponse.get("StatusInfo");
+            confirmationLog.put("CLOSTATUS", statusInfo.get("Status"));
+            confirmationLog.put("CLOMENSSAGE", statusInfo.get("Mensaje"));
+        } else {
+            confirmationLog.put("CLOSTATUS", 200);
+            confirmationLog.put("CLOMENSSAGE", "OK");
+        }
+
+        confirmationLog.put("CLOSYSTEMDATE", clienteResponse.get("SystemDate"));
+        confirmationLog.put("CLOTRANSACTIONNUMBER", clienteResponse.get("TransactionNumber"));
+        confirmationLog.put("CLODOCDATE", clienteResponse.get("DocDate"));
+        confirmationLog.put("CLODOCNUM", clienteResponse.get("DocNum"));
+
+        String confirmationJson = mapper.writeValueAsString(confirmationLog);
+
+        try {
+            String serviceLog = props.getValueProp("Host") + props.getValueProp("ServiceConfirmationLog");
+            requetPost.getPost(serviceLog, confirmationJson, request);
+        } catch (Exception logEx) {
+            System.out.println("Error al guardar log de confirmación (no crítico): " + logEx.getMessage());
+        }
+
+        // 5. Asentar cantidades en BD local (CONFIRMEDQUANTITY, CONFIRMCOUNT y estatus)
+        if (teid != null && !teid.isEmpty()) {
+            try {
+                Map<String, Object> payloadConfirm = new HashMap<>();
+                payloadConfirm.put("TEID", Integer.parseInt(teid));
+                payloadConfirm.put("esCompleta", esCompleta);
+
+                String jsonConfirm = mapper.writeValueAsString(payloadConfirm);
+
+                String serviceConfirmLocal = props.getValueProp("Host")
+                        + props.getValueProp("ServiceTransferenciaEntradaConfirm");
+
+                String resLocal = requetPost.setPut(serviceConfirmLocal, jsonConfirm, request);
+                System.out.println("Confirmación local ejecutada: " + resLocal);
+
+            } catch (Exception exLocal) {
+                System.out.println("Error al actualizar remanente en BD local:");
+                exLocal.printStackTrace();
+            }
+        }
+
+        // 6. Respuesta hacia ExtJS
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("success", true);
+        resultado.put("message", "Confirmación de recepción procesada exitosamente");
+        resultado.put("clienteResponse", clienteResponse);
+
+        JSONVal = mapper.writeValueAsString(resultado);
+
+    } catch (Exception e) {
+        System.out.println("Error en EnviarTransferReceiptConfirm:");
+        e.printStackTrace();
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "Error al procesar transferencia: " + e.getMessage());
+            JSONVal = mapper.writeValueAsString(error);
+        } catch (Exception ex) {
+            JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";
+        }
     }
+
+    return JSONVal;
+}
 
     public String EliminarOrdenEntrada(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "";

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Croatian translation
  * By Ylodi (utf8 encoding)
  * 8 May 2007

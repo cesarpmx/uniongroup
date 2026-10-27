@@ -1,4 +1,4 @@
-// This is needed until we can refactor all of the locales into individual files
+﻿// This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.pt_BR.Component", {
     override: "Ext.Component"
 });
@@ -42,7 +42,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"];
+        Ext.Date.dayNames = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "Sábado"];
     }
 
     if (Ext.util && Ext.util.Format) {
@@ -59,7 +59,7 @@ Ext.onReady(function() {
 
 Ext.define("Ext.locale.pt_BR.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "O valor para este campo Ã© invÃ¡lido"
+    invalidText: "O valor para este campo é inválido"
 });
 Ext.define("Ext.locale.pt_BR.form.field.ComboBox", {
     override: "Ext.form.field.ComboBox",
@@ -75,7 +75,7 @@ Ext.define("Ext.locale.pt_BR.form.field.Date", {
     disabledDatesText: "Desabilitado",
     minText: "A data deste campo deve ser igual ou posterior a {0}",
     maxText: "A data deste campo deve ser igual ou anterior a {0}",
-    invalidText: "{0} nÃ£o Ã© uma data vÃ¡lida - deve ser informado no formato {1}",
+    invalidText: "{0} nÃ£o é uma data válida - deve ser informado no formato {1}",
     format: "d/m/Y"
 });
 Ext.define("Ext.locale.pt_BR.form.field.HtmlEditor", {
@@ -90,8 +90,8 @@ Ext.define("Ext.locale.pt_BR.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
-                title: 'ItÃ¡lico (Ctrl+I)',
-                text: 'Deixa o texto selecionado em itÃ¡lico.',
+                title: 'Itálico (Ctrl+I)',
+                text: 'Deixa o texto selecionado em itálico.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
@@ -151,7 +151,7 @@ Ext.define("Ext.locale.pt_BR.form.field.HtmlEditor", {
             },
             sourceedit: {
                 title: 'Editar Fonte',
-                text: 'Troca para o modo de ediÃ§Ã£o de cÃ³digo fonte.',
+                text: 'Troca para o modo de ediÃ§Ã£o de código fonte.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -159,24 +159,24 @@ Ext.define("Ext.locale.pt_BR.form.field.HtmlEditor", {
 });
 Ext.define("Ext.locale.pt_BR.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "O valor mÃ­nimo para este campo Ã© {0}",
-    maxText: "O valor mÃ¡ximo para este campo Ã© {0}",
-    nanText: "{0} nÃ£o Ã© um nÃºmero vÃ¡lido"
+    minText: "O valor mínimo para este campo é {0}",
+    maxText: "O valor máximo para este campo é {0}",
+    nanText: "{0} nÃ£o é um número válido"
 });
 Ext.define("Ext.locale.pt_BR.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "O tamanho mÃ­nimo para este campo Ã© {0}",
-    maxLengthText: "O tamanho mÃ¡ximo para este campo Ã© {0}",
-    blankText: "Este campo Ã© obrigatÃ³rio.",
+    minLengthText: "O tamanho mínimo para este campo é {0}",
+    maxLengthText: "O tamanho máximo para este campo é {0}",
+    blankText: "Este campo é obrigatório.",
     regexText: "",
     emptyText: null
 });
 Ext.define("Ext.locale.pt_BR.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'Este campo deve ser um endereÃ§o de e-mail vÃ¡lido, no formato "usuario@dominio.com.br"',
+    emailText: 'Este campo deve ser um endereÃ§o de e-mail válido, no formato "usuario@dominio.com.br"',
     urlText: 'Este campo deve ser uma URL no formato "http:/' + '/www.dominio.com.br"',
     alphaText: 'Este campo deve conter apenas letras e _',
-    alphanumText: 'Este campo deve conter apenas letras, nÃºmeros e _'
+    alphanumText: 'Este campo deve conter apenas letras, números e _'
 });
 Ext.define("Ext.locale.pt_BR.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
@@ -215,7 +215,7 @@ Ext.define('Ext.locale.pt_BR.grid.filters.filter.List', {
 });
 Ext.define('Ext.locale.pt_BR.grid.filters.filter.Number', {
     override: 'Ext.grid.filters.filter.Number',
-    emptyText: 'Digite o nÃºmero...'
+    emptyText: 'Digite o número...'
 });
 Ext.define('Ext.locale.pt_BR.grid.filters.filter.String', {
     override: 'Ext.grid.filters.filter.String',
@@ -249,11 +249,11 @@ Ext.define("Ext.locale.pt_BR.panel.Panel", {
 Ext.define("Ext.locale.pt_BR.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Hoje",
-    minText: "Esta data Ã© anterior a menor data",
-    maxText: "Esta data Ã© posterior a maior data",
+    minText: "Esta data é anterior a menor data",
+    maxText: "Esta data é posterior a maior data",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'PrÃ³ximo MÃªs (Control+Direita)',
+    nextText: 'Próximo MÃªs (Control+Direita)',
     prevText: 'MÃªs Anterior (Control+Esquerda)',
     monthYearText: 'Escolha um MÃªs (Control+Cima/Baixo para mover entre os anos)',
     todayTip: "{0} (EspaÃ§o)",
@@ -271,12 +271,12 @@ Ext.define("Ext.locale.pt_BR.tab.Tab", {
 });
 Ext.define("Ext.locale.pt_BR.toolbar.Paging", {
     override: "Ext.PagingToolbar",
-    beforePageText: "PÃ¡gina",
+    beforePageText: "Página",
     afterPageText: "de {0}",
-    firstText: "Primeira PÃ¡gina",
-    prevText: "PÃ¡gina Anterior",
-    nextText: "PrÃ³xima PÃ¡gina",
-    lastText: "Ãltima PÃ¡gina",
+    firstText: "Primeira Página",
+    prevText: "Página Anterior",
+    nextText: "Próxima Página",
+    lastText: "Última Página",
     refreshText: "Atualizar",
     displayMsg: "<b>{0} Ã  {1} de {2} registro(s)</b>",
     emptyMsg: 'Sem registros para exibir'

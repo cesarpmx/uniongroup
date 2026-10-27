@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Lithuanian Translations (UTF-8)
  * Vladas Saulis (vladas at prodata dot lt),  03-29-2009
  * Vladas Saulis (vladas at prodata dot lt),  10-18-2007

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SQL proxy lets you store data in a SQL database.
  * The Sencha Touch SQL proxy outputs model data into an HTML5
  * local database using WebSQL.

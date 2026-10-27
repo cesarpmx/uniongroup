@@ -1,4 +1,4 @@
-function calcular_edad(fecha){ 
+﻿function calcular_edad(fecha){ 
     //actualmente la funcion esta diseñada para recibir una fecha en formato : 1981-06-25 00 00 00
     var date=fecha.substring(0,10);
     var edad;

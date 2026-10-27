@@ -19,9 +19,11 @@ public class ArrDataRetornos {
     public String Status;
     public String FechaInsercion;
     public String Warehouse;
+    public String NumAtCard;
     public int totalrecs;
     public int comid;
     public String comestatus;
     public String retestatus;
+    public int CONFIRMCOUNT;
     
 }

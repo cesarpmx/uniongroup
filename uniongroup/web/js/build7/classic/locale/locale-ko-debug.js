@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Korean Translations By nicetip
  * 05 September 2007
  * Modify by techbug / 25 February 2008

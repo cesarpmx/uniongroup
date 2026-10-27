@@ -30,9 +30,12 @@
                                     DocDate: record.get('DocDate'),
                                     CardCode: record.get('CardCode'),
                                     Memo: record.get('Memo'),
-                                    Warehouse: record.get('Warehouse')
+                                    Warehouse: record.get('Warehouse'),
+                                    NumAtCard: record.get('NumAtCard')
                                 });
                             });
+
+                            console.log(retornosHeader);
 
                             if (retornosHeader.length === 0) {
                                 Ext.getBody().unmask();
@@ -71,7 +74,8 @@
                                                             CardCode: retorno.CardCode,
                                                             Status: retorno.Status,
                                                             Memo: retorno.Memo,
-                                                            Warehouse: retorno.Warehouse
+                                                            Warehouse: retorno.Warehouse,
+                                                            NumAtCard: retorno.NumAtCard
                                                         },
                                                         ReturnLines: lineas
                                                     });
@@ -390,6 +394,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                     'Memo',
                     'Status',
                     'Warehouse',
+                    'NumAtCard',
                     {name: 'TotalLines', type: 'int'}
                 ]
             });
@@ -447,6 +452,7 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                                     return;
                                 }
 
+
                                 NuevosRetornosUtils.guardarNuevosRetornos(selected);
                             }
                         },
@@ -481,43 +487,49 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                     ],
 
                     columns: [
-                        {xtype: 'rownumberer', width: 50},
-
+                        {xtype: 'rownumberer', width: 50, align: 'center'},
                         {
                             text: 'DocNum',
                             dataIndex: 'DocNum',
-                            width: 150,
+                            width: 130,
                             align: 'center',
                             filter: {type: 'string'}
                         },
                         {
                             text: 'Fecha',
                             dataIndex: 'DocDate',
-                            width: 120,
+                            width: 110,
                             align: 'center',
                             filter: {type: 'date'},
                             renderer: function (value) {
-                                return value
-                                        ? Ext.Date.format(new Date(value), 'd/m/Y')
-                                        : '';
+                                return value ? Ext.Date.format(new Date(value), 'd/m/Y') : '';
                             }
+                        },
+                        {
+                            text: 'No. Cliente / Referencia',
+                            dataIndex: 'NumAtCard',
+                            width: 160,
+                            align: 'center',
+                            filter: {type: 'string'}
                         },
                         {
                             text: 'CardCode',
                             dataIndex: 'CardCode',
-                            flex: 1,
+                            width: 130,
+                            align: 'center',
                             filter: {type: 'string'}
                         },
                         {
-                            text: 'Status',
+                            text: 'Estatus',
                             dataIndex: 'Status',
-                            flex: 1,
+                            width: 110,
+                            align: 'center',
                             filter: {type: 'string'}
                         },
                         {
                             text: 'Total Líneas',
                             dataIndex: 'TotalLines',
-                            width: 120,
+                            width: 110,
                             align: 'center',
                             filter: {type: 'number'},
                             renderer: function (value) {
@@ -525,22 +537,32 @@ Ext.define('Modulos.global.FormNuevosRetornos', {
                             }
                         },
                         {
-                            text: 'Memo',
-                            dataIndex: 'Memo',
-                            flex: 1,
+                            text: 'Almacén',
+                            dataIndex: 'Warehouse',
+                            width: 120,
+                            align: 'center',
                             filter: {type: 'string'}
                         },
                         {
-                            text: 'Warehouse',
-                            dataIndex: 'Warehouse',
+                            text: 'Memo',
+                            dataIndex: 'Memo',
                             flex: 1,
-                            filter: {type: 'string'}
+                            minWidth: 250,
+                            filter: {type: 'string'},
+                            renderer: function (val, meta) {
+                                meta.style = "white-space: normal; word-break: break-word;";
+                                return val ? Ext.String.htmlEncode(val) : '';
+                            }
                         }
                     ],
+                    viewConfig: {
+                        stripeRows: true,
+                        enableTextSelection: true
+                    },
 
                     listeners: {
 
-                        // ? CONTADOR DINÃMICO
+                        // ? CONTADOR DINÁMICO
                         selectionchange: function (selModel, selected) {
                             var lbl = Ext.getCmp('lblSeleccionadasRetornos');
                             if (lbl) {

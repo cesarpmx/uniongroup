@@ -1,4 +1,4 @@
-// @tag enterprise
+﻿// @tag enterprise
 /**
  * Reader class to access v1.1 SOAP (Simple Object Access Protocol) services.
  */

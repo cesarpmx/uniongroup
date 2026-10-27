@@ -1,4 +1,4 @@
-/**
+﻿/**
  * German translation
  */
 Ext.onReady(function() {

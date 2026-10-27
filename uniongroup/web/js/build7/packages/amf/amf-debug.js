@@ -1,4 +1,4 @@
-// @tag enterprise
+﻿// @tag enterprise
 /**
  * @class Ext.data.amf.Encoder
  * This class serializes data in the Action Message Format (AMF) format.
