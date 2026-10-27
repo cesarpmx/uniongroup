@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Estonian Translations
  * By Rene Saarsoo (2012-05-28)
  */

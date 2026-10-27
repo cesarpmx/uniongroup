@@ -1,4 +1,4 @@
-Ext.define('Ext.theme.graphite.dom.Element', {
+﻿Ext.define('Ext.theme.graphite.dom.Element', {
     override: 'Ext.dom.Element'
 }, function() {
     Ext.onDocumentReady(function() {

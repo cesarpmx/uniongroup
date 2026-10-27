@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Finnish Translations
  * <tuomas.salo (at) iki.fi>
  * 'Ã¤' should read as lowercase 'a' with two dots on top (&auml;)

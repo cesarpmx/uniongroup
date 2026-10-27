@@ -1,4 +1,4 @@
-/**
+﻿/**
  * List compiled by mystix on the extjs.com forums.
  * Thank you Mystix!
  * Vietnamese translation
@@ -8,23 +8,23 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["ThÃ¡ng 1", "ThÃ¡ng 2", "ThÃ¡ng 3", "ThÃ¡ng 4", "ThÃ¡ng 5", "ThÃ¡ng 6", "ThÃ¡ng 7", "ThÃ¡ng 8", "ThÃ¡ng 9", "ThÃ¡ng 10", "ThÃ¡ng 11", "ThÃ¡ng 12"];
+        Ext.Date.monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
 
-        Ext.Date.dayNames = ["Chá»§ nháº­t", "Thá»© hai", "Thá»© ba", "Thá»© tÆ°", "Thá»© nÄm", "Thá»© sÃ¡u", "Thá»© báº£y"];
+        Ext.Date.dayNames = ["Chá»§ nháº­t", "Thá»© hai", "Thá»© ba", "Thá»© tÆ°", "Thá»© nÄm", "Thá»© sáu", "Thá»© báº£y"];
 
         Ext.Date.monthNumbers = {
-            "ThÃ¡ng 1": 0,
-            "ThÃ¡ng 2": 1,
-            "ThÃ¡ng 3": 2,
-            "ThÃ¡ng 4": 3,
-            "ThÃ¡ng 5": 4,
-            "ThÃ¡ng 6": 5,
-            "ThÃ¡ng 7": 6,
-            "ThÃ¡ng 8": 7,
-            "ThÃ¡ng 9": 8,
-            "ThÃ¡ng 10": 9,
-            "ThÃ¡ng 11": 10,
-            "ThÃ¡ng 12": 11
+            "Tháng 1": 0,
+            "Tháng 2": 1,
+            "Tháng 3": 2,
+            "Tháng 4": 3,
+            "Tháng 5": 4,
+            "Tháng 6": 5,
+            "Tháng 7": 6,
+            "Tháng 8": 7,
+            "Tháng 9": 8,
+            "Tháng 10": 9,
+            "Tháng 11": 10,
+            "Tháng 12": 11
         };
 
         Ext.Date.getShortMonthName = function(month) {
@@ -63,12 +63,12 @@ Ext.define("Ext.locale.vn.grid.plugin.DragDrop", {
 
 Ext.define("Ext.locale.vn.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "ÄÃ³ng tháº» nÃ y"
+    closeText: "Äóng tháº» nÃ y"
 });
 
 Ext.define("Ext.locale.vn.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "GiÃ¡ trá» cá»§a Ã´ nÃ y khÃ´ng há»£p lá»."
+    invalidText: "Giá trá» cá»§a Ã´ nÃ y khÃ´ng há»£p lá»."
 });
 
 // changing the msg text below will affect the LoadMask
@@ -84,10 +84,10 @@ Ext.define("Ext.locale.vn.picker.Date", {
     maxText: "NgÃ y nÃ y lá»n hÆ¡n ngÃ y lá»n nháº¥t",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'ThÃ¡ng sau (Control+Right)',
-    prevText: 'ThÃ¡ng trÆ°á»c (Control+Left)',
-    monthYearText: 'Chá»n má»t thÃ¡ng (Control+Up/Down Äá» thay Äá»i nÄm)',
-    todayTip: "{0} (Spacebar - PhÃ­m tráº¯ng)",
+    nextText: 'Tháng sau (Control+Right)',
+    prevText: 'Tháng trÆ°á»c (Control+Left)',
+    monthYearText: 'Chá»n má»t tháng (Control+Up/Down Äá» thay Äá»i nÄm)',
+    todayTip: "{0} (Spacebar - Phím tráº¯ng)",
     format: "d/m/y"
 });
 
@@ -101,22 +101,22 @@ Ext.define("Ext.locale.vn.toolbar.Paging", {
     lastText: "Trang cuá»i",
     refreshText: "Táº£i láº¡i",
     displayMsg: "Hiá»n thá» {0} - {1} cá»§a {2}",
-    emptyMsg: 'KhÃ´ng cÃ³ dá»¯ liá»u Äá» hiá»n thá»'
+    emptyMsg: 'KhÃ´ng có dá»¯ liá»u Äá» hiá»n thá»'
 });
 
 Ext.define("Ext.locale.vn.form.field.Text", {
     override: "Ext.form.field.Text",
     minLengthText: "Chiá»u dÃ i tá»i thiá»u cá»§a Ã´ nÃ y lÃ  {0}",
     maxLengthText: "Chiá»u dÃ i tá»i Äa cá»§a Ã´ nÃ y lÃ  {0}",
-    blankText: "Ã nÃ y cáº§n pháº£i nháº­p giÃ¡ trá»",
+    blankText: "Ã nÃ y cáº§n pháº£i nháº­p giá trá»",
     regexText: "",
     emptyText: null
 });
 
 Ext.define("Ext.locale.vn.form.field.Number", {
     override: "Ext.form.field.Number",
-    minText: "GiÃ¡ trá» nhá» nháº¥t cá»§a Ã´ nÃ y lÃ  {0}",
-    maxText: "GiÃ¡ trá» lá»n nháº¥t cá»§a Ã´ nÃ y lÃ   {0}",
+    minText: "Giá trá» nhá» nháº¥t cá»§a Ã´ nÃ y lÃ  {0}",
+    maxText: "Giá trá» lá»n nháº¥t cá»§a Ã´ nÃ y lÃ   {0}",
     nanText: "{0} hÃ´ng pháº£i lÃ  má»t sá» há»£p lá»"
 });
 
@@ -126,7 +126,7 @@ Ext.define("Ext.locale.vn.form.field.Date", {
     disabledDatesText: "VÃ´ hiá»u",
     minText: "NgÃ y nháº­p trong Ã´ nÃ y pháº£i sau ngÃ y {0}",
     maxText: "NgÃ y nháº­p trong Ã´ nÃ y pháº£i trÆ°á»c ngÃ y {0}",
-    invalidText: "{0} khÃ´ng pháº£i lÃ  má»t ngÃ y há»£p lá» - pháº£i cÃ³ dáº¡ng {1}",
+    invalidText: "{0} khÃ´ng pháº£i lÃ  má»t ngÃ y há»£p lá» - pháº£i có dáº¡ng {1}",
     format: "d/m/y"
 });
 
@@ -141,25 +141,25 @@ Ext.define("Ext.locale.vn.form.field.ComboBox", {
 
 Ext.define("Ext.locale.vn.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'GiÃ¡ trá» cá»§a Ã´ nÃ y pháº£i lÃ  má»t Äá»a chá» email cÃ³ dáº¡ng nhÆ° "ten@abc.com"',
-    urlText: 'GiÃ¡ trá» cá»§a Ã´ nÃ y pháº£i lÃ  má»t Äá»a chá» web(URL) há»£p lá», cÃ³ dáº¡ng nhÆ° "http:/' + '/www.example.com"',
-    alphaText: 'Ã nÃ y chá» ÄÆ°á»£c nháº­p cÃ¡c kÃ­ tá»± vÃ  gáº¡ch dÆ°á»i(_)',
-    alphanumText: 'Ã nÃ y chá» ÄÆ°á»£c nháº­p cÃ¡c kÃ­ tá»±, sá» vÃ  gáº¡ch dÆ°á»i(_)'
+    emailText: 'Giá trá» cá»§a Ã´ nÃ y pháº£i lÃ  má»t Äá»a chá» email có dáº¡ng nhÆ° "ten@abc.com"',
+    urlText: 'Giá trá» cá»§a Ã´ nÃ y pháº£i lÃ  má»t Äá»a chá» web(URL) há»£p lá», có dáº¡ng nhÆ° "http:/' + '/www.example.com"',
+    alphaText: 'Ã nÃ y chá» ÄÆ°á»£c nháº­p các kí tá»± vÃ  gáº¡ch dÆ°á»i(_)',
+    alphanumText: 'Ã nÃ y chá» ÄÆ°á»£c nháº­p các kí tá»±, sá» vÃ  gáº¡ch dÆ°á»i(_)'
 });
 
 Ext.define("Ext.locale.vn.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "TÄng dáº§n",
     sortDescText: "Giáº£m dáº§n",
-    lockText: "KhÃ³a cá»t",
-    unlockText: "Bá» khÃ³a cá»t",
-    columnsText: "CÃ¡c cá»t"
+    lockText: "Khóa cá»t",
+    unlockText: "Bá» khóa cá»t",
+    columnsText: "Các cá»t"
 });
 
 Ext.define("Ext.locale.vn.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
     nameText: "TÃªn",
-    valueText: "GiÃ¡ trá»",
+    valueText: "Giá trá»",
     dateFormat: "j/m/Y"
 });
 
@@ -168,7 +168,7 @@ Ext.define("Ext.locale.vn.window.MessageBox", {
     buttonText: {
         ok: "Äá»ng Ã½",
         cancel: "Há»§y bá»",
-        yes: "CÃ³",
+        yes: "Có",
         no: "KhÃ´ng"
     }
 });

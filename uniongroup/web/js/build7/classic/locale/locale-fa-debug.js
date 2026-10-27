@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Farsi (Persian) translation
  * By Mohaqa
  * 03-10-2007, 06:23 PM

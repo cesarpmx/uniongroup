@@ -1,4 +1,4 @@
-Ext.define('Ext.locale.ko.ux.colorpick.Selector', {
+﻿Ext.define('Ext.locale.ko.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'íì¸',
@@ -66,17 +66,17 @@ Ext.define('Ext.locale.ko.Panel', {
                 text: 'ëì'
             },
             close: {
-                text: 'éãã'
+                text: 'éÁã'
             }
         },
-        closeToolText: 'Panel éãã'
+        closeToolText: 'Panel éÁã'
     }
 });
 Ext.define('Ext.locale.ko.data.validator.Bound', {
     override: 'Ext.data.validator.Bound',
 
     config: {
-        emptyMessage: 'å­å¨ããå¿è¦ãããã¾ã',
+        emptyMessage: 'å­å¨Áãå¿è¦ÁÁãÁ¾Á',
         minOnlyMessage: 'ì ì´ë {0} ì´ìì´ì´ì¼í©ëë¤.',
         maxOnlyMessage: '{0}ë³´ë¤ í¬ì§ ììì¼í©ëë¤.',
         bothMessage: 'ê°ì {0}ìì {1} ì¬ì´ì í´ì¼ í©ëë¤ '

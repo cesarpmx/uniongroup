@@ -1,4 +1,4 @@
-/**
+﻿/**
  * List compiled by KillerNay on the extjs.com forums.
  * Thank you KillerNay!
  *

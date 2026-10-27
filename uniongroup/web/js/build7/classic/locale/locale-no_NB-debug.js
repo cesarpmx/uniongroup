@@ -1,4 +1,4 @@
-/**
+﻿/**
  *
  * Norwegian translation (BokmÃ¥l: no-NB)
  * By Tore KjÃ¸rsvik 21-January-2008

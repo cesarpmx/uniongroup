@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Polish Translations
  * By vbert 17-April-2007
  * Updated by mmar 16-November-2007
@@ -105,7 +105,7 @@ Ext.define("Ext.locale.pl.picker.Date", {
     startDay: 1,
     todayText: "Dzisiaj",
     minText: "Data jest wczeÅniejsza od daty minimalnej",
-    maxText: "Data jest pÃ³Åºniejsza od daty maksymalnej",
+    maxText: "Data jest póÅºniejsza od daty maksymalnej",
     disabledDaysText: "",
     disabledDatesText: "",
     nextText: "NastÄpny miesiÄc (Control+StrzaÅkaWPrawo)",
@@ -136,8 +136,8 @@ Ext.define("Ext.locale.pl.toolbar.Paging", {
 
 Ext.define("Ext.locale.pl.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "Minimalna iloÅÄ znakÃ³w dla tego pola to {0}",
-    maxLengthText: "Maksymalna iloÅÄ znakÃ³w dla tego pola to {0}",
+    minLengthText: "Minimalna iloÅÄ znaków dla tego pola to {0}",
+    maxLengthText: "Maksymalna iloÅÄ znaków dla tego pola to {0}",
     blankText: "To pole jest wymagane",
     regexText: "",
     emptyText: null
@@ -154,7 +154,7 @@ Ext.define("Ext.locale.pl.form.field.Date", {
     override: "Ext.form.field.Date",
     disabledDaysText: "WyÅÄczony",
     disabledDatesText: "WyÅÄczony",
-    minText: "Data w tym polu musi byÄ pÃ³Åºniejsza od {0}",
+    minText: "Data w tym polu musi byÄ póÅºniejsza od {0}",
     maxText: "Data w tym polu musi byÄ wczeÅniejsza od {0}",
     invalidText: "{0} to nie jest prawidÅowa data - prawidÅowy format daty {1}",
     format: "Y-m-d",
@@ -210,8 +210,8 @@ Ext.define("Ext.locale.pl.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'WyrÃ³Å¼nienie',
-                text: 'ZmieÅ kolor wyrÃ³Å¼nienia zaznaczonego tekstu.',
+                title: 'WyróÅ¼nienie',
+                text: 'ZmieÅ kolor wyróÅ¼nienia zaznaczonego tekstu.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
@@ -221,17 +221,17 @@ Ext.define("Ext.locale.pl.form.field.HtmlEditor", {
             },
             justifyleft: {
                 title: 'Do lewej',
-                text: 'WyrÃ³wnaj tekst do lewej.',
+                text: 'Wyrównaj tekst do lewej.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
                 title: 'WyÅrodkuj',
-                text: 'WyrÃ³wnaj tekst do Årodka.',
+                text: 'Wyrównaj tekst do Årodka.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
                 title: 'Do prawej',
-                text: 'WyrÃ³wnaj tekst do prawej.',
+                text: 'Wyrównaj tekst do prawej.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
@@ -250,8 +250,8 @@ Ext.define("Ext.locale.pl.form.field.HtmlEditor", {
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'Edycja ÅºrÃ³dÅa',
-                text: 'PrzeÅÄcz w tryb edycji ÅºrÃ³dÅa.',
+                title: 'Edycja ÅºródÅa',
+                text: 'PrzeÅÄcz w tryb edycji ÅºródÅa.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }

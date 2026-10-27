@@ -1,27 +1,27 @@
-/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+﻿/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
 
-Ext.define('FormPanelRetornosDetUtils', {
-    singleton: true,
+        Ext.define('FormPanelRetornosDetUtils', {
+            singleton: true,
 
-    actualizarGrid: function (clave) {
+            actualizarGrid: function (clave) {
 
-        param = {
-            clave: clave,
-            busqBnd: 5
-        };
+                param = {
+                    clave: clave,
+                    busqBnd: 5
+                };
 
-        var grd = Ext.getCmp("gridRetornosDet");
-        var store = grd.getStore();
-        store.removeAll(true);
-        store.reload({
-            params: param
+                var grd = Ext.getCmp("gridRetornosDet");
+                var store = grd.getStore();
+                store.removeAll(true);
+                store.reload({
+                    params: param
+                });
+
+            }
         });
-
-    }
-});
 
 
 
@@ -59,6 +59,7 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                     'quantity',
                     'rtnid',
                     'receivedquantity',
+                    'confirmedquantity', // <-- Campo para control de deltas
                     'coms'
                 ]
             });
@@ -113,29 +114,36 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                 ]},
 
             columns: [
-                /* ===== VISIBLES (CON VALOR) ===== */
                 {
                     text: "#",
                     xtype: "rownumberer",
                     align: "center",
-                    width: 50,
+                    width: 50
                 },
-                {text: 'ID', dataIndex: 'detrnid', flex: 1},
-                {text: 'Line num', dataIndex: 'linenum', flex: 1},
-                {text: 'Item Code', dataIndex: 'itemcode', flex: 1},
-                {text: 'Quantity', dataIndex: 'quantity', flex: 1},
-                {text: 'Received Quantity', dataIndex: 'receivedquantity', flex: 1},
+                {text: 'ID', dataIndex: 'detrnid', width: 90, align: "center"},
+                {text: 'Línea', dataIndex: 'linenum', width: 80, align: "center"},
+                {text: 'Código de Artículo', dataIndex: 'itemcode', width: 160},
+                {text: 'Cant. Pedida', dataIndex: 'quantity', width: 110, align: "right"},
+                {text: 'Cant. Recibida', dataIndex: 'receivedquantity', width: 130, align: "right"},
                 {
-                    text: 'Coms',
+                    text: 'Comentarios',
                     dataIndex: 'coms',
                     flex: 1,
+                    minWidth: 250,
                     renderer: function (value, metaData) {
-                        metaData.style = "white-space: normal; word-wrap: break-word;"; // Estilo inline
-                        metaData.tdCls = "wrap-cell"; // Clase CSS personalizada
-                        return Ext.String.htmlEncode(value); // Escapa caracteres especiales para evitar vulnerabilidades
-                    }},
-                {text: 'ID Retorno', dataIndex: 'rtnid', flex: 1}
+                        metaData.style = "white-space: normal; word-wrap: break-word;";
+                        if (value && (value.indexOf('Existencias insuficientes') !== -1 || value.indexOf('no encontrada') !== -1)) {
+                            return '<span style="color: #F44336; font-weight: bold;">' + Ext.String.htmlEncode(value) + '</span>';
+                        }
+                        return Ext.String.htmlEncode(value);
+                    }
+                },
+                {text: 'ID Retorno', dataIndex: 'rtnid', width: 100, align: "center"}
             ],
+            viewConfig: {
+                stripeRows: true,
+                enableTextSelection: true
+            },
 
             bbar: {
                 xtype: 'pagingtoolbar',

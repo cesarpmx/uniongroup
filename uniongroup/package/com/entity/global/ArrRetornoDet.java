@@ -19,5 +19,6 @@ public class ArrRetornoDet {
     public int dcoid;
     public int receivedquantity;
     public String coms;
+    public int confirmedquantity;
 
 }

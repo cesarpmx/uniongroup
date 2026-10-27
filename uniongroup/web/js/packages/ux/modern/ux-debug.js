@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Displays a value within the given interval as a gauge. For example:
  *
  *     @example

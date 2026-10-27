@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (C) 2002-2003, CodeHouse.com. All rights reserved.
  * CodeHouse(TM) is a registered trademark.
  *

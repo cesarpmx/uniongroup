@@ -1,4 +1,4 @@
-Ext.define('Ext.locale.zh_CN.ux.colorpick.Selector', {
+﻿Ext.define('Ext.locale.zh_CN.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'ç¡®å®',

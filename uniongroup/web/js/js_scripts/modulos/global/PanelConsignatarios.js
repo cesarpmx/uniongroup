@@ -1,4 +1,4 @@
-Ext.define('ConsignatariosUtils', {
+﻿Ext.define('ConsignatariosUtils', {
     singleton: true,
 
     BtnBusqConsignatarios: function () {

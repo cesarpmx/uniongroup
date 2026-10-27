@@ -1,4 +1,4 @@
-Ext.define('EcommerceUtils', {
+﻿Ext.define('EcommerceUtils', {
     singleton: true,
     dias: localStorage.getItem('diasAtras'),
 

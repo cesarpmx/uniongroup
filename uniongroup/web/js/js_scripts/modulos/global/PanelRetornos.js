@@ -1,4 +1,4 @@
-/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+﻿/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
@@ -151,12 +151,11 @@ Ext.define('RetornosUtils', {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
         var cardCode = record.get("CardCode");
-        var transaccionNum = record.get("comid");
+        var comid = record.get("comid");
+        var confirmCount = record.get("CONFIRMCOUNT") || 0;
 
-        // 1. Bloqueo preventivo mientras cargamos los datos para la ventana
-        Ext.getBody().mask('Calculando totales...');
+        Ext.getBody().mask('Calculando estatus y pendientes de recepción...');
 
-        /* ================= PASO 1: OBTENER DATOS ANTES DE MOSTRAR VENTANA ================= */
         Ext.Ajax.request({
             url: contexto + "/Retornos",
             method: "POST",
@@ -167,63 +166,99 @@ Ext.define('RetornosUtils', {
             success: function (resp) {
                 Ext.getBody().unmask();
                 var data = Ext.decode(resp.responseText);
+                var lineas = data || [];
 
-                if (!data || data.length === 0) {
+                if (lineas.length === 0) {
                     Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
                     return;
                 }
 
-                // Variables para cálculos
-                var lines = [];
                 var totalPedido = 0;
-                var totalSurtido = 0;
+                var totalRecibido = 0;
+                var totalYaConfirmado = 0;
+                var deltaTotalAEnviar = 0;
+                var linesAEnviar = [];
 
-                Ext.Array.each(data, function (line) {
-                    var qty = line.receivedquantity || 0;
-                    var pedido = line.quantity || 0;
+                // Calcular acumulados y diferencias por línea
+                Ext.Array.each(lineas, function (line) {
+                    var qtyOriginal = parseFloat(line.quantity) || 0;
+                    var qtyRecibidaFisica = parseFloat(line.receivedquantity) || 0;
+                    var qtyConfirmadaPrevia = parseFloat(line.confirmedquantity) || 0;
 
-                    totalPedido += pedido;
-                    totalSurtido += qty;
+                    var delta = qtyRecibidaFisica - qtyConfirmadaPrevia;
+                    if (delta < 0)
+                        delta = 0;
 
-                    lines.push({
-                        LineNum: line.linenum,
-                        ItemCode: line.itemcode,
-                        BarCode: line.barcode || line.itemcode,
-                        Quantity: qty
-                    });
+                    totalPedido += qtyOriginal;
+                    totalRecibido += qtyRecibidaFisica;
+                    totalYaConfirmado += qtyConfirmadaPrevia;
+                    deltaTotalAEnviar += delta;
+
+                    // Solo agregar líneas con producto nuevo recibido
+                    if (delta > 0) {
+                        linesAEnviar.push({
+                            LineNum: line.linenum,
+                            ItemCode: line.itemcode,
+                            BarCode: line.barcode || line.itemcode,
+                            Quantity: delta
+                        });
+                    }
                 });
 
-                var estatusCalculado = (totalSurtido >= totalPedido) ? 'Total' : 'Parcial';
+                // Evitar envíos vacíos si no hay mercancía nueva registrada
+                if (deltaTotalAEnviar === 0) {
+                    Ext.Msg.alert('Atención', 'No hay nuevas recepciones físicas pendientes por confirmar en este retorno.');
+                    return;
+                }
 
-                /* ================= PASO 2: CREAR VENTANA CON DATOS CARGADOS ================= */
+                var estatusCalculado = '';
+                var esEntregaCompleta = false;
+
+                if (totalRecibido >= totalPedido) {
+                    estatusCalculado = 'Total';
+                    esEntregaCompleta = true;
+                } else if (totalRecibido > 0) {
+                    estatusCalculado = 'Parcial';
+                    esEntregaCompleta = false;
+                } else {
+                    estatusCalculado = 'Cancelada';
+                }
+
+                var siguienteEnvio = confirmCount + 1;
+                var transactionNumber = comid + "_" + siguienteEnvio;
 
                 var memoField = Ext.create('Ext.form.field.TextArea', {
                     fieldLabel: 'Observaciones',
                     name: 'memo',
                     labelAlign: 'top',
                     anchor: '100%',
-                    height: 70
+                    height: 70,
+                    value: 'Recepción ' + estatusCalculado + ' transacción #' + siguienteEnvio
                 });
 
                 var win = Ext.create('Ext.window.Window', {
-                    title: 'Confirmar Retorno - ' + docNum,
+                    title: 'Confirmar Retorno ' + estatusCalculado + ' - ' + docNum,
                     modal: true,
-                    width: 400,
+                    width: 460,
                     layout: 'fit',
                     resizable: false,
                     items: [{
                             xtype: 'form',
                             bodyPadding: 15,
                             items: [
-                                {xtype: 'displayfield', fieldLabel: 'DocEntry', value: docEntry},
-                                {xtype: 'displayfield', fieldLabel: 'Transaccion Num', value: transaccionNum, fieldStyle: 'color:blue; font-weight:bold;'},
-                                {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido},
-                                {xtype: 'displayfield', fieldLabel: 'Total Surtido', value: totalSurtido, fieldStyle: 'color:blue; font-weight:bold;'},
+                                {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum},
+                                {xtype: 'displayfield', fieldLabel: 'Transacción asignada', value: '<b>' + transactionNumber + '</b>'},
+                                {xtype: 'displayfield', fieldLabel: 'Total Solicitado', value: totalPedido + ' pzas'},
+                                {xtype: 'displayfield', fieldLabel: 'Total Recibido (Físico)', value: totalRecibido + ' pzas'},
                                 {
                                     xtype: 'displayfield',
-                                    fieldLabel: 'Estatus',
-                                    value: estatusCalculado,
-                                    fieldStyle: 'color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + '; font-weight:bold;'
+                                    fieldLabel: 'A Confirmar (Esta transacción)',
+                                    value: '<b style="color: #4CAF50; font-size: 14px;">' + deltaTotalAEnviar + ' pzas</b>'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Estatus a Notificar',
+                                    value: '<b style="color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + ';">' + estatusCalculado + '</b>'
                                 },
                                 memoField
                             ],
@@ -235,30 +270,29 @@ Ext.define('RetornosUtils', {
                                     }
                                 },
                                 {
-                                    text: 'Confirmar Retorno',
-                                    //scale: 'medium',
+                                    text: 'Confirmar y Enviar',
+                                    iconCls: 'fa fa-check',
                                     handler: function () {
                                         var memoText = memoField.getValue();
                                         var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
 
                                         win.close();
-                                        Ext.getBody().mask('Procesando en SAP...');
+                                        Ext.getBody().mask('Enviando confirmación a Vector Delta...');
 
-                                        /* ================= PASO 3: ENVIAR JSON FINAL ================= */
                                         var jsonSend = {
                                             ReturnConfirm: {
                                                 DocDate: docDate,
                                                 DocNum: docNum,
                                                 NumAtCard: cardCode,
-                                                TransactionNumber: transaccionNum,
+                                                TransactionNumber: transactionNumber,
                                                 Status: estatusCalculado,
                                                 Memo: memoText
                                             },
                                             ControlValues: {
-                                                TotalQuantity: totalSurtido,
-                                                TotalLines: lines.length
+                                                TotalQuantity: deltaTotalAEnviar,
+                                                TotalLines: linesAEnviar.length
                                             },
-                                            Lines: lines
+                                            Lines: linesAEnviar
                                         };
 
                                         Ext.Ajax.request({
@@ -266,30 +300,49 @@ Ext.define('RetornosUtils', {
                                             method: "POST",
                                             params: {
                                                 busqBnd: 6,
-                                                valores: Ext.encode(jsonSend)
+                                                valores: Ext.encode(jsonSend),
+                                                rtnid: clave,
+                                                esCompleta: esEntregaCompleta ? 'S' : 'N'
                                             },
                                             success: function (response) {
                                                 Ext.getBody().unmask();
                                                 var resultado = Ext.decode(response.responseText);
 
                                                 if (resultado.success) {
-                                                    RetornosUtils.ConfirmarOrdenCompra(clave, true);
+                                                    var cr = resultado.clienteResponse || {};
+                                                    var docNumResp = cr.DocNum || 'N/A';
+                                                    var systemDate = cr.SystemDate || 'N/A';
+                                                    var statusMensaje = (cr.StatusInfo && cr.StatusInfo.Mensaje) ? cr.StatusInfo.Mensaje : 'OK';
 
-                                                    var res = resultado.clienteResponse || {};
-                                                    var fecha = res.SystemDate ? Ext.Date.format(new Date(res.SystemDate), 'd/m/Y H:i:s') : 'N/A';
+                                                    var fechaFormateada = systemDate;
+                                                    if (systemDate !== 'N/A') {
+                                                        try {
+                                                            fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
+                                                        } catch (e) {
+                                                            fechaFormateada = systemDate;
+                                                        }
+                                                    }
 
-                                                    Ext.Msg.alert('Éxito',
-                                                            '<b>SAP Doc:</b> ' + (res.DocNum || 'N/A') + '<br>' +
-                                                            '<b>Fecha:</b> ' + fecha + '<br>' +
-                                                            '<b>Mensaje:</b> ' + (res.StatusInfo ? res.StatusInfo.Mensaje : 'OK')
-                                                            );
+                                                    var msg = 'Confirmación de retorno procesada exitosamente<br><br>';
+                                                    msg += '<b>Retorno:</b> ' + docNum + '<br>';
+                                                    msg += '<b>Transacción:</b> ' + transactionNumber + '<br>';
+                                                    msg += '<b>Estatus Notificado:</b> ' + estatusCalculado + '<br>';
+                                                    msg += '<b>Total Pedido:</b> ' + totalPedido + ' | <b>Recibido Físico:</b> ' + totalRecibido + '<br>';
+                                                    msg += '<b>Enviado en esta transacción:</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>';
+                                                    msg += '<b>Folio SAP:</b> ' + docNumResp + '<br>';
+                                                    msg += '<b>Fecha Respuesta:</b> ' + fechaFormateada + '<br>';
+                                                    msg += '<b>Estado Cliente:</b> ' + statusMensaje;
+
+                                                    Ext.Msg.alert('Éxito', msg, function () {
+                                                        RetornosUtils.BtnBusqRetornos();
+                                                    });
                                                 } else {
-                                                    Ext.Msg.alert('Error SAP', resultado.message || 'Error en el proceso.');
+                                                    Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
                                                 }
                                             },
                                             failure: function () {
                                                 Ext.getBody().unmask();
-                                                Ext.Msg.alert('Error', 'Fallo de conexión.');
+                                                Ext.Msg.alert('Error', 'Fallo de conexión al enviar acuse.');
                                             }
                                         });
                                     }
@@ -374,7 +427,9 @@ Ext.define('Modulos.global.PanelRetornos', {
                 "FechaInsercion",
                 'comid',
                 "comestatus",
-                "retestatus"
+                "retestatus",
+                "CONFIRMCOUNT",
+                "NumAtCard"// <-- Contador de transacciones
             ]
         });
 
@@ -672,26 +727,70 @@ Ext.define('Modulos.global.PanelRetornos', {
                             filter: {type: 'string'},
                             hidden: true
                         },
+                        {
+                            text: "NumAtCard",
+                            dataIndex: "NumAtCard",
+                            align: "center",
+                            width: 220,
+                            filter: {type: 'string'},
+                            hidden: true
+                        },
 
+                        // ==========================================
+// 1. CONFIRMAR RETORNO (BLINDADO)
+// ==========================================
                         {
                             text: "Confirmar",
                             xtype: "actioncolumn",
-                            // dataIndex: "prrtiempo2",
                             menuDisabled: true,
                             sortable: false,
                             align: "center",
-                            iconCls: 'icn-habilita',
                             width: 90,
                             items: [
                                 {
+                                    tooltip: 'Confirmar Retorno / Reenviar Acuse',
+                                    getClass: function (v, meta, record) {
+                                        var estatusCom = record.get("comestatus");
+                                        var estatusRet = record.get("retestatus");
+
+                                        var puedeConfirmar = (estatusCom === "Recibido" || estatusCom === "Recibo Parcial") &&
+                                                (estatusRet !== "X");
+
+                                        return puedeConfirmar ? "icn-habilita" : "icn-habilita-disable";
+                                    },
+                                    isDisabled: function (view, rowIndex, colIndex, item, record) {
+                                        var estatusCom = record.get("comestatus");
+                                        var estatusRet = record.get("retestatus");
+
+                                        var puedeConfirmar = (estatusCom === "Recibido" || estatusCom === "Recibo Parcial") &&
+                                                (estatusRet !== "X");
+
+                                        return !puedeConfirmar;
+                                    },
                                     handler: function (grid, rowIndex, colIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
+                                        var estatusCom = record.get("comestatus");
+                                        var estatusRet = record.get("retestatus");
+
+                                        if (estatusRet === "X") {
+                                            Ext.Msg.alert('Atención', 'El retorno se encuentra cancelado.');
+                                            return;
+                                        }
+
+                                        if (estatusCom !== "Recibido" && estatusCom !== "Recibo Parcial") {
+                                            Ext.Msg.alert('Atención', 'El retorno aún no cuenta con piezas recibidas físicamente.');
+                                            return;
+                                        }
+
                                         RetornosUtils.enviarReturnConfirm(record);
                                     }
                                 }
                             ]
                         },
 
+// ==========================================
+// 2. CANCELAR RETORNO (BLINDADO)
+// ==========================================
                         {
                             text: "Cancelar",
                             xtype: "actioncolumn",
@@ -701,36 +800,53 @@ Ext.define('Modulos.global.PanelRetornos', {
                             align: "center",
                             items: [
                                 {
+                                    tooltip: 'Cancelar Retorno',
                                     getClass: function (v, meta, record) {
                                         var estatus = record.get("retestatus");
                                         var estatusCom = record.get("comestatus");
 
-                                        return estatus === "A" && estatusCom !== "Recibido"
-                                                ? "icn-cancela"
-                                                : "icn-cancela-disable";
+                                        var puedeCancelar = (estatus === "A") &&
+                                                (estatusCom !== "Recibido" && estatusCom !== "Recibo Parcial" && estatusCom !== "Confirmado");
+
+                                        return puedeCancelar ? "icn-cancela" : "icn-cancela-disable";
+                                    },
+                                    isDisabled: function (view, rowIndex, colIndex, item, record) {
+                                        var estatus = record.get("retestatus");
+                                        var estatusCom = record.get("comestatus");
+
+                                        var puedeCancelar = (estatus === "A") &&
+                                                (estatusCom !== "Recibido" && estatusCom !== "Recibo Parcial" && estatusCom !== "Confirmado");
+
+                                        return !puedeCancelar;
                                     },
                                     handler: function (grid, rowIndex, colIndex, item, event, record) {
+                                        var estatus = record.get("retestatus");
+                                        var estatusCom = record.get("comestatus");
+                                        var rtnid = record.get("rtnid");
+
+                                        if (estatus !== "A") {
+                                            Ext.Msg.alert('Atención', 'Solo se pueden cancelar retornos en estatus Activo.');
+                                            return;
+                                        }
+
+                                        if (estatusCom === "Recibido" || estatusCom === "Recibo Parcial" || estatusCom === "Confirmado") {
+                                            Ext.Msg.alert('Atención', 'No se puede cancelar un retorno con recepciones físicas en almacén.');
+                                            return;
+                                        }
+
                                         Ext.MessageBox.show({
                                             title: "Cancelar Retorno",
-                                            msg: '¿Estás seguro que deseas cancelar el retorno: ' + record.data.rtnid + ' ?',
+                                            msg: '¿Está seguro que desea cancelar el retorno: <b>' + record.data.DocNum + '</b> (ID: ' + rtnid + ')?',
                                             buttons: Ext.MessageBox.OKCANCEL,
                                             icon: Ext.MessageBox.QUESTION,
                                             fn: function (btn) {
                                                 if (btn === 'ok') {
-
-                                                    var rowData = record.data.rtnid;
-                                                    var dteestatus = record.data.retestatus;
-
                                                     var nuevoObjeto = {
-                                                        rtnid: rowData,
-                                                        retestatus: dteestatus
+                                                        rtnid: record.data.rtnid,
+                                                        retestatus: record.data.retestatus
                                                     };
-
-
-                                                    RetornosUtils.EliminarRetorno(Ext.JSON.encode(nuevoObjeto));
                                                     record.drop();
-                                                } else {
-                                                    this.close();
+                                                    RetornosUtils.EliminarRetorno(Ext.JSON.encode(nuevoObjeto));
                                                 }
                                             }
                                         });

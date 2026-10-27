@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Swedish translation (utf8-encoding)
  * By Erik Andersson, Monator Technologies
  * 24 April 2007

@@ -1,4 +1,4 @@
-Ext.define(null, {
+﻿Ext.define(null, {
     override: 'Ext.ux.gauge.needle.Abstract',
     compatibility: Ext.isIE10p,
     setTransform: function(centerX, centerY, rotation) {

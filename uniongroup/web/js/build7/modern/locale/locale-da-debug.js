@@ -1,4 +1,4 @@
-Ext.define('Ext.locale.da.ux.colorpick.Selector', {
+﻿Ext.define('Ext.locale.da.ux.colorpick.Selector', {
     override: 'Ext.ux.colorpick.Selector',
 
     okButtonText: 'OK',
@@ -374,7 +374,7 @@ Ext.define("Ext.locale.da.grid.menu.GroupByThis", {
     override: "Ext.grid.menu.GroupByThis",
 
     config: {
-        text: "GruppÃ©r ved dette"
+        text: "Gruppér ved dette"
     }
 });
 Ext.define("Ext.locale.da.grid.menu.ShowInGroups", {
@@ -388,14 +388,14 @@ Ext.define("Ext.locale.da.grid.menu.SortAsc", {
     override: "Ext.grid.menu.SortAsc",
 
     config: {
-        text: "SortÃ©r stigende"
+        text: "Sortér stigende"
     }
 });
 Ext.define("Ext.locale.da.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "SortÃ©r faldende"
+        text: "Sortér faldende"
     }
 });
 Ext.define("Ext.locale.da.grid.plugin.RowDragDrop", {

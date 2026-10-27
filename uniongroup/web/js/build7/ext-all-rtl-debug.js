@@ -1,4 +1,4 @@
-/*
+﻿/*
 This file is part of Ext JS 7.0.0.168
 
 Copyright (c) 2011-2020 Sencha Inc
@@ -4749,10 +4749,10 @@ Ext.String = (function() {
          *      Ext.String.addCharacterEntities({
          *          '&amp;Uuml;':'Ã',
          *          '&amp;ccedil;':'Ã§',
-         *          '&amp;ntilde;':'Ã±',
+         *          '&amp;ntilde;':'ñ',
          *          '&amp;egrave;':'Ã¨'
          *      });
-         *      var s = Ext.String.htmlEncode("A string with entities: Ã¨ÃÃ§Ã±");
+         *      var s = Ext.String.htmlEncode("A string with entities: Ã¨ÃÃ§ñ");
          *
          * __Note:__ the values of the character entities defined on this object are expected
          * to be single character values.  As such, the actual values represented by the

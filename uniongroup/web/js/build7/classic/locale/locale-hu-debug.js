@@ -1,4 +1,4 @@
-/**
+﻿/**
  * List compiled by mystix on the extjs.com forums.
  * Thank you Mystix!
  *
@@ -9,7 +9,7 @@
 Ext.onReady(function() {
 
     if (Ext.Date) {
-        Ext.Date.monthNames = ["JanuÃ¡r", "FebruÃ¡r", "MÃ¡rcius", "Ãprilis", "MÃ¡jus", "JÃºnius", "JÃºlius", "Augusztus", "Szeptember", "OktÃ³ber", "November", "December"];
+        Ext.Date.monthNames = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"];
 
         Ext.Date.getShortMonthName = function(month) {
             return Ext.Date.monthNames[month].substring(0, 3);
@@ -18,11 +18,11 @@ Ext.onReady(function() {
         Ext.Date.monthNumbers = {
             'Jan': 0,
             'Feb': 1,
-            'MÃ¡r': 2,
-            'Ãpr': 3,
-            'MÃ¡j': 4,
-            'JÃºn': 5,
-            'JÃºl': 6,
+            'Már': 2,
+            'Ápr': 3,
+            'Máj': 4,
+            'Jún': 5,
+            'Júl': 6,
             'Aug': 7,
             'Sze': 8,
             'Okt': 9,
@@ -34,7 +34,7 @@ Ext.onReady(function() {
             return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
         };
 
-        Ext.Date.dayNames = ["VasÃ¡rnap", "HÃ©tfÅ", "Kedd", "Szerda", "CsÃ¼tÃ¶rtÃ¶k", "PÃ©ntek", "Szombat"];
+        Ext.Date.dayNames = ["Vasárnap", "HétfÅ", "Kedd", "Szerda", "CsÃ¼tÃ¶rtÃ¶k", "Péntek", "Szombat"];
 
         Ext.Date.getShortDayName = function(day) {
             return Ext.Date.dayNames[day].substring(0, 3);
@@ -59,36 +59,36 @@ Ext.define("Ext.locale.hu.view.View", {
 
 Ext.define("Ext.locale.hu.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
-    dragText: "{0} kivÃ¡lasztott sor"
+    dragText: "{0} kiválasztott sor"
 });
 
 Ext.define("Ext.locale.hu.tab.Tab", {
     override: "Ext.tab.Tab",
-    closeText: "FÃ¼l bezÃ¡rÃ¡sa"
+    closeText: "FÃ¼l bezárása"
 });
 
 Ext.define("Ext.locale.hu.form.field.Base", {
     override: "Ext.form.field.Base",
-    invalidText: "HibÃ¡s Ã©rtÃ©k!"
+    invalidText: "Hibás érték!"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.hu.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    loadingText: "BetÃ¶ltÃ©s..."
+    loadingText: "BetÃ¶ltés..."
 });
 
 Ext.define("Ext.locale.hu.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Mai nap",
-    minText: "A dÃ¡tum korÃ¡bbi a megengedettnÃ©l",
-    maxText: "A dÃ¡tum kÃ©sÅbbi a megengedettnÃ©l",
+    minText: "A dátum korábbi a megengedettnél",
+    maxText: "A dátum késÅbbi a megengedettnél",
     disabledDaysText: "",
     disabledDatesText: "",
-    nextText: 'KÃ¶v. hÃ³nap (CTRL+Jobbra)',
-    prevText: 'ElÅzÅ hÃ³nap (CTRL+Balra)',
-    monthYearText: 'VÃ¡lassz hÃ³napot (ÃvvÃ¡lasztÃ¡s: CTRL+Fel/Le)',
-    todayTip: "{0} (SzÃ³kÃ¶z)",
+    nextText: 'KÃ¶v. hónap (CTRL+Jobbra)',
+    prevText: 'ElÅzÅ hónap (CTRL+Balra)',
+    monthYearText: 'Válassz hónapot (Évválasztás: CTRL+Fel/Le)',
+    todayTip: "{0} (SzókÃ¶z)",
     format: "y-m-d",
     startDay: 0
 });
@@ -96,26 +96,26 @@ Ext.define("Ext.locale.hu.picker.Date", {
 Ext.define("Ext.locale.hu.picker.Month", {
     override: "Ext.picker.Month",
     okText: "&#160;OK&#160;",
-    cancelText: "MÃ©gsem"
+    cancelText: "Mégsem"
 });
 
 Ext.define("Ext.locale.hu.toolbar.Paging", {
     override: "Ext.PagingToolbar",
     beforePageText: "Oldal",
-    afterPageText: "a {0}-bÃ³l/bÅl",
+    afterPageText: "a {0}-ból/bÅl",
     firstText: "ElsÅ oldal",
     prevText: "ElÅzÅ oldal",
     nextText: "KÃ¶vetkezÅ oldal",
-    lastText: "UtolsÃ³ oldal",
-    refreshText: "FrissÃ­tÃ©s",
-    displayMsg: "{0} - {1} sorok lÃ¡thatÃ³k a {2}-bÃ³l/bÅl",
-    emptyMsg: 'Nincs megjelenÃ­thetÅ adat'
+    lastText: "Utolsó oldal",
+    refreshText: "Frissítés",
+    displayMsg: "{0} - {1} sorok láthatók a {2}-ból/bÅl",
+    emptyMsg: 'Nincs megjeleníthetÅ adat'
 });
 
 Ext.define("Ext.locale.hu.form.field.Text", {
     override: "Ext.form.field.Text",
-    minLengthText: "A mezÅ tartalma legalÃ¡bb {0} hosszÃº kell legyen",
-    maxLengthText: "A mezÅ tartalma legfeljebb {0} hosszÃº lehet",
+    minLengthText: "A mezÅ tartalma legalább {0} hosszú kell legyen",
+    maxLengthText: "A mezÅ tartalma legfeljebb {0} hosszú lehet",
     blankText: "KÃ¶telezÅen kitÃ¶ltendÅ mezÅ",
     regexText: "",
     emptyText: null
@@ -125,16 +125,16 @@ Ext.define("Ext.locale.hu.form.field.Number", {
     override: "Ext.form.field.Number",
     minText: "A mezÅ tartalma nem lehet kissebb, mint {0}",
     maxText: "A mezÅ tartalma nem lehet nagyobb, mint {0}",
-    nanText: "{0} nem szÃ¡m"
+    nanText: "{0} nem szám"
 });
 
 Ext.define("Ext.locale.hu.form.field.Date", {
     override: "Ext.form.field.Date",
-    disabledDaysText: "Nem vÃ¡laszthatÃ³",
-    disabledDatesText: "Nem vÃ¡laszthatÃ³",
-    minText: "A dÃ¡tum nem lehet korÃ¡bbi, mint {0}",
-    maxText: "A dÃ¡tum nem lehet kÃ©sÅbbi, mint {0}",
-    invalidText: "{0} nem megfelelÅ dÃ¡tum - a helyes formÃ¡tum: {1}",
+    disabledDaysText: "Nem választható",
+    disabledDatesText: "Nem választható",
+    minText: "A dátum nem lehet korábbi, mint {0}",
+    maxText: "A dátum nem lehet késÅbbi, mint {0}",
+    invalidText: "{0} nem megfelelÅ dátum - a helyes formátum: {1}",
     format: "Y m d",
     altFormats: "Y-m-d|y-m-d|y/m/d|m/d|m-d|md|ymd|Ymd|d"
 });
@@ -144,92 +144,92 @@ Ext.define("Ext.locale.hu.form.field.ComboBox", {
     valueNotFoundText: undefined
 }, function() {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-        loadingText: "BetÃ¶ltÃ©s..."
+        loadingText: "BetÃ¶ltés..."
     });
 });
 
 Ext.define("Ext.locale.hu.form.field.VTypes", {
     override: "Ext.form.field.VTypes",
-    emailText: 'A mezÅ email cÃ­met tartalmazhat, melynek formÃ¡tuma "felhasznÃ¡lÃ³@szolgÃ¡ltatÃ³.hu"',
-    urlText: 'A mezÅ webcÃ­met tartalmazhat, melynek formÃ¡tuma "http:/' + '/www.weboldal.hu"',
-    alphaText: 'A mezÅ csak betÅ±ket Ã©s alÃ¡hÃºzÃ¡st (_) tartalmazhat',
-    alphanumText: 'A mezÅ csak betÅ±ket, szÃ¡mokat Ã©s alÃ¡hÃºzÃ¡st (_) tartalmazhat'
+    emailText: 'A mezÅ email címet tartalmazhat, melynek formátuma "felhasználó@szolgáltató.hu"',
+    urlText: 'A mezÅ webcímet tartalmazhat, melynek formátuma "http:/' + '/www.weboldal.hu"',
+    alphaText: 'A mezÅ csak betÅ±ket és aláhúzást (_) tartalmazhat',
+    alphanumText: 'A mezÅ csak betÅ±ket, számokat és aláhúzást (_) tartalmazhat'
 });
 
 Ext.define("Ext.locale.hu.form.field.HtmlEditor", {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: 'Add meg a webcÃ­met:'
+    createLinkText: 'Add meg a webcímet:'
 }, function() {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
         buttonTips: {
             bold: {
-                title: 'FÃ©lkÃ¶vÃ©r (Ctrl+B)',
-                text: 'FÃ©lkÃ¶vÃ©rrÃ© teszi a kijelÃ¶lt szÃ¶veget.',
+                title: 'FélkÃ¶vér (Ctrl+B)',
+                text: 'FélkÃ¶vérré teszi a kijelÃ¶lt szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             italic: {
                 title: 'DÅlt (Ctrl+I)',
-                text: 'DÅltÃ© teszi a kijelÃ¶lt szÃ¶veget.',
+                text: 'DÅlté teszi a kijelÃ¶lt szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             underline: {
-                title: 'AlÃ¡hÃºzÃ¡s (Ctrl+U)',
-                text: 'AlÃ¡hÃºzza a kijelÃ¶lt szÃ¶veget.',
+                title: 'Aláhúzás (Ctrl+U)',
+                text: 'Aláhúzza a kijelÃ¶lt szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             increasefontsize: {
-                title: 'SzÃ¶veg nagyÃ­tÃ¡s',
-                text: 'NÃ¶veli a szÃ¶vegmÃ©retet.',
+                title: 'SzÃ¶veg nagyítás',
+                text: 'NÃ¶veli a szÃ¶vegméretet.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             decreasefontsize: {
-                title: 'SzÃ¶veg kicsinyÃ­tÃ©s',
-                text: 'CsÃ¶kkenti a szÃ¶vegmÃ©retet.',
+                title: 'SzÃ¶veg kicsinyítés',
+                text: 'CsÃ¶kkenti a szÃ¶vegméretet.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             backcolor: {
-                title: 'HÃ¡ttÃ©rszÃ­n',
-                text: 'A kijelÃ¶lt szÃ¶veg hÃ¡ttÃ©rszÃ­nÃ©t mÃ³dosÃ­tja.',
+                title: 'Háttérszín',
+                text: 'A kijelÃ¶lt szÃ¶veg háttérszínét módosítja.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             forecolor: {
-                title: 'SzÃ¶vegszÃ­n',
-                text: 'A kijelÃ¶lt szÃ¶veg szÃ­nÃ©t mÃ³dosÃ­tja.',
+                title: 'SzÃ¶vegszín',
+                text: 'A kijelÃ¶lt szÃ¶veg színét módosítja.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyleft: {
-                title: 'Balra zÃ¡rt',
-                text: 'Balra zÃ¡rja a szÃ¶veget.',
+                title: 'Balra zárt',
+                text: 'Balra zárja a szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifycenter: {
-                title: 'KÃ¶zÃ©pre zÃ¡rt',
-                text: 'KÃ¶zÃ©pre zÃ¡rja a szÃ¶veget.',
+                title: 'KÃ¶zépre zárt',
+                text: 'KÃ¶zépre zárja a szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             justifyright: {
-                title: 'Jobbra zÃ¡rt',
-                text: 'Jobbra zÃ¡rja a szÃ¶veget.',
+                title: 'Jobbra zárt',
+                text: 'Jobbra zárja a szÃ¶veget.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertunorderedlist: {
-                title: 'FelsorolÃ¡s',
-                text: 'FelsorolÃ¡st kezd.',
+                title: 'Felsorolás',
+                text: 'Felsorolást kezd.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             insertorderedlist: {
-                title: 'SzÃ¡mozÃ¡s',
-                text: 'SzÃ¡mozott listÃ¡t kezd.',
+                title: 'Számozás',
+                text: 'Számozott listát kezd.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             createlink: {
                 title: 'Hiperlink',
-                text: 'A kijelÃ¶lt szÃ¶veget linkkÃ© teszi.',
+                text: 'A kijelÃ¶lt szÃ¶veget linkké teszi.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             },
             sourceedit: {
-                title: 'ForrÃ¡s nÃ©zet',
-                text: 'ForrÃ¡s nÃ©zetbe kapcsol.',
+                title: 'Forrás nézet',
+                text: 'Forrás nézetbe kapcsol.',
                 cls: Ext.baseCSSPrefix + 'html-editor-tip'
             }
         }
@@ -238,24 +238,24 @@ Ext.define("Ext.locale.hu.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.hu.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "NÃ¶vekvÅ rendezÃ©s",
-    sortDescText: "CsÃ¶kkenÅ rendezÃ©s",
-    lockText: "Oszlop zÃ¡rolÃ¡s",
-    unlockText: "Oszlop feloldÃ¡s",
+    sortAscText: "NÃ¶vekvÅ rendezés",
+    sortDescText: "CsÃ¶kkenÅ rendezés",
+    lockText: "Oszlop zárolás",
+    unlockText: "Oszlop feloldás",
     columnsText: "Oszlopok"
 });
 
 Ext.define("Ext.locale.hu.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
     emptyGroupText: '(Nincs)',
-    groupByText: 'Oszlop szerint csoportosÃ­tÃ¡s',
-    showGroupsText: 'Csoportos nÃ©zet'
+    groupByText: 'Oszlop szerint csoportosítás',
+    showGroupsText: 'Csoportos nézet'
 });
 
 Ext.define("Ext.locale.hu.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
-    nameText: "NÃ©v",
-    valueText: "ÃrtÃ©k",
+    nameText: "Név",
+    valueText: "Érték",
     dateFormat: "Y m j"
 });
 
@@ -263,7 +263,7 @@ Ext.define("Ext.locale.hu.window.MessageBox", {
     override: "Ext.window.MessageBox",
     buttonText: {
         ok: "OK",
-        cancel: "MÃ©gsem",
+        cancel: "Mégsem",
         yes: "Igen",
         no: "Nem"
     }

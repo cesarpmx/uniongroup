@@ -1,12 +1,12 @@
-/**
+﻿/**
  * France (Canadian) translation
  */
 Ext.onReady(function() {
 
     if (Ext.Date) {
         Ext.Date.shortMonthNames = [
-            "Janv", "FÃ©vr", "Mars", "Avr", "Mai", "Juin", "Juil", "AoÃ»t", "Sept", "Oct", "Nov",
-            "DÃ©c"
+            "Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "AoÃ»t", "Sept", "Oct", "Nov",
+            "Déc"
         ];
 
         Ext.Date.defaultFormat = 'd/m/Y';
@@ -17,15 +17,15 @@ Ext.onReady(function() {
         };
 
         Ext.Date.monthNames = [
-            "Janvier", "FÃ©vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "AoÃ»t", "Septembre",
-            "Octobre", "Novembre", "DÃ©cembre"
+            "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "AoÃ»t", "Septembre",
+            "Octobre", "Novembre", "Décembre"
         ];
 
         Ext.Date.monthNumbers = {
             "Janvier": 0,
             "Janv": 0,
-            "FÃ©vrier": 1,
-            "FÃ©vr": 1,
+            "Février": 1,
+            "Févr": 1,
             "Mars": 2,
             "Avril": 3,
             "Avr": 3,
@@ -40,8 +40,8 @@ Ext.onReady(function() {
             "Oct": 9,
             "Novembre": 10,
             "Nov": 10,
-            "DÃ©cembre": 11,
-            "DÃ©c": 11
+            "Décembre": 11,
+            "Déc": 11
         };
 
         Ext.Date.getMonthNumber = function(name) {
@@ -121,7 +121,7 @@ Ext.define('Ext.locale.fr_CA.picker.Date', {
         doneButton: 'PrÃªt',
         monthText: 'Mois',
         dayText: 'Jour',
-        yearText: 'AnnÃ©e'
+        yearText: 'Année'
     }
 });
 
@@ -129,7 +129,7 @@ Ext.define('Ext.locale.fr_CA.picker.Picker', {
     override: 'Ext.picker.Picker',
 
     config: {
-        doneButton: 'TerminÃ©',
+        doneButton: 'Terminé',
         cancelButton: 'Annuler'
     }
 });
@@ -139,7 +139,7 @@ Ext.define('Ext.locale.fr_CA.panel.Date', {
 
     config: {
         nextText: 'Mois prochain (Control + droite)',
-        prevText: 'Mois prÃ©cÃ©dent (Control +gauche)',
+        prevText: 'Mois précédent (Control +gauche)',
         buttons: {
             footerTodayButton: {
                 text: "Aujourd'hui"
@@ -152,7 +152,7 @@ Ext.define('Ext.locale.fr_CA.panel.Collapser', {
     override: 'Ext.panel.Collapser',
 
     config: {
-        collapseToolText: "RÃ©duire la fenÃªtre",
+        collapseToolText: "Réduire la fenÃªtre",
         expandToolText: "Elargir la fenÃªtre"
     }
 });
@@ -169,7 +169,7 @@ Ext.define('Ext.locale.fr_CA.field.Field', {
 Ext.define('Ext.locale.fr_CA.field.Number', {
     override: 'Ext.field.Number',
 
-    decimalsText: 'Le nombre maximum de dÃ©cimales est de  {0}',
+    decimalsText: 'Le nombre maximum de décimales est de  {0}',
     minValueText: 'La valeur minimale de ce champ est de {0}',
     maxValueText: 'La valeur maximale de ce champ est de {0}',
     badFormatMessage: 'La valeur ne correspond pas au format requis'
@@ -190,7 +190,7 @@ Ext.define('Ext.locale.fr_CA.Dialog', {
 
     config: {
         maximizeTool: {
-            tooltip: "Agrandir en plein Ã©cran"
+            tooltip: "Agrandir en plein écran"
         },
         restoreTool: {
             tooltip: "Restaurer Ã  la taille d'origine"
@@ -258,8 +258,8 @@ Ext.define("Ext.locale.fr_CA.dataview.DataView", {
 Ext.define('Ext.locale.fr_CA.field.Date', {
     override: 'Ext.field.Date',
 
-    minDateMessage: 'La date indiquÃ©e dans ce champ doit Ãªtre Ã©gale Ã  ou aprÃ¨s {0}',
-    maxDateMessage: 'La date indiquÃ©e dans ce champ doit Ãªtre Ã©gale Ã  ou avant {0}'
+    minDateMessage: 'La date indiquée dans ce champ doit Ãªtre égale Ã  ou aprÃ¨s {0}',
+    maxDateMessage: 'La date indiquée dans ce champ doit Ãªtre égale Ã  ou avant {0}'
 });
 
 Ext.define("Ext.locale.fr_CA.grid.menu.SortAsc", {
@@ -274,7 +274,7 @@ Ext.define("Ext.locale.fr_CA.grid.menu.SortDesc", {
     override: "Ext.grid.menu.SortDesc",
 
     config: {
-        text: "Trier en ordre dÃ©croissant"
+        text: "Trier en ordre décroissant"
     }
 });
 
@@ -330,7 +330,7 @@ Ext.define('Ext.locale.fr_CA.data.validator.Phone', {
     override: 'Ext.data.validator.Phone',
 
     config: {
-        message: "N'est pas un numÃ©ro de tÃ©lÃ©phone valide"
+        message: "N'est pas un numéro de téléphone valide"
     }
 });
 
@@ -366,8 +366,8 @@ Ext.define('Ext.locale.fr_CA.data.validator.Bound', {
 
     config: {
         emptyMessage: 'Presence obligatoire',
-        minOnlyMessage: 'La valeur doit Ãªtre supÃ©rieure Ã  {0}',
-        maxOnlyMessage: 'La valeur doit Ãªtre infÃ©rieure Ã  {0}',
+        minOnlyMessage: 'La valeur doit Ãªtre supérieure Ã  {0}',
+        maxOnlyMessage: 'La valeur doit Ãªtre inférieure Ã  {0}',
         bothMessage: 'La valeur doit Ãªtre comprise entre {0} et {1}'
     }
 });
@@ -409,7 +409,7 @@ Ext.define('Ext.locale.fr_CA.data.validator.Exclusion', {
     override: 'Ext.data.validator.Exclusion',
 
     config: {
-        message: 'Est une valeur qui a Ã©tÃ© exclue'
+        message: 'Est une valeur qui a été exclue'
     }
 });
 
@@ -482,19 +482,19 @@ Ext.define("Ext.locale.fr_CA.grid.locked.Grid", {
         columnMenu: {
             items: {
                 region: {
-                    text: 'RÃ©gion'
+                    text: 'Région'
                 }
             }
         },
         regions: {
             left: {
-                menuLabel: 'FermÃ© Ã  clef (Gauche)'
+                menuLabel: 'Fermé Ã  clef (Gauche)'
             },
             center: {
-                menuLabel: 'DÃ©bloquÃ©'
+                menuLabel: 'Débloqué'
             },
             right: {
-                menuLabel: 'FermÃ© Ã  clef (Droite)'
+                menuLabel: 'Fermé Ã  clef (Droite)'
             }
         }
     }
@@ -502,5 +502,5 @@ Ext.define("Ext.locale.fr_CA.grid.locked.Grid", {
 
 Ext.define("Ext.locale.fr_CA.grid.plugin.RowDragDrop", {
     override: "Ext.grid.plugin.RowDragDrop",
-    dragText: "{0} ligne(s) sÃ©lectionnÃ©(s)"
+    dragText: "{0} ligne(s) sélectionné(s)"
 });

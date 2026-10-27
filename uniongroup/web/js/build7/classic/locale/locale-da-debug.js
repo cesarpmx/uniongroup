@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Danish translation
  * By JohnF
  * 04-09-2007, 05:28 AM
@@ -240,8 +240,8 @@ Ext.define("Ext.locale.da.form.field.HtmlEditor", {
 
 Ext.define("Ext.locale.da.grid.header.Container", {
     override: "Ext.grid.header.Container",
-    sortAscText: "SortÃ©r stigende",
-    sortDescText: "SortÃ©r faldende",
+    sortAscText: "Sortér stigende",
+    sortDescText: "Sortér faldende",
     lockText: "LÃ¥s kolonne",
     unlockText: "Fjern lÃ¥s fra kolonne",
     columnsText: "Kolonner"
@@ -250,7 +250,7 @@ Ext.define("Ext.locale.da.grid.header.Container", {
 Ext.define("Ext.locale.da.grid.GroupingFeature", {
     override: "Ext.grid.feature.Grouping",
     emptyGroupText: '(Ingen)',
-    groupByText: 'GruppÃ©r efter dette felt',
+    groupByText: 'Gruppér efter dette felt',
     showGroupsText: 'Vis i grupper' // should this be sort in groups?
 });
 

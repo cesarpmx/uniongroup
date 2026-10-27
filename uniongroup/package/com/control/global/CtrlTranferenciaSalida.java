@@ -78,6 +78,10 @@ public class CtrlTranferenciaSalida extends HttpServlet {
                 case "9":  // ? NUEVO
                     out.print(ConfirmarTransferenciaSalida(request, response));
                     break;
+                    
+                 case "10":  // ? NUEVO: Eliminar Lista de Empaque
+                    out.print(EliminarListaEmpaque(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -468,6 +472,20 @@ public class CtrlTranferenciaSalida extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String EliminarListaEmpaque(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String jsonEliminar = Utilities.obtenParametro(request, "ordenListaEmpaque");
+        RequestPostApi requetPost = new RequestPostApi();
+        try {
+            String service = props.getValueProp("Host").trim() + "uniongroup/transferenciasalidaleeliminar/";
+            JSONVal = requetPost.getPost(service, jsonEliminar, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "{\"success\":false,\"message\":\"Error interno en el servidor al intentar eliminar la LE.\"}";
         }
         return JSONVal;
     }

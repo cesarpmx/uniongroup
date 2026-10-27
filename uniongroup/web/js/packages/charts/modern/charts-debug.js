@@ -1,4 +1,4 @@
-Ext.define('Ext.draw.ContainerBase', {
+﻿Ext.define('Ext.draw.ContainerBase', {
     extend: 'Ext.Container',
     constructor: function(config) {
         this.callParent([
@@ -6134,8 +6134,8 @@ Ext.define('Ext.draw.overrides.hittest.Path', {
  * + V = vertical lineto
  * + C = curveto
  * + S = smooth curveto
- * + Q = quadratic BÃ©zier curve
- * + T = smooth quadratic BÃ©zier curveto
+ * + Q = quadratic Bézier curve
+ * + T = smooth quadratic Bézier curveto
  * + A = elliptical Arc
  * + Z = closepath
  * 
@@ -10199,7 +10199,7 @@ Ext.define('Ext.draw.engine.SvgContext', {
         this.path.element = null;
     },
     /**
-     * Adds the given point to the current subpath, connected to the previous one by a cubic BÃ©zier curve with the given control points.
+     * Adds the given point to the current subpath, connected to the previous one by a cubic Bézier curve with the given control points.
      * @param {Number} x1
      * @param {Number} y1
      * @param {Number} x2
@@ -12610,7 +12610,7 @@ Ext.define('Ext.draw.engine.Canvas', {
                 },
                 /**
              * Adds the given point to the current subpath, connected to the previous one by a
-             * quadratic BÃ©zier curve with the given control point.
+             * quadratic Bézier curve with the given control point.
              * @return {*}
              * @ignore
              */
@@ -12619,7 +12619,7 @@ Ext.define('Ext.draw.engine.Canvas', {
                 },
                 /**
              * Adds the given point to the current subpath, connected to the previous one by a cubic
-             * BÃ©zier curve with the given control points.
+             * Bézier curve with the given control points.
              * @return {*}
              * @ignore
              */

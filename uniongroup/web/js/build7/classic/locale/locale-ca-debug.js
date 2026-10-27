@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Catalonian Translation by halkon_polako 6-12-2007
  * December correction halkon_polako 11-12-2007
  *
