@@ -5,22 +5,20 @@
 
         Ext.define('FormPanelRetornosDetUtils', {
             singleton: true,
-
             actualizarGrid: function (clave) {
-
-                param = {
-                    clave: clave,
-                    busqBnd: 5
-                };
-
                 var grd = Ext.getCmp("gridRetornosDet");
                 var store = grd.getStore();
-                store.removeAll(true);
-                store.reload({
-                    params: param
+                
+                // Hacemos que los parámetros sean permanentes para todas las páginas
+                store.getProxy().setExtraParams({
+                    clave: clave,
+                    busqBnd: 5
                 });
 
+                store.removeAll(true);
+                store.loadPage(1); // Carga la página 1 con los nuevos extraParams
             }
+            
         });
 
 
@@ -68,19 +66,34 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
         /* =======================
          STORE
          ======================= */
+        /* =======================
+         STORE
+         ======================= */
+      /* =======================
+         STORE
+         ======================= */
         me.storeRetornoDet = Ext.create('Ext.data.Store', {
             model: 'modelRetornoDet',
             autoLoad: false,
+            pageSize: 50, // <-- La paginación a 50
             proxy: {
                 type: 'ajax',
                 url: contexto + '/Retornos',
+                pageParam: false,
+                startParam: "offset",
+                limitParam: "limit",
+                // Dejamos esto preparado; se llenará dinámicamente con actualizarGrid
+                extraParams: {
+                    busqBnd: 5,
+                    clave: claveRetorno 
+                },
                 reader: {
                     type: 'json',
-                    rootProperty: '' // arreglo directo
+                    rootProperty: 'items',
+                    totalProperty: 'total'
                 }
             }
         });
-
         /* =======================
          GRID
          ======================= */
@@ -92,7 +105,48 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
 
             tbar: {
                 items: [
-
+                    {
+                        xtype: 'button',
+                        text: 'Recargar / Procesar Faltantes', // ? BOTON NUEVO
+                        iconCls: 'icn-refresh',
+                        handler: function () {
+                            var rtnid = me.cveRetorno;
+                            var comid = me.cveComid;
+                            
+                            Ext.getBody().mask('Evaluando productos faltantes...');
+                            
+                            Ext.Ajax.request({
+                                url: contexto + '/Retornos',
+                                method: 'POST',
+                                params: {
+                                    busqBnd: 9, 
+                                    rtnid: rtnid,
+                                    comid: comid
+                                },
+                                success: function (response) {
+                                    Ext.getBody().unmask();
+                                    try {
+                                        var res = Ext.decode(response.responseText);
+                                        if (res && res.success) {
+                                            if (res.procesados > 0) {
+                                                Ext.toast({ html: 'Se vincularon ' + res.procesados + ' productos nuevos al detalle.', title: 'Éxito', align: 'tr', iconCls: 'fa fa-check' });
+                                            } else {
+                                                Ext.toast({ html: 'No se encontraron productos nuevos en el maestro.', title: 'Sin cambios', align: 'tr', iconCls: 'fa fa-info' });
+                                            }
+                                        } else {
+                                            Ext.Msg.alert('Atención', res.message || res.error || 'Ocurrió un error al procesar las líneas.');
+                                        }
+                                    } catch (e) { }
+                                    me.storeRetornoDet.reload();
+                                },
+                                failure: function () {
+                                    Ext.getBody().unmask();
+                                    me.storeRetornoDet.reload();
+                                }
+                            });
+                        }
+                    },
+                    '->', // ? EMPUJA EL BOTÓN REGRESAR A LA DERECHA (OPCIONAL PERO SE VE MEJOR)
                     {
                         xtype: 'button',
                         text: 'Regresar',
@@ -108,10 +162,8 @@ Ext.define('Modulos.global.FormPanelRetornosDet', {
                             }
                         }
                     }
-
-
-
-                ]},
+                ]
+            },
 
             columns: [
                 {

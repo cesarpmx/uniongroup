@@ -8,6 +8,7 @@ import com.dao.RequestGetApi;
 import com.dao.RequestPostApi;
 import com.entity.global.CentralProductos;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.util.ReadProps;
 import com.util.Utilities;
@@ -68,46 +69,83 @@ public class CtrlProductos extends HttpServlet {
     
     
     
-    public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
-    try {
-        String page = Utilities.obtenParametro(request, "page");
-        String limit = Utilities.obtenParametro(request, "limit");
+   public String ObtenerProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String page = Utilities.obtenParametro(request, "page");
+            String limit = Utilities.obtenParametro(request, "limit");
+            String itemCode = Utilities.obtenParametro(request, "itemCode");
 
-        if (page == null || page.trim().isEmpty()) page = "1";
-        if (limit == null || limit.trim().isEmpty()) limit = "100";
+            if (page == null || page.trim().isEmpty()) page = "1";
+            if (limit == null || limit.trim().isEmpty()) limit = "100";
 
-        String serviceConsignatarios = props.getValueProp("HostItems")
-                + props.getValueProp("ServiceItemsGlobal") 
-                + "PageNum/" + page + "/Records/" + limit;
+            String serviceConsignatarios;
 
-        String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
+            // Si se proporciona un itemCode, se consulta por el filtro de Vector Delta
+            if (itemCode != null && !itemCode.trim().isEmpty()) {
+                String baseService = props.getValueProp("HostItems") + props.getValueProp("ServiceItemsGlobal");
+                if (!baseService.endsWith("/")) {
+                    baseService += "/";
+                }
+                serviceConsignatarios = baseService + "Where?ItemCode=" + itemCode.trim();
+            } else {
+                // Flujo normal por paginación
+                serviceConsignatarios = props.getValueProp("HostItems")
+                        + props.getValueProp("ServiceItemsGlobal") 
+                        + "PageNum/" + page + "/Records/" + limit;
+            }
 
-        if (respuestaItems == null || respuestaItems.trim().isEmpty()) {
+            String respuestaItems = requetGet.getGetGlobal(serviceConsignatarios);
+
+            if (respuestaItems == null || respuestaItems.trim().isEmpty()) {
+                return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
+            }
+
+            respuestaItems = respuestaItems.trim();
+
+            // Si Vector Delta responde texto plano con NO DATA FOUND o Error
+            if (respuestaItems.contains("NO DATA FOUND") || respuestaItems.startsWith("Error")) {
+                return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            // 1. Si la respuesta viene envuelta en comillas dobles "...", Jackson la desescapa
+            if (respuestaItems.startsWith("\"") && respuestaItems.endsWith("\"")) {
+                respuestaItems = mapper.readValue(respuestaItems, String.class);
+            }
+
+            respuestaItems = respuestaItems.trim();
+
+            if (respuestaItems.contains("NO DATA FOUND") || respuestaItems.startsWith("Error")) {
+                return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
+            }
+
+            // 2. Parsear el JSON ya desescapado al objeto CentralProductos
+            try {
+                CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
+                return mapper.writeValueAsString(CItems);
+            } catch (Exception parseEx) {
+                // Respaldo defensivo en caso de que Vector Delta devuelva un arreglo directo [ ... ] o un objeto individual
+                JsonNode rootNode = mapper.readTree(respuestaItems);
+                if (rootNode.isArray()) {
+                    return "{\"Data\": " + respuestaItems + ", \"Meta\": {\"TotalRecords\": " + rootNode.size() + "}}";
+                } else if (rootNode.isObject()) {
+                    if (rootNode.has("Data")) {
+                        return respuestaItems;
+                    } else {
+                        return "{\"Data\": [" + respuestaItems + "], \"Meta\": {\"TotalRecords\": 1}}";
+                    }
+                }
+                throw parseEx;
+            }
+
+        } catch (Exception e) {
+            System.err.println("❌ Error procesando ObtenerProductos:");
+            e.printStackTrace();
             return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
         }
-
-        respuestaItems = respuestaItems.trim();
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        // 1. Si la respuesta viene envuelta en comillas dobles "...",
-        // Jackson la desescapa correctamente respetando las comillas internas.
-        if (respuestaItems.startsWith("\"") && respuestaItems.endsWith("\"")) {
-            respuestaItems = mapper.readValue(respuestaItems, String.class);
-        }
-
-        // 2. Parsear el JSON ya desescapado al objeto CentralProductos
-        CentralProductos CItems = mapper.readValue(respuestaItems, CentralProductos.class);
-
-        return mapper.writeValueAsString(CItems);
-
-    } catch (Exception e) {
-        System.err.println("❌ Error procesando ObtenerProductos:");
-        e.printStackTrace();
-        return "{\"Data\": [], \"Meta\": {\"TotalRecords\": 0}}";
     }
-}
     
     
     public String ModificarProducto(HttpServletRequest request, HttpServletResponse response) {

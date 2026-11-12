@@ -1,4 +1,4 @@
-﻿/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
@@ -6,7 +6,13 @@
             singleton: true,
 
             BtnBusqProductos: function () {
+                var txtFiltro = Ext.getCmp('txtFiltroItemCode');
+                var itemCode = txtFiltro ? Ext.String.trim(txtFiltro.getValue() || '') : '';
+
                 const param = {busqBnd: 1};
+                if (itemCode !== '') {
+                    param.itemCode = itemCode;
+                }
 
                 ProductosUtils.BuscarProductos(param);
                 var storeProductos = Ext.StoreManager.lookup('storeProductos');
@@ -387,6 +393,20 @@ Ext.define('Modulos.global.PanelProductos', {
                     },
                     tbar: [
                         {
+                            xtype: 'textfield',
+                            id: 'txtFiltroItemCode',
+                            emptyText: 'ItemCode',
+                            width: 210,
+                            enableKeyEvents: true,
+                            listeners: {
+                                specialkey: function (field, e) {
+                                    if (e.getKey() === e.ENTER) {
+                                        ProductosUtils.BtnBusqProductos();
+                                    }
+                                }
+                            }
+                        },
+                        {
                             xtype: "button",
                             text: "Actualizar",
                             iconCls: "icn-busquedaDos",
@@ -394,6 +414,19 @@ Ext.define('Modulos.global.PanelProductos', {
                                 ProductosUtils.BtnBusqProductos();
                             }
                         },
+                        {
+                            xtype: "button",
+                            iconCls: "icn-limpiarBusqueda",
+                            text: "Limpiar",
+                            handler: function () {
+                                var txt = Ext.getCmp('txtFiltroItemCode');
+                                if (txt) {
+                                    txt.reset();
+                                }
+                                ProductosUtils.BtnBusqProductos();
+                            }
+                        },
+                        '-',
                         {
                             xtype: "button",
                             text: "Cargar",

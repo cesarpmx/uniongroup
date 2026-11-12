@@ -76,6 +76,9 @@ public class CtrlOrdenesCompra extends HttpServlet {
                 case "8":  // ? NUEVO CASO
                     out.print(ConfirmarOrdenCompra(request, response));
                     break;
+                case "9":  // ? NUEVO CASO
+                    out.print(ReprocesarLineasFaltantes(request, response));
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,126 +320,126 @@ public class CtrlOrdenesCompra extends HttpServlet {
     }
 
     public String EnviarReceiptConfirm(HttpServletRequest request, HttpServletResponse response) {
-    String JSONVal = "";
-    String jsonReceipt = Utilities.obtenParametro(request, "valores");
-    
-    // ==========================================================
-    // CAMBIO 1: Recibir parámetros de control enviados desde ExtJS
-    // ==========================================================
-    String ocid = Utilities.obtenParametro(request, "ocid");
-    String esCompleta = Utilities.obtenParametro(request, "esCompleta"); // "S" o "N"
-
-    RequestPostApi requetPost = new RequestPostApi();
-
-    try {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        // 1. Parsear el JSON recibido
-        Map<String, Object> receiptData = mapper.readValue(jsonReceipt, Map.class);
-
-        // 2. Enviar al API del cliente externo (Vector Delta / Reebok)
-        String serviceCliente = props.getValueProp("HostGlobalInsert")
-                + props.getValueProp("ServiceReceiptConfirmGlobal");
-
-        String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
-
-        // 3. DOBLE DESERIALIZACIÓN
-        String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
-        Map<String, Object> clienteResponse = mapper.readValue(jsonLimpio, Map.class);
-
-        // 4. CONSTRUIR JSON PARA GUARDAR EN UG_CONFIRMATION_LOG
-        Map<String, Object> confirmationLog = new HashMap<>();
-        confirmationLog.put("CLOPROCESS", "OC_ReceiptConfirmDEV");
-
-        if (clienteResponse.get("StatusInfo") != null) {
-            Map<String, Object> statusInfo = (Map<String, Object>) clienteResponse.get("StatusInfo");
-            confirmationLog.put("CLOSTATUS", statusInfo.get("Status"));
-            confirmationLog.put("CLOMENSSAGE", statusInfo.get("Mensaje"));
-        } else {
-            confirmationLog.put("CLOSTATUS", 200);
-            confirmationLog.put("CLOMENSSAGE", "OK");
-        }
-
-        confirmationLog.put("CLOSYSTEMDATE", clienteResponse.get("SystemDate"));
-        confirmationLog.put("CLOTRANSACTIONNUMBER", clienteResponse.get("TransactionNumber"));
-        confirmationLog.put("CLODOCDATE", clienteResponse.get("DocDate"));
-        confirmationLog.put("CLODOCNUM", clienteResponse.get("DocNum"));
-
-        String confirmationJson = mapper.writeValueAsString(confirmationLog);
+        String JSONVal = "";
+        String jsonReceipt = Utilities.obtenParametro(request, "valores");
 
         // ==========================================================
-        // CAMBIO 2: Reemplazar URL quemada por lectura de properties
+        // CAMBIO 1: Recibir parámetros de control enviados desde ExtJS
         // ==========================================================
-        try {
-            String serviceLog = props.getValueProp("Host") + props.getValueProp("ServiceConfirmationLog");
+        String ocid = Utilities.obtenParametro(request, "ocid");
+        String esCompleta = Utilities.obtenParametro(request, "esCompleta"); // "S" o "N"
 
-            String resultadoLog = requetPost.getPost(serviceLog, confirmationJson, request);
-
-            Map<String, Object> logResponse = mapper.readValue(resultadoLog, Map.class);
-            if (logResponse.get("success") != null && (Boolean) logResponse.get("success")) {
-                System.out.println("Log guardado exitosamente con CLOID: " + logResponse.get("CLOID"));
-            } else {
-                System.out.println("Advertencia al guardar log: " + logResponse.get("message"));
-            }
-
-        } catch (Exception logEx) {
-            System.out.println("Error al guardar en Confirmation Log (no crítico):");
-            logEx.printStackTrace();
-        }
-
-        // ==========================================================
-        // CAMBIO 3: Asentar cantidades confirmadas y estatus en BD Local
-        // ==========================================================
-        if (ocid != null && !ocid.isEmpty()) {
-            try {
-                Map<String, Object> payloadConfirm = new HashMap<>();
-                payloadConfirm.put("OCID", Integer.parseInt(ocid));
-                payloadConfirm.put("esCompleta", esCompleta);
-
-                String jsonConfirm = mapper.writeValueAsString(payloadConfirm);
-
-                // Invoca a ServiceOrdenCompraConfirm (PUT a REST_PUT_ORDENCOMPRA_CONFIRM)
-                String serviceConfirmLocal = props.getValueProp("Host") 
-                        + props.getValueProp("ServiceOrdenCompraConfirm");
-                
-                String resLocal = requetPost.setPut(serviceConfirmLocal, jsonConfirm, request);
-                System.out.println("Confirmación local ejecutada: " + resLocal);
-
-            } catch (Exception exLocal) {
-                System.out.println("Error al actualizar remanente en BD local:");
-                exLocal.printStackTrace();
-            }
-        }
-
-        // 6. Construir respuesta hacia ExtJS
-        Map<String, Object> resultado = new HashMap<>();
-        resultado.put("success", true);
-        resultado.put("message", "Confirmación de recepción enviada exitosamente");
-        resultado.put("clienteResponse", clienteResponse);
-
-        JSONVal = mapper.writeValueAsString(resultado);
-
-    } catch (Exception e) {
-        System.out.println("Error en EnviarReceiptConfirm:");
-        e.printStackTrace();
+        RequestPostApi requetPost = new RequestPostApi();
 
         try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
             ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> error = new HashMap<>();
-            error.put("success", false);
-            error.put("message", "Error al procesar ReceiptConfirm: " + e.getMessage());
-            JSONVal = mapper.writeValueAsString(error);
-        } catch (Exception ex) {
-            JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";
-        }
-    }
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    return JSONVal;
-}
+            // 1. Parsear el JSON recibido
+            Map<String, Object> receiptData = mapper.readValue(jsonReceipt, Map.class);
+
+            // 2. Enviar al API del cliente externo (Vector Delta / Reebok)
+            String serviceCliente = props.getValueProp("HostGlobalInsert")
+                    + props.getValueProp("ServiceReceiptConfirmGlobal");
+
+            String respuestaCliente = requetPost.getPostGlobal(serviceCliente, jsonReceipt);
+
+            // 3. DOBLE DESERIALIZACIÓN
+            String jsonLimpio = mapper.readValue(respuestaCliente, String.class);
+            Map<String, Object> clienteResponse = mapper.readValue(jsonLimpio, Map.class);
+
+            // 4. CONSTRUIR JSON PARA GUARDAR EN UG_CONFIRMATION_LOG
+            Map<String, Object> confirmationLog = new HashMap<>();
+            confirmationLog.put("CLOPROCESS", "OC_ReceiptConfirmDEV");
+
+            if (clienteResponse.get("StatusInfo") != null) {
+                Map<String, Object> statusInfo = (Map<String, Object>) clienteResponse.get("StatusInfo");
+                confirmationLog.put("CLOSTATUS", statusInfo.get("Status"));
+                confirmationLog.put("CLOMENSSAGE", statusInfo.get("Mensaje"));
+            } else {
+                confirmationLog.put("CLOSTATUS", 200);
+                confirmationLog.put("CLOMENSSAGE", "OK");
+            }
+
+            confirmationLog.put("CLOSYSTEMDATE", clienteResponse.get("SystemDate"));
+            confirmationLog.put("CLOTRANSACTIONNUMBER", clienteResponse.get("TransactionNumber"));
+            confirmationLog.put("CLODOCDATE", clienteResponse.get("DocDate"));
+            confirmationLog.put("CLODOCNUM", clienteResponse.get("DocNum"));
+
+            String confirmationJson = mapper.writeValueAsString(confirmationLog);
+
+            // ==========================================================
+            // CAMBIO 2: Reemplazar URL quemada por lectura de properties
+            // ==========================================================
+            try {
+                String serviceLog = props.getValueProp("Host") + props.getValueProp("ServiceConfirmationLog");
+
+                String resultadoLog = requetPost.getPost(serviceLog, confirmationJson, request);
+
+                Map<String, Object> logResponse = mapper.readValue(resultadoLog, Map.class);
+                if (logResponse.get("success") != null && (Boolean) logResponse.get("success")) {
+                    System.out.println("Log guardado exitosamente con CLOID: " + logResponse.get("CLOID"));
+                } else {
+                    System.out.println("Advertencia al guardar log: " + logResponse.get("message"));
+                }
+
+            } catch (Exception logEx) {
+                System.out.println("Error al guardar en Confirmation Log (no crítico):");
+                logEx.printStackTrace();
+            }
+
+            // ==========================================================
+            // CAMBIO 3: Asentar cantidades confirmadas y estatus en BD Local
+            // ==========================================================
+            if (ocid != null && !ocid.isEmpty()) {
+                try {
+                    Map<String, Object> payloadConfirm = new HashMap<>();
+                    payloadConfirm.put("OCID", Integer.parseInt(ocid));
+                    payloadConfirm.put("esCompleta", esCompleta);
+
+                    String jsonConfirm = mapper.writeValueAsString(payloadConfirm);
+
+                    // Invoca a ServiceOrdenCompraConfirm (PUT a REST_PUT_ORDENCOMPRA_CONFIRM)
+                    String serviceConfirmLocal = props.getValueProp("Host")
+                            + props.getValueProp("ServiceOrdenCompraConfirm");
+
+                    String resLocal = requetPost.setPut(serviceConfirmLocal, jsonConfirm, request);
+                    System.out.println("Confirmación local ejecutada: " + resLocal);
+
+                } catch (Exception exLocal) {
+                    System.out.println("Error al actualizar remanente en BD local:");
+                    exLocal.printStackTrace();
+                }
+            }
+
+            // 6. Construir respuesta hacia ExtJS
+            Map<String, Object> resultado = new HashMap<>();
+            resultado.put("success", true);
+            resultado.put("message", "Confirmación de recepción enviada exitosamente");
+            resultado.put("clienteResponse", clienteResponse);
+
+            JSONVal = mapper.writeValueAsString(resultado);
+
+        } catch (Exception e) {
+            System.out.println("Error en EnviarReceiptConfirm:");
+            e.printStackTrace();
+
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "Error al procesar ReceiptConfirm: " + e.getMessage());
+                JSONVal = mapper.writeValueAsString(error);
+            } catch (Exception ex) {
+                JSONVal = "{\"success\":false,\"message\":\"Error fatal\"}";
+            }
+        }
+
+        return JSONVal;
+    }
 
     public String EliminarOrdenCompra(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "";
@@ -468,6 +471,23 @@ public class CtrlOrdenesCompra extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String ReprocesarLineasFaltantes(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String ocid = Utilities.obtenParametro(request, "ocid");
+        String comid = Utilities.obtenParametro(request, "comid");
+        RequestPostApi requetPost = new RequestPostApi();
+        
+        try {
+            String jsonPayload = "{\"ocid\": " + ocid + ", \"comid\": " + comid + "}";
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceReprocesarLineas"); 
+            JSONVal = requetPost.getPost(service, jsonPayload, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "{\"success\":false, \"message\":\"Error interno al reprocesar líneas\"}";
         }
         return JSONVal;
     }

@@ -608,7 +608,7 @@ Ext.define('TransferenciaEntradaUtils', {
             model: 'modelLineasTransferenciaLocal',
             leadingBufferZone: 100,
             autoLoad: true,
-            pageSize: 25,
+            pageSize: 50,
             proxy: {
                 type: "ajax",
                 url: contexto + "/TransferenciasEntrada",
@@ -670,10 +670,43 @@ Ext.define('TransferenciaEntradaUtils', {
                         '->',
                         {
                             xtype: 'button',
-                            text: 'Recargar',
+                            text: 'Recargar / Procesar Faltantes', // ? BOTON MODIFICADO
                             iconCls: 'icn-refresh',
                             handler: function () {
-                                storeLineas.reload();
+                                var teid = record.get('TEID');
+                                var comid = record.get('entid'); // * EN ESTA TABLA SE LLAMA entid
+
+                                Ext.getBody().mask('Evaluando productos faltantes...');
+                                
+                                Ext.Ajax.request({
+                                    url: contexto + '/TransferenciasEntrada',
+                                    method: 'POST',
+                                    params: {
+                                        busqBnd: 9, 
+                                        teid: teid,
+                                        comid: comid
+                                    },
+                                    success: function (response) {
+                                        Ext.getBody().unmask();
+                                        try {
+                                            var res = Ext.decode(response.responseText);
+                                            if (res && res.success) {
+                                                if (res.procesados > 0) {
+                                                    Ext.toast({ html: 'Se vincularon ' + res.procesados + ' productos nuevos al detalle.', title: 'Éxito', align: 'tr', iconCls: 'fa fa-check' });
+                                                } else {
+                                                    Ext.toast({ html: 'No se encontraron productos nuevos en el maestro.', title: 'Sin cambios', align: 'tr', iconCls: 'fa fa-info' });
+                                                }
+                                            } else {
+                                                Ext.Msg.alert('Atención', res.message || res.error || 'Ocurrió un error al procesar las líneas.');
+                                            }
+                                        } catch (e) { }
+                                        storeLineas.reload();
+                                    },
+                                    failure: function () {
+                                        Ext.getBody().unmask();
+                                        storeLineas.reload();
+                                    }
+                                });
                             }
                         },
                         {
@@ -816,6 +849,7 @@ Ext.define('TransferenciaEntradaUtils', {
         var docEntry = record.get("DocEntry");
         var docNum = record.get("DocNum");
         var numAtCard = record.get("NumAtCard");
+        var cardCode = record.get("CardCode"); // Necesario para el payload
         var entid = record.get("entid");
         var teid = record.get("TEID");
         var confirmCount = record.get("CONFIRMCOUNT") || 0;
@@ -829,7 +863,7 @@ Ext.define('TransferenciaEntradaUtils', {
                 busqBnd: 5,
                 docEntry: docEntry,
                 servicio: 'ServiceTransferenciaEntradaDet',
-                limit: 9999,
+                limit: 99999, // Traer todas para calcular
                 offset: 0
             },
             success: function (resp) {
@@ -838,28 +872,30 @@ Ext.define('TransferenciaEntradaUtils', {
                 var data = Ext.decode(resp.responseText);
                 var lineas = data.items || [];
 
+                if (lineas.length === 0) {
+                    Ext.Msg.alert("Error", "No se encontraron líneas para esta transferencia.");
+                    return;
+                }
+
                 var totalPedido = 0;
                 var totalRecibido = 0;
                 var totalYaConfirmado = 0;
                 var deltaTotalAEnviar = 0;
                 var linesAEnviar = [];
 
-                // Calcular acumulados y deltas por línea
                 Ext.Array.each(lineas, function (linea) {
                     var qtyOriginal = parseFloat(linea.Quantity) || 0;
                     var qtyRecibidaFisica = parseFloat(linea.receivedquantity) || 0;
                     var qtyConfirmadaPrevia = parseFloat(linea.CONFIRMEDQUANTITY) || 0;
 
                     var delta = qtyRecibidaFisica - qtyConfirmadaPrevia;
-                    if (delta < 0)
-                        delta = 0;
+                    if (delta < 0) delta = 0;
 
                     totalPedido += qtyOriginal;
                     totalRecibido += qtyRecibidaFisica;
                     totalYaConfirmado += qtyConfirmadaPrevia;
                     deltaTotalAEnviar += delta;
 
-                    // Solo incluir líneas que tengan piezas nuevas recibidas
                     if (delta > 0) {
                         linesAEnviar.push({
                             LineNum: linea.LineNum,
@@ -871,14 +907,12 @@ Ext.define('TransferenciaEntradaUtils', {
                 });
 
                 if (deltaTotalAEnviar === 0) {
-                    Ext.Msg.alert('Atención', 'No hay nuevas recepciones pendientes por confirmar en esta transferencia.');
+                    Ext.Msg.alert('Atención', 'No hay nuevas recepciones pendientes por confirmar.');
                     return;
                 }
 
-                // Para Transferencias de Entrada: 'Total' o 'Parcial'
                 var estatusCalculado = '';
                 var esEntregaCompleta = false;
-
                 if (totalRecibido >= totalPedido) {
                     estatusCalculado = 'Total';
                     esEntregaCompleta = true;
@@ -889,16 +923,26 @@ Ext.define('TransferenciaEntradaUtils', {
                     estatusCalculado = 'Cancelada';
                 }
 
-                var siguienteEnvio = confirmCount + 1;
-                var transactionNumber = entid + "_" + siguienteEnvio;
+                // ============================================
+                // PREPARACIÓN DE LOTES (500 por bloque)
+                // ============================================
+                var loteSize = 500;
+                var totalLotes = Math.ceil(linesAEnviar.length / loteSize);
+
+                var transactionText = '';
+                if (totalLotes === 1) {
+                    transactionText = entid + "_" + (confirmCount + 1);
+                } else {
+                    transactionText = entid + "_" + (confirmCount + 1) + " al " + (confirmCount + totalLotes);
+                }
 
                 var memoField = Ext.create('Ext.form.field.TextArea', {
                     fieldLabel: 'Observaciones',
                     name: 'memo',
-                    labelWidth: 150,
-                    width: 400,
+                    labelAlign: 'top',
+                    anchor: '100%',
                     height: 70,
-                    value: 'Recepción ' + estatusCalculado + ' transaccion #' + siguienteEnvio
+                    value: 'Recepción ' + estatusCalculado 
                 });
 
                 var win = Ext.create('Ext.window.Window', {
@@ -906,52 +950,78 @@ Ext.define('TransferenciaEntradaUtils', {
                     modal: true,
                     width: 460,
                     layout: 'fit',
+                    resizable: false,
                     items: [{
-                            xtype: 'form',
-                            bodyPadding: 15,
-                            items: [
-                                {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum, labelWidth: 150},
-                                {xtype: 'displayfield', fieldLabel: 'Transacción asignada', value: '<b>' + transactionNumber + '</b>', labelWidth: 150},
-                                {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido + ' pzas', labelWidth: 150},
-                                {xtype: 'displayfield', fieldLabel: 'Total Recibido (Físico)', value: totalRecibido + ' pzas', labelWidth: 150},
-                                {
-                                    xtype: 'displayfield',
-                                    fieldLabel: 'A Confirmar (Esta entrega)',
-                                    value: '<b style="color: #4CAF50; font-size: 14px;">' + deltaTotalAEnviar + ' pzas</b>',
-                                    labelWidth: 150
-                                },
-                                {xtype: 'displayfield', fieldLabel: 'Estatus a Notificar', value: '<b>' + estatusCalculado + '</b>', labelWidth: 150},
-                                memoField
-                            ],
-                            buttons: [
-                                {text: 'Cancelar', handler: function () {
-                                        win.close();
-                                    }},
-                                {
-                                    text: 'Confirmar y Enviar',
-                                    iconCls: 'fa fa-check',
-                                    handler: function () {
-                                        var memoText = memoField.getValue();
-                                        win.close();
+                        xtype: 'form',
+                        bodyPadding: 15,
+                        items: [
+                            {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum},
+                            {xtype: 'displayfield', fieldLabel: 'Transacciones', value: '<b>' + transactionText + ' (' + totalLotes + ' envíos)</b>'},
+                            {xtype: 'displayfield', fieldLabel: 'Total de Líneas a Enviar', value: linesAEnviar.length},
+                            {xtype: 'displayfield', fieldLabel: 'Total Solicitado', value: totalPedido + ' pzas'},
+                            {xtype: 'displayfield', fieldLabel: 'Total Recibido (Físico)', value: totalRecibido + ' pzas'},
+                            {xtype: 'displayfield', fieldLabel: 'A Confirmar', value: '<b style="color: #4CAF50;">' + deltaTotalAEnviar + ' pzas</b>'},
+                            {xtype: 'displayfield', fieldLabel: 'Estatus Final', value: '<b style="color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + ';">' + estatusCalculado + '</b>'},
+                            memoField
+                        ],
+                        buttons: [
+                            { text: 'Cancelar', handler: function () { win.close(); } },
+                            {
+                                text: 'Confirmar y Enviar',
+                                iconCls: 'fa fa-check',
+                                handler: function () {
+                                    var memoText = memoField.getValue();
+                                    var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+                                    win.close();
 
-                                        var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
-                                        Ext.getBody().mask('Enviando confirmación a Vector Delta...');
+                                    var progressWin = Ext.create('Ext.window.Window', {
+                                        title: 'Enviando Lotes a Vector Delta',
+                                        width: 400, height: 160, modal: true, closable: false, layout: 'vbox', bodyPadding: 20,
+                                        items: [
+                                            {xtype: 'label', id: 'lblProgLoteConfTE', text: 'Iniciando envío...', margin: '0 0 10 0'},
+                                            {xtype: 'progressbar', id: 'barProgLoteConfTE', width: '100%'}
+                                        ]
+                                    });
+                                    progressWin.show();
 
-                                        // Clave raíz: TransferReceiptConfirm
+                                    var index = 0;
+                                    var loteActualN = 1;
+                                    var respuestasServidor = [];
+
+                                    function enviarLote() {
+                                        var fin = Math.min(index + loteSize, linesAEnviar.length);
+                                        var loteActual = linesAEnviar.slice(index, fin);
+                                        var deltaLote = 0;
+                                        Ext.Array.each(loteActual, function(line) { deltaLote += line.Quantity; });
+
+                                        var siguienteEnvio = confirmCount + loteActualN;
+                                        var currentTransactionNumber = entid + "_" + siguienteEnvio;
+
+                                        var currentEstatus = estatusCalculado;
+                                        if (estatusCalculado === 'Total' && fin < linesAEnviar.length) {
+                                            currentEstatus = 'Parcial';
+                                        }
+
+                                        var currentMemo = memoText;
+                                        if (totalLotes > 1) currentMemo += ' (Lote ' + loteActualN + ' de ' + totalLotes + ')';
+
+                                        Ext.getCmp('lblProgLoteConfTE').setText('Enviando Lote ' + loteActualN + ' de ' + totalLotes + '...');
+                                        Ext.getCmp('barProgLoteConfTE').updateProgress(index / linesAEnviar.length);
+
                                         var jsonSend = {
-                                            TransferReceiptConfirm: {
+                                            ReceiptConfirm: {
                                                 DocDate: docDate,
                                                 DocNum: docNum,
                                                 NumAtCard: numAtCard,
-                                                TransactionNumber: transactionNumber,
-                                                Status: estatusCalculado,
-                                                Memo: memoText
+                                                TransactionNumber: currentTransactionNumber,
+                                                Status: currentEstatus,
+                                                Memo: currentMemo
                                             },
                                             ControlValues: {
-                                                TotalQuantity: deltaTotalAEnviar,
-                                                TotalLines: linesAEnviar.length
+                                                TotalQuantity: deltaLote,
+                                                TotalLines: loteActual.length
                                             },
-                                            Lines: linesAEnviar
+                                            Lines: loteActual
                                         };
 
                                         Ext.Ajax.request({
@@ -961,76 +1031,55 @@ Ext.define('TransferenciaEntradaUtils', {
                                                 busqBnd: 6,
                                                 valores: Ext.encode(jsonSend),
                                                 teid: teid,
-                                                esCompleta: esEntregaCompleta ? 'S' : 'N'
+                                                esCompleta: (fin >= linesAEnviar.length) ? 'S' : 'N'
                                             },
                                             success: function (response) {
-                                                Ext.getBody().unmask();
-                                                try {
-                                                    var resultado = Ext.decode(response.responseText);
-
-                                                    if (resultado.success) {
-                                                        var docNumResp = 'N/A';
-                                                        var systemDate = 'N/A';
-                                                        var statusMensaje = 'N/A';
-
-                                                        if (resultado.clienteResponse) {
-                                                            docNumResp = resultado.clienteResponse.DocNum || 'N/A';
-                                                            systemDate = resultado.clienteResponse.SystemDate || resultado.clienteResponse.DocDate || 'N/A';
-
-                                                            if (resultado.clienteResponse.StatusInfo) {
-                                                                statusMensaje = resultado.clienteResponse.StatusInfo.Mensaje || 'N/A';
-                                                            }
-                                                        }
-
-                                                        var fechaFormateada = systemDate;
-                                                        if (systemDate !== 'N/A') {
-                                                            try {
-                                                                fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
-                                                            } catch (e) {
-                                                                fechaFormateada = systemDate;
-                                                            }
-                                                        }
-
-                                                        var msg = 'Confirmación de recepción procesada exitosamente<br><br>';
-                                                        msg += '<b>Transferencia:</b> ' + docNum + '<br>';
-                                                        msg += '<b>Transacción</b> ' + transactionNumber + '<br>';
-                                                        msg += '<b>Estatus Notificado:</b> ' + estatusCalculado + '<br>';
-                                                        msg += '<b>Total Solicitado:</b> ' + totalPedido + ' | <b>Recibido Físico:</b> ' + totalRecibido + '<br>';
-                                                        msg += '<b>Enviado en esta transaccion:</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>';
-                                                        msg += '<b>Folio SAP:</b> ' + docNumResp + '<br>';
-                                                        msg += '<b>Fecha Respuesta:</b> ' + fechaFormateada + '<br>';
-                                                        msg += '<b>Estado Cliente:</b> ' + statusMensaje;
-
-                                                        Ext.Msg.alert('Éxito', msg, function () {
-                                                            TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
-                                                        });
-                                                    } else {
-                                                        Ext.Msg.alert('Error', resultado.message || resultado.error || 'Error al procesar la confirmación');
-                                                    }
-                                                } catch (e) {
-                                                    Ext.Msg.alert('Error', 'Error al procesar la respuesta del servidor');
+                                                respuestasServidor.push(Ext.decode(response.responseText));
+                                                index += loteSize;
+                                                loteActualN++;
+                                                if (index < linesAEnviar.length) { 
+                                                    enviarLote(); 
+                                                } else { 
+                                                    progressWin.close(); 
+                                                    mostrarResumenFinal(); 
                                                 }
                                             },
                                             failure: function () {
-                                                Ext.getBody().unmask();
-                                                Ext.Msg.alert('Error', 'Fallo de comunicación al enviar confirmación');
+                                                progressWin.close();
+                                                Ext.Msg.alert('Error', 'Fallo conexión lote ' + loteActualN);
+                                                TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
                                             }
                                         });
                                     }
-                                }
-                            ]
-                        }]
-                });
 
+                                    function mostrarResumenFinal() {
+                                        var allSuccess = true;
+                                        Ext.Array.each(respuestasServidor, function(res) { if(!res.success) allSuccess = false; });
+                                        if (allSuccess) {
+                                            Ext.Msg.alert('Éxito', 'Confirmación procesada en ' + totalLotes + ' lotes.', function () {
+                                                TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+                                            });
+                                        } else {
+                                            Ext.Msg.alert('Aviso', 'Proceso terminado con errores en algunos lotes.');
+                                            TransferenciaEntradaUtils.BtnBusqTransferenciaEntrada();
+                                        }
+                                    }
+
+                                    enviarLote();
+                                }
+                            }
+                        ]
+                    }]
+                });
                 win.show();
             },
             failure: function () {
                 Ext.getBody().unmask();
-                Ext.Msg.alert("Error", "No se pudieron obtener las líneas de la transferencia.");
+                Ext.Msg.alert("Error", "No se pudieron obtener las líneas.");
             }
         });
     },
-
+    
     EliminarOrdenEntrada: function (prm) {
         Ext.Ajax.request({
             url: contexto + '/TransferenciasEntrada',

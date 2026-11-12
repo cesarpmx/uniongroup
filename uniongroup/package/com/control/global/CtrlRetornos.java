@@ -78,6 +78,10 @@ public class CtrlRetornos extends HttpServlet {
                      case "8":
                     out.print(ConfirmarRetorno(request, response));
                     break;
+                    
+                    case "9":  // ? NUEVO CASO
+                    out.print(ReprocesarLineasFaltantes(request, response));
+                    break;
                 
                 
             }
@@ -283,7 +287,7 @@ public class CtrlRetornos extends HttpServlet {
             String fecha = Utilities.obtenParametro(request, "fecha");
         try {
             // idEmpresa = Utilities.obtenParametro(request, "idEmpresa");
-            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornos")+ "?estatus="+ estatus + "&diasatras=" +dias + "&fechafin=" + fecha + "&offset=" + offset + "&limit=" + limit;;
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornos")+ "?estatus="+ estatus + "&diasatras=" +dias + "&fechafin=" + fecha + "&offset=" + offset + "&limit=10000";
             String respuesta = requetGet.getGetPaginacion(service, request);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -305,20 +309,43 @@ public class CtrlRetornos extends HttpServlet {
     }
     
     public String ObtenerRetornosDet(HttpServletRequest request, HttpServletResponse response) {
-        String JSONVal, idEmpresa;
-        HttpSession session = request.getSession(true);
-        String clave = Utilities.obtenParametro(request, "clave");
         try {
-            // idEmpresa = Utilities.obtenParametro(request, "idEmpresa");
-            String service = props.getValueProp("Host") + props.getValueProp("ServiceRetornosDet") + "?clave=" + clave;
-            String repuesta = requetGet.getGet(service);
-            CentralRetornosDet CRetornoDet = new ObjectMapper().readValue(repuesta, CentralRetornosDet.class);
-            JSONVal = new ObjectMapper().writeValueAsString(CRetornoDet.items);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            String clave = Utilities.obtenParametro(request, "clave");
+            String limit = Utilities.obtenParametro(request, "limit");
+            String offset = Utilities.obtenParametro(request, "offset");
+
+            // Valores por defecto si no los envía el frontend
+            if (limit == null || limit.isEmpty()) {
+                limit = "50";
+            }
+            if (offset == null || offset.isEmpty()) {
+                offset = "0";
+            }
+
+            // Se arma la URL dinámica con offset y limit
+            String service = props.getValueProp("Host") 
+                    + props.getValueProp("ServiceRetornosDet") 
+                    + "?clave=" + clave + "&offset=" + offset + "&limit=" + limit;
+
+            // 1. Usar getGetPaginacion para procesar el "totalrecs" de Oracle
+            String repuesta = requetGet.getGetPaginacion(service, request);
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
+            CentralRetornosDet wrapper = mapper.readValue(repuesta, CentralRetornosDet.class);
+            
+            // 2. Retornar el wrapper completo (items + total)
+            return mapper.writeValueAsString(wrapper);
+
         } catch (Exception e) {
             e.printStackTrace();
-            JSONVal = "";
+            return "{\"items\":[],\"total\":0}";
         }
-        return JSONVal;
     }
     
     
@@ -500,6 +527,23 @@ public class CtrlRetornos extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             JSONVal = "";
+        }
+        return JSONVal;
+    }
+    
+    public String ReprocesarLineasFaltantes(HttpServletRequest request, HttpServletResponse response) {
+        String JSONVal = "";
+        String rtnid = Utilities.obtenParametro(request, "rtnid");
+        String comid = Utilities.obtenParametro(request, "comid");
+        RequestPostApi requetPost = new RequestPostApi();
+        
+        try {
+            String jsonPayload = "{\"rtnid\": " + rtnid + ", \"comid\": " + comid + "}";
+            String service = props.getValueProp("Host") + props.getValueProp("ServiceReprocesarLineasRTN"); 
+            JSONVal = requetPost.getPost(service, jsonPayload, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONVal = "{\"success\":false, \"message\":\"Error interno al reprocesar líneas de retorno\"}";
         }
         return JSONVal;
     }

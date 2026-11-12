@@ -62,7 +62,7 @@ Ext.define('RetornosUtils', {
         win.show();
     },
 
-    detalleRetorno: function (clave) {
+    detalleRetorno: function (clave, comid) {
 
         Ext.require('Modulos.global.FormPanelRetornosDet', function () {
             var win = Ext.create('Ext.window.Window', {
@@ -85,6 +85,7 @@ Ext.define('RetornosUtils', {
                 items: [
                     Ext.create('Modulos.global.FormPanelRetornosDet', {
                         cveRetorno: clave,
+                        cveComid: comid,
                         titulo: 'Detalle',
                         itemId: 'pnlRetornoDet',
                         height: 200,
@@ -161,12 +162,15 @@ Ext.define('RetornosUtils', {
             method: "POST",
             params: {
                 busqBnd: 5,
-                clave: clave
+                clave: clave,
+                limit: 99999 // Trae todo el universo de líneas para calcular
             },
             success: function (resp) {
                 Ext.getBody().unmask();
                 var data = Ext.decode(resp.responseText);
-                var lineas = data || [];
+                
+                // Extrae el arreglo 'items' del JSON paginado
+                var lineas = data.items || data || [];
 
                 if (lineas.length === 0) {
                     Ext.Msg.alert("Error", "No se encontraron líneas para este retorno.");
@@ -181,13 +185,14 @@ Ext.define('RetornosUtils', {
 
                 // Calcular acumulados y diferencias por línea
                 Ext.Array.each(lineas, function (line) {
-                    var qtyOriginal = parseFloat(line.quantity) || 0;
-                    var qtyRecibidaFisica = parseFloat(line.receivedquantity) || 0;
-                    var qtyConfirmadaPrevia = parseFloat(line.confirmedquantity) || 0;
+                    var qtyOriginal = parseFloat(line.quantity !== undefined ? line.quantity : line.Quantity) || 0;
+                    var qtyRecibidaFisica = parseFloat(line.receivedquantity !== undefined ? line.receivedquantity : line.ReceivedQuantity) || 0;
+                    var qtyConfirmadaPrevia = parseFloat(line.confirmedquantity !== undefined ? line.confirmedquantity : line.ConfirmedQuantity) || 0;
 
                     var delta = qtyRecibidaFisica - qtyConfirmadaPrevia;
-                    if (delta < 0)
+                    if (delta < 0) {
                         delta = 0;
+                    }
 
                     totalPedido += qtyOriginal;
                     totalRecibido += qtyRecibidaFisica;
@@ -197,15 +202,15 @@ Ext.define('RetornosUtils', {
                     // Solo agregar líneas con producto nuevo recibido
                     if (delta > 0) {
                         linesAEnviar.push({
-                            LineNum: line.linenum,
-                            ItemCode: line.itemcode,
-                            BarCode: line.barcode || line.itemcode,
+                            LineNum: line.linenum !== undefined ? line.linenum : line.LineNum,
+                            ItemCode: line.itemcode || line.ItemCode,
+                            BarCode: line.barcode || line.BarCode || line.itemcode || line.ItemCode,
                             Quantity: delta
                         });
                     }
                 });
 
-                // Evitar envíos vacíos si no hay mercancía nueva registrada
+                // Validar si hay piezas por enviar
                 if (deltaTotalAEnviar === 0) {
                     Ext.Msg.alert('Atención', 'No hay nuevas recepciones físicas pendientes por confirmar en este retorno.');
                     return;
@@ -224,8 +229,18 @@ Ext.define('RetornosUtils', {
                     estatusCalculado = 'Cancelada';
                 }
 
-                var siguienteEnvio = confirmCount + 1;
-                var transactionNumber = comid + "_" + siguienteEnvio;
+                // ============================================
+                // PREPARACIÓN DE LOTES (500 por bloque)
+                // ============================================
+                var loteSize = 500;
+                var totalLotes = Math.ceil(linesAEnviar.length / loteSize);
+
+                var transactionText = '';
+                if (totalLotes === 1) {
+                    transactionText = comid + "_" + (confirmCount + 1);
+                } else {
+                    transactionText = comid + "_" + (confirmCount + 1) + " al " + (confirmCount + totalLotes);
+                }
 
                 var memoField = Ext.create('Ext.form.field.TextArea', {
                     fieldLabel: 'Observaciones',
@@ -233,7 +248,7 @@ Ext.define('RetornosUtils', {
                     labelAlign: 'top',
                     anchor: '100%',
                     height: 70,
-                    value: 'Recepción ' + estatusCalculado + ' transacción #' + siguienteEnvio
+                    value: 'Recepción ' + estatusCalculado 
                 });
 
                 var win = Ext.create('Ext.window.Window', {
@@ -243,56 +258,101 @@ Ext.define('RetornosUtils', {
                     layout: 'fit',
                     resizable: false,
                     items: [{
-                            xtype: 'form',
-                            bodyPadding: 15,
-                            items: [
-                                {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum},
-                                {xtype: 'displayfield', fieldLabel: 'Transacción asignada', value: '<b>' + transactionNumber + '</b>'},
-                                {xtype: 'displayfield', fieldLabel: 'Total Solicitado', value: totalPedido + ' pzas'},
-                                {xtype: 'displayfield', fieldLabel: 'Total Recibido (Físico)', value: totalRecibido + ' pzas'},
-                                {
-                                    xtype: 'displayfield',
-                                    fieldLabel: 'A Confirmar (Esta transacción)',
-                                    value: '<b style="color: #4CAF50; font-size: 14px;">' + deltaTotalAEnviar + ' pzas</b>'
-                                },
-                                {
-                                    xtype: 'displayfield',
-                                    fieldLabel: 'Estatus a Notificar',
-                                    value: '<b style="color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + ';">' + estatusCalculado + '</b>'
-                                },
-                                memoField
-                            ],
-                            buttons: [
-                                {
-                                    text: 'Cancelar',
-                                    handler: function () {
-                                        win.close();
-                                    }
-                                },
-                                {
-                                    text: 'Confirmar y Enviar',
-                                    iconCls: 'fa fa-check',
-                                    handler: function () {
-                                        var memoText = memoField.getValue();
-                                        var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+                        xtype: 'form',
+                        bodyPadding: 15,
+                        items: [
+                            {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum},
+                            {xtype: 'displayfield', fieldLabel: 'Transacciones', value: '<b>' + transactionText + ' (' + totalLotes + ' envíos)</b>'},
+                            {xtype: 'displayfield', fieldLabel: 'Total de Líneas a Enviar', value: linesAEnviar.length},
+                            {xtype: 'displayfield', fieldLabel: 'Total Solicitado', value: totalPedido + ' pzas'},
+                            {xtype: 'displayfield', fieldLabel: 'Total Recibido (Físico)', value: totalRecibido + ' pzas'},
+                            {
+                                xtype: 'displayfield',
+                                fieldLabel: 'A Confirmar (Piezas totales)',
+                                value: '<b style="color: #4CAF50; font-size: 14px;">' + deltaTotalAEnviar + ' pzas</b>'
+                            },
+                            {
+                                xtype: 'displayfield',
+                                fieldLabel: 'Estatus Final Esperado',
+                                value: '<b style="color: ' + (estatusCalculado === 'Total' ? 'green' : 'orange') + ';">' + estatusCalculado + '</b>'
+                            },
+                            memoField
+                        ],
+                        buttons: [
+                            {
+                                text: 'Cancelar',
+                                handler: function () {
+                                    win.close();
+                                }
+                            },
+                            {
+                                text: 'Confirmar y Enviar',
+                                iconCls: 'fa fa-check',
+                                handler: function () {
+                                    var memoText = memoField.getValue();
+                                    var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+                                    win.close();
 
-                                        win.close();
-                                        Ext.getBody().mask('Enviando confirmación a Vector Delta...');
+                                    var progressWin = Ext.create('Ext.window.Window', {
+                                        title: 'Enviando Lotes a Vector Delta',
+                                        width: 400,
+                                        height: 160,
+                                        modal: true,
+                                        closable: false,
+                                        layout: 'vbox',
+                                        bodyPadding: 20,
+                                        items: [
+                                            {xtype: 'label', id: 'lblProgLoteConf', text: 'Iniciando envío de lotes...', margin: '0 0 10 0'},
+                                            {xtype: 'progressbar', id: 'barProgLoteConf', width: '100%'}
+                                        ]
+                                    });
+                                    progressWin.show();
+
+                                    var index = 0;
+                                    var loteActualN = 1;
+                                    var respuestasServidor = [];
+
+                                    function enviarLote() {
+                                        var fin = Math.min(index + loteSize, linesAEnviar.length);
+                                        var loteActual = linesAEnviar.slice(index, fin);
+
+                                        var deltaLote = 0;
+                                        Ext.Array.each(loteActual, function(line) {
+                                            deltaLote += line.Quantity;
+                                        });
+
+                                        var siguienteEnvio = confirmCount + loteActualN;
+                                        var currentTransactionNumber = comid + "_" + siguienteEnvio;
+
+                                        // Si van múltiples envíos y el estatus general es Total, los lotes previos van como Parcial
+                                        var currentEstatus = estatusCalculado;
+                                        if (estatusCalculado === 'Total' && fin < linesAEnviar.length) {
+                                            currentEstatus = 'Parcial';
+                                        }
+
+                                        var currentMemo = memoText;
+                                        if (totalLotes > 1) {
+                                            currentMemo += ' (Lote ' + loteActualN + ' de ' + totalLotes + ')';
+                                        }
+
+                                        Ext.getCmp('lblProgLoteConf').setText('Enviando Lote ' + loteActualN + ' de ' + totalLotes + '...');
+                                        var pct = index / linesAEnviar.length;
+                                        Ext.getCmp('barProgLoteConf').updateProgress(pct);
 
                                         var jsonSend = {
                                             ReturnConfirm: {
                                                 DocDate: docDate,
                                                 DocNum: docNum,
                                                 NumAtCard: cardCode,
-                                                TransactionNumber: transactionNumber,
-                                                Status: estatusCalculado,
-                                                Memo: memoText
+                                                TransactionNumber: currentTransactionNumber,
+                                                Status: currentEstatus,
+                                                Memo: currentMemo
                                             },
                                             ControlValues: {
-                                                TotalQuantity: deltaTotalAEnviar,
-                                                TotalLines: linesAEnviar.length
+                                                TotalQuantity: deltaLote,
+                                                TotalLines: loteActual.length
                                             },
-                                            Lines: linesAEnviar
+                                            Lines: loteActual
                                         };
 
                                         Ext.Ajax.request({
@@ -302,53 +362,64 @@ Ext.define('RetornosUtils', {
                                                 busqBnd: 6,
                                                 valores: Ext.encode(jsonSend),
                                                 rtnid: clave,
-                                                esCompleta: esEntregaCompleta ? 'S' : 'N'
+                                                esCompleta: (fin >= linesAEnviar.length) ? 'S' : 'N'
                                             },
                                             success: function (response) {
-                                                Ext.getBody().unmask();
                                                 var resultado = Ext.decode(response.responseText);
+                                                respuestasServidor.push(resultado);
 
-                                                if (resultado.success) {
-                                                    var cr = resultado.clienteResponse || {};
-                                                    var docNumResp = cr.DocNum || 'N/A';
-                                                    var systemDate = cr.SystemDate || 'N/A';
-                                                    var statusMensaje = (cr.StatusInfo && cr.StatusInfo.Mensaje) ? cr.StatusInfo.Mensaje : 'OK';
+                                                index += loteSize;
+                                                loteActualN++;
 
-                                                    var fechaFormateada = systemDate;
-                                                    if (systemDate !== 'N/A') {
-                                                        try {
-                                                            fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
-                                                        } catch (e) {
-                                                            fechaFormateada = systemDate;
-                                                        }
-                                                    }
-
-                                                    var msg = 'Confirmación de retorno procesada exitosamente<br><br>';
-                                                    msg += '<b>Retorno:</b> ' + docNum + '<br>';
-                                                    msg += '<b>Transacción:</b> ' + transactionNumber + '<br>';
-                                                    msg += '<b>Estatus Notificado:</b> ' + estatusCalculado + '<br>';
-                                                    msg += '<b>Total Pedido:</b> ' + totalPedido + ' | <b>Recibido Físico:</b> ' + totalRecibido + '<br>';
-                                                    msg += '<b>Enviado en esta transacción:</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>';
-                                                    msg += '<b>Folio SAP:</b> ' + docNumResp + '<br>';
-                                                    msg += '<b>Fecha Respuesta:</b> ' + fechaFormateada + '<br>';
-                                                    msg += '<b>Estado Cliente:</b> ' + statusMensaje;
-
-                                                    Ext.Msg.alert('Éxito', msg, function () {
-                                                        RetornosUtils.BtnBusqRetornos();
-                                                    });
+                                                if (index < linesAEnviar.length) {
+                                                    enviarLote();
                                                 } else {
-                                                    Ext.Msg.alert('Error', resultado.message || 'Error al procesar la confirmación');
+                                                    progressWin.close();
+                                                    mostrarResumenFinal();
                                                 }
                                             },
                                             failure: function () {
-                                                Ext.getBody().unmask();
-                                                Ext.Msg.alert('Error', 'Fallo de conexión al enviar acuse.');
+                                                progressWin.close();
+                                                Ext.Msg.alert('Error', 'Fallo de conexión al enviar el lote ' + loteActualN + '. El proceso se ha detenido.');
+                                                RetornosUtils.BtnBusqRetornos();
                                             }
                                         });
                                     }
+
+                                    function mostrarResumenFinal() {
+                                        var allSuccess = true;
+                                        Ext.Array.each(respuestasServidor, function(res) {
+                                            if (!res.success) allSuccess = false;
+                                        });
+
+                                        if (allSuccess) {
+                                            var ultRes = respuestasServidor[respuestasServidor.length - 1];
+                                            var cr = ultRes.clienteResponse || {};
+                                            var docNumResp = cr.DocNum || 'N/A';
+                                            var statusMensaje = (cr.StatusInfo && cr.StatusInfo.Mensaje) ? cr.StatusInfo.Mensaje : 'OK';
+
+                                            var msg = 'Confirmación procesada exitosamente en <b>' + totalLotes + ' lote(s)</b><br><br>';
+                                            msg += '<b>Retorno:</b> ' + docNum + '<br>';
+                                            msg += '<b>Transacciones generadas:</b> ' + transactionText + '<br>';
+                                            msg += '<b>Líneas enviadas en total:</b> ' + linesAEnviar.length + '<br>';
+                                            msg += '<b>Piezas confirmadas:</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>';
+                                            msg += '<b>Último Folio SAP:</b> ' + docNumResp + '<br>';
+                                            msg += '<b>Estado Cliente:</b> ' + statusMensaje;
+
+                                            Ext.Msg.alert('Éxito', msg, function () {
+                                                RetornosUtils.BtnBusqRetornos();
+                                            });
+                                        } else {
+                                            Ext.Msg.alert('Aviso', 'El proceso terminó, pero algunos lotes reportaron error en el servidor. Revise los registros.');
+                                            RetornosUtils.BtnBusqRetornos();
+                                        }
+                                    }
+
+                                    enviarLote();
                                 }
-                            ]
-                        }]
+                            }
+                        ]
+                    }]
                 });
 
                 win.show();
@@ -359,7 +430,7 @@ Ext.define('RetornosUtils', {
             }
         });
     },
-
+    
     EliminarRetorno: function (prm) {
         Ext.Ajax.request({
             url: contexto + '/Retornos',
@@ -436,7 +507,7 @@ Ext.define('Modulos.global.PanelRetornos', {
         me.storeRetornos = Ext.create('Ext.data.Store', {
             model: 'modelRetornos',
             autoLoad: false,
-            pageSize: 25,
+            pageSize: 50,
             proxy: {
                 type: "ajax",
                 url: contexto + "/Retornos",
@@ -860,10 +931,12 @@ Ext.define('Modulos.global.PanelRetornos', {
                             e.record.commit();
                         },
                         rowdblclick: function (grid, record) {
-
-                            var grid = Ext.getCmp('gridRetornos'); // or e.grid
-                            var cvRetorno = grid.getSelectionModel().getLastSelected().get('rtnid');
-                            RetornosUtils.detalleRetorno(cvRetorno);
+                            // var grid = Ext.getCmp('gridRetornos'); // or e.grid
+                            // var cvRetorno = grid.getSelectionModel().getLastSelected().get('rtnid');
+                            var cvRetorno = record.get('rtnid'); // ? MEJORADO
+                            var comid = record.get('comid');     // ? OBTENEMOS EL COMID
+                            
+                            RetornosUtils.detalleRetorno(cvRetorno, comid); // ? PASAMOS AMBOS PARÁMETROS
                         }
                     }
                 }

@@ -20,5 +20,6 @@ public class ArrRetornoDet {
     public int receivedquantity;
     public String coms;
     public int confirmedquantity;
+    public int totalrecs;
 
 }

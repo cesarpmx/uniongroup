@@ -15,6 +15,7 @@ public class CentralRetornosDet {
     
     public ArrayList<ArrRetornoDet> items;
     public boolean hasMore;
+    public int total;
     public int limit;
     public int offset;
     public int count;
