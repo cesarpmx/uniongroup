@@ -970,7 +970,7 @@ Ext.define('OrdenesVentaUtils', {
         Ext.Ajax.request({
             url: contexto + '/OrdenesVenta',
             method: 'POST',
-            params: {busqBnd: 2, docEntry: docEntry, servicio: 'ServiceOrdenVentaDet', limit: 9999, offset: 0},
+            params: {busqBnd: 2, docEntry: docEntry, servicio: 'ServiceOrdenVentaDet', limit: 99999, offset: 0},
             success: function (responseOriginal) {
                 var dataOriginal = Ext.decode(responseOriginal.responseText);
                 var lineasOriginales = dataOriginal.items || [];
@@ -1003,8 +1003,9 @@ Ext.define('OrdenesVentaUtils', {
                             var qtySurtidaFisica = mapSurtidos[linea.ItemCode] || 0;
 
                             var delta = qtySurtidaFisica - qtyConfirmadaPrevia;
-                            if (delta < 0)
+                            if (delta < 0) {
                                 delta = 0;
+                            }
 
                             totalPedido += qtyOriginal;
                             totalSurtido += qtySurtidaFisica;
@@ -1022,26 +1023,32 @@ Ext.define('OrdenesVentaUtils', {
                         });
 
                         if (deltaTotalAEnviar === 0) {
-                            Ext.Msg.alert('Atención', 'No surtidos pendientes por confirmar.');
+                            Ext.Msg.alert('Atención', 'No hay surtidos nuevos pendientes por confirmar.');
                             return;
                         }
 
-                        // Estatus permitidos en ShipmentConfirm: "Total" o "Parcial"
+                        // Estatus a notificar a Vector Delta
                         var estatusCalculado = '';
-                        var esEntregaCompleta = false;
-
                         if (totalSurtido >= totalPedido) {
                             estatusCalculado = 'Total';
-                            esEntregaCompleta = true;
                         } else if (totalSurtido > 0) {
                             estatusCalculado = 'Parcial';
-                            esEntregaCompleta = false;
                         } else {
                             estatusCalculado = 'Cancelada';
                         }
 
-                        var siguienteEnvio = confirmCount + 1;
-                        var transactionNumber = preid + "_" + siguienteEnvio;
+                        // ============================================
+                        // PREPARACIÓN DE LOTES (500 por bloque)
+                        // ============================================
+                        var loteSize = 500;
+                        var totalLotes = Math.ceil(linesAEnviar.length / loteSize);
+
+                        var transactionText = '';
+                        if (totalLotes === 1) {
+                            transactionText = preid + "_" + (confirmCount + 1);
+                        } else {
+                            transactionText = preid + "_" + (confirmCount + 1) + " al " + (confirmCount + totalLotes);
+                        }
 
                         var memoField = Ext.create('Ext.form.field.TextArea', {
                             fieldLabel: 'Observaciones',
@@ -1049,52 +1056,108 @@ Ext.define('OrdenesVentaUtils', {
                             labelWidth: 130,
                             height: 70,
                             anchor: '100%',
-                            value: 'Envío ' + estatusCalculado + ' transacción #' + siguienteEnvio
+                            value: 'Envío ' + estatusCalculado
                         });
 
                         var winConfirm = Ext.create('Ext.window.Window', {
                             title: 'Confirmar Envío ' + estatusCalculado + ' - ' + docNum,
-                            width: 550, layout: 'fit', modal: true,
+                            width: 550, 
+                            layout: 'fit', 
+                            modal: true,
                             items: [{
-                                    xtype: 'form', bodyPadding: 20,
-                                    items: [
-                                        {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum, labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'Lista Empaque', value: '<b>' + preid + '</b>', labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'Transacción', value: '<b>' + transactionNumber + '</b>', labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido + ' pzas', labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'Surtido (Físico)', value: totalSurtido + ' pzas', labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'A Confirmar', value: '<b style="color: #4CAF50;">' + deltaTotalAEnviar + ' pzas</b>', labelWidth: 130},
-                                        {xtype: 'displayfield', fieldLabel: 'Estatus', value: '<b style="color: #2196F3;">' + estatusCalculado + '</b>', labelWidth: 130},
-                                        memoField
-                                    ],
-                                    buttons: [
-                                        {text: 'Cancelar', handler: function () {
-                                                winConfirm.close();
-                                            }},
-                                        {
-                                            text: 'Confirmar y Enviar', iconCls: 'fa fa-check',
-                                            handler: function () {
-                                                var memo = memoField.getValue();
-                                                winConfirm.close();
-                                                Ext.getBody().mask('Procesando envío...');
+                                xtype: 'form', 
+                                bodyPadding: 20,
+                                items: [
+                                    {xtype: 'displayfield', fieldLabel: 'Doc Num', value: docNum, labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'Lista Empaque', value: '<b>' + preid + '</b>', labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'Transacciones', value: '<b>' + transactionText + ' (' + totalLotes + ' envíos)</b>', labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'Total Pedido', value: totalPedido + ' pzas', labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'Surtido (Físico)', value: totalSurtido + ' pzas', labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'A Confirmar', value: '<b style="color: #4CAF50;">' + deltaTotalAEnviar + ' pzas</b>', labelWidth: 130},
+                                    {xtype: 'displayfield', fieldLabel: 'Estatus a Notificar', value: '<b style="color: #2196F3;">' + estatusCalculado + '</b>', labelWidth: 130},
+                                    memoField
+                                ],
+                                buttons: [
+                                    {
+                                        text: 'Cancelar', 
+                                        handler: function () {
+                                            winConfirm.close();
+                                        }
+                                    },
+                                    {
+                                        text: 'Confirmar y Enviar', 
+                                        iconCls: 'fa fa-check',
+                                        handler: function () {
+                                            var memo = memoField.getValue();
+                                            winConfirm.close();
 
-                                                var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+                                            var docDate = Ext.Date.format(new Date(), "Y-m-d\\TH:i:s");
+                                            
+                                            var progressWin = Ext.create('Ext.window.Window', {
+                                                title: 'Enviando Lotes a Vector Delta',
+                                                width: 400,
+                                                height: 160,
+                                                modal: true,
+                                                closable: false,
+                                                layout: 'vbox',
+                                                bodyPadding: 20,
+                                                items: [
+                                                    {xtype: 'label', id: 'lblProgLoteConfOV', text: 'Iniciando envío de lotes...', margin: '0 0 10 0'},
+                                                    {xtype: 'progressbar', id: 'barProgLoteConfOV', width: '100%'}
+                                                ]
+                                            });
+                                            progressWin.show();
+
+                                            var index = 0;
+                                            var loteActualN = 1;
+                                            var respuestasServidor = [];
+
+                                            function enviarLote() {
+                                                var fin = Math.min(index + loteSize, linesAEnviar.length);
+                                                var loteActual = linesAEnviar.slice(index, fin);
+
+                                                var deltaLote = 0;
+                                                Ext.Array.each(loteActual, function (line) {
+                                                    deltaLote += line.Quantity;
+                                                });
+
+                                                var siguienteEnvio = confirmCount + loteActualN;
+                                                var currentTransactionNumber = preid + "_" + siguienteEnvio;
+
+                                                // Manejo de Estatus para envíos seccionados
+                                                var currentEstatus = estatusCalculado;
+                                                if (estatusCalculado === 'Total' && fin < linesAEnviar.length) {
+                                                    currentEstatus = 'Parcial';
+                                                }
+
+                                                var currentMemo = memo;
+                                                if (totalLotes > 1) {
+                                                    currentMemo += ' (Lote ' + loteActualN + ' de ' + totalLotes + ')';
+                                                }
+
+                                                Ext.getCmp('lblProgLoteConfOV').setText('Enviando Lote ' + loteActualN + ' de ' + totalLotes + '...');
+                                                var pct = index / linesAEnviar.length;
+                                                Ext.getCmp('barProgLoteConfOV').updateProgress(pct);
+
                                                 var jsonSend = {
                                                     ShipmentConfirm: {
                                                         DocDate: docDate,
                                                         DocNum: docNum,
                                                         NumAtCard: record.get('NumAtCard') || '',
-                                                        TransactionNumber: transactionNumber,
+                                                        TransactionNumber: currentTransactionNumber,
                                                         AddressCode: addressCode,
-                                                        Status: estatusCalculado,
-                                                        Memo: memo
+                                                        Status: currentEstatus,
+                                                        Memo: currentMemo
                                                     },
                                                     ControlValues: {
-                                                        TotalQuantity: deltaTotalAEnviar,
-                                                        TotalLines: linesAEnviar.length
+                                                        TotalQuantity: deltaLote,
+                                                        TotalLines: loteActual.length
                                                     },
-                                                    Lines: linesAEnviar
+                                                    Lines: loteActual
                                                 };
+
+                                                // 'S' al terminar el último lote para asentar y cerrar
+                                                var esUltimoLote = (fin >= linesAEnviar.length) ? 'S' : 'N';
 
                                                 Ext.Ajax.request({
                                                     url: contexto + '/OrdenesVenta',
@@ -1103,56 +1166,93 @@ Ext.define('OrdenesVentaUtils', {
                                                         busqBnd: 6,
                                                         valores: Ext.encode(jsonSend),
                                                         ovid: ovid,
-                                                        esCompleta: esEntregaCompleta ? 'S' : 'N'
+                                                        esCompleta: esUltimoLote
                                                     },
                                                     success: function (responseConfirm) {
-                                                        Ext.getBody().unmask();
                                                         var resultado = Ext.decode(responseConfirm.responseText);
+                                                        respuestasServidor.push(resultado);
 
-                                                        if (resultado.success) {
-                                                            var cr = resultado.clienteResponse || {};
-                                                            var docNumResp = cr.DocNum || 'N/A';
-                                                            var statusMensaje = (cr.StatusInfo && cr.StatusInfo.Mensaje) ? cr.StatusInfo.Mensaje : 'OK';
+                                                        index += loteSize;
+                                                        loteActualN++;
 
-                                                            var systemDate = cr.SystemDate || 'N/A';
-                                                            var fechaFormateada = systemDate;
-                                                            if (systemDate !== 'N/A') {
-                                                                try {
-                                                                    fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
-                                                                } catch (e) {
-                                                                    fechaFormateada = systemDate;
-                                                                }
-                                                            }
-
-                                                            var msg = 'Confirmación de envío procesada exitosamente<br><br>' +
-                                                                    '<b>Orden:</b> ' + docNum + '<br>' +
-                                                                    '<b>Transacción:</b> ' + transactionNumber + '<br>' +
-                                                                    '<b>Estatus:</b> ' + estatusCalculado + '<br>' +
-                                                                    '<b>Enviado en esta transacción:</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>' +
-                                                                    '<b>Folio SAP:</b> ' + docNumResp + '<br>' +
-                                                                    '<b>Fecha Respuesta:</b> ' + fechaFormateada + '<br>' +
-                                                                    '<b>Estado Cliente:</b> ' + statusMensaje;
-
-                                                            Ext.Msg.alert('Éxito', msg, function () {
-                                                                OrdenesVentaUtils.BtnBusqOrdenVenta();
-                                                            });
+                                                        if (index < linesAEnviar.length) {
+                                                            enviarLote();
                                                         } else {
-                                                            Ext.Msg.alert('Error', resultado.message || 'Error al procesar');
+                                                            Ext.getCmp('barProgLoteConfOV').updateProgress(1);
+                                                            progressWin.close();
+                                                            mostrarResumenFinal();
                                                         }
                                                     },
                                                     failure: function () {
-                                                        Ext.getBody().unmask();
-                                                        Ext.Msg.alert('Error', 'Fallo de comunicación al enviar acuse.');
+                                                        progressWin.close();
+                                                        Ext.Msg.alert('Error', 'Fallo de comunicación al enviar el lote ' + loteActualN + '.');
+                                                        OrdenesVentaUtils.BtnBusqOrdenVenta();
                                                     }
                                                 });
                                             }
+
+                                            function mostrarResumenFinal() {
+                                                var allSuccess = true;
+                                                Ext.Array.each(respuestasServidor, function (res) {
+                                                    if (!res.success)
+                                                        allSuccess = false;
+                                                });
+
+                                                // Actualizar contador en memoria local
+                                                record.set('CONFIRMCOUNT', confirmCount + totalLotes);
+                                                record.commit();
+
+                                                if (allSuccess) {
+                                                    var ultRes = respuestasServidor[respuestasServidor.length - 1];
+                                                    var cr = ultRes.clienteResponse || {};
+                                                    var docNumResp = cr.DocNum || 'N/A';
+                                                    var statusMensaje = (cr.StatusInfo && cr.StatusInfo.Mensaje) ? cr.StatusInfo.Mensaje : 'OK';
+
+                                                    var systemDate = cr.SystemDate || 'N/A';
+                                                    var fechaFormateada = systemDate;
+                                                    if (systemDate !== 'N/A') {
+                                                        try {
+                                                            fechaFormateada = Ext.Date.format(new Date(systemDate), 'd/m/Y H:i:s');
+                                                        } catch (e) {
+                                                            fechaFormateada = systemDate;
+                                                        }
+                                                    }
+
+                                                    var msg = 'Confirmación de envío procesada exitosamente en <b>' + totalLotes + ' lote(s)</b><br><br>' +
+                                                            '<b>Orden:</b> ' + docNum + '<br>' +
+                                                            '<b>Transacciones generadas:</b> ' + transactionText + '<br>' +
+                                                            '<b>Estatus Notificado Final:</b> ' + estatusCalculado + '<br>' +
+                                                            '<b>Piezas confirmadas (Esta entrega):</b> <b style="color:#4CAF50;">' + deltaTotalAEnviar + ' pzas</b><br>' +
+                                                            '<b>Último Folio SAP:</b> ' + docNumResp + '<br>' +
+                                                            '<b>Fecha Respuesta:</b> ' + fechaFormateada + '<br>' +
+                                                            '<b>Estado Cliente:</b> ' + statusMensaje;
+
+                                                    Ext.Msg.alert('Éxito', msg, function () {
+                                                        OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                    });
+                                                } else {
+                                                    Ext.Msg.alert('Aviso', 'El proceso terminó, pero algunos lotes reportaron error. Revise los registros.');
+                                                    OrdenesVentaUtils.BtnBusqOrdenVenta();
+                                                }
+                                            }
+
+                                            enviarLote();
                                         }
-                                    ]
-                                }]
+                                    }
+                                ]
+                            }]
                         });
                         winConfirm.show();
+                    },
+                    failure: function () {
+                        Ext.getBody().unmask();
+                        Ext.Msg.alert('Error', 'Fallo de conexión al consultar lo surtido físicamente.');
                     }
                 });
+            },
+            failure: function () {
+                Ext.getBody().unmask();
+                Ext.Msg.alert("Error", "No se pudieron obtener las líneas originales de la orden.");
             }
         });
     },
